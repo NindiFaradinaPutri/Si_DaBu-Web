@@ -1,0 +1,32 @@
+{% load static %}
+{% load custom_tags %}
+{% for gallery in gallery %}
+<div class="col-sm-4 col-lg-4 isotope-item brands">
+	<div class="portfolio-item">
+		<a href="#" role="button" id="view-gallery" data-toggle="modal" data-target=".bd-example-modal-lg" data-id="{{gallery.encrypt_id}}">
+			<span class="thumb-info thumb-info-lighten border-radius-0">
+				<span class="thumb-info-wrapper border-radius-0">
+					{% if gallery.foto %}
+					<img src="/media/{{gallery.foto}}" class="img-fluid border-radius-0 img-gallery" alt="">
+					{% elif gallery.link %}
+						{{ gallery.link|photo_link }}
+					{% elif gallery.video %}
+					<video id="video1" class="img-fluid border-radius-0 img-gallery">
+						<source src="/media/{{gallery.video}}" type="video/mp4">
+					</video>
+					{% endif %}
+					
+					<span class="thumb-info-action">
+						<span class="thumb-info-action-icon bg-dark opacity-8"><i class="fas fa-eye"></i></span>
+					</span>
+				</span>
+			</span>
+		</a>
+	</div>
+
+</div>
+{% endfor %}
+
+<div class="w-100 pagination_area" id="pagination_area">
+{% include 'template/paginations/tmp_pagination.html' with page_obj=gallery space="my-3" %}
+</div>

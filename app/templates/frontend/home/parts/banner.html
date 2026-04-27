@@ -1,0 +1,61 @@
+{% load static %}
+
+
+<style>
+
+.banner-wrapper:hover .banner-text {
+    display: block !important;
+}
+/* Text overlay */
+.banner-text {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translateY(-50%);
+    z-index: 99;
+}
+</style>
+
+	<section class="section border-0 m-0 bg-color-quaternary p-relative pb-0">
+		<div style="margin-top:110px;" class="container-fluid p-0 mb-5">
+			<div class="row g-0">
+
+				<div class="col">
+					<div class="owl-carousel carousel-center-active-item-3 mt-2 mb-0" data-plugin-options="{'items': 1, 'loop': true, 'margin': 60, 'autoplay': true, 'autoplayTimeout': 4000,'dots': false}">
+
+						{% for banner in banner %}
+						<div class="banner-wrapper" style="position: relative; overflow: hidden; border-radius: 20px; margin-left: 20px; margin-right: 20px; width: calc(100% - 40px);">
+							<span id="banner{{forloop.counter}}" class="h-100">
+								<div class="img-thumbnail border-0 p-0 pb-3 d-block">
+									<img class="img-fluid" src="/media/{{banner.photo}}" alt="" style="width: 100%; height: auto; object-fit: contain; border-radius: 20px;">
+								</div>
+							</span>
+							<div class="thumb-info-title">
+								<div id="text{{forloop.counter}}" style=" position: absolute; top: 50%; left: 15%; z-index: 99; opacity: 1;" class="banner-text">
+									<h1 style="text-shadow: 2px 2px 2px #323232; " class="text-color-white font-weight-bold text-9 pb-2 mb-1 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200">{{banner.title}}</h1>
+									<div class="overflow-hidden mb-1 rounded">
+										<h2 style="background: rgb(204 13 0 / 0.57); max-width: 500px;" class="font-weight-semi-bold text-color-white text-uppercase positive-ls-3 text-4-5 line-height-2 line-height-sm-7 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="100">{{banner.description}}</h2>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+    {% for banner in banner %}
+    document.getElementById("banner{{forloop.counter}}").onmouseover = function hover_banner{{forloop.counter}}() {
+        document.getElementById("text{{forloop.counter}}").style.display = "block";   
+	}
+
+    document.getElementById("banner{{forloop.counter}}").onmouseout = function hoverout_banner{{forloop.counter}}() {
+        document.getElementById("text{{forloop.counter}}").style.display = "none";
+	}
+    {% endfor %}
+
+	</script>

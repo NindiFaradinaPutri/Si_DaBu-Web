@@ -1,0 +1,39 @@
+{% load static %}
+{% load custom_tags %}
+<div style="background: #014c3d; border-bottom: 4px solid #FFBF00; " class="header-top header-top-borders">
+	<div class="container h-100">
+		<div class="header-row h-100">
+			<div class="header-column justify-content-start">
+				<div class="header-row">
+					<nav class="header-nav-top">
+						<ul class="nav nav-pills">
+							<li class="nav-item py-2 d-none d-sm-inline-flex pe-2">
+								<span class="text-white ps-0 font-weight-semibold text-color-default text-2-5">{{'address'|custom_header}}</span>
+							</li>
+							<li class="nav-item py-2 pe-2">
+								<a href="tel:{{'phone'|custom_header}}" class="text-white text-color-default text-2-5 text-color-hover-primary font-weight-semibold">{{'phone'|custom_header}}</a>
+							</li>
+							<li class="nav-item py-2 d-md-inline-flex">
+								<a href="mailto:{{'email'|custom_header}}" class="text-white text-color-default text-2-5 text-color-hover-primary font-weight-semibold">{{'email'|custom_header}}</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<div class="header-column justify-content-end">
+				<div class="header-row">
+					<nav class="header-nav-top">
+						<ul class="nav nav-pills p-relative bottom-2">							
+							<li class="nav-item py-2 d-none d-lg-inline-flex">
+								<a href="{{'instagram'|custom_header}}" target="_blank" title="Instagram" class="text-color-dark text-color-hover-primary text-3 anim-hover-translate-top-5px transition-2ms"><i class="text-white fab fa-instagram text-3 p-relative top-1"></i></a>
+							</li>
+							<li class="nav-item py-2 pe-0 d-none d-lg-inline-flex">
+								<a href="{{'linkedin'|custom_header}}" target="_blank" title="Linkedin" class="text-color-dark text-color-hover-primary text-3 anim-hover-translate-top-5px transition-2ms"><i class="text-white fab fa-linkedin-in text-3 p-relative top-1"></i></a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

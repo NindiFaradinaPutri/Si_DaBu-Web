@@ -1,0 +1,28 @@
+{% load static %}
+<section class="section border-0 bg-light m-0">
+	<div class="container py-5">
+		<div class="row mb-4 text-center">			
+			<div class="col pb-4 text-center">
+				<div class="divider divider-small divider-small-lg mt-0 text-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">
+					<hr class="bg-primary border-radius m-auto">
+				</div>
+				<div class="overflow-hidden mb-1">
+					<h3 class="font-weight-bold text-uppercase positive-ls-3 text-4 line-height-2 line-height-sm-7 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="100" style="color: #014C3D; text-align: left; left: 0;">Partner Masjid Ar-Raudah</h3>
+				</div>
+				<!-- <h2 class="text-color-dark font-weight-bold text-8 pb-4 mb-0 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200">Masjid NU Prapatan</h2> -->
+
+			</div>
+		</div>
+		<div class="row pb-4 mb-2">
+			<div class="col">
+				<div style="height:auto;" class="row owl-carousel owl-theme mb-0" data-plugin-options="{'responsive': {'0': {'items': 2}, '476': {'items': 3}, '500': {'items': 3}, '768': {'items': 5}, '992': {'items': 7}, '1200': {'items': 7}}, 'autoplay': true, 'autoplayTimeout': 3000, 'dots': false}">
+					{% for client in client %}
+					<div class="d-flex justify-content-center align-items-center text-center mx-4" title="{{client.name}}">
+						<img class="img-fluid" src="/media/{{client.photo}}" alt="">
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

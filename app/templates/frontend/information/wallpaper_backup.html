@@ -1,0 +1,241 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<section style="background:url(/media/background/wallpaper_page.png) no-repeat center center; background-size:cover;">
+	<div id="sholatModal" class="modal fade bg-success" tabindex="-1" role="dialog" aria-labelledby="sholatModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen" role="document">
+			<div class="modal-content"
+				style="background:url(/media/background/wallpaper_sholat.png) no-repeat center center; background-size:cover;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal-title">Informasi Sholat</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body d-flex justify-content-center">
+					<div class="sholat">
+						Sholat Isya
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="timerModal" class="modal fade bg-success" tabindex="-1" role="dialog" aria-labelledby="timerModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal-title">Timer Iqamah</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row d-flex justify-content-between">
+						<div class="col bg-dark m-3">
+							<div class="text-center text-8 pt-3 text-white">Waktu Iqamah</div>
+							<div class="timer">
+								00:00:00
+							</div>
+						</div>
+					</div>
+					<div class="row my-5">
+						<div class="col">
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center">
+									<img src="/media/iqamah/no_hp.png" class="img-fluid" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center text-center mt-3">
+									<span class="text-6 bg-light text-dark opacity-7">Handphone dimatikan / mode
+										silent</span>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center">
+									<img src="/media/iqamah/no_speak.png" class="img-fluid" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center text-center mt-3">
+									<span class="text-6 bg-light text-dark opacity-7">Dilarang berisik sehingga
+										mengganggu ibadah</span>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center">
+									<img src="/media/iqamah/sholat_rapi.png" class="img-fluid" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center text-center mt-3">
+									<span class="text-6 bg-light text-dark opacity-7">Sholat dengan berjajar yang rapi
+										dan khusyuk</span>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center">
+									<img src="/media/iqamah/fokus_ibadah.png" class="img-fluid" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center text-center mt-3">
+									<span class="text-6 bg-light text-dark opacity-7">Perbanyak Ibadah Sunah dan
+										Dzikir</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class=" position-relative px-3 py-5 overflow-auto jamanalog-frame">
+		<div id="analogclock">
+			<div>
+				<img src="/media/logo/logo-full.png" class="img-fluid logo" />
+			</div>
+			<div id="minmarkers" class="minmarks"></div>
+			<div id="clocknumbers"></div>
+			<!--<div id="clocknumbers24"></div>-->
+			<div id="brand">masjidnuprapatan.org</div>
+
+			<!--<button type="button" id="soundtoggle" class="speaker speaker--off" aria-label="sound toggle">
+				<span class="speakertriangle"></span>
+				<span class="speakerbar"></span>
+				<span class="speakerwave speakerwave--1"></span>
+				<span class="speakerwave speakerwave--2"></span>
+				<span class="speakerwave speakerwave--3"></span>
+			</button>-->
+			<div id="hourscircle">
+				<div id="hourshand"></div>
+			</div>
+			<div id="minutescircle">
+				<div id="minuteshand"></div>
+			</div>
+			<div id="secondscircle">
+				<div id="secondshand"></div>
+			</div>
+			<div id="nut"></div>
+		</div>
+		<div id="digitalclock"></div>
+		<div class="row banner_area">
+			<div class="col">
+				<div class="owl-carousel owl-theme nav-inside"
+					data-plugin-options="{'items': 1, 'margin': 10, 'loop': true, 'nav': false,'autoplay': true,'autoplayTimeout': 4000,'dots': false}">
+
+					{% for banner in banner %}
+					<div>
+						<span id="banner{{forloop.counter}}" class="h-100">
+							<div class="img-thumbnail border-0 p-0 pb-3 d-block">
+								<img class="img-fluid border-radius-0" src="/media/{{banner.photo}}" alt="">
+							</div>
+						</span>
+						<span class="thumb-info-title">
+							<div id="text{{forloop.counter}}"
+								style="display: none; position: absolute; top: 50%; left: 15%; z-index: 99; opacity: 1;"
+								class="">
+								<h1 style="text-shadow: 2px 2px 2px #323232; "
+									class="text-color-white font-weight-bold text-9 pb-2 mb-1 appear-animation"
+									data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200">
+									{{banner.title}}</h1>
+								<div class="overflow-hidden mb-1 rounded">
+									<h2 style="background: rgb(204 13 0 / 0.57); max-width: 500px;"
+										class="font-weight-semi-bold text-color-white text-uppercase positive-ls-3 text-4-5 line-height-2 line-height-sm-7 mb-0 appear-animation"
+										data-appear-animation="maskUp" data-appear-animation-delay="100">
+										{{banner.description}}</h2>
+								</div>
+							</div>
+						</span>
+					</div>
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="row d-flex justify-content-between py-2 bg-tertiary text-dark">
+
+		<div class="col text-center text-uppercase">Imsak</div>
+		<div class="col text-center text-uppercase">Subuh</div>
+		<div class="col text-center text-uppercase">Dzuhur</div>
+		<div class="col text-center text-uppercase">Ashar</div>
+		<div class="col text-center text-uppercase">Maghrib</div>
+		<div class="col text-center text-uppercase">Isya</div>
+
+	</div>
+	<div class="row d-flex justify-content-between bg-light pb-3">
+
+		<div class="col text-center text-6 mt-2 color_area">
+			<i class="flaticon flaticon-sunrise text-dark"></i>
+			<span class="" id="digitalclock_imsak"></span>
+		</div>
+		<div class="col text-center text-6 mt-2 color_area">
+			<i class="flaticon flaticon-sunrise-1 text-dark"></i>
+			<span class="" id="digitalclock_shubuh"></span>
+		</div>
+		<div class="col text-center text-6 mt-2 color_area">
+			<i class="flaticon flaticon-sun text-dark"></i>
+			<span class="" id="digitalclock_dzuhur"></span>
+		</div>
+		<div class="col text-center text-6 mt-2 color_area">
+			<i class="flaticon flaticon-sunset text-dark"></i>
+			<span class="" id="digitalclock_ashar"></span>
+		</div>
+		<div class="col text-center text-6 mt-2 color_area">
+			<i class="flaticon flaticon-sunset-1 text-dark"></i>
+			<span class="" id="digitalclock_maghrib"></span>
+		</div>
+		<div class="col text-center text-6 mt-2 color_area">
+			<i class="flaticon flaticon-moon text-dark"></i>
+			<span class="" id="digitalclock_isya"></span>
+		</div>
+
+	</div>
+</section>
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" type="text/css" href="{% static 'frontend/css/wallpaper_6.css'%}" />
+<style>
+	.modal-dialog {
+		max-width: 100% !important;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	.modal-content {
+		height: auto;
+		min-height: 100%;
+		border-radius: 0;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'frontend/js/wallpaper_v4.js' %}"></script>
+{% endblock %}

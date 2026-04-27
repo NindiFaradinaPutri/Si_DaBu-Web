@@ -1,0 +1,58 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+        {% include "frontend/home/parts/banner.html" %}
+
+        {% include "frontend/home/parts/about.html" %}
+
+        {% include "frontend/home/parts/services.html" %}
+
+        <!-- { % include "frontend/home/parts/kanban.html" % } -->
+
+        <!--{ % include "frontend/home/parts/testimony.html" % }-->
+
+        {% include "frontend/home/parts/client.html" %}
+
+        <!--{ % include "frontend/home/parts/contact.html" % }
+
+        { % include "frontend/home/parts/blog.html" % }
+
+        { % include "frontend/home/parts/map.html" % }
+
+        { % include "frontend/home/parts/location.html" % }-->
+
+{% endblock %}
+
+{% block theme %}
+<style>
+    .product__height{
+        height: 20em;
+    }
+    .owl-carousel .owl-stage {
+        display: flex;
+        align-items: center;
+    }
+    .btn-position{
+        text-align:left;
+    }
+    @media only screen and (max-width: 991px) {
+        .btn-position {
+            text-align: center;
+        }
+        .text-8 {
+            font-size: 1.55rem!important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}

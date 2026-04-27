@@ -1,0 +1,227 @@
+{% load static %}
+
+{% for hidden_fields in form.hidden_fields %}
+    {{ hidden_fields }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% for field in form.visible_fields %}
+{% if field.field.widget.input_type == 'date' %}
+    <div class="form-group">
+    {{ field.label_tag }}
+        {% if form.is_bound %}
+            {% if field.errors %}
+                <input type="text" 
+                    id="{{field.id_for_label}}" 
+                    name="{{field.name}}"
+                    class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                    value="{{ field.initial|date:"Y-m-d"|default_if_none:"" }}"
+                    placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "yyyy-mm-dd" }' />
+
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                {{ error }}
+                </div>
+            {% endfor %}
+            {% else %}
+
+                <input type="text" 
+                    id="{{field.id_for_label}}" 
+                    name="{{field.name}}"
+                    class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                    value="{{ field.initial|date:"Y-m-d"|default_if_none:"" }}"
+                    placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "yyyy-mm-dd" }' />
+
+        {% endif %}
+        {% else %}
+            <input type="text" 
+                    id="{{field.id_for_label}}" 
+                    name="{{field.name}}"
+                    class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                    value="{{ field.initial|date:"Y-m-d"|default_if_none:"" }}"
+                    placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "yyyy-mm-dd" }' />
+        {% endif %}
+        
+        {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+    </div>
+
+{% elif field.field.widget.input_type == 'checkbox' %}
+    <div class="form-group {{field.field.widget.attrs.class|default_if_none:""}}">
+        {{ field.label_tag }}
+        {% if form.is_bound %}
+            {% if field.errors %}
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                    {{ error }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {{ field }}
+            {% endif %}
+        {% else %}
+                {{ field }}
+        {% endif %}
+        &nbsp;
+        {% if field.help_text %}
+            <small class="form-text text-muted"><strong>({{ field.help_text }})</strong></small>
+        {% endif %}
+    </div>
+
+{%elif field.field.widget.attrs.accept == "image/*" %}
+    <div class="form-group">
+            {{ field.label_tag }} <br />
+            {% if form.is_bound %}
+                {% if field.errors %}
+                    <div class="row">                        
+                        {% if field.initial %}
+                        <div class="col-md-4 text-center">
+                            <img src="{%static field.initial.url|default_if_none:''%}" class="list_img" /> <br />                            
+                        </div>
+                        <div class="col-md-8">
+                            {{field}}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger" id="error_{{ field.name }}">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="row">                       
+                        {% if field.initial %}
+                        <div class="col-md-4 text-center">
+                            <img src="{%static field.initial.url|default_if_none:''%}" class="list_img" /> <br />                            
+                        </div>
+                        <div class="col-md-8">
+                            {{field}}
+                        </div>
+                        {% endif %}                        
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if field.initial %}
+                    <div class="row">
+                        {% if field.initial.url %}
+                        <div class="col-md-4 text-center">
+                            <img src="{%static field.initial.url|default_if_none:''%}" class="list_img" /> <br />                            
+                        </div>
+                        <div class="col-md-8">
+                            {{field}}
+                        </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-9">
+                            {{field}}
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+
+            <div class="alert alert-danger alert-dismissible" id="error_{{field.name}}" style="display:none"></div>
+  
+        </div>
+
+{% elif field.field.widget.input_type == "file" %}
+    <div class="form-group">
+            <label for="{{field.name}}">{{ field.field.label }}</label>
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                            {{ field }}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger" id="error_{{ field.name }}">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% else %}
+                    {% if field.initial %}
+                        {{ field }}
+                    {% else %}
+                        {{field}}
+                    {% endif %}
+
+                {% endif %}
+
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.name}}" style="display:none"></div>
+        </div>
+
+{% elif field.field.widget.input_type == "password" %}
+    <div class="form-group ">
+        <label for="{{field.name}}">{{ field.label_tag }}</label>
+        <div class="d-flex align-items-center">
+            {% if form.is_bound %}
+            {% if field.errors %}
+            {{ field }} {% if field.name == "password" %} <span class="btn_icon" onclick="show_password()"><i id="icon_pass" class="fa fa-eye"></i></span>{% elif field.name == "confirm_password" %} <span class="btn_icon" onclick="show_password2()"><i id="icon_pass" class="fa fa-eye"></i></span>{% endif %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ field }} {% if field.name == "password" %} <span class="btn_icon" onclick="show_password()"><i id="icon_pass" class="fa fa-eye"></i></span>{% elif field.name == "confirm_password" %} <span class="btn_icon" onclick="show_password2()"><i id="icon_confirm_pass" class="fa fa-eye"></i></span>{% endif %}
+            {% endif %}
+            {% else %}
+            {{ field }} {% if field.name == "password" %} <span class="btn_icon" onclick="show_password()"><i id="icon_pass" class="fa fa-eye"></i></span>{% elif field.name == "confirm_password" %} <span class="btn_icon" onclick="show_password2()"><i id="icon_confirm_pass" class="fa fa-eye"></i></span>{% endif %}
+            {% endif %}
+        </div>
+
+
+        {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+    </div>
+
+{% else %}
+    <div class="form-group">
+        {{ field.label_tag }}
+
+        {% if form.is_bound %}
+            {% if field.errors %}
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger" id="error_{{ field.name }}">
+                    {{ error }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {{ field }}
+            {% endif %}
+        {% else %}
+            {{ field }}
+        {% endif %}
+
+        {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+
+    <div class="alert alert-danger alert-dismissible" id="error_{{field.name}}" style="display:none"></div>
+  
+    </div>
+  
+{% endif %}
+{% endfor %}
+

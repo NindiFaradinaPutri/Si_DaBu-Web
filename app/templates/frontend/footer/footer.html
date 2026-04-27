@@ -1,0 +1,121 @@
+{% load static %}
+{% load custom_tags %}
+<div class="sticky-icon">
+	<a href="/contact/" class="sticky_contact d-flex aligns-item-center"><i class="flaticon flaticon-contact-mail"></i> Hubungi Kami </a>
+	<a href="/general_ledger/" class="sticky_charity"><i class="flaticon flaticon-donation"> </i> Keuangan </a>
+	<a href="/admin/profile/" class="sticky_admin"><i class="flaticon flaticon-man"> </i> Halaman Admin </a>
+</div>
+<footer id="footer" class="position-relative border-top-0" style="background-image: url(/media/background/footer_background.png); background-size: cover; background-position: center;">
+	<div class="container pt-5 pb-3">
+		<div class="row pt-5">
+			<div class="col-md col-12">
+				<a href="/" class="text-decoration-none">
+					<h3 class="text-color-light font-weight-bold mb-3">MASJID AR-RAUDAH</h3>
+				</a>
+				<p class="text-3-5 mt-4 font-weight-medium pe-lg-2 text-light">{% autoescape off %}{{'visi'|custom_footer}}{% endautoescape %}</p>
+
+				<ul class="social-icons social-icons-clean social-icons-medium">
+					<li class="social-icons-instagram">
+						<a href="{{'instagram'|custom_header}}" target="_blank" title="Instagram">
+							<i class="fab fa-instagram text-color-light"></i>
+						</a>
+					</li>
+					<li class="social-icons-linkedin">
+						<a href="{{'linkedin'|custom_header}}" target="_blank" title="Linkedin">
+							<i class="fab fa-linkedin text-color-light"></i>
+						</a>
+					</li>
+					<li class="social-icons-tiktok">
+						<a href="{{'linkedin'|custom_header}}" target="_blank" title="Linkedin">
+							<i class="fab fa-tiktok text-color-light"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md col-6">
+				<h4 class="text-color-light font-weight-bold mb-3">Kegiatan Kami</h4>
+				<ul class="list list-unstyled columns-lg-2">
+					{% for kegiatan in 'kegiatan'|custom_footer %}
+					<li><a href="/kegiatan/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> {{kegiatan}}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-md col-6">
+				<h4 class="text-color-light font-weight-bold mb-3">Menu Utama</h4>
+				<ul class="list list-unstyled columns-lg-2">
+					<li><a href="/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Home</a></li>
+					<li><a href="/wallpaper/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Tampilkan Wallpaper</a></li>
+					<li><a href="/about/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Sejarah</a></li>
+					<li><a href="/kegiatan/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Kegiatan</a></li>
+					<li><a href="/team/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Pengurus DKM</a></li>
+					<li><a href="/general_ledger/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Keuangan</a></li>
+					<li><a href="/gallery/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Galeri</a></li>
+					<li><a href="/news/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Berita</a></li>
+					<li><a href="/complaint/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Lapor</a></li>
+				</ul>
+			</div>
+			<div class="col-md col-12">
+				<h4 class="text-color-light font-weight-bold mb-3">Contact Us</h4>
+				<ul class="list list-unstyled">
+					<li>
+						<div class="row text-light ">
+							<div class="col-1 pt-1">
+								<i class="fa fa-map-marker-alt fa-lg"></i>
+							</div>
+							<div class="col">
+								{{'address'|custom_header}}
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="row text-light ">
+							<div class="col-1 pt-1">
+								<i class="fa fa-phone-alt fa-lg"></i>
+							</div>
+							<div class="col">
+								{{'phone'|custom_header}}
+							</div>
+						</div>
+					</li>
+					<li>
+						<a href="mailto:{{'email'|custom_header}}" class="text-light text-color-hover-primary">
+							<div class="row">
+								<div style="padding-top: 0.15rem !important" class="col-1 pt-1">
+									<i class="fa fa-envelope fa-lg"></i>
+								</div>
+								<div class="col">
+									{{'email'|custom_header}}
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<div class="row text-light ">
+							<div style="padding-top: 0.15rem !important" class="col-1 pt-1">
+								<i class="fa fa-clock fa-lg"></i>
+							</div>
+							<div class="col">
+								{{'working'|contact_silatama}}
+							</div>
+						</div>
+					</li>
+				</ul>
+        
+				<span class="d-flex justify-content-center">
+				<a target="_blank" href="https://wa.me/{{'whatsapp'|contact_silatama}}"><span class="badge badge-success badge-md rounded-pill"><i class="fab fa-whatsapp fa-lg"></i> &nbsp;Chat Us</span></a>
+				</span>
+
+			</div>
+		</div>
+	</div>
+	<div class="footer-copyright bg-transparent">
+		<div class="container">
+			<hr class="bg-yellow opacity-7">
+			<div class="row">
+				<div class="col mt-0 mb-4 pb-5">
+					<p class="text-center text-white text-3 mb-0">Copyright © {% now "Y" %} - Masjid Ar-Raudah. All right reserved</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

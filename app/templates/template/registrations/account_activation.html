@@ -1,0 +1,16 @@
+{% autoescape off %}  
+Yth {{ profile.fullname }},  
+
+Agar dapat bertransaksi pada website Nganggur.co, silahkan klik tautan dibawah untuk mengaktifkan akun anda:
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}  
+
+atau dapat memasukan token berikut pada awal login:
+
+{{ token }}
+
+Jika anda merasa, email ini bukan untuk anda, mohon abaikan email ini.  
+
+Dengan Hormat,
+
+Tim Nganggur
+{% endautoescape %}

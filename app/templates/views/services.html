@@ -1,0 +1,81 @@
+{% load static %}
+
+{% for service in services %}
+<div class="col-md-4 mb-4 mb-md-4">
+	<div style="" class="card card-border card-border-top card-border-hover bg-color-light border-0 box-shadow-7 box-shadow-hover anim-hover-translate-top-10px transition-3ms anim-hover-inner-wrapper product__height">
+		<div class="card-body p-relative zindex-1 text-center">
+			<div class="anim-hover-inner-translate-top-20px transition-3ms">
+				<a href="#" role="button" id="view-service" data-toggle="modal" data-target=".bd-example-modal-lg" data-id="{{service.encrypt_id}}">
+					{% if service.servicephoto_set.first.info == 'Image' %}
+					<img class="img-fluid" src="{{service.servicephoto_set.first.path.url}}" />
+					{% elif service.servicephoto_set.last.info == 'Image' %}
+					<img class="img-fluid" src="{{service.servicephoto_set.last.path.url}}" />
+					{% endif %}
+				</a>
+				<h4 class="card-title mt-4 mb-2 text-5 font-weight-bold">{{service.name}}</h4>
+				<p class="card-text text-3-2">{{service.brief|truncatewords:"15"}}</p>
+			</div>
+			<div class="w-100 text-center p-absolute opacity-0 bottom-30 left-0 transformY-p100 anim-hover-inner-opacity-10 anim-hover-inner-translate-top-0px transition-4ms">
+				<a href="/portfolios/{{service.encrypt_id}}" class="read-more text-color-primary font-weight-semibold mt-2 text-2">View Portfolio <i class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+			
+<div class="w-100 pagination_area" id="pagination_area">
+{% include 'template/paginations/tmp_pagination.html' with page_obj=services space="my-3" %}
+</div>
+
+{% block query %}
+<script type="text/javascript">   
+
+	$(document).on("click", "#view-service", function () {
+        let csrftoken = '{{ csrf_token }}'
+		var data_id = $(this).data("id");
+
+        $("#ajax-content").empty();
+        $("#pre-loadder").show();        
+
+        $.post({
+			type: "POST",
+            headers: { 'X-CSRFToken': csrftoken },
+            url: '/ajax/view_service/',
+            datatype: 'json',
+            data: { 'data_id': data_id },
+			success: function (data) {
+                $("#pre-loadder").hide();
+				$("#ajax-content").append(data);                
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block theme %}
+<style>
+    .img-fluid {
+		width:  300px;
+		height: 150px;
+		object-fit: cover;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+    }
+</style>
+<style>
+    .product__height {
+        height: 390px;
+    }
+    .box-shadow-7 {
+        box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
+    }
+        .box-shadow-7:not(.box-shadow-hover) {
+            box-shadow: 0 12px 35px rgba(196,37,49, 0.52);
+        }
+
+    .box-shadow-7.box-shadow-hover:hover {
+        box-shadow: 0 12px 35px rgba(196,37,49, 0.52);
+    }
+</style>
+{% endblock %}

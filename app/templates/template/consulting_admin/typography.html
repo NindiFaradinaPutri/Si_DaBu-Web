@@ -1,0 +1,365 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col-lg-9">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Headings</h2>
+				<p class="card-subtitle">All HTML headings, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>, are available.</p>
+			</header>
+			<div class="card-body">
+				<h1>h1. Heading 1</h1>
+				<h2>h2. Heading 2</h2>
+				<h3>h3. Heading 3</h3>
+				<h4>h4. Heading 4</h4>
+				<h5>h5. Heading 5</h5>
+				<h6>h6. Heading 6</h6>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Paragraphs</h2>
+				<p class="card-subtitle">Make a paragraph stand out by adding lead class, and check out the alternative font style.</p>
+			</header>
+			<div class="card-body">
+				<p class="lead">Mauris aliquet ultricies ante, non <span class="wort-rotator" data-plugin-options='{ "delay": 3000 }'><span class="wort-rotator-items"><span>lorem</span>
+				<span>ipsum</span><span>dolor</span></span></span>. Sed ultrices pellentesque purus, vulputate.</p>
+				<p class="lead">Check the <span class="alternative-font">alternative</span> font style.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed. Nullam convallis arcu nec imperdiet pharetra. Suspendisse sed pharetra orci. Integer elementum augue sed dui sollicitudin, eu molestie leo rutrum. Vestibulum sit amet ullamcorper nunc.</p>
+				<p>Mauris aliquet <span class="highlight">ultricies</span> non faucibus ante gravida sed. Sed ultrices pellentesque purus, vulputate.</p>
+				<p>Check the <span class="alternative-font">alternative</span> font style.</p>
+				<p>Porto Admin is
+					<span class="wort-rotator highlight">
+						<span class="wort-rotator-items">
+							<span>incredibly</span>
+							<span>especially</span>
+							<span>extremely</span>
+						</span>
+					</span>
+					beautiful and fully responsive.
+				</p>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Alignments</h2>
+				<p class="card-subtitle">It's easy to align the text the way you want</p>
+			</header>
+			<div class="card-body">
+				<p class="text-left">left</p>
+				<p class="text-center">center</p>
+				<p class="text-justify"><span class="bold">Justify</span class="bold"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed. Nullam convallis arcu nec imperdiet pharetra. Suspendisse sed pharetra orci. Integer elementum augue sed dui sollicitudin, eu molestie leo rutrum. Vestibulum sit amet ullamcorper nunc. Aliquam ligula dolor, feugiat sit amet nulla vitae, consequat ornare nunc. Proin scelerisque ligula purus, sed sodales tortor sodales non. Donec vel dolor cursus, ornare ipsum non, molestie neque. Quisque sed justo nunc. Sed tempus tellus nunc.</p>
+				<p class="text-right">right</p>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">States</h2>
+				<p class="card-subtitle">Text styles/states can be changed with css classes.</p>
+			</header>
+			<div class="card-body">
+				<p class="text-muted">
+					<code>.text-muted</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+
+				<p class="text-primary">
+					<code>.text-primary</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+
+				<p class="text-success">
+					<code>.text-success</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+
+				<p class="text-warning">
+					<code>.text-warning</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+
+				<p class="text-danger">
+					<code>.text-danger</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+
+				<p class="text-info">
+					<code>.text-info</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+
+				<p class="text-dark">
+					<code>.text-dark</code>
+					<br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a adipiscing lectus. Aenean fermentum mauris erat, quis accumsan eros facilisis sed.
+				</p>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Drop Caps</h2>
+				<p class="card-subtitle">Dropcaps styles can be changed with css classes.</p>
+			</header>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-lg-6">
+						<p class="drop-caps">Pellentesque pellentesque eget tempor tellus. Fusce lacllentesque eget tempor tellus ellentesque pelleinia tempor malesuada. Pellentesque pellentesque eget tempor tellus ellentesque pellentesque eget tempor tellus. Fusce lacinia tempor malesuada. Pellentesque pellentesque eget tempor tellus ellentesque pellentesque eget tempor tellus. Fusce lacinia tempor malesuada.</p>
+					</div>
+					<div class="col-lg-6">
+						<p class="drop-caps drop-caps-style-2">Pellentesque pellentesque eget tempor tellus. Fusce lacllentesque eget tempor tellus ellentesque pelleinia tempor malesuada. Pellentesque pellentesque eget tempor tellus ellentesque pellentesque eget tempor tellus. Fusce lacinia tempor malesuada. Pellentesque pellentesque eget tempor tellus ellentesque pellentesque eget tempor tellus. Fusce lacinia tempor malesuada.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Blockquotes</h2>
+				<p class="card-subtitle">Blockquote styles can be changed with css classes.</p>
+			</header>
+			<div class="card-body">
+				<blockquote>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Duis mollis, est non commodo luctus, nisi erat porttitor ligula integer posuere erat a ante.
+					</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.b-thin</code>
+				<blockquote class="b-thin primary">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Duis mollis, est non commodo luctus, nisi erat porttitor ligula integer posuere erat a ante.
+					</p>
+				</blockquote>
+
+				<code>.b-thick</code>
+				<blockquote class="b-thick primary">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Duis mollis, est non commodo luctus, nisi erat porttitor ligula integer posuere erat a ante.
+					</p>
+				</blockquote>
+
+				<code>.b-thin</code>
+				<blockquote class="primary rounded b-thin">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Duis mollis, est non commodo luctus, nisi erat porttitor ligula integer posuere erat a ante.
+					</p>
+				</blockquote>
+
+				<code>.blockquote-reverse</code>
+				<blockquote class="blockquote-reverse">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.primary</code>
+				<blockquote class="primary">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.success</code>
+				<blockquote class="success">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.warning</code>
+				<blockquote class="warning">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.danger</code>
+				<blockquote class="danger">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.info</code>
+				<blockquote class="info">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+
+				<code>.dark</code>
+				<blockquote class="dark">
+					<p>Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.</p>
+					<small>A. Einstein, <cite title="Magazine X">Magazine X</cite></small>
+				</blockquote>
+			</div>
+		</section>
+
+	</div>
+	<div class="col-lg-3">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Unordered List</h2>
+				<p class="card-subtitle">A list of items in which the order does not explicitly matter.</p>
+			</header>
+			<div class="card-body">
+				<ul>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>
+						Lorem ipsum dolor sit amet.
+						<ul>
+							<li>Lorem ipsum dolor sit amet.</li>
+							<li>Lorem ipsum dolor sit amet.</li>
+							<li>Lorem ipsum dolor sit amet.</li>
+						</ul>
+					</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Ordered List</h2>
+				<p class="card-subtitle">A list of items in which the order does explicitly matter.</p>
+			</header>
+			<div class="card-body">
+				<ol>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>
+						Lorem ipsum dolor sit amet.
+						<ol>
+							<li>Lorem ipsum dolor sit amet.</li>
+							<li>Lorem ipsum dolor sit amet.</li>
+							<li>Lorem ipsum dolor sit amet.</li>
+						</ol>
+					</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+				</ol>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Unstyled List</h2>
+				<p class="card-subtitle">Remove the default list-style and left margin on list items (immediate children only).</p>
+			</header>
+			<div class="card-body">
+				<ul class="list-unstyled">
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>
+						Lorem ipsum dolor sit amet.
+						<ul>
+							<li>Lorem ipsum dolor sit amet.</li>
+							<li>Lorem ipsum dolor sit amet.</li>
+							<li>Lorem ipsum dolor sit amet.</li>
+						</ul>
+					</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+					<li>Lorem ipsum dolor sit amet.</li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Inline List</h2>
+				<p class="card-subtitle">Place all list items on a single line with display: inline-block; and some light padding.</p>
+			</header>
+			<div class="card-body">
+				<ul class="list-inline">
+					<li>1 - Lorem ipsum dolor sit amet.</li>
+					<li>2 - Lorem ipsum dolor sit amet.</li>
+					<li>3 - Lorem ipsum dolor sit amet.</li>
+					<li>4 - Lorem ipsum dolor sit amet.</li>
+				</ul>
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+
+{% endblock %}
+
+{% block page_header %}
+{% include "template/consulting_admin/parts/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "template/consulting_admin/parts/header.html" %}
+{% endblock %}
+
+{% block sidebar_right %}
+{% include "template/consulting_admin/parts/sidebar-right.html" %}
+{% endblock %}
+
+{% block theme %}
+
+{% endblock %}
+
+{% block query %}
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container py-4">
+	<div class="row">
+		{% for team in team %}
+		<div class="col-12 col-sm-6 col-lg-3 isotope-item leadership">
+			<span class="thumb-info thumb-info-hide-wrapper-bg mb-4" style="overflow: hidden;">
+				<span class="thumb-info-wrapper">
+					<img style="height: 261px; object-fit: cover;" src="
+						{% if team.photo and team.photo.url %}
+							{{ team.photo.url }}
+						{% else %}
+							/media/akun/user-profile-icon-free-vector.jpg
+						{% endif %}
+					" class="img-fluid" alt="">
+					<span class="text-center thumb-info-title">
+						<span class="thumb-info-inner">{{team.name}}</span>
+						<span class="m-0 thumb-info-type" style="border-radius: 30px;">{{team.position}}</span>
+					</span>
+				</span>
+				<span class="thumb-info-caption">
+					<div class="information" style="border-radius: 0 0 20px 20px; border: 2px solid #014C3D; background-color: #ffffff;">
+						{% if team.information %}
+						<span class="thumb-info-caption-text">{{team.information}}</span>
+						{% endif %}
+						{% if team.linkedin %}
+						<span class="thumb-info-social-icons mb-4">
+							<a target="_blank" href="{{team.linkedin}}"><i class="fab fa-linkedin-in"></i><span>Linkedin</span></a>
+						</span>
+						{% endif %}	
+					</div>					
+				</span>
+			</span>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="container pb-1 mt-4">
+
+		<div class="row pt-4" >
+			<div class="col bg-primary p-3" style="border-radius: 25px;">
+				<div class="overflow-hidden mb-3">
+					<span class="text-white font-weight-bold text-5 d-block">Berikanlah kabar gembira kepada orang-orang yang berjalan di dalam kegelapan menuju masjid-masjid, bahwa ia akan mendapatkan cahaya sempurna pada hari kiamat. </span>
+					<span class="text-white font-weight-bold text-5 d-block">(HR. Abu Daud No. 561, dan Tirmidzi No. 223).</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="row mb-2">
+			<div class="col-lg-10">
+				<div class="overflow-hidden">
+					<div class="lead mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="250">
+						{{naration.brief|safe}}
+					</div>
+				</div>
+			</div> -->
+			
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block theme %}
+<style>
+	.thumb-info .thumb-info-title {
+		width: 100%;
+		max-width: 100%;
+		bottom: 0%;
+	}
+
+	.thumb-info .thumb-info-type {
+		float: none;
+	}
+</style>
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}

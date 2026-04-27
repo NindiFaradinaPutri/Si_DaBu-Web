@@ -1,0 +1,151 @@
+﻿{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+
+	<!-- Basic -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>Masjid Ar-Raudah</title>
+
+	<meta name="keywords" content="Islam, Masjid, NU, Prapatan, Masjid NU, Masjid Ar-Raudah, Sistem Informasi Masjid, Aplikasi Masjid, Website Masjid" />
+	<meta name="description" content="Masjid Ar-Raudah">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Silatama">
+
+	<!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="57x57" href="{%static 'media/logo/apple-icon-57x57.png' %}">
+	<link rel="apple-touch-icon" sizes="60x60" href="{%static 'media/logo/apple-icon-60x60.png' %}">
+	<link rel="apple-touch-icon" sizes="72x72" href="{%static 'media/logo/apple-icon-72x72.png' %}">
+	<link rel="apple-touch-icon" sizes="76x76" href="{%static 'media/logo/apple-icon-76x76.png' %}">
+	<link rel="apple-touch-icon" sizes="114x114" href="{%static 'media/logo/apple-icon-114x114.png' %}">
+	<link rel="apple-touch-icon" sizes="120x120" href="{%static 'media/logo/apple-icon-120x120.png' %}">
+	<link rel="apple-touch-icon" sizes="144x144" href="{%static 'media/logo/apple-icon-144x144.png' %}">
+	<link rel="apple-touch-icon" sizes="152x152" href="{%static 'media/logo/apple-icon-152x152.png' %}">
+	<link rel="apple-touch-icon" sizes="180x180" href="{%static 'media/logo/apple-icon-180x180.png' %}">
+	<link rel="icon" type="image/png" sizes="192x192" href="{%static 'media/logo/android-icon-192x192.png' %}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{%static 'media/logo/favicon-32x32.png' %} ">
+	<link rel="icon" type="image/png" sizes="96x96" href="{%static 'media/logo/favicon-96x96.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{%static 'media/logo/favicon-16x16.png' %}">
+	<link rel="manifest" href="{%static 'media/logo/manifest.json' %}">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="{%static 'media/logo/ms-icon-144x144.png' %}">
+	<meta name="theme-color" content="#ffffff">
+
+	<!-- Mobile Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+
+	<link id="googleFonts" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet" type="text/css">
+
+	<!-- Vendor CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.css' %}">
+	<link rel="stylesheet" href="{% static 'animate/css/animate.css' %}">
+	<link rel="stylesheet" href="{% static 'carousel/css/owl-carousel.css' %}">
+	<link rel="stylesheet" href="{% static 'carousel/css/owl.theme.default.min.css' %}">
+	<link rel="stylesheet" href="{% static 'magnific-popup/css/magnific-popup.css' %}">
+	<link rel="stylesheet" href="{% static 'font/flaticon/flaticon_masjid_nu.css' %}">
+	<link rel="stylesheet" href="{% static 'font/fontawesome/font-awesome-pro.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'pnotify/css/pnotify.custom.css'%}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'simple-line-icons/css/simple-line-icons.min.css'%}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.select2/css/select2.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.select2/css/select2-bootstrap.min.css' %}" />
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="{% static 'layout/css/theme.css' %}" />
+	<link rel="stylesheet" href="{% static 'layout/css/theme-elements.css' %}" />
+	<link rel="stylesheet" href="{% static 'layout/css/theme-blog.css' %}" />
+	<link rel="stylesheet" href="{% static 'layout/css/theme-shop.css' %}" />
+
+	<!-- Demo CSS -->
+	<link rel="stylesheet" href="{% static 'consulting_2/css/demo-business-consulting-4.css' %}" />
+
+	<!-- Skin CSS -->
+	<link id="skinCSS" rel="stylesheet" href="{% static 'consulting_2/css/skin-business-consulting-4.css' %}" />
+
+	<!-- Theme Custom CSS -->
+	<link rel="stylesheet" href="{% static 'custom/css/custom.css' %}" />
+
+	<!-- Head Libs -->
+	<script type="text/javascript" src="{%static 'modernizr/modernizr.min.js' %}"></script>
+
+	<!-- Spesific Theme CSS -->
+	{% block theme %}
+	{% endblock %}
+
+	<!-- Head Libs -->
+	<script type="text/javascript" src="{%static 'jquery/js/jquery-3.5.1.js' %}"></script>
+	<script type="text/javascript" src="{%static 'jquery.ui/js/jquery-ui.js' %}"></script>
+	{%csrf_token %}
+	<script>
+		const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+	</script>
+	<script type="text/javascript" src="{% static 'app/js/credentials.js' %}"></script>
+</head>
+<body>
+	<div class="body">
+		{% block header %}
+		{% endblock %}
+
+		<div role="main" class="main">
+			{% block page_header %}
+			{% endblock %}
+
+			{% block content %}
+			{% endblock %}
+		</div>
+
+		{% block footer %}
+		{% endblock %}
+	</div>
+
+	<!-- Vendor -->
+	<script type="text/javascript" src="{%static 'popper/popper.js'%}"></script>
+	<script type="text/javascript" src="{%static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{%static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	<script type="text/javascript" src="{%static 'carousel/js/owl-carousel.js' %}"></script>
+	<script type="text/javascript" src="{%static 'magnific-popup/js/magnific-popup.js' %}"></script>
+	<script type="text/javascript" src="{%static 'parallax/js/parallax.js' %}"></script>
+	<script type="text/javascript" src="{%static 'isotope/js/isotope-pkgd.js' %}"></script>
+	<script type="text/javascript" src="{%static 'bootstrap.select2/js/select2.js'%}"></script>
+
+	<!-- Vendor -->
+
+	<script type="text/javascript" src="{%static 'consulting_2/js/particles.min.js' %}"></script>
+
+	<!-- Theme Base, Components and Settings -->
+	<script type="text/javascript" src="{%static 'theme/js/theme.js' %}"></script>
+
+	<!-- Current Page Vendor and Views -->
+	<!--< script type="text/javascript" src="{ %static 'theme/js/view.contact.js' %}"></script >-->
+	<!-- Theme Custom -->
+	<script type="text/javascript" src="{%static 'custom/js/custom.js' %}"></script>
+
+	<!-- Theme Initialization Files -->
+	<script type="text/javascript" src="{%static 'theme/js/theme.init.js' %}"></script>
+
+	<script type="text/javascript" src="{%static 'pnotify/js/pnotify.custom.js'%}"></script>
+
+	<!--Special Query-->
+	{% block query %}
+	{% endblock %}
+
+	<script type="text/javascript">
+	    {%if messages%}
+		    {%for message in messages%}
+			    new PNotify({
+					    title: 'Informasi!',
+					    text: '{{message}}',
+					    type: 'custom',
+					    addclass: 'notification-{{ message.tags }}',
+					    icon: 'fas fa-check'
+				    });
+		    {%endfor%}
+	    {%endif%}
+	</script>
+
+
+
+</body>
+</html>

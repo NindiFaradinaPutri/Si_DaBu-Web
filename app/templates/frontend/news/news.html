@@ -1,0 +1,107 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+<div class="container pt-4 pb-5 mb-5">
+
+	<div class="row">
+		<input type="hidden" name="url_filter_review" id="id_url_filter_review" value="{%url 'filter_news'%}" />
+		<input type="hidden" name="url_filter" id="id_url_filter" value="{%url 'filter_news'%}" />
+		<div class="col-lg-8 mb-5 mb-lg-0" id="list_area">
+			{% include "views/news.html" with news=news%}
+		</div>
+		<div class="blog-sidebar col-lg-4 pt-4 pt-lg-0">
+			<aside class="sidebar">
+				<div class="px-3 mt-4">
+					<h3 class="text-color-dark text-capitalize font-weight-bold text-5 m-0 mb-3">Cari Berita</h3>
+					<form action="{%url 'news_search'%}" method="get">
+						<div class="input-group mb-3 pb-1">
+							<input class="form-control box-shadow-none text-1 border-0 bg-color-grey" placeholder="Search..." name="s" id="s" type="text">
+							<button type="submit" class="btn bg-color-grey text-1 p-2"><i class="fas fa-search m-2"></i></button>
+						</div>
+					</form>
+				</div>
+				<div class="py-1 clearfix">
+					<hr class="my-2">
+				</div>
+				<div class="px-3 mt-4">
+					<h3 class="text-color-dark text-capitalize font-weight-bold text-5 m-0 mb-3">Berita Terbaru</h3>
+					<div class="pb-2 mb-1">
+						{% for news in news %}
+						{% if forloop.counter <= 5 %}
+						<a href="/news/post/{{news.encrypt_id}}" class="text-color-default text-uppercase text-1 mb-0 d-block text-decoration-none">{{news.post_date|date:'j F Y'}} <span class="opacity-3 d-inline-block px-2">|</span> Author: {{news.publisher}}</a>
+						<a href="/news/post/{{news.encrypt_id}}" class="text-color-dark text-hover-primary font-weight-bold text-3 d-block pb-3 line-height-4">{{news.name}}</a>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="py-1 clearfix">
+					<hr class="my-2">
+				</div>
+				<div class="px-3 mt-4">
+					<aside id="accordion" class="accordion sidebar">
+						<h3 class="text-color-dark text-capitalize font-weight-bold text-5 m-0 mb-3">Catatan</h3>
+						{% regroup all_posts by post_date.year as year_list %}
+						<ul class="nav nav-list flex-column mt-2 mb-0 p-relative right-9">
+							{% for year in year_list %}
+							<li class="nav-item">
+								<div class="row">
+									<a data-toggle="collapse" data-parent="#accordion" href="#archive{{forloop.counter}}" class="accordion-toggle nav-link bg-transparent border-0 active"><i class="fa fa-chevron-circle-right" style="margin-left:10px;margin-right:-10px;font-size:10px"></i></a>
+									<a href="{% url 'article_year_archive' year.grouper %}" class="nav-link bg-transparent border-0 active"><strong>{{ year.grouper }}</strong></a>
+								</div>
+								{% regroup year.list by post_date.month as month_list %}
+								<ul id="archive{{forloop.counter}}" class="collapse {{year.grouper|get_year}}" data-parent="#accordion">
+									{% for month in month_list %}
+									<li class="nav-item" id="accordion2">
+										<div class="row">
+											<a data-toggle="collapse" data-parent="#accordion2" href="#archive_{{forloop.counter}}" class="accordion-toggle nav-link bg-transparent border-0 active"><i class="fa fa-chevron-circle-right" style="margin-left:10px;margin-right:-10px;font-size:10px"></i></a>
+											<a class="nav-link bg-transparent border-0" href="{% url 'archive_month_numeric' year.grouper month.grouper %}">{{ month.list.0.post_date|date:'F' }} ({{ month.list|length }})</a>
+										</div>
+										<ul id="archive_{{forloop.counter}}" class="collapse" data-parent="#accordion">
+											{% for list in month.list %}
+											<li class="nav-item">
+												<div class="row">
+													<div class="col-1 align-self-center" style="margin-left:15px;font-size:9px;max-width:5%;">
+														<i class="fa fa-chevron-right"></i>
+													</div>
+													<div class="col" style="padding-left:0px;">
+														<a style="padding-left:0px;" class="nav-link bg-transparent border-0" href="/news/post/{{list.encrypt_id}}">{{list}}</a>
+													</div>
+												</div>
+											</li>
+											{% endfor %}
+										</ul>
+									</li>
+									{% endfor %}
+								</ul>
+							</li>
+							{% endfor %}
+						</ul>
+					</aside>
+				</div>
+			</aside>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{% static 'app/js/pagination.js'%}"></script>
+{% endblock %}

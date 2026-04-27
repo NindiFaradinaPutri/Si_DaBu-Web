@@ -1,0 +1,56 @@
+{% load static %}
+<div class="modal-header border-0">
+    <h4 style="letter-spacing: 0.5px;" class="modal-title" id="portfolio-title">{{portfolio.title}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div>
+        <div class="row pb-4 mb-2">
+            <div class="col-sm-6">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for portfoliophoto in portfoliophoto %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %}></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for portfoliophoto in portfoliophoto %}
+                        <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                            <img style="object-fit: scale-down; " class="d-block w-100" src="{%static portfoliophoto.file.url%}" alt="First slide">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>                
+            </div>
+            <div class="col-sm-6">
+                <h2 class="text-color-dark font-weight-normal text-4 mb-0">Project <strong class="font-weight-extra-bold">Description</strong></h2>
+                <p>{{portfolio.information}}</p>
+
+                <h2 class="text-color-dark font-weight-normal text-4 mb-0 mt-4">Project <strong class="font-weight-extra-bold">Details</strong></h2>
+                <ul class="list list-icons list-primary list-borders text-2">
+                    <li><i class="fas fa-caret-right left-10"></i> <strong class="text-color-primary">Client:</strong> {{portfolio.owner}}</li>
+                    <li><i class="fas fa-caret-right left-10"></i> <strong class="text-color-primary">Date:</strong> {{portfolio.launching_date|date:"d M Y"}}</li>
+                    <li><i class="fas fa-caret-right left-10"></i> <strong class="text-color-primary">Service:</strong> {{portfolio.service.name}}</li>
+                    <li><i class="fas fa-caret-right left-10"></i> <strong class="text-color-primary">Tags:</strong> 
+                    {% for tags in tags %}
+                        <a href="#" class="badge badge-dark badge-sm rounded-pill px-2 py-1 ms-1">{{tags.tags}}</a>
+                    {% endfor %}
+                    </li>
+                    {% if portfolio.link %}
+                    <li><i class="fas fa-caret-right left-10"></i> <strong class="text-color-primary">Project URL:</strong> <a href="{{portfolio.link}}" target="_blank" class="text-dark">{{portfolio.link}}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

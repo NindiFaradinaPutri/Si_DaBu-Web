@@ -1,0 +1,205 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col-lg-6">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Basic</h2>
+				<p class="card-subtitle">Interactive tree, basic sample.</p>
+			</header>
+			<div class="card-body">
+				<div id="treeBasic">
+					<ul>
+						<li>
+								Root Node
+							<ul>
+								<li data-jstree='{ "selected" : true }'>
+									<a href="#">Selected Node</a>
+								</li>
+								<li data-jstree='{ "opened" : true }'>
+										Opened Node
+									<ul>
+										<li data-jstree='{ "disabled" : true }'>
+												Disabled Node
+										</li>
+										<li data-jstree='{ "type" : "file" }'>
+												Child Node
+										</li>
+									</ul>
+								</li>
+								<li data-jstree='{ "icon" : "far fa-file-image" }'>
+										Custom Icon
+								</li>
+								<li data-jstree='{ "icon" : "img/icon.png" }'>
+										Custom Icon Image
+								</li>
+							</ul>
+						</li>
+						<li class="colored">
+								Colored
+						</li>
+						<li class="colored-icon">
+								Colored Icon Only
+						</li>
+						<li class="folder">
+								Folder Style
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Ajax</h2>
+				<p class="card-subtitle">You can also use AJAX to populate the tree with HTML your server returns.</p>
+			</header>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-lg-6">
+						<h5 class="font-weight-semibold text-dark text-uppercase">HTML</h5>
+						<div id="treeAjaxHTML"></div>
+					</div>
+					<div class="col-lg-6">
+						<h5 class="font-weight-semibold text-dark text-uppercase">JSON</h5>
+						<div id="treeAjaxJSON"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div class="col-lg-6">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Checkbox</h2>
+				<p class="card-subtitle">Checkbox icons in front of each node.</p>
+			</header>
+			<div class="card-body">
+				<div id="treeCheckbox">
+					<ul>
+						<li>
+								Root Node
+							<ul>
+								<li data-jstree='{ "selected" : true }'>
+									<a href="#">Selected Node</a>
+								</li>
+								<li data-jstree='{ "opened" : true }'>
+										Opened Node
+									<ul>
+										<li data-jstree='{ "disabled" : true }'>
+												Disabled Node
+										</li>
+										<li data-jstree='{ "type" : "file" }'>
+												Child Node
+										</li>
+									</ul>
+								</li>
+								<li data-jstree='{ "icon" : "far fa-file-image" }'>
+										Custom Icon
+								</li>
+								<li data-jstree='{ "icon" : "img/icon.png" }'>
+										Custom Icon Image
+								</li>
+							</ul>
+						</li>
+						<li class="colored">
+								Colored
+						</li>
+						<li class="colored-icon">
+								Colored Icon Only
+						</li>
+						<li class="folder">
+								Folder Style
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Drag &amp; Drop</h2>
+				<p class="card-subtitle">Makes it possible to drag and drop tree nodes and rearrange the tree.</p>
+			</header>
+			<div class="card-body">
+				<div id="treeDragDrop">
+					<ul>
+						<li>
+								Root Node
+							<ul>
+								<li data-jstree='{ "selected" : true }'>
+									<a href="#">Selected Node</a>
+								</li>
+								<li data-jstree='{ "opened" : true }'>
+										Opened Node
+									<ul>
+										<li data-jstree='{ "type" : "file" }'>
+												Child Node
+										</li>
+										<li data-jstree='{ "type" : "file" }'>
+												Child Node 2
+										</li>
+										<li data-jstree='{ "type" : "file" }'>
+												Child Node 3
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li>
+								Root Node 2
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+
+{% endblock %}
+
+{% block page_header %}
+{% include "template/consulting_admin/parts/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "template/consulting_admin/parts/header.html" %}
+{% endblock %}
+
+{% block sidebar_right %}
+{% include "template/consulting_admin/parts/sidebar-right.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'jstree/themes/default/style.css' %}">
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'jstree/jstree.js' %}"></script>
+<script type="text/javascript" src="{%static 'jstree/examples.treeview.js' %}"></script>
+
+{% endblock %}

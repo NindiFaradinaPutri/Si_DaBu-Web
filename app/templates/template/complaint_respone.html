@@ -1,0 +1,21 @@
+{% autoescape off %} 
+{%if response.status.status == "On Progress" %}
+Kepada {{response.complaint.sender}},
+
+Terima kasih atas pengaduan yang disampaikan. Saat ini aduan Anda sedang dalam proses peninjauan dan pengarahan oleh tim kami.
+Mohon untuk menunggu informasi tanggapan kami atas aduan Anda.
+{%elif response.status.status == "Pending" %}
+Kepada {{response.complaint.sender}},
+
+Terima kasih atas ketersediaan Anda dalam menunggu tanggapan kami. Kami informasikan bahwa proses penanganan aduan Anda ditunda{% if response.comment %} karena {{response.comment}}{%endif%}.
+Mohon maaf atas ketidaknyamanan yang ditimbulkan.
+{%elif response.status.status == "Closed" %}
+Kepada {{response.complaint.sender}},
+
+Terima kasih atas ketersediaan Anda dalam menunggu tanggapan kami. Kami informasikan bahwa proses penanganan aduan Anda telah ditutup{% if response.comment %} karena {{response.comment}}{%endif%}.
+Mohon maaf atas ketidaknyamanan yang ditimbulkan.
+{% endif %}
+Tertanda,
+
+Silatama
+{% endautoescape %}

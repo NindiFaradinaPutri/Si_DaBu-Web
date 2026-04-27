@@ -1,0 +1,32 @@
+<div class="modal fade" id="uniqueCodeModals" tabindex="-1" role="dialog" 
+	 aria-labelledby="uniqueCodeTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title" id="modal-title" style="color:#fff">Pengaktifan Akun</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                Anda belum mengaktifkan akun <strong id="account_item"></strong>. Silakan masukkan kode token yang tertera pada e-mail.
+                </p>
+                <input type="hidden" name="user" id="id_user" />
+                <section class="simple-compose-box mb-3">
+					<div class="form-row">
+						<div class="form-group col">
+							<label class="text-color-dark text-3">Kode Token <span class="text-color-danger">*</span></label>
+							<input type="text" id="id_token_code" name="token_code" value="" class="form-control form-control-lg text-4 border-secondary" required>
+						</div>
+					</div>
+                </section>
+                <p>Apabila anda belum menerima kode token, harap hubungi <a href="{% url 'contact_us'%}" target="_blank" style="color:blue">kami.</a></p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button id="btn_activate" class="btn btn-info btn-sm modal-confirm" type="button">Aktifkan</button>
+                <a class="btn btn-default btn-sm" role="button" data-dismiss="modal">Tutup</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="modal fade" id="contractModals" tabindex="-1" role="dialog" 
+	 aria-labelledby="contractTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 600px;" role="document">
+        <div class="modal-content">
+            <div style="background: #263c97;" class="modal-header">
+                <h5 style="color: #ffffff;" class="modal-title" id="modal-title">Perjanjian Kerja Sama</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data" action="{%url 'contract_submit'%}">
+					{% csrf_token %}
+					<section class="row">
+						<div class="col">
+							<div class="border border-light rounded" style="padding:5px">
+								<h5>Data Pihak Pertama (Klien)</h5>
+								<div id="client_area" class="">
+									{% include 'template/forms/tmp_formrow.html' with form=clientForm %}
+								</div>
+							</div>
+							<br />
+							<div class="border border-light rounded" style="padding:5px">
+								<h5>Data Pihak Kedua (Talent)</h5>
+								<div id="talent_area" class="">
+									{% include 'template/forms/tmp_formrow.html' with form=talentForm %}
+								</div>
+							</div>
+							<br />
+							<div class="border border-light rounded" style="padding:5px">
+								<h5>Ketentuan Pekerjaan</h5>
+								<div id="contract_area" class="">
+									{% include 'template/forms/tmp_formrow.html' with form=contractServiceForm %}
+								</div>
+							</div>
+							<br />
+							<div class="border border-light rounded" style="padding:5px">
+								<input type="checkbox" id="agreement" name="agreement" required>
+								<label for="agreement"> Saya menyetujui syarat & ketentuan <strong>Nganggur.co</strong></label>
+								<p style="font-size:12px; padding : 0;margin : 0;">
+								Dengan menyetujui <a href="/termscondition" target="_blank" style="color:blue">syarat dan ketentuan</a> yang berlaku pada <strong>Nganggur.co</strong>, maka pengguna memberikan izin yang sesuai dengan kebijakan tersebut serta bertanggung jawab penuh atas segala risiko yang ditimbulkan oleh kelalaian pengguna.
+								</p>
+							</div>
+						</div>
+					</section>
+					<div class="modal-footer form-group text-center row">
+						<div class="col-md-12 col-sm-12">
+							<button type="submit" class="btn btn-success modal-confirm">Submit</button>
+							<a class="btn btn-light" role="button" data-dismiss="modal">Tutup</a>
+						</div>
+					</div>
+				</form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col-lg-4 col-xl-3 mb-4 mb-xl-0">
+
+		<section class="card">
+			<div class="card-body">
+				<div class="thumb-info mb-3">
+					<img src="img/!logged-user.jpg" class="rounded img-fluid" alt="John Doe">
+					<div class="thumb-info-title">
+						<span class="thumb-info-inner">{{request.user.username}}</span>
+						{% if request.user.groups.first.name == 'Admin'%}
+						<span class="thumb-info-type">Administrator</span>
+						{% else %}
+						<span class="thumb-info-type">User</span>
+						{% endif %}
+
+					</div>
+				</div>
+
+				<div class="widget-toggle-expand mb-3">
+					<div class="widget-header">
+						<h5 class="mb-2"><b>Profil</b></h5>
+						<div class="widget-toggle">+</div>
+					</div>
+					<div class="widget-content-expanded">
+						<table class="simple-todo-list mt-3">
+							<tr>
+								<td><b>Email</b></td>
+								<td><b>:</b></td>
+								<td>{{request.user.email}}</td>
+							</tr>
+							<tr>
+								<td><b>Phone</b></td>
+								<td><b>:</b></td>
+								<td>{{user_profile.phone_no}}</td>
+							</tr>
+							<tr>
+								<td class="align-top"><b>Address</b></td>
+								<td class="align-top"><b>:</b></td>
+								<td>
+									{%autoescape off%}
+									{{user_address.address|default:""}}, Kelurahan {{user_address.kelurahan}}, Kecamatan {{user_address.kecamatan}}, {{user_address.dati2}}, {{user_address.provinsi}}
+									{%endautoescape%}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<hr class="dotted short">
+
+				<a href="/logout/" class="btn btn-danger btn-sm"><i class="fa fa-sign-out"></i> Logout</a>
+
+			</div>
+		</section>
+
+	</div>
+	<div class="col">
+
+		<div class="tabs">
+			<ul class="nav nav-tabs tabs-primary">
+				<!--<li class="nav-item active">
+					<a class="nav-link" href="#overview" data-toggle="tab">Overview</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#edit" data-toggle="tab">Edit</a>
+				</li>-->
+			</ul>
+			<div class="tab-content">
+				<div id="overview" class="tab-pane active">
+
+					<div class="p-3">
+						<h3 class="mb-4"><span id="greetings">Greetings...</span></h3>
+
+						<h4 class="mb-3">Pintasan</h4>
+
+						<section class="mb-3">
+							<a href="/article/add/" class="btn btn-secondary btn-sm"><i class="fa fa-newspaper"></i> Tambah Berita</a>
+							<a href="/gallery/add/" class="btn btn-secondary btn-sm"><i class="fa fa-photo-video"></i> Tambah Galeri</a>
+							<!-- <a href="/portfolio/add/" class="btn btn-secondary btn-sm"><i class="fa fa-file-alt"></i> Add Portfolio</a>
+							<a href="/testimony/add/" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i> Add Testimony</a> -->
+							<a href="/contact/update/" class="btn btn-secondary btn-sm"><i class="fa fa-book-alt"></i> Perbarui Kontak</a>
+							<a href="/profile/" class="btn btn-secondary btn-sm"><i class="fa fa-info"></i> Perbarui Profil</a>
+						</section>
+
+						<h4 class="mb-3 pt-4">Pengaturan Profil</h4>
+						<a href="/admin/profile/update/" class="btn btn-info btn-sm"><i class="fa fa-database"></i> Ganti Profile</a>
+						<a href="/password/reset/" class="btn btn-warning btn-sm"><i class="fa fa-key"></i> Ganti Password</a>
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        var thehours = new Date().getHours();
+        var themessage;
+        var morning = ('Selamat Pagi, {{user_profile.fullname}}!');
+        var afternoon = ('Selamat Siang, {{user_profile.fullname}}!');
+        var evening = ('Selamat Malam, {{user_profile.fullname}}!');
+
+        if (thehours >= 0 && thehours < 12) {
+            themessage = morning;
+
+        } else if (thehours >= 12 && thehours < 17) {
+            themessage = afternoon;
+
+        } else if (thehours >= 17 && thehours < 24) {
+            themessage = evening;
+        }
+
+        $('#greetings').empty();
+        $('#greetings').append(themessage);
+    });
+</script>
+<!-- end: page -->
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+
+{% endblock %}
+
+{% block query %}
+<!-- Specific Page Vendor -->
+<script type="text/javascript" src="{%static 'autosize/autosize.js' %}"></script>
+
+{% endblock %}

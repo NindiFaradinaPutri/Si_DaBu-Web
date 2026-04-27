@@ -1,0 +1,146 @@
+{% load static %}
+<section class="section border-0 bg-quaternary m-0">
+	<div class="container py-5">
+		<div class="row justify-content-center">
+			<div class="col text-center">
+
+				<div class="divider divider-small divider-small-lg mt-0 text-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">
+					<hr class="bg-primary border-radius m-auto">
+				</div>
+				<div class="overflow-hidden mb-1">
+					<h3 class="font-weight-bold text-uppercase positive-ls-3 text-4 line-height-2 line-height-sm-7 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="100" style="color: #014C3D; text-align: left; left: 0;">Kumpulan Kegiatan Kami</h3>
+				</div>
+				<!-- <h2 class="font-weight-bold text-8 pb-4 mb-0 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200" style="color: #014C3D; text-align: left;">Kegiatan Kami</h2> -->
+
+				<!--<p class="font-weight-medium text-4-5 line-height-5 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400">Cras a elit sit amet leo accumsan volutpat. Suspendisse hendrerit vehicula leo, vel efficitur felis ultrices non.</p>-->
+
+			</div>
+		</div>
+
+		<div class="row py-5 d-flex justify-content-center text-center appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="300">
+			{% for kegiatan in kegiatans|slice:":6" %}
+			<div class="col-md-4 pb-4 mb-md-0">
+				<div class="kegiatan-card">
+
+					<!-- Gambar -->
+					{% if kegiatan.kegiatanmasjidattachment_set.first.name == 'Image' %}
+					<img class="kegiatan-img" src="{{kegiatan.kegiatanmasjidattachment_set.first.photo.url}}" alt="">
+					{% elif kegiatan.kegiatanmasjidattachment_set.last.name == 'Image' %}
+					<img class="kegiatan-img" src="{{kegiatan.kegiatanmasjidattachment_set.last.photo.url}}" alt="">
+					{% endif %}
+
+					<!-- Judul selalu terlihat -->
+					<div class="kegiatan-title">
+						<h4>{{kegiatan.title}}</h4>
+					</div>
+
+					<!-- Overlay muncul saat hover -->
+					<div class="kegiatan-overlay">
+						<h4>{{kegiatan.title}}</h4>
+						<p>{{kegiatan.quotes|safe}}</p>
+						<a href="/kegiatan/" class="kegiatan-btn">
+							Lebih Lanjut <i class="fas fa-angle-right ms-1"></i>
+						</a>
+					</div>
+
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col col-lg-9 text-center">
+
+				<div class="d-block pt-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="300">
+					<a href="/kegiatan/" class="btn btn-modern btn-primary btn-arrow-effect-1 text-capitalize text-2-5 px-5 py-3 anim-hover-translate-top-5px transition-2ms" style="border-radius: 30px;">Lebih Lanjut <i class="fas fa-arrow-right ms-2"></i></a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.kegiatan-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+}
+
+.kegiatan-img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+.kegiatan-title {
+    padding: 16px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.kegiatan-title h4 {
+    margin: 0;
+    font-weight: bold;
+    color: #014C3D;
+    font-size: 16px;
+}
+
+.kegiatan-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.kegiatan-card:hover .kegiatan-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.kegiatan-overlay h4 {
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.kegiatan-overlay p {
+    color: #ffffff;
+    font-size: 14px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 16px;
+}
+
+.kegiatan-btn {
+    background-color: #ffffff;
+    color: #014C3D;
+    padding: 8px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.kegiatan-btn:hover {
+    background-color: rgba(1, 76, 61, 0.3);
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+</style>

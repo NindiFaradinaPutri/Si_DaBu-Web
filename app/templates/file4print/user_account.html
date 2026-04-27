@@ -1,0 +1,61 @@
+﻿{% load static %}
+
+<html>
+	<head>
+		<title>nganggur.co.id - {{profile.fullname}}</title>
+		<!-- Web Fonts  -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+
+		<!-- Invoice Print Style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'app/css/file-print.css' %}">
+	</head>
+	<body>
+		<div class="row d-flex justify-content-center">
+			<div class="file-print col-sm-10">
+				<header class="clearfix">
+					<div class="row file-header">
+						<div class="col-sm-12 mt-3 d-flex justify-content-center">
+							<h4 class="h4 px-5 w-75 text-wrap text-center">
+								{{title}}
+							</h4>
+						</div>
+						<img src="{% static '/media/logo/logo-nganggur.png'%}" class="text-left file-logo" alt="Nganggur Logo" style="width:10%;" />
+					</div>
+				</header>
+				<table class="table table-bordered table-responsive-md">
+					<tbody>
+						<tr>
+							<td class="text-center" width="10%">1</td>
+							<td width="30%">Nama Pemohon</td>
+							<td width="60%">
+								{{profile.fullname}}
+							</td>
+						</tr>
+						<tr>
+							<td class="text-center" width="10%">2</td>
+							<td width="30%">Username</td>
+							<td width="60%">
+								{{user.username}}
+							</td>
+						</tr>
+						<tr>
+							<td class="text-center" width="10%">3</td>
+							<td width="30%">Token</td>
+							<td width="60%">
+								{{token.key}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
+
+		<script>
+			window.print();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,125 @@
+{% load static %}
+<div class="header-container header-container-height-sm container p-static">
+	
+	<div class="header-row d-flex align-items-center">
+
+		<!-- LOGO -->
+		<div class="header-column">
+			<div class="header-row d-flex align-items-center">
+				<div class="header-logo d-flex align-items-center">
+					<a href="/">
+						<img alt="Silatama" height="100" src="/media/logo/logo-full.png">
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- NAVBAR -->
+		<div class="header-column justify-content-end">
+			<div class="header-row d-flex align-items-center">
+				
+				<div class="header-nav header-nav-links d-flex align-items-center">
+
+					<div
+						class="header-nav-main header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-dropdown-border-radius header-nav-main-text-capitalize header-nav-main-text-size-4 header-nav-main-arrows header-nav-main-full-width-mega-menu header-nav-main-mega-menu-bg-hover header-nav-main-effect-2">
+
+						<nav class="collapse">
+							<ul class="nav nav-pills flex-nowrap align-items-center" id="mainNav" style="font-size:14px;">
+
+								<li>
+									<a href="/" class="nav-link text-nowrap px-2 {% if request.path == '/' %}active{% endif %}">
+										Beranda
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/about/' %}active{% endif %}" href="/about/">
+										Sejarah
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/services/' %}active{% endif %}" href="/kegiatan/">
+										Kegiatan
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/team/' %}active{% endif %}" href="/team/">
+										Pengurus DKM
+									</a>
+								</li>
+
+								<li class="nav-item dropdown">
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/general_ledger/' %}active{% endif %}" href="/general_ledger/">
+										Keuangan
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/gallery/' %}active{% endif %}" href="/gallery/">
+										Galeri
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/khutbah/' %}active{% endif %}" href="/khutbah/">
+										Khutbah Jumat
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/news/' %}active{% endif %}" href="/news/">
+										Berita
+									</a>
+								</li>
+
+								<li>
+									<a class="nav-link text-nowrap px-2 {% if request.path == '/news/' %}active{% endif %}" href="/complaint/">
+										Lapor!
+									</a>
+								</li>
+
+							</ul>
+						</nav>
+					</div>
+
+					{% if request.user.is_authenticated %}
+					<a href="/admin/profile/"
+					   class="btn btn-modern btn-primary btn-outline btn-arrow-effect-1 text-capitalize text-2-5 ms-2 me-2 anim-hover-translate-right-5px transition-2ms contact_us_box"
+					   style="border-radius: 30px; font-size:14px;">
+
+						<div class="row d-flex justify-content-center align-items-center">
+							<div class="col-4 m-0 p-0">
+								<i class="flaticon flaticon-man ms-2" style="font-size:20px!important;"></i>
+							</div>
+							<div class="col-8 m-0 p-0">
+								Halaman Admin
+							</div>
+						</div>
+
+					</a>
+					{% else %}
+					<a href="/contact/"
+					   class="btn btn-modern btn-primary btn-outline btn-arrow-effect-1 text-capitalize text-2-5 ms-2 me-2 d-block d-md-none d-xl-block anim-hover-translate-right-5px transition-2ms contact_us_box"
+					   style="border-radius: 30px; font-size:14px;">
+
+						Hubungi Kami <i class="fas fa-arrow-down ms-2"></i>
+
+					</a>
+					{% endif %}
+
+					<button class="btn header-btn-collapse-nav collapsed"
+						data-toggle="collapse"
+						data-target=".header-nav-main nav"
+						aria-expanded="false">
+						<i class="fas fa-bars"></i>
+					</button>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

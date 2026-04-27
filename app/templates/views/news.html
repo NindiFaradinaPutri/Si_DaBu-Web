@@ -1,0 +1,36 @@
+{% load static %}
+
+{% for news in news %}
+<article class="mb-5">
+	<div class="card bg-transparent border-0">
+		<div class="card-body p-0 z-index-1">
+			{% if news.photo %}
+			<a href="/news/post/{{news.encrypt_id}}" data-cursor-effect-hover="plus">
+				<img class="card-img-top rounded-0 mb-2" src="{%static news.photo.url%}" alt="{{news.name}}">
+			</a>
+			{% endif %}
+			<p class="text-uppercase text-color-default text-1 my-2">
+				<time pubdate datetime="{{news.post_date|date:'Y-m-d'}}">{{news.post_date}}</time> 
+				<span class="opacity-3 d-inline-block px-2">|</span> 
+				Author: {{news.publisher}}
+			</p>
+			<div class="card-body p-0">
+				<h4 class="card-title text-5 font-weight-bold pb-1 mb-2"><a class="text-color-dark text-color-hover-primary text-decoration-none" href="/news/post/{{news.encrypt_id}}">{{news.name}}</a></h4>
+				<p class="card-text mb-2">
+					{%autoescape off%}
+					{{news.information|safe|truncatewords:"50"|linebreaks}}
+					{%endautoescape%}
+				</p>
+				<a href="/news/post/{{news.encrypt_id}}" class="read-more text-color-primary font-weight-semibold mt-0 text-2">Read More <i class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
+			</div>
+		</div>
+	</div>
+</article>
+<div class="divider divider-primary" style="background: rgba(196, 37, 49, 1)">
+	<i class='fas fa-infinity' style='font-size:15px'></i>
+</div>
+{% endfor %}
+			
+<div class="w-100 pagination_area" id="pagination_area">
+	{% include 'template/paginations/tmp_pagination.html' with page_obj=news space="my-3" %}
+</div>

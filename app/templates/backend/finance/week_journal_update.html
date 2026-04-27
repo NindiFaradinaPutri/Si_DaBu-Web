@@ -1,0 +1,116 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+{% load humanize %}
+{% load custom_tags%}
+
+{% block content %}
+{% include "template/modals/delete_confirmation.html" with info_data="Journal Mingguan" %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">{{title}}</h2>
+			</header>
+			{% if messages %}
+			{% for message in messages %}
+			<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="bx bx-x"></i></button>
+				{{ message }}
+			</div>
+			{% endfor %}
+			{% endif %}
+			<div class="card-body">
+				<div class="text-right" style="margin-bottom:20px;">
+					<a href="/journal/week/" class="btn btn-warning" type="button"><i class="bx bx-plus"></i> Journal Mingguan</a>
+				</div>
+				<form class="form-horizontal" method="POST" id="week_journal_update" enctype="multipart/form-data">
+					{% csrf_token %}
+					{% include 'template/forms/tmp_table_formset.html' with formset=journalForm table_head=table_head %}
+					<div class="row d-flex justify-content-center">
+						<div class="col-12 col-md-8 d-flex justify-content-end align-items-center">
+
+							<button class="btn btn-primary h4" type="button" title="tambah baris" id="add-journal"><i class="flaticon flaticon-plus">Tambah Baris</i></button>
+							&nbsp;
+							<button class="btn btn-danger h4" type="button" title="kurangi baris" id="remove-journal"><i class="bx bx-minus"></i>Kurangi Baris</button>
+						</div>
+						<div class="col-12 col-md-4 d-flex justify-content-end align-items-center">
+							<button id="calculate-journal" name="calculate-gl" class="btn btn-success h4" type="button" title="hitung ulang"><i class="bx bx-save">Hitung Ulang</i></button>
+							&nbsp;
+							<button id="save-journal" name="save-gl" class="btn btn-info h4" type="submit" title="tambah baris"><i class="bx bx-save">Simpan</i></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.fixedHeader.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.responsive.min.css' %}">
+<style>
+	.img-photo {
+		height: 150px;
+		width: 300px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+<script type="text/javascript" src="{%static 'jquery.mask/jquery.mask.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.fixedHeader.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.responsive.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+
+<!--<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>-->
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>
+
+<script>
+    var last_fix_balance = "{{ last_total|int_format }}";
+    $(document).ready(function () {
+        var table = $('#datatable-transaction').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(1)'
+            },
+            responsive: true
+		});
+        recalculate();
+	});
+	
+</script>
+<script>
+	$('.number-mask').mask("#.##0", { reverse: true });
+</script>
+<script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend/js/week_journal_update.js' %}"></script>
+
+{% endblock %}

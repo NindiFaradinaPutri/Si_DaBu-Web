@@ -1,0 +1,37 @@
+{% load static %}
+<section class="section border-0 bg-transparent m-0" id="start">
+	<div class="container py-5 mb-3">
+		<div class="row">
+			<div class="col text-center">
+
+				<div class="divider divider-small divider-small-lg mt-0 text-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">
+					<hr class="bg-primary border-radius m-auto">
+				</div>
+				<div class="overflow-hidden mb-1">
+					<h3 class="font-weight-bold text-uppercase positive-ls-3 text-4 line-height-2 line-height-sm-7 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="100" style="color: #014C3D; text-align: left;">Tentang Kami</h3>
+				</div>
+				
+
+			</div>
+		</div>
+		<div class="row pt-4 pb-5">
+			<div class="col-lg-6 text-center p-relative pt-0">
+				<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="300">
+					<div class="logo-card" style="background-color: #fff; border-radius: 30px; padding: 30px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); display: inline-block;">
+						<img alt="Logo" style="width:80%;" class="img-fluid" src="/media/logo/logo-full.png">
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 pt-5 mt-5 pt-lg-0 mt-lg-0">
+				<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="300">
+					<p class="h3 text-color-dark font-weight-bold text-6 pb-2 mb-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200" style="font-style: italic;">"{{profile.visi}}"</p>
+					<div class="font-weight-medium text-4-5 line-height-5">{{profile.brief|safe}}</div>
+				</div>
+
+				<div class="d-block pt-4 btn-position appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="300">
+					<a href="/about/" class="btn btn-modern btn-primary btn-arrow-effect-1 text-capitalize text-2-5 px-5 py-3 anim-hover-translate-top-5px transition-2ms" style="border-radius: 30px;">Lebih Lanjut <i class="fas fa-arrow-right ms-2"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

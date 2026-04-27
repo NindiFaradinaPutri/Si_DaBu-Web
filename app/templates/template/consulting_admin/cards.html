@@ -1,0 +1,606 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<h4 class="mt-0 mb-0">Basic</h4>
+<p class="mb-3">By default, all the <code>.panel</code> does is apply some basic border and padding to contain some content.</p>
+
+<section class="card mb-4">
+	<div class="card-body">
+		Content.
+	</div>
+</section>
+
+<h4 class="pt-4 mb-0 mt-0">Panel with Heading</h4>
+<p class="mb-3">Easily add a heading container to your panel with <code>.card-header</code>. You may also include any <code>h1</code> - <code>h6</code> with a <code>.card-title</code> class to add a pre-styled heading.</p>
+
+<div class="row">
+	<div class="col-md-6">
+		<section class="card mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				Content.
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				Content.
+			</div>
+		</section>
+	</div>
+</div>
+
+<h4 class="mb-0">Panel with Footer</h4>
+<p class="mb-3">Wrap buttons or secondary text in <code>.card-footer</code>. Note that panel footers do not inherit colors and borders when using contextual variations as they are not meant to be in the foreground.</p>
+
+<div class="row">
+	<div class="col-md-12">
+		<section class="card mb-4">
+			<div class="card-body">
+				Content.
+			</div>
+			<div class="card-footer">
+				Footer Content.
+			</div>
+		</section>
+	</div>
+</div>
+
+<h4 class="pt-3 mb-0">Panel Collapsed by Default</h4>
+<p class="mb-3">Add <code>.card-collapsed</code> class to the panel.</p>
+<div class="row">
+	<div class="col-md-6">
+		<section class="card card-collapsed mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				Content.
+			</div>
+			<div class="card-footer">
+				Footer Content.
+			</div>
+		</section>
+	</div>
+	<div class="col-md-6">
+		<section class="card card-collapsed mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				Content.
+			</div>
+			<div class="card-footer">
+				Footer Content.
+			</div>
+		</section>
+	</div>
+</div>
+
+<h4 class="pt-3 mb-0">Panel Featured</h4>
+<p class="mb-3">Like other components, easily make a panel more meaningful to a particular context by adding any of the contextual state classes.</p>
+
+<div class="row">
+	<div class="col-md-6">
+		<section class="card card-featured mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-primary mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-primary</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-primary mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-primary</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-success mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-success</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-success mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-success</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-warning mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-warning</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-warning mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-warning</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-danger mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-danger</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-danger mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-danger</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-info mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-info</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-info mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-info</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-dark mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-dark</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-featured card-featured-dark mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-featured.card-featured-dark</code>
+			</div>
+		</section>
+	</div>
+</div>
+
+<h4 class="pt-3 mb-0">Contextual Alternatives</h4>
+<p class="mb-3">Like other components, easily make a panel more meaningful to a particular context by adding any of the contextual state classes.</p>
+
+<div class="row">
+	<div class="col-md-6">
+		<section class="card card-primary mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-primary</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-primary mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-primary</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-success mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-success</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-success mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-success</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-warning mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-warning</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-warning mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-warning</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-danger mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-danger</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-danger mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-danger</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-info mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-info</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-info mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-info</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-dark mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+			</header>
+			<div class="card-body">
+				<code>.card-dark</code>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-dark mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				<code>.card-dark</code>
+			</div>
+		</section>
+	</div>
+</div>
+
+<h4 class="mb-0">Panel Transparent</h4>
+<p class="mb-3">Set the panel to transparent background.</p>
+
+<div class="row">
+	<div class="col-md-6">
+		<section class="card mb-4">
+			<header class="card-header card-header-transparent">
+				<h2 class="card-title">Title</h2>
+
+				</header>
+			<div class="card-body">
+				Content.
+			</div>
+		</section>
+	</div>
+
+	<div class="col-md-6">
+		<section class="card card-transparent mb-4">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Title</h2>
+				<p class="card-subtitle">Subtitle</p>
+			</header>
+			<div class="card-body">
+				Content.
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+
+{% endblock %}
+
+{% block page_header %}
+{% include "template/consulting_admin/parts/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "template/consulting_admin/parts/header.html" %}
+{% endblock %}
+
+{% block sidebar_right %}
+{% include "template/consulting_admin/parts/sidebar-right.html" %}
+{% endblock %}
+
+{% block theme %}
+
+{% endblock %}
+
+{% block query %}
+
+{% endblock %}

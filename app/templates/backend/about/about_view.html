@@ -1,0 +1,135 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<div class="row">
+    <div class="col">
+        <section class="card">
+            <header id="card-top" class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div>
+
+                <h2 class="card-title">Profile</h2>
+            </header>
+            <form class="form-horizontal form-bordered" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="card-body">
+
+                    {% csrf_token %}
+
+                    {% include 'template/forms/tmp_formrow.html' with form=form %}
+
+                </div>
+                <div class="card-footer">
+                    <span class="float-left">
+                        <p>Last Update: {{profile.update_date|date:"d M Y H:i"}}</p>
+                    </span>
+                    <span id="nav-button" class="float-right">
+                        <button type="button" id="edit-profile" class="mb-1 mt-1 mr-1 btn btn-info">Edit</button>
+                    </span>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<style>
+    .cke_reset {
+        width: 100% !important;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.theme.css' %}">
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'dropzone/basic.css' %}">
+<link rel="stylesheet" href="{% static 'dropzone/dropzone.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-markdown/css/bootstrap-markdown.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'bootstrap-multiselect/css/bootstrap-multiselect.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-tagsinput/bootstrap-tagsinput.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-colorpicker/css/bootstrap-colorpicker.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-timepicker/css/bootstrap-timepicker.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-markdown/css/bootstrap-markdown.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'summernote/summernote-bs4.css' %}">
+
+<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror/theme/monokai.css' %}">
+
+{% endblock %}
+
+{% block query %}
+<script src="//cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        CKEDITOR.replace('id_misi', { readOnly: true });
+        CKEDITOR.replace('id_value', { readOnly: true });
+        CKEDITOR.replace('id_meaning', { readOnly: true });
+        CKEDITOR.replace('id_history', { readOnly: true });
+        CKEDITOR.replace('id_brief', { readOnly: true });
+        CKEDITOR.replace('id_culture', { readOnly: true });
+    });
+
+    $(document).on("click", "#edit-profile", function () {
+        $('form *').prop('disabled', false);
+
+        $("#nav-button").empty();
+
+        CKEDITOR.instances.id_misi.setReadOnly(false);
+        CKEDITOR.instances.id_value.setReadOnly(false);
+        CKEDITOR.instances.id_meaning.setReadOnly(false);
+        CKEDITOR.instances.id_history.setReadOnly(false);
+        CKEDITOR.instances.id_brief.setReadOnly(false);
+        CKEDITOR.instances.id_culture.setReadOnly(false);
+
+        var div = document.createElement('span');
+        div.innerHTML = "<button type='button' id='cancel-edit' class='mb-1 mt-1 mr-1 btn btn-default'>Cancel Edit</button> <button type='submit' class='mb-1 mt-1 mr-1 btn btn-success'>Submit</button>";
+
+        document.getElementById("nav-button").appendChild(div);
+
+        window.scrollTo({ top: 100, behavior: 'smooth' });
+    });
+
+    $(document).on("click", "#cancel-edit", function () {
+        $('form *').prop('disabled', true);
+
+        $("#nav-button").empty();
+
+        CKEDITOR.instances.id_misi.setReadOnly(true);
+        CKEDITOR.instances.id_value.setReadOnly(true);
+        CKEDITOR.instances.id_meaning.setReadOnly(true);
+        CKEDITOR.instances.id_history.setReadOnly(true);
+        CKEDITOR.instances.id_brief.setReadOnly(true);
+        CKEDITOR.instances.id_culture.setReadOnly(true);
+
+        var div = document.createElement('span');
+        div.innerHTML = "<button type='button' id='edit-profile' class='mb-1 mt-1 mr-1 btn btn-info'>Edit</button>";
+
+        document.getElementById("nav-button").appendChild(div);
+    });
+</script>
+
+<script type="text/javascript" src="{%static 'editor/js/editor.js' %}"></script>
+<script type="text/javascript" src="{%static 'jquery.ui/js/jquery-ui.js' %}"></script>
+<script type="text/javascript" src="{%static 'jquery.ui/js/jquery.ui.touch-punch.js' %}"></script>
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'bootstrap-markdown/js/markdown.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-markdown/js/to-markdown.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-markdown/js/bootstrap-markdown.js' %}"></script>
+<script type="text/javascript" src="{%static 'dropzone/js/dropzone.js' %}"></script>
+{% endblock %}

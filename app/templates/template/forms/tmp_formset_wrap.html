@@ -1,0 +1,545 @@
+{{formset.management_form}}
+{% for form in formset %}
+<h3>{{form_title}} {{forloop.counter}}</h3>
+
+{% for hidden_fields in form.hidden_fields %}
+    {{ hidden_fields }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %}
+            {{ error }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<section class="row">
+{% for field in form.visible_fields %}
+    {% if field.field.widget.input_type == 'date' %}
+        <div class="form-group col-md-4 col-12 pt-0">
+            <label for="{{field.html_intial_name}}" class="col-form-label text-right">{{ field.field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        <input type="text" 
+                            id="{{field.id_for_label}}" 
+                            name="{{field.html_name}}"
+                            class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                            value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                            placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "dd/mm/yyyy" }' />
+
+                    {% for error in field.errors %}
+                    <div class="row">
+                        <div class="alert alert-danger">
+                        {{ error }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                        <input type="text" 
+                            id="{{field.id_for_label}}" 
+                            name="{{field.html_name}}"
+                            class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                            value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                            placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "dd/mm/yyyy" }' />
+
+                {% endif %}
+                {% else %}
+                    <input type="text" 
+                            id="{{field.id_for_label}}" 
+                            name="{{field.html_name}}"
+                            class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                            value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                            placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "dd/mm/yyyy" }' />
+                {% endif %}
+            </div>
+            <div class="col-md-3 col-12"></div>
+            <div class="col-md-9 col-12">
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+        </div>
+
+    {% elif field.field.widget.input_type == 'checkbox' %}
+        <div class="form-group col-md-4 col-12 pt-0 {{field.field.widget.attrs.class|default_if_none:""}}">
+            <label for="{{field.html_name}}" class="col-form-label d-flex justify-content-start {{field.field.widget.attrs.class|default_if_none:""}}">{{ field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                            {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% else %}
+                        {{ field }}
+                {% endif %}
+                &nbsp;
+                {% if field.help_text %}
+                    <small class="form-text text-muted"><strong>({{ field.help_text }})</strong></small>
+                {% endif %}
+            </div>
+        </div>
+
+    {%elif field.field.widget.attrs.accept == "image/*" %}
+        <div class="form-group col-md-12 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label d-flex justify-content-end align-items-center">{{ field.field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {% if field.initial %}
+                            <div class="row">
+                                <div class="col-md-9 d-flex align-items-center">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Saat ini:&nbsp;<a href="{{field.initial.url}}">{{field.initial.name}}</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if field.initial.url %}
+                                <div class="col-md-3">
+                                    <img src="{{field.initial.url|default_if_none:''}}" class="img_at_form" /> <br />
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% for error in field.errors %}
+                            <div class="row">
+                                <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                                    {{ error }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                            <div class="row">
+                                <div class="col-md-12 d-flex align-items-center">
+                                    {{ field }}
+                                </div>
+                            </div>
+
+                            {% for error in field.errors %}
+                            <div class="row">
+                                <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                                    {{ error }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                    {% else %}
+                        {% if field.initial %}
+                            <div class="row">
+                                <div class="col-md-9 d-flex align-items-center">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Saat ini:&nbsp;<a href="{{field.initial.url}}">{{field.initial.name}}</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if field.initial.url %}
+                                <div class="col-md-3">
+                                    <img src="{{field.initial.url|default_if_none:''}}" class="img_at_form" /> <br />
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col-md-12 d-flex align-items-center">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% if field.initial %}
+                        <div class="row">
+                            <div class="col-md-9 d-flex align-items-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        Saat ini:&nbsp;<a href="{{field.initial.url}}">{{field.initial.name}}</a>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                    </div>
+                                </div>
+                            </div>
+                            {% if field.initial.url %}
+                            <div class="col-md-3">
+                                <img src="{{field.initial.url|default_if_none:''}}" class="img_at_form" /> <br />
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col-md-9 d-flex align-items-center">
+                                {{field}}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+        </div>
+
+    {% elif field.field.widget.input_type == "file" %}
+        <div class="form-group col-md-12 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label float-right">{{ field.field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {% if field.initial %}
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Saat ini:&nbsp;<a href="{{field.initial.url}}" target="_blank">{{field.initial.name}}</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% for error in field.errors %}
+                            <div class="row">
+                                <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                                    {{ error }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {%else%}
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                </div>
+                            </div>
+                            {% for error in field.errors %}
+                            <div class="row">
+                                <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                                    {{ error }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {%endif%}
+                    {% else %}
+                        {% if field.initial %}
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Saat ini:&nbsp;<a href="{{field.initial.url}}" target="_blank">{{field.initial.name}}</a>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {%else%}
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                </div>
+                            </div>
+                        {%endif%}
+                    {% endif %}
+                {% else %}
+                    {% if field.initial %}
+                        <div class="row">
+                            <div class="col-md-12 col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        Saat ini:&nbsp;<a href="{{field.initial.url}}" target="_blank">{{field.initial.name}}</a>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {%else%}
+                        <div class="row">
+                            <div class="col-md-12 col-12 ">
+                                <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                                               accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                                               class="{{field.field.widget.attrs.class}}" />
+                            </div>
+                        </div>
+                    {%endif%}
+                {% endif %}
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+        </div>
+
+    {% elif field.field.widget.input_type == "password" %}
+        <div class="form-group col-md-4 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label text-right">{{ field.field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {{ field }} {% if field.html_name == "password" %} <span class="btn_icon" onclick="show_password()"><i id="icon_pass" class="fa fa-eye"></i></span>{% elif field.html_name == "confirm_password" %} <span class="btn_icon" onclick="show_password2()"><i id="icon_pass" class="fa fa-eye"></i></span>{% endif %}
+                        {% for error in field.errors %}
+                        <div class="row">
+                            <div class="alert alert-danger">
+                            {{ error }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ field }} {% if field.html_name == "password" %} <span class="btn_icon" onclick="show_password()"><i id="icon_pass" class="fa fa-eye"></i></span>{% elif field.html_name == "confirm_password" %} <span class="btn_icon" onclick="show_password2()"><i id="icon_confirm_pass" class="fa fa-eye"></i></span>{% endif %}
+                    {% endif %}
+                {% else %}
+                    {{ field }} {% if field.html_name == "password" %} <span class="btn_icon" onclick="show_password()"><i id="icon_pass" class="fa fa-eye"></i></span>{% elif field.html_name == "confirm_password" %} <span class="btn_icon" onclick="show_password2()"><i id="icon_confirm_pass" class="fa fa-eye"></i></span>{% endif %}
+                {% endif %}
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+        </div>
+
+    {% elif field.html_name == "rate" %}
+        <div class="form-group col-md-4 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label text-right d-block">{{ field.field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                {% if field.errors %}
+                <input type="text"
+                       id="{{field.id_for_label}}"
+                       name="{{field.html_name}}"
+                       class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                       value="{{ field.initial|default_if_none:"" }}"
+                       placeholder="Silahkan berikan nilai" data-plugin-star-rating
+                       data-plugin-options="{'step': 0.1, 'showCaption': true, 'color': 'gold', 'size':'sm'}" />
+                {% for error in field.errors %}
+                <div class="row">
+                    <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                        {{ error }}
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <input type="text"
+                       id="{{field.id_for_label}}"
+                       name="{{field.html_name}}"
+                       class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                       value="{{ field.initial|default_if_none:"" }}"
+                       placeholder="Silahkan berikan nilai" data-plugin-star-rating
+                       data-plugin-options="{'step': 0.1, 'showCaption': true, 'color': 'gold', 'size':'sm'}" />
+                {% endif %}
+                {% else %}
+                <input type="text"
+                       id="{{field.id_for_label}}"
+                       name="{{field.html_name}}"
+                       class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                       value="{{ field.initial|default_if_none:"" }}"
+                       placeholder="Silahkan berikan nilai" data-plugin-star-rating
+                       data-plugin-options="{'step': 0.1, 'showCaption': true, 'color': 'gold', 'size':'sm'}" />
+                {% endif %}
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+
+        </div>
+
+    {% elif field.field.widget.template_name == 'django/forms/widgets/textarea.html' %}
+        <div class="form-group col-md-12 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label text-left">{{ field.field.label }}</label>
+            <div class="col-md-12 d-flex align-items-center px-0">
+                {% if form.is_bound %}
+                {% if field.errors %}
+                <textarea id="{{field.id_for_label}}"
+                          name="{{field.html_name}}"
+                          class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                          value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                          maxlength="{{field.field.widget.attrs.maxlength}}" cols="{{field.field.widget.attrs.cols}}" rows="{{field.field.widget.attrs.rows}}"></textarea>
+                {% for error in field.errors %}
+                <div class="row">
+                    <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                        {{ error }}
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                {% if field.initial %}
+                <textarea id="{{field.id_for_label}}"
+                          name="{{field.html_name}}"
+                          class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                          value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                          maxlength="{{field.field.widget.attrs.maxlength}}" cols="{{field.field.widget.attrs.cols}}" rows="{{field.field.widget.attrs.rows}}"></textarea>
+                />
+                {%else%}
+                <textarea id="{{field.id_for_label}}"
+                          name="{{field.html_name}}"
+                          class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                          value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                          maxlength="{{field.field.widget.attrs.maxlength}}" cols="{{field.field.widget.attrs.cols}}" rows="{{field.field.widget.attrs.rows}}"></textarea>
+                {%endif%}
+                {% endif %}
+                {% else %}
+                {% if field.initial %}
+                <textarea id="{{field.id_for_label}}"
+                          name="{{field.html_name}}"
+                          class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                          value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                          maxlength="{{field.field.widget.attrs.maxlength}}" cols="{{field.field.widget.attrs.cols}}" rows="{{field.field.widget.attrs.rows}}"></textarea>
+                {%else%}
+                <textarea id="{{field.id_for_label}}"
+                          name="{{field.html_name}}"
+                          class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                          value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                          maxlength="{{field.field.widget.attrs.maxlength}}" cols="{{field.field.widget.attrs.cols}}" rows="{{field.field.widget.attrs.rows}}"></textarea>
+                {%endif%}
+                {% endif %}
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+
+        </div>
+
+    {% elif field.field.widget.input_type == 'select' %}
+        <div class="form-group col-md-4 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label text-left">{{ field.field.label }}</label>
+            <div class="col-md-12 d-flex align-items-center px-0">
+                {% if form.is_bound %}
+                {% if field.errors %}
+                <select id="{{field.id_for_label}}"
+                        name="{{field.html_name}}"
+                        class="{{field.field.widget.attrs.class|default_if_none:""}}">
+                    {%for choice in field.field.choices%}
+                    <option value="{{choice.0}}">{{choice.1}}</option>
+                    {%endfor%}
+                </select>
+                {% for error in field.errors %}
+                <div class="row">
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <select id="{{field.id_for_label}}"
+                        name="{{field.html_name}}"
+                        class="{{field.field.widget.attrs.class|default_if_none:""}}">
+                    {%for choice in field.field.choices%}
+                    <option value="{{choice.0}}">{{choice.1}}</option>
+                    {%endfor%}
+                </select>
+                {% endif %}
+                {% else %}
+                <select id="{{field.id_for_label}}"
+                        name="{{field.html_name}}"
+                        class="{{field.field.widget.attrs.class|default_if_none:""}}">
+                    {%for choice in field.field.choices%}
+                    <option value="{{choice.0}}" {%if choice.0 == field.initial%} selected{%endif%}>{{choice.1}}</option>
+                    {%endfor%}
+                </select>
+                {% endif %}
+            </div>
+            <div class="col-md-12">
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="form-group col-md-4 col-12 pt-0">
+            <label for="{{field.html_name}}" class="col-form-label text-right">{{ field.field.label }}</label>
+            <div class="d-block">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger" id="error_{{ field.html_name }}">
+                            {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% else %}
+                    {{ field }}
+                {% endif %}
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <div class="alert alert-danger alert-dismissible" id="error_{{field.html_name}}" style="display:none"></div>
+            </div>
+  
+        </div>
+  
+    {% endif %}
+{% endfor %}
+</section>
+
+<hr class="separator" />
+{% endfor %}
+

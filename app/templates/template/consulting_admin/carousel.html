@@ -1,0 +1,128 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<div class="owl-carousel owl-theme" data-plugin-carousel data-plugin-options='{ "dots": true, "autoplay": true, "autoplayTimeout": 3000, "loop": true, "margin": 10, "nav": false, "responsive": {"0":{"items":1 }, "600":{"items":3 }, "1000":{"items":6 } }  }'>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-1.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-2.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-3.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-4.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-5.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-6.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-7.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-1.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-2.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-3.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-4.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-5.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-6.jpg" alt=""></div>
+	<div class="item"><img class="img-thumbnail" src="img/projects/project-7.jpg" alt=""></div>
+	</div>
+
+<hr>
+
+<div class="row mt-3 pt-4">
+	<div class="col-lg-6 col-xl-3">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Single Item</h2>
+			</header>
+			<div class="card-body">
+				<div class="owl-carousel owl-theme" data-plugin-carousel data-plugin-options='{ "dots": true, "items": 1 }'>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-1.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-2.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-3.jpg" alt=""></div>
+					</div>
+			</div>
+		</section>
+	</div>
+	<div class="col-lg-6 col-xl-3">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Navigation</h2>
+			</header>
+			<div class="card-body">
+				<div class="owl-carousel owl-theme" data-plugin-carousel data-plugin-options='{ "dots": false, "nav": true, "items": 1 }'>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-1.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-2.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-3.jpg" alt=""></div>
+					</div>
+			</div>
+		</section>
+	</div>
+	<div class="col-lg-6 col-xl-3">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Autoplay</h2>
+			</header>
+			<div class="card-body">
+				<div class="owl-carousel owl-theme" data-plugin-carousel data-plugin-options='{ "dots": true, "autoplay": true, "autoplayTimeout": 3000, "loop": true, "margin": 10, "nav": false, "items": 1 }'>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-1.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-2.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-3.jpg" alt=""></div>
+					</div>
+			</div>
+		</section>
+	</div>
+	<div class="col-lg-6 col-xl-3">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Controls Disabled</h2>
+			</header>
+			<div class="card-body">
+				<div class="owl-carousel owl-theme" data-plugin-carousel data-plugin-options='{ "dots": false, "nav": false, "items": 1 }'>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-1.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-2.jpg" alt=""></div>
+					<div class="item"><img class="img-thumbnail" src="img/projects/project-3.jpg" alt=""></div>
+					</div>
+			</div>
+		</section>
+	</div>
+</div>
+
+<!-- end: page -->
+
+{% endblock %}
+
+{% block page_header %}
+{% include "template/consulting_admin/parts/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "template/consulting_admin/parts/header.html" %}
+{% endblock %}
+
+{% block sidebar_right %}
+{% include "template/consulting_admin/parts/sidebar-right.html" %}
+{% endblock %}
+
+{% block theme %}
+
+{% endblock %}
+
+{% block query %}
+
+{% endblock %}

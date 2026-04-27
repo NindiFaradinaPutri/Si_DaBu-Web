@@ -1,0 +1,217 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container" style="position: relative; margin-top: 5em;">
+	<div id="message">
+		<div class="title text-dark">Send a message</div>
+		<div class="subtitle">
+			Ada yang ingin Anda tanyakan atau sampaikan? Tuliskan pesan dan tim kami akan dengan senang hati
+			membantu.
+		</div>
+		<form class="" action="{%url 'contact_submit'%}" method="POST">
+			{% csrf_token %}
+			{% if data and data == 'success' %}
+			<div class="contact-form-success alert alert-success mt-4">
+				<strong>Success!</strong> Your message has been sent to us. Please wait for our reply.
+			</div>
+			{% elif data and data == 'success' %}
+			<div class="contact-form-error alert alert-danger mt-4">
+				<strong>Error!</strong> There was an error sending your message.
+				<span class="mail-error-message text-1 d-block"></span>
+			</div>
+			{% endif %}
+
+			<div class="row">
+				<div class="form-group col">
+					<label class="form-label mb-1 text-3">Nama Lengkap</label>
+					<input type="text" value="" data-msg-required="Please enter your name." maxlength="100"
+						class="form-control text-3 h-auto py-2" name="name" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col">
+					<label class="form-label mb-1 text-3">Alamat</label>
+					<input type="email" value="" data-msg-required="Please enter your email address."
+						data-msg-email="Please enter a valid email address." maxlength="100"
+						class="form-control text-3 h-auto py-2" name="email" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col">
+					<label class="form-label mb-1 text-3">Perihal</label>
+					<input type="text" value="" data-msg-required="Please enter the subject." maxlength="100"
+						class="form-control text-3 h-auto py-2" name="subject" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col">
+					<label class="form-label mb-1 text-3">Pesan</label>
+					<textarea maxlength="5000" data-msg-required="Please enter your message." rows="8"
+						class="form-control text-3 h-auto py-2" name="message" required></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col m-0">
+					{% include 'template/forms/tmp_form.html' with form=recaptchaform %}
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" name="agree" id="tabContent9Checkbox"
+							data-msg-required="You must agree before submiting." required>
+						<label class="form-check-label" for="tabContent9Checkbox">
+							Agree to terms and conditions
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col m-0">
+					<input type="submit" value="Send E-mail" class="btn btn-primary">
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="contact">
+		<div class="title">Get in touch</div>
+		<div class="subtitle">
+			Kami dengan senang hati menerima pertanyaan, saran, maupun masukan dari Anda. Silakan hubungi kami dan kami
+			akan segera merespons.
+		</div>
+		<div class="contact-body">
+			<div class="row m-0">
+				<div class="col-1 p-0">
+					<i class="fa fa-location-dot contact-icon"></i>
+				</div>
+				<div class="col pl-2">
+					<div class="contact-title">Location</div>
+					<div class="contact-subtitle">{{'address'|contact_silatama}}</div>
+				</div>
+			</div>
+			<div class="row my-3 m-0">
+				<div class="col-1 p-0">
+					<i class="fa fa-envelope contact-icon"></i>
+				</div>
+				<div class="col pl-2">
+					<div class="contact-title">Email Us</div>
+					<div class="contact-subtitle">{{'email'|contact_silatama}}</div>
+				</div>
+			</div>
+			<div class="row m-0">
+				<div class="col-1 p-0">
+					<i class="fa fa-phone contact-icon"></i>
+				</div>
+				<div class="col pl-2">
+					<div class="contact-title">Call Us</div>
+					<div class="contact-subtitle">{{'phone'|contact_silatama}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="contact-title">Follow our social media</div>
+		<a target="_blank" href="https://wa.me/{{'whatsapp'|contact_silatama}}">
+			<span class="badge badge-success badge-md rounded-pill"
+				style="padding: .8em !important; margin-top: .7rem;">
+				<i class="fa-brands fa-whatsapp" style="font-size:20px"></i>
+		</a>
+	</div>
+</div>
+
+<div class="w-85 h_iframe" style="margin-top: 10em;">
+	<iframe
+		src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8348679405867!2d116.85852897424932!3d-1.2721744356093603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df146c22f667ea9%3A0x78b076ca8d34f997!2sMasjid%20Ar%20Raudhah!5e0!3m2!1sen!2sid!4v1776393012418!5m2!1sen!2sid"
+		width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+		referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+	integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"
+	integrity="sha512-giQeaPns4lQTBMRpOOHsYnGw1tGVzbAIHUyHRgn7+6FmiEgGGjaG0T2LZJmAPMzRCl+Cug0ItQ2xDZpTmEc+CQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+	.contact-body {
+		padding: 1.5rem 0;
+		border-top: 1px solid white;
+		border-bottom: 1px solid white;
+		margin: 2rem 0;
+	}
+
+	.contact-icon {
+		font-size: 1.2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.contact-title {
+		font-size: 1.3em;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.contact-subtitle {
+		line-height: 1.2;
+		margin-top: 5px;
+	}
+
+	#contact {
+		background: linear-gradient(45deg, rgba(1, 76, 61, 1) 0%, rgba(0, 163, 131, 1) 100%);
+		width: 40%;
+		border-radius: 15px;
+		padding: 2rem;
+		color: white !important;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 0;
+	}
+
+	textarea {
+		line-height: 1 !important;
+	}
+
+	.form-group {
+		margin-bottom: .5rem !important;
+	}
+
+	.title {
+		font-size: 2em;
+		font-weight: 700;
+	}
+
+	.subtitle {
+		line-height: 1.3;
+		margin: .5rem 0 1rem 0;
+	}
+
+	#message {
+		padding: 2rem 25rem 2rem 2rem;
+		border-radius: 15px;
+		background-color: white;
+		width: 90%;
+		-webkit-box-shadow: 0px 0px 7px 0px #d6d6d6;
+		box-shadow: 0px 0px 7px 0px #d6d6d6;
+	}
+</style>
+{% endblock %}

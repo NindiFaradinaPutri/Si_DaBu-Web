@@ -1,0 +1,365 @@
+{% load static %}
+
+<!-- start: header -->
+<header class="header header-nav-menu header-nav-top-line">
+	<div class="logo-container">
+		<a href="/" class="logo mt-1">
+			<img src="/media/logo/android-icon-192x192.png" width="45" alt="Porto Admin" />
+		</a>
+		<button class="btn header-btn-collapse-nav d-lg-none" data-toggle="collapse" data-target=".header-nav">
+			<i class="fas fa-bars"></i>
+		</button>
+			
+		<!-- start: header nav menu -->
+		<div class="header-nav collapse">
+			<div class="header-nav-main header-nav-main-effect-1 header-nav-main-sub-effect-1 header-nav-main-square">
+				<nav>
+					<ul class="nav nav-pills" id="mainNav">
+						<li class="">
+							<a class="nav-link" href="/admin/profile/">
+								Profil							</a>
+						</li>
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Beranda							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/banner/list/">
+										Daftar Banner
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/banner/add/">
+										Tambah Banner
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/naration/">
+										Narasi Walpaper
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/iqamah/">
+										Iqamah
+									</a>
+								</li>
+							</ul>
+						</li>
+						
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Tentang Kami
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/profile/">
+										Perbarui Profil
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/contact/update/">
+										Perbarui Kontak
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/rekening/list/">
+										Perbarui Rekening
+									</a>
+								</li>
+								<!-- <li class="dropdown-submenu">
+									<a class="nav-link">
+										Technology
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/tech/list/">
+												Technology List
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/tech/add/">
+												Add Technology
+											</a>
+										</li>
+									</ul>
+								</li> -->
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Layanan
+							</a>
+							<ul class="dropdown-menu">
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										Kegiatan
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/kegiatan/list/">
+												Daftar Kegiatan
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/kegiatan/add/">
+												Tambah Kegiatan
+											</a>
+										</li>
+									</ul>
+								</li>
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										Partner
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/client/list/">
+												Daftar Partner
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/client/add/">
+												Tambah Partner
+											</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<!-- <li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Portfolios
+							</a>
+							<ul class="dropdown-menu">
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										Portfolios
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/portfolios/list/">
+												Portfolios List
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/portfolios/add/">
+												Add Portfolio
+											</a>
+										</li>
+									</ul>
+								</li> -->
+								<!-- <li class="dropdown-submenu">
+									<a class="nav-link">
+										Testimonies
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/testimony/list/">
+												Testimonies List
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/testimony/add/">
+												Add Testimony
+											</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li> -->
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Pengurus
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/team/list/">
+										Daftar Pengurus
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/team/add/">
+										Tambah Pengurus
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Galeri
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/gallery/list/">
+										Daftar Galeri
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/gallery/add/">
+										Tambah Galeri
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Berita
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/article/list/">
+										Daftar Berita
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/article/add/">
+										Tambah Berita
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Keluhan
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/complaint/category/">
+										Daftar Kategori Keluhan
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/complaint/list/">
+										Daftar Keluhan
+									</a>
+								</li>
+							</ul>
+						</li>
+						<!-- <li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Kontak
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/contact/update/">
+										Perbarui Kontak
+									</a>
+								</li>
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										FAQ
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/faq/list/">
+												FAQ List
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/faq/add/">
+												Add FAQ
+											</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li> -->
+						
+
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Keuangan
+							</a>
+							<ul class="dropdown-menu">
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										COA Grup
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/coa/group/">
+												Daftar COA Grup
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/coa/group/add/">
+												Tambah COA Grup
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										COA
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/coa/">
+												Daftar COA
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/coa/add/">
+												Tambah COA
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								<li class="dropdown-submenu">
+									<a class="nav-link">
+										Transaksi
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="nav-link" href="/transaction/book/">
+												Daftar Transaksi
+											</a>
+										</li>
+										<li>
+											<a class="nav-link" href="/transaction/book/update/">
+												Tambah Transaksi
+											</a>
+										</li>
+									</ul>
+								</li>
+
+								
+							</ul>
+						</li>
+
+						<li class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#">
+								Khutbah
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="nav-link" href="/khutbah/list/">
+										Khutbah List
+									</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/khutbah/add/">
+										Add Khutbah
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="text-left">
+							<a class="nav-link" href="/logout/">
+								<span class="text-danger">
+									<i class="fa fa-sign-out"></i> Keluar
+								</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- end: header nav menu -->
+	</div>
+			
+</header>
+<!-- end: header -->

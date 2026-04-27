@@ -1,0 +1,89 @@
+{% load static %}
+
+{% if form.non_field_errors %}
+<tr class="table-danger" role="alert">
+    {% for error in form.non_field_errors %}
+    {{ error }}
+    {% endfor %}
+</tr>
+{% endif %}
+
+<tr id="{{id_form}}">
+    <td class="d-none">
+        {% for hidden_fields in form.hidden_fields %}
+        {{ hidden_fields }}
+        {% endfor %}
+    </td>
+    <td class="order_no">
+        {{counter}}
+    </td>
+    {% for field in form.visible_fields %}
+    {% if field.field.widget.input_type == 'date' %}
+    <td>
+        <input type="text"
+               id="{{id_prefix}}-{{field.id_for_label}}"
+               name="{{prefix}}-{{field.name}}"
+               class="{{field.field.widget.attrs.class|default_if_none:""}}"
+               value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+               placeholder="Silahkan pilih tanggal" data-plugin-datepicker data-plugin-options='{ "format": "dd/mm/yyyy" }' />
+    </td>
+    {% elif field.field.widget.input_type == 'checkbox' %}
+    <td>
+        <input type="{{ field.field.widget.input_type }}" id="{{id_prefix}}-{{field.id_for_label}}" name="{{prefix}}-{{field.name}}" placeholder="{{field.field.widget.attrs.placeholder}}" />
+    </td>
+    {%elif field.field.widget.attrs.accept == "image/*" %}
+    <td>
+        {%if field.initial.url%}
+        <div class="d-block">
+            <a href="{{field.initial.url}}"><h4><small>Saat ini:&nbsp;{{field.initial.name}}</small></h4></a>
+        </div>
+        <div class="d-block">
+            <img src="{{field.initial.url|default_if_none:''}}" class="img_at_form" /> <br />
+        </div>
+        {%endif%}
+        <div class="d-block">
+            <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                   accept="{{field.field.widget.attrs.accept}}" id="{{field.id_for_label}}"
+                   class="{{field.field.widget.attrs.class}}" placeholder="{{field.html_name}}" placeholder="{{field.field.widget.attrs.placeholder}}" />
+        </div>
+    </td>
+    {% elif field.field.widget.input_type == 'select' %}
+    <td>
+        <select id="{{id_prefix}}-{{field.id_for_label}}"
+                name="{{prefix}}-{{field.name}}"
+                class="{{field.field.widget.attrs.class|default_if_none:""}}">
+            {%for choice in field.field.choices%}
+            <option value="{{choice.0}}">{{choice.1}}</option>
+            {%endfor%}
+        </select>
+    </td>
+    {% elif field.field.widget.template_name == 'django/forms/widgets/textarea.html' %}
+    <td>
+        <textarea id="{{id_prefix}}-{{field.id_for_label}}"
+                  name="{{prefix}}-{{field.name}}"
+                  class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                  value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}"
+                  maxlength="{{field.field.widget.attrs.maxlength}}" cols="{{field.field.widget.attrs.cols}}" rows="{{field.field.widget.attrs.rows}}" placeholder="{{field.field.widget.attrs.placeholder}}"></textarea>
+    </td>
+    {% else %}
+    <td>
+        <div class="row">
+            <div class="col d-flex align-items-center">
+                <input type="{{ field.field.widget.input_type }}"
+                       id="{{id_prefix}}-{{field.id_for_label}}"
+                       name="{{prefix}}-{{field.name}}"
+                       class="{{field.field.widget.attrs.class|default_if_none:""}}"
+                       value="{{ field.initial|date:"d/m/Y"|default_if_none:"" }}" placeholder="{{field.field.widget.attrs.placeholder}}" />
+            </div>
+        </div>
+    </td>
+    {%endif%}
+    {% endfor %}
+    <td>
+        <a data-code="{{field.initial.encrypt_id}}" class="text-danger h4" data-name="{{field.initial.transaction}}" data-toggle="modal" data-target="#deleteConfirmationModals" href="#" type="button" title="hapus"><i class="flaticon flaticon-remove"></i></a>
+        <a href="/gl/edit:{{field.initial.encrypt_id}}/" class="text-warning h4" type="button" title="tambah baris"><i class="flaticon-down-arrow"></i></a>
+    </td>
+
+
+
+</tr>
