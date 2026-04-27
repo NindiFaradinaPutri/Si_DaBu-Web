@@ -37,12 +37,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'app','static','media')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('MASJID_AR_RAUDAH_SECRET_KEY'),
+SECRET_KEY = os.environ.get('ABSENSI_EVENT_SECRET_KEY'),
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.43']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.92']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -100,7 +100,7 @@ SESSION_COOKIE_AGE = 604800
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = False
 
-ROOT_URLCONF = 'masjid_ar_raudah.urls'
+ROOT_URLCONF = 'absensi_event.urls'
 
 # Template configuration
 # https://docs.djangoproject.com/en/2.1/topics/templates/
@@ -125,22 +125,21 @@ TEMPLATES = [
 
 AUTH_USER_MODEL = 'authentication.UserData'
 
-WSGI_APPLICATION = 'masjid_ar_raudah.wsgi.application'
+WSGI_APPLICATION = 'absensi_event.wsgi.application'
 # WSGI_APPLICATION = 'emasjid.wsgi.application'
 #ASGI_APPLICATION = 'nganggur.asgi.application'
 
 #reCAPTCHA
-RECAPTCHA_PUBLIC_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PBC_KEY')
-RECAPTCHA_PRIVATE_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PVT_KEY')
-
+RECAPTCHA_PUBLIC_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PBC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PVT_KEY')
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB_ENGINEE'),
-        'NAME': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB'),
-        'USER': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB_USER'),
-        'PASSWORD': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB_PASS'),
+        'ENGINE': os.environ.get('ABSENSI_EVENT_PGSQL_DB_ENGINEE'),
+        'NAME': os.environ.get('ABSENSI_EVENT_PGSQL_DB'),
+        'USER': os.environ.get('ABSENSI_EVENT_PGSQL_DB_USER'),
+        'PASSWORD': os.environ.get('ABSENSI_EVENT_PGSQL_DB_PASS'),
         'HOST': '127.0.0.1',
         'PORT':'5432',
     }
@@ -224,15 +223,15 @@ CSRF_USE_SESSIONS = True
 CSRF_FAILURE_VIEW = 'views.fe_views.csrf_failure'
 
 #KEY FOR GOOGLE MAPS
-RSAD_GOOGLE_MAP_KEY = os.environ.get('MASJID_AR_RAUDAH_GOOGLE_MAP_KEY')
+RSAD_GOOGLE_MAP_KEY = os.environ.get('ABSENSI_EVENT_GOOGLE_MAP_KEY')
 
 #EMAIL CONF
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('MASJID_AR_RAUDAH_EMAIL_ID') 
-EMAIL_HOST_PASSWORD = os.environ.get('MASJID_AR_RAUDAH_EMAIL_PASS')
+EMAIL_HOST_USER = os.environ.get('ABSENSI_EVENT_EMAIL_ID') 
+EMAIL_HOST_PASSWORD = os.environ.get('ABSENSI_EVENT_EMAIL_PASS') 
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
