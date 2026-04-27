@@ -161,10 +161,10 @@ RECAPTCHA_PRIVATE_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PVT_KEY')
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB_ENGINEE'),
-        'NAME': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB'),
-        'USER': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB_USER'),
-        'PASSWORD': os.environ.get('MASJID_AR_RAUDAH_PGSQL_DB_PASS'),
+        'ENGINE': os.environ.get('ABSENSI_EVENT_PGSQL_DB_ENGINEE'),
+        'NAME': os.environ.get('ABSENSI_EVENT_PGSQL_DB'),
+        'USER': os.environ.get('ABSENSI_EVENT_PGSQL_DB_USER'),
+        'PASSWORD': os.environ.get('ABSENSI_EVENT_PGSQL_DB_PASS'),
         'HOST': '127.0.0.1',
         'PORT':'5432',
     }
