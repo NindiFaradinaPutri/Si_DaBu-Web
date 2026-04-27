@@ -113,7 +113,7 @@ def home(request):
         context,
     )
 
-def about_frontend(request):
+def event_frontend(request):
     menu = ['Beranda','Sejarah Kami']
 
     profile = Profile.objects.filter(id = 1).first()
@@ -134,7 +134,7 @@ def about_frontend(request):
 
     return render(
         request,
-        'frontend/about/about.html',
+        'frontend/event/event.html',
         context,
     )
 

@@ -1,121 +1,228 @@
 {% load static %}
 {% load custom_tags %}
-<div class="sticky-icon">
-	<a href="/contact/" class="sticky_contact d-flex aligns-item-center"><i class="flaticon flaticon-contact-mail"></i> Hubungi Kami </a>
-	<a href="/general_ledger/" class="sticky_charity"><i class="flaticon flaticon-donation"> </i> Keuangan </a>
-	<a href="/admin/profile/" class="sticky_admin"><i class="flaticon flaticon-man"> </i> Halaman Admin </a>
-</div>
-<footer id="footer" class="position-relative border-top-0" style="background-image: url(/media/background/footer_background.png); background-size: cover; background-position: center;">
-	<div class="container pt-5 pb-3">
-		<div class="row pt-5">
-			<div class="col-md col-12">
-				<a href="/" class="text-decoration-none">
-					<h3 class="text-color-light font-weight-bold mb-3">MASJID AR-RAUDAH</h3>
-				</a>
-				<p class="text-3-5 mt-4 font-weight-medium pe-lg-2 text-light">{% autoescape off %}{{'visi'|custom_footer}}{% endautoescape %}</p>
+<footer class="footer-section">
+    <div class="container">
 
-				<ul class="social-icons social-icons-clean social-icons-medium">
-					<li class="social-icons-instagram">
-						<a href="{{'instagram'|custom_header}}" target="_blank" title="Instagram">
-							<i class="fab fa-instagram text-color-light"></i>
-						</a>
-					</li>
-					<li class="social-icons-linkedin">
-						<a href="{{'linkedin'|custom_header}}" target="_blank" title="Linkedin">
-							<i class="fab fa-linkedin text-color-light"></i>
-						</a>
-					</li>
-					<li class="social-icons-tiktok">
-						<a href="{{'linkedin'|custom_header}}" target="_blank" title="Linkedin">
-							<i class="fab fa-tiktok text-color-light"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div class="col-md col-6">
-				<h4 class="text-color-light font-weight-bold mb-3">Kegiatan Kami</h4>
-				<ul class="list list-unstyled columns-lg-2">
-					{% for kegiatan in 'kegiatan'|custom_footer %}
-					<li><a href="/kegiatan/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> {{kegiatan}}</a></li>
-					{% endfor %}
-				</ul>
-			</div>
-			<div class="col-md col-6">
-				<h4 class="text-color-light font-weight-bold mb-3">Menu Utama</h4>
-				<ul class="list list-unstyled columns-lg-2">
-					<li><a href="/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Home</a></li>
-					<li><a href="/wallpaper/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Tampilkan Wallpaper</a></li>
-					<li><a href="/about/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Sejarah</a></li>
-					<li><a href="/kegiatan/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Kegiatan</a></li>
-					<li><a href="/team/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Pengurus DKM</a></li>
-					<li><a href="/general_ledger/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Keuangan</a></li>
-					<li><a href="/gallery/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Galeri</a></li>
-					<li><a href="/news/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Berita</a></li>
-					<li><a href="/complaint/" class="text-light text-color-hover-primary"><i class="fa fa-chevron-right fa-sm"></i> Lapor</a></li>
-				</ul>
-			</div>
-			<div class="col-md col-12">
-				<h4 class="text-color-light font-weight-bold mb-3">Contact Us</h4>
-				<ul class="list list-unstyled">
-					<li>
-						<div class="row text-light ">
-							<div class="col-1 pt-1">
-								<i class="fa fa-map-marker-alt fa-lg"></i>
-							</div>
-							<div class="col">
-								{{'address'|custom_header}}
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="row text-light ">
-							<div class="col-1 pt-1">
-								<i class="fa fa-phone-alt fa-lg"></i>
-							</div>
-							<div class="col">
-								{{'phone'|custom_header}}
-							</div>
-						</div>
-					</li>
-					<li>
-						<a href="mailto:{{'email'|custom_header}}" class="text-light text-color-hover-primary">
-							<div class="row">
-								<div style="padding-top: 0.15rem !important" class="col-1 pt-1">
-									<i class="fa fa-envelope fa-lg"></i>
-								</div>
-								<div class="col">
-									{{'email'|custom_header}}
-								</div>
-							</div>
-						</a>
-					</li>
-					<li>
-						<div class="row text-light ">
-							<div style="padding-top: 0.15rem !important" class="col-1 pt-1">
-								<i class="fa fa-clock fa-lg"></i>
-							</div>
-							<div class="col">
-								{{'working'|contact_silatama}}
-							</div>
-						</div>
-					</li>
-				</ul>
-        
-				<span class="d-flex justify-content-center">
-				<a target="_blank" href="https://wa.me/{{'whatsapp'|contact_silatama}}"><span class="badge badge-success badge-md rounded-pill"><i class="fab fa-whatsapp fa-lg"></i> &nbsp;Chat Us</span></a>
-				</span>
+        <!-- Top Footer -->
+        <div class="row gy-5 mb-5">
 
-			</div>
-		</div>
-	</div>
-	<div class="footer-copyright bg-transparent">
-		<div class="container">
-			<hr class="bg-yellow opacity-7">
-			<div class="row">
-				<div class="col mt-0 mb-4 pb-5">
-					<p class="text-center text-white text-3 mb-0">Copyright © {% now "Y" %} - Masjid Ar-Raudah. All right reserved</p>
-				</div>
-			</div>
-		</div>
-	</div>
+            <!-- Brand -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <h3 class="footer-logo">
+                    Silatama
+                </h3>
+
+                <p class="footer-text">
+                    Silatama provides authoritative management solutions
+                    for high-stakes professional events, ensuring precision
+                    logistics and real-time operational integrity globally.
+                </p>
+
+                <div class="d-flex gap-3 mt-4">
+                    <a href="#" class="footer-social">
+                        <span class="material-symbols-outlined">public</span>
+                    </a>
+
+                    <a href="#" class="footer-social">
+                        <span class="material-symbols-outlined">alternate_email</span>
+                    </a>
+
+                    <a href="#" class="footer-social">
+                        <span class="material-symbols-outlined">terminal</span>
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- Resources -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <h5 class="footer-title">
+                    Resources
+                </h5>
+
+                <ul class="footer-links list-unstyled">
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Staff Directory</a></li>
+                    <li><a href="#">Analytics Dashboard</a></li>
+                    <li><a href="#">Account Settings</a></li>
+                </ul>
+            </div>
+
+
+            <!-- Contact -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <h5 class="footer-title">
+                    Contact
+                </h5>
+
+                <ul class="list-unstyled footer-contact">
+
+                    <li>
+                        <span class="material-symbols-outlined me-2">mail</span>
+                        ops@silatama.com
+                    </li>
+
+                    <li>
+                        <span class="material-symbols-outlined me-2">call</span>
+                        +1 (555) 892-0402
+                    </li>
+
+                    <li>
+                        <span class="material-symbols-outlined me-2">location_on</span>
+                        Suite 400, Tech District<br>
+                        San Francisco, CA 94105
+                    </li>
+
+                </ul>
+            </div>
+
+
+            <!-- Compliance -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <h5 class="footer-title">
+                    Compliance
+                </h5>
+
+                <p class="footer-text">
+                    ISO 27001 Certified for data security and privacy management.
+                </p>
+
+                <div class="d-flex flex-column gap-2 mt-3">
+                    <a href="#" class="footer-link-single">
+                        Privacy Policy
+                    </a>
+
+                    <a href="#" class="footer-link-single">
+                        Terms of Service
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Bottom Footer -->
+        <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center">
+
+            <p class="mb-2 mb-md-0 footer-copyright">
+                © 2023 Silatama Technologies Inc. All rights reserved.
+            </p>
+
+            <div class="footer-status">
+                System Status:
+                <span class="status-active">
+                    Optimal
+                </span>
+            </div>
+
+        </div>
+    </div>
 </footer>
+
+
+<style>
+    .footer-section {
+        background: #ffffff;
+        border-top: 1px solid #e9ecef;
+        padding-top: 80px;
+        padding-bottom: 40px;
+    }
+
+    .footer-logo {
+        font-size: 28px;
+        font-weight: 800;
+        color: #dc3545;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+    }
+
+    .footer-text {
+        color: #6c757d;
+        font-size: 14px;
+        line-height: 1.8;
+        margin-top: 20px;
+    }
+
+    .footer-title {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+
+    .footer-links a,
+    .footer-link-single {
+        text-decoration: none;
+        color: #6c757d;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+
+    .footer-links a:hover,
+    .footer-link-single:hover {
+        color: #ba0013;
+    }
+
+    .footer-contact li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .footer-contact .material-symbols-outlined {
+        font-size: 20px;
+        color: #ba0013;
+    }
+
+    .footer-social {
+        width: 42px;
+        height: 42px;
+        border: 1px solid #dee2e6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .footer-social:hover {
+        background: #ba0013;
+        color: white;
+        border-color: #ba0013;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #f1f3f5;
+        padding-top: 30px;
+    }
+
+    .footer-status {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .status-active {
+        color: #198754;
+        font-weight: 600;
+    }
+
+    .footer-copyright {
+        color: #6c757d;
+        font-size: 13px;
+    }
+
+    @media(max-width:768px){
+        .footer-section {
+            padding-bottom: 80px;
+        }
+    }
+</style>

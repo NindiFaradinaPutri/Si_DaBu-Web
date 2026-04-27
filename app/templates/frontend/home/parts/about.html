@@ -1,37 +1,289 @@
 {% load static %}
-<section class="section border-0 bg-transparent m-0" id="start">
-	<div class="container py-5 mb-3">
-		<div class="row">
-			<div class="col text-center">
 
-				<div class="divider divider-small divider-small-lg mt-0 text-center appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">
-					<hr class="bg-primary border-radius m-auto">
-				</div>
-				<div class="overflow-hidden mb-1">
-					<h3 class="font-weight-bold text-uppercase positive-ls-3 text-4 line-height-2 line-height-sm-7 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="100" style="color: #014C3D; text-align: left;">Tentang Kami</h3>
-				</div>
-				
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
-			</div>
-		</div>
-		<div class="row pt-4 pb-5">
-			<div class="col-lg-6 text-center p-relative pt-0">
-				<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="300">
-					<div class="logo-card" style="background-color: #fff; border-radius: 30px; padding: 30px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); display: inline-block;">
-						<img alt="Logo" style="width:80%;" class="img-fluid" src="/media/logo/logo-full.png">
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-6 pt-5 mt-5 pt-lg-0 mt-lg-0">
-				<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="300">
-					<p class="h3 text-color-dark font-weight-bold text-6 pb-2 mb-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200" style="font-style: italic;">"{{profile.visi}}"</p>
-					<div class="font-weight-medium text-4-5 line-height-5">{{profile.brief|safe}}</div>
-				</div>
+<style>
+    .event-section {
+        padding: 80px 0;
+        background: #ffffff;
+    }
 
-				<div class="d-block pt-4 btn-position appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="300">
-					<a href="/about/" class="btn btn-modern btn-primary btn-arrow-effect-1 text-capitalize text-2-5 px-5 py-3 anim-hover-translate-top-5px transition-2ms" style="border-radius: 30px;">Lebih Lanjut <i class="fas fa-arrow-right ms-2"></i></a>
-				</div>
-			</div>
-		</div>
-	</div>
+    .event-card {
+        border: 1px solid #e9ecef;
+        border-radius: 20px;
+        overflow: hidden;
+        background: white;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    }
+
+    .event-image-wrapper {
+        position: relative;
+        height: 240px;
+        overflow: hidden;
+    }
+
+    .event-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .status-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 2;
+    }
+
+    .status-badge span {
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .badge-active {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-category {
+        background: rgba(0,0,0,0.6);
+        color: white;
+    }
+
+    .badge-scheduled,
+    .badge-draft {
+        background: #f1f3f5;
+        color: #495057;
+    }
+
+    .event-date {
+        color: #ba0013;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .event-location {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .avatar-stack img,
+    .avatar-more {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-left: -10px;
+    }
+
+    .avatar-stack img:first-child {
+        margin-left: 0;
+    }
+
+    .avatar-more {
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: bold;
+        color: #6c757d;
+    }
+
+    .btn-event {
+        background: #ba0013;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 600;
+    }
+
+    .btn-event:hover {
+        background: #93000d;
+        color: white;
+    }
+
+    .section-title {
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .section-subtitle {
+        color: #6c757d;
+    }
+
+    .icon-btn {
+        width: 45px;
+        height: 45px;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon-btn:hover {
+        background: #f8f9fa;
+    }
+
+    .btn-outline-custom {
+        border: 2px solid #ba0013;
+        color: #ba0013;
+        background: white;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-custom:hover {
+        background: #ba0013;
+        color: white;
+    }
+
+    .material-symbols-outlined {
+        font-size: 20px;
+        vertical-align: middle;
+    }
+</style>
+
+
+<section class="event-section">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-5">
+            <div>
+                <h2 class="section-title">Upcoming Events</h2>
+                <p class="section-subtitle mb-0">
+                    Select an event to manage attendance and personnel.
+                </p>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">filter_list</span>
+                </button>
+
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">grid_view</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Event Cards -->
+        <div class="row g-4">
+
+            <!-- Card 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="event-card">
+                    <div class="event-image-wrapper">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXneZ1g2Ze5WCD6na1tYRFwBST3SQPdCA4J5mdBzn8rXzyGLKIVbvrbmiqxTlekorwMpDr51gDz5DY9kcDtcSGcwFwijDMx9hKDr3HeKXv11fyjaQC4SuFui1kXlSJW5I7rwc75ldBZ01aY2xQYdGjyucfde3xSIFB1uE4yuRwhiMX52VpYWlKYdWeu3xXdgPJv1520wZHOKOQGD5iTEwArLS83bgTO0Fvy3oahscqxq8CXN434f2t1XTYllUji_OpVG2VEF66Yko"
+                             class="event-image">
+
+                        <div class="status-badge d-flex gap-2">
+                            <span class="badge-active">Active</span>
+                            <span class="badge-category">Tech</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="event-date mb-2">OCT 24 - 26, 2023</div>
+                        <h5 class="fw-bold mb-3">Global Tech Summit 2023</h5>
+                        <div class="event-location mb-4">
+                            Convention Center, New York
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="avatar-stack d-flex">
+                                <img src="https://randomuser.me/api/portraits/women/1.jpg">
+                                <img src="https://randomuser.me/api/portraits/men/2.jpg">
+                                <div class="avatar-more">+12</div>
+                            </div>
+
+                            <button class="btn btn-event">
+                                Select
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="event-card">
+                    <div class="event-image-wrapper">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyQwCQOgNlzsUjm7Eqw0d5FS1fiGGM8w4pK7Vk8Ly-Uuc6JeWBluNuC1yOvKIVGEXU3P8Z7ZwF-fqSDYTIzPEw1hEWnmeyU40oGAIxen1e15evlDfahhqsGUfO5EL55ZfUbN5l3WqWZ6tNurDfDKf8r3-dQps5d_6L5A3S0GChBb1CLLKWrlDSrrND0OmJNvvgsCFT79YqaluNQ5MYO_p6-gvBwoxo388nEcc4HAP7P8Gt5GLySx3_605H0a8xEyfy1Kv9SFllH4w"
+                             class="event-image">
+
+                        <div class="status-badge">
+                            <span class="badge-scheduled">Scheduled</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="event-date mb-2">NOV 12, 2023</div>
+                        <h5 class="fw-bold mb-3">Executive Leadership Forum</h5>
+                        <div class="event-location mb-4">
+                            Hilton Grand Ballroom, Chicago
+                        </div>
+
+                        <button class="btn btn-event w-100">
+                            Select
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="event-card">
+                    <div class="event-image-wrapper">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYQ_EpkJJpinqpqKIAI4_7InfeGCE3R8jDE-nk6qqrWtoh9LeI0ozjuzAe8LUEO3CtK263YJEII6FMp8KkFJxlzG7X8lJzThgQl3XiuLEMTSHhAkmcUxc9Uwz_0cuYw_1q5eUMEagrKwFW3HOcA_5ykQ-bw4iS-ixTwABHXZSkyIwzAiQOfjsu1PXpWL_yURufoe95nvR6up6KctDDlejkxnhgjebQAJMuG0uelCo-GEgZMB2z_e1XxHOapiGbuvxUhB6VRQoVWPw"
+                             class="event-image">
+
+                        <div class="status-badge">
+                            <span class="badge-draft">Draft</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="event-date mb-2">DEC 05 - 08, 2023</div>
+                        <h5 class="fw-bold mb-3">Future Fintech Expo</h5>
+                        <div class="event-location mb-4">
+                            Tech Hub South, San Francisco
+                        </div>
+
+                        <button class="btn btn-event w-100">
+                            Select
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View More Button -->
+        <div class="text-center mt-5">
+            <a href="/about/" class="btn btn-outline-custom d-inline-flex align-items-center gap-2">
+                Lihat Selengkapnya
+                <span class="material-symbols-outlined">
+                    arrow_forward
+                </span>
+            </a>
+        </div>
+
+    </div>
 </section>

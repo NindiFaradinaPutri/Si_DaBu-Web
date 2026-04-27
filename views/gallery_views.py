@@ -65,7 +65,7 @@ from gallery.forms import *
 from hashids import Hashids
 hashid = Hashids(salt='silatama systems.', min_length=16)
 
-def gallery(request):
+def list_event(request):
     assert isinstance(request, HttpRequest)
     menu = ['Beranda','Galeri']
     title = 'Galeri'
@@ -92,7 +92,7 @@ def gallery(request):
 
     return render(
         request,
-        'frontend/gallery/gallery.html',
+        'frontend/event/list_event.html',
         context,
     )
 
