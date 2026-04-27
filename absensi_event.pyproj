@@ -32,13 +32,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ads\ajaxs.py" />
-    <Compile Include="ads\filters.py" />
-    <Compile Include="ads\forms.py" />
-    <Compile Include="ads\migrations\__init__.py" />
-    <Compile Include="ads\models.py" />
-    <Compile Include="ads\tables.py" />
-    <Compile Include="ads\__init__.py" />
+    <Compile Include="banner\ajaxs.py" />
+    <Compile Include="banner\filters.py" />
+    <Compile Include="banner\forms.py" />
+    <Compile Include="banner\migrations\__init__.py" />
+    <Compile Include="banner\models.py" />
+    <Compile Include="banner\tables.py" />
+    <Compile Include="banner\__init__.py" />
     <Compile Include="app\context_processors.py" />
     <Compile Include="app\crons.py" />
     <Compile Include="app\decorators.py" />
@@ -53,13 +53,6 @@
     <Compile Include="authentication\migrations\__init__.py" />
     <Compile Include="authentication\models.py" />
     <Compile Include="authentication\__init__.py" />
-    <Compile Include="career\ajaxs.py" />
-    <Compile Include="career\filters.py" />
-    <Compile Include="career\forms.py" />
-    <Compile Include="career\migrations\__init__.py" />
-    <Compile Include="career\models.py" />
-    <Compile Include="career\tables.py" />
-    <Compile Include="career\__init__.py" />
     <Compile Include="complaint\ajaxs.py" />
     <Compile Include="complaint\filters.py" />
     <Compile Include="complaint\forms.py" />
@@ -68,6 +61,7 @@
     <Compile Include="complaint\tables.py" />
     <Compile Include="complaint\__init__.py" />
     <Compile Include="absensi_event\prod-settings.py" />
+    <Compile Include="event\models.py" />
     <Compile Include="finance\prints.py" />
     <Compile Include="finance\ajaxs.py" />
     <Compile Include="finance\filters.py" />
@@ -75,6 +69,7 @@
     <Compile Include="finance\models.py" />
     <Compile Include="finance\tables.py" />
     <Compile Include="finance\__init__.py" />
+    <Compile Include="form\models.py" />
     <Compile Include="gallery\ajaxs.py" />
     <Compile Include="gallery\filters.py" />
     <Compile Include="gallery\forms.py" />
@@ -114,13 +109,6 @@
     <Compile Include="profile\models.py" />
     <Compile Include="profile\tables.py" />
     <Compile Include="profile\__init__.py" />
-    <Compile Include="qurban\ajaxs.py" />
-    <Compile Include="qurban\filters.py" />
-    <Compile Include="qurban\forms.py" />
-    <Compile Include="qurban\models.py" />
-    <Compile Include="qurban\prints.py" />
-    <Compile Include="qurban\tables.py" />
-    <Compile Include="qurban\__init__.py" />
     <Compile Include="team\ajaxs.py" />
     <Compile Include="team\filters.py" />
     <Compile Include="team\forms.py" />
@@ -128,6 +116,7 @@
     <Compile Include="team\models.py" />
     <Compile Include="team\tables.py" />
     <Compile Include="team\__init__.py" />
+    <Compile Include="participant\models.py" />
     <Compile Include="utils\functions.py" />
     <Compile Include="utils\utils.py" />
     <Compile Include="utils\__init__.py" />
@@ -148,8 +137,8 @@
     <Compile Include="views\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ads\migrations\" />
-    <Folder Include="ads\migrations\__pycache__\" />
+    <Folder Include="banner\migrations\" />
+    <Folder Include="banner\migrations\__pycache__\" />
     <Folder Include="app\" />
     <Folder Include="app\migrations\" />
     <Folder Include="app\static\" />
@@ -644,29 +633,20 @@
     <Folder Include="app\templatetags\" />
     <Folder Include="authentication\migrations\" />
     <Folder Include="authentication\migrations\__pycache__\" />
-    <Folder Include="career\migrations\" />
-    <Folder Include="career\migrations\__pycache__\" />
     <Folder Include="complaint\migrations\" />
     <Folder Include="complaint\migrations\__pycache__\" />
     <Folder Include="absensi_event\" />
-    <Folder Include="ads\" />
+    <Folder Include="banner\" />
     <Folder Include="authentication\" />
-    <Folder Include="career\" />
     <Folder Include="complaint\" />
-    <Folder Include="env\" />
-    <Folder Include="env\Lib\" />
-    <Folder Include="env\Lib\site-packages\" />
-    <Folder Include="env\Lib\site-packages\django\" />
-    <Folder Include="env\Lib\site-packages\django\contrib\" />
-    <Folder Include="env\Lib\site-packages\django\contrib\auth\" />
-    <Folder Include="env\Lib\site-packages\django\contrib\auth\migrations\" />
-    <Folder Include="env\Lib\site-packages\django\contrib\auth\migrations\__pycache__\" />
     <Folder Include="gallery\" />
     <Folder Include="gallery\migrations\" />
     <Folder Include="gallery\migrations\__pycache__\" />
     <Folder Include="finance\" />
     <Folder Include="information\" />
-    <Folder Include="qurban\" />
+    <Folder Include="event\" />
+    <Folder Include="form\" />
+    <Folder Include="participant\" />
     <Folder Include="news\migrations\" />
     <Folder Include="news\migrations\__pycache__\" />
     <Folder Include="portfolio\migrations\" />
@@ -683,8 +663,8 @@
     <Folder Include="news\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ads\migrations\__pycache__\0001_initial.cpython-39.pyc" />
-    <Content Include="ads\migrations\__pycache__\__init__.cpython-39.pyc" />
+    <Content Include="banner\migrations\__pycache__\0001_initial.cpython-39.pyc" />
+    <Content Include="banner\migrations\__pycache__\__init__.cpython-39.pyc" />
     <Content Include="app\static\animate\css\animate.css" />
     <Content Include="app\static\app\js\credentials.js" />
     <Content Include="app\static\app\js\custom.js" />
@@ -2245,13 +2225,8 @@
     <Content Include="app\templates\views\view_contact_message.html" />
     <Content Include="authentication\migrations\__pycache__\0001_initial.cpython-39.pyc" />
     <Content Include="authentication\migrations\__pycache__\__init__.cpython-39.pyc" />
-    <Content Include="career\migrations\__pycache__\0001_initial.cpython-39.pyc" />
-    <Content Include="career\migrations\__pycache__\__init__.cpython-39.pyc" />
     <Content Include="complaint\migrations\__pycache__\0001_initial.cpython-39.pyc" />
     <Content Include="complaint\migrations\__pycache__\__init__.cpython-39.pyc" />
-    <Content Include="env\Lib\site-packages\django\contrib\auth\migrations\__pycache__\0001_initial.cpython-39.pyc" />
-    <Content Include="env\Lib\site-packages\django\contrib\auth\migrations\__pycache__\0002_alter_permission_name_max_length.cpython-39.pyc" />
-    <Content Include="env\Lib\site-packages\django\contrib\auth\migrations\__pycache__\__init__.cpython-39.pyc" />
     <Content Include="gallery\migrations\__pycache__\0001_initial.cpython-39.pyc" />
     <Content Include="gallery\migrations\__pycache__\__init__.cpython-39.pyc" />
     <Content Include="news\migrations\__pycache__\0001_initial.cpython-39.pyc" />
