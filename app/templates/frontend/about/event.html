@@ -1,0 +1,430 @@
+{% extends "layout/consulting_2.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<style>
+    body{
+        background:#f8f9fb;
+        font-family:'Inter', sans-serif;
+    }
+
+    :root{
+        --primary:#ba0013;
+        --primary-dark:#93000d;
+        --secondary:#6c757d;
+        --border:#e9ecef;
+    }
+
+    .section-space{
+        padding:80px 0;
+    }
+
+    .event-badge{
+        color:var(--primary);
+        font-size:14px;
+        font-weight:600;
+        letter-spacing:2px;
+        text-transform:uppercase;
+    }
+
+    .hero-title{
+        font-size:42px;
+        font-weight:700;
+        line-height:1.2;
+    }
+
+    .event-meta-box{
+        background:#f1f3f5;
+        border-radius:16px;
+        padding:25px;
+    }
+
+    .meta-icon{
+        color:var(--primary);
+        font-size:28px;
+    }
+
+    .event-image{
+        width:100%;
+        height:100%;
+        min-height:380px;
+        object-fit:cover;
+        border-radius:20px;
+    }
+
+    .ticket-badge{
+        position:absolute;
+        bottom:20px;
+        left:20px;
+        background:rgba(255,255,255,0.15);
+        backdrop-filter:blur(12px);
+        color:white;
+        padding:10px 18px;
+        border-radius:50px;
+        display:flex;
+        align-items:center;
+        gap:8px;
+        font-weight:600;
+    }
+
+    .custom-card{
+        background:white;
+        border:1px solid var(--border);
+        border-radius:20px;
+        padding:25px;
+        box-shadow:0 8px 25px rgba(0,0,0,0.04);
+    }
+
+    .progress{
+        height:10px;
+        border-radius:20px;
+        overflow:hidden;
+    }
+
+    .progress-bar{
+        background:var(--primary);
+    }
+
+    .feature-icon{
+        color:var(--primary);
+        font-size:22px;
+        margin-top:2px;
+    }
+
+    .btn-primary-custom{
+        background:var(--primary);
+        color:white;
+        border:none;
+        border-radius:12px;
+        font-weight:600;
+    }
+
+    .btn-primary-custom:hover{
+        background:var(--primary-dark);
+        color:white;
+    }
+
+    .category-box{
+        border:1px solid #ddd;
+        border-radius:12px;
+        padding:15px;
+        text-align:center;
+        cursor:pointer;
+        transition:.3s;
+        font-weight:500;
+    }
+
+    .category-box:hover{
+        background:#fff5f5;
+        border-color:var(--primary);
+        color:var(--primary);
+    }
+
+    .venue-map{
+        width:100%;
+        height:350px;
+        object-fit:cover;
+        filter:grayscale(100%);
+        opacity:.85;
+    }
+
+    .location-box{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%, -50%);
+        background:white;
+        border-radius:16px;
+        padding:15px 20px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.08);
+        display:flex;
+        align-items:center;
+        gap:15px;
+    }
+
+    .location-icon{
+        background:var(--primary);
+        color:white;
+        width:50px;
+        height:50px;
+        border-radius:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+    }
+
+    @media(max-width:768px){
+        .hero-title{
+            font-size:30px;
+        }
+
+        .section-space{
+            padding:50px 0;
+        }
+    }
+</style>
+
+<main class="container section-space">
+
+    <!-- HERO SECTION -->
+    <div class="row g-4 align-items-center mb-5">
+
+        <!-- LEFT CONTENT -->
+        <div class="col-lg-7">
+            <div class="event-badge mb-2">
+                Global Tech Summit 2024
+            </div>
+
+            <h1 class="hero-title mb-3">
+                Future-Proofing the Digital Frontier
+            </h1>
+
+            <p class="text-muted mb-4">
+                Join 5,000+ industry leaders, engineers, and visionaries
+                for a three-day exploration of AI, sustainable infrastructure,
+                and decentralized networks.
+            </p>
+
+            <!-- META INFO -->
+            <div class="event-meta-box">
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <span class="material-symbols-outlined meta-icon">
+                                calendar_today
+                            </span>
+                            <div>
+                                <small class="text-muted d-block">Date</small>
+                                <strong>Oct 24-26, 2024</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <span class="material-symbols-outlined meta-icon">
+                                schedule
+                            </span>
+                            <div>
+                                <small class="text-muted d-block">Time</small>
+                                <strong>09:00 AM - 06:00 PM</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <span class="material-symbols-outlined meta-icon">
+                                location_on
+                            </span>
+                            <div>
+                                <small class="text-muted d-block">Location</small>
+                                <strong>SF Convention Center</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="col-lg-5">
+            <div class="position-relative">
+                <img 
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWMz4Pbf03tORTmoqM9fTkfFfjuRaWtB3SeD9u-N3PZsJdOmSpIpGRwTCNGZV3SVW8GLe4H7dJlKzxkk4f94huIliA_yCz0ZEnCH5ZqPkGEMTHuamgOqukkhYNYwI5O44BLocgwGiTWZvVXPONVigIuZcZ5OCE0z1rMlcix3AqLOmaPenxTuRy_vtpCGORt1s6gf5bsCt_nVcvYDzUFTKbvMrEf35X4GiMTcGTd3kgiF6Sy1wQ4Vj4urn8n96F2oTsZ1gvv7rcLN7U"
+                    class="event-image"
+                >
+
+                <div class="ticket-badge">
+                    <span class="material-symbols-outlined">stars</span>
+                    Limited Tickets Remaining
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- REGISTRATION SECTION -->
+    <div class="row g-4">
+
+        <!-- LEFT SIDEBAR -->
+        <div class="col-lg-4">
+
+            <!-- Attendance -->
+            <div class="custom-card mb-4">
+                <h4 class="mb-3">Attendance Progress</h4>
+
+                <div class="progress mb-2">
+                    <div class="progress-bar" style="width:85%"></div>
+                </div>
+
+                <div class="d-flex justify-content-between text-muted small">
+                    <span>85% Capacity Reached</span>
+                    <span>4,250 / 5,000</span>
+                </div>
+            </div>
+
+            <!-- Why Attend -->
+            <div class="custom-card">
+                <h4 class="mb-4">Why Attend?</h4>
+
+                <ul class="list-unstyled">
+
+                    <li class="d-flex gap-2 mb-3">
+                        <span class="material-symbols-outlined feature-icon">
+                            check_circle
+                        </span>
+                        <span>Access to 50+ Keynote Sessions and Workshops</span>
+                    </li>
+
+                    <li class="d-flex gap-2 mb-3">
+                        <span class="material-symbols-outlined feature-icon">
+                            check_circle
+                        </span>
+                        <span>Exclusive Networking Lounge Access</span>
+                    </li>
+
+                    <li class="d-flex gap-2">
+                        <span class="material-symbols-outlined feature-icon">
+                            check_circle
+                        </span>
+                        <span>Digital Event Pass Access</span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- REGISTRATION FORM -->
+        <div class="col-lg-8">
+            <div class="custom-card">
+
+                <h2 class="mb-2">Guest Registration</h2>
+                <p class="text-muted mb-4">
+                    Please fill in your details to secure your spot.
+                </p>
+
+                <form>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Organization / Company</label>
+                        <input type="text" class="form-control">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-4">
+                        <label class="form-label">Category</label>
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="category-box">Attendee</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="category-box">Speaker</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="category-box">Press</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary-custom w-100 py-3">
+                        Register Now
+                        <span class="material-symbols-outlined ms-2">
+                            arrow_forward
+                        </span>
+                    </button>
+
+                    <p class="text-center text-muted mt-3 small">
+                        By registering, you agree to our Terms of Service and Privacy Policy.
+                    </p>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- VENUE -->
+    <div class="custom-card mt-5 p-0 overflow-hidden">
+
+        <div class="p-4 border-bottom">
+            <h4 class="mb-1">Venue & Directions</h4>
+            <small class="text-muted">
+                San Francisco Convention Center
+            </small>
+        </div>
+
+        <div class="position-relative">
+            <img 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKNDEfLdgOuh44Ew9-9J8bBPHb92ZsNCwk8oS8hyct3qvdFUXYnYbAly3cHJuwpQaU-JgQUS0JomehBC2PqKyH-KYpxXEwFsMxWqWRnEATVaLVuq2vmp257O9Zn6ojYmuLSix3MTXmDzNtTHR0tOLtY2fESr4v-fXtRTd8dHcDPO2s5Qb-BRgyVEF-UGdgIebw6cOPda2cS-oLQ0b7omFCnMADvrNN7wG977hnwBnMlvoNCbeg0vYDcI-5KbWR9_cC0TkKdloCTeOC"
+                class="venue-map"
+            >
+
+            <div class="location-box">
+
+                <div class="location-icon">
+                    <span class="material-symbols-outlined">
+                        location_on
+                    </span>
+                </div>
+
+                <div>
+                    <strong>Global Tech Summit</strong><br>
+                    <small class="text-muted">
+                        North Hall, Level 2
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
+
+
+{% block theme %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
