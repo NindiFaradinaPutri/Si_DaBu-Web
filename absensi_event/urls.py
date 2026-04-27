@@ -79,7 +79,7 @@ urlpatterns = [
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', ads_views.banner_update, name='banner_update'),
 
     #About
-    path('about/', fe_views.about_frontend, name='about_2'),
+    path('event/', fe_views.event_frontend, name='event'),
     path('profile/', profile_views.profile, name='profile'),
 
     #Portfolio
@@ -119,7 +119,7 @@ urlpatterns = [
     url(r'^ajax/view_service/$', prf_ajaxs.view_service,name="view_service"),
 
     #Gallery
-    path('gallery/', gallery_views.gallery, name='gallery'),
+    path('list_event/', gallery_views.list_event, name='list_event'),
     path('gallery/list/', gallery_views.gallery_list, name='gallery_list'),
     path('gallery/add/', gallery_views.gallery_add, name='gallery_add'),
     re_path(r'^gallery/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', gallery_views.gallery_update, name='gallery_update'),
