@@ -4,104 +4,623 @@
 
 {% block content %}
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root {
+        --bs-primary: #ba0013;
+        --bs-primary-rgb: 186, 0, 19;
+        --silatama-red: #E31E24;
+        --surface-bg: #f8f9fb;
+    }
+
+    html {
+        overflow-x: auto;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--surface-bg);
+        color: #191c1e;
+
+        /* tambahan scroll horizontal */
+        overflow-x: auto;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+        vertical-align: middle;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 256px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: white;
+        border-right: 1px solid #dee2e6;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1.5rem;
+        color: #5e5e5e;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-right: 4px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .nav-link.active {
+        color: var(--silatama-red);
+        background-color: #fff5f5;
+        border-right-color: var(--silatama-red);
+    }
+
+    /* Main Content Adjustments */
+    .main-content {
+        margin-left: 256px;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+
+        /* tambahan agar bisa scroll horizontal */
+        overflow-x: auto;
+        width: calc(100% - 256px);
+    }
+
+    /* tambahan agar seluruh section bisa scroll */
+    main {
+        overflow-x: auto;
+    }
+
+    .top-app-bar {
+        height: 64px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 256px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        justify-content: space-between;
+    }
+
+    /* Component Specifics */
+    .search-bar {
+        background-color: #f3f4f6;
+        border-radius: 0.5rem;
+        width: 384px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .search-bar input {
+        background: transparent;
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+    }
+
+    .btn-primary {
+        background-color: var(--silatama-red);
+        border-color: var(--silatama-red);
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #ba0013;
+        border-color: #ba0013;
+    }
+
+    .stats-wrapper {
+    width: 100%;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 110px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 0;
+    color: #191c1e;
+}
+
+.icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-box span {
+    font-size: 28px;
+}
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .event-card {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .event-card img {
+        height: 192px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .event-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .badge-floating {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 9999px;
+    }
+
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar-group img,
+    .avatar-group .avatar-more {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-left: -8px;
+    }
+
+    .avatar-group img:first-child {
+        margin-left: 0;
+    }
+
+    .avatar-more {
+        background: #f3f4f6;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fab-qr {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--silatama-red);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(227, 30, 36, 0.3);
+        border: none;
+        z-index: 1050;
+        transition: transform 0.2s;
+    }
+
+    .fab-qr:hover {
+        transform: scale(1.1);
+    }
+
+    .custom-table th {
+        background-color: #f8f9fa;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6c757d;
+        padding: 1rem 1.5rem;
+    }
+
+    .custom-table td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+    }
+
+    /* table scroll horizontal */
+    .table-responsive {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .create-event-placeholder {
+        border: 2px dashed #dee2e6;
+        border-radius: 0.75rem;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .create-event-placeholder:hover {
+        border-color: var(--silatama-red);
+        background-color: #fff5f5;
+    }
+
+    .create-event-placeholder .icon-circle {
+        width: 64px;
+        height: 64px;
+        background: #f3f4f6;
+        color: #9ca3af;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .create-event-placeholder:hover .icon-circle {
+        background: #ffebeb;
+        color: var(--silatama-red);
+    }
+</style>
+
 <!-- start: page -->
-<div class="row">
-	<div class="col-lg-4 col-xl-3 mb-4 mb-xl-0">
 
-		<section class="card">
-			<div class="card-body">
-				<div class="thumb-info mb-3">
-					<img src="img/!logged-user.jpg" class="rounded img-fluid" alt="John Doe">
-					<div class="thumb-info-title">
-						<span class="thumb-info-inner">{{request.user.username}}</span>
-						{% if request.user.groups.first.name == 'Admin'%}
-						<span class="thumb-info-type">Administrator</span>
-						{% else %}
-						<span class="thumb-info-type">User</span>
-						{% endif %}
+<!-- Top App Bar -->
+<header class="top-app-bar">
+<div class="search-bar">
+<span class="material-symbols-outlined text-muted">search</span>
+<input placeholder="Search events or guests..." type="text"/>
+</div>
+<div class="d-flex align-items-center gap-3">
+<button class="btn btn-link text-muted p-2 position-relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
+</button>
+<button class="btn btn-link text-muted p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="vr mx-2" style="height: 32px;"></div>
+<div class="d-flex align-items-center gap-2">
+<div class="text-end d-none d-md-block">
+<p class="mb-0 fw-bold small">Alex Rivera</p>
+<p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
+</div>
+<img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="main-content container-fluid px-lg-5">
+<!-- Header -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
+<div>
+<h2 class="fw-bold mb-1">Event Dashboard</h2>
+<p class="text-muted mb-0">Manage your active and upcoming event logistics.</p>
+</div>
+<button class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                New Event
+            </button>
+</div>
+<!-- Stats Overview -->
+<div class="row g-3 mb-5 stats-wrapper">
 
-					</div>
-				</div>
+    <!-- Total Events -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-primary-subtle text-primary">
+                <span class="material-symbols-outlined">event_note</span>
+            </div>
 
-				<div class="widget-toggle-expand mb-3">
-					<div class="widget-header">
-						<h5 class="mb-2"><b>Profil</b></h5>
-						<div class="widget-toggle">+</div>
-					</div>
-					<div class="widget-content-expanded">
-						<table class="simple-todo-list mt-3">
-							<tr>
-								<td><b>Email</b></td>
-								<td><b>:</b></td>
-								<td>{{request.user.email}}</td>
-							</tr>
-							<tr>
-								<td><b>Phone</b></td>
-								<td><b>:</b></td>
-								<td>{{user_profile.phone_no}}</td>
-							</tr>
-							<tr>
-								<td class="align-top"><b>Address</b></td>
-								<td class="align-top"><b>:</b></td>
-								<td>
-									{%autoescape off%}
-									{{user_address.address|default:""}}, Kelurahan {{user_address.kelurahan}}, Kecamatan {{user_address.kecamatan}}, {{user_address.dati2}}, {{user_address.provinsi}}
-									{%endautoescape%}
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
+            <div class="stat-content">
+                <p class="stat-label">Total Events</p>
+                <h3 class="stat-value">12</h3>
+            </div>
+        </div>
+    </div>
 
-				<hr class="dotted short">
+    <!-- Upcoming -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-warning-subtle text-warning">
+                <span class="material-symbols-outlined">upcoming</span>
+            </div>
 
-				<a href="/logout/" class="btn btn-danger btn-sm"><i class="fa fa-sign-out"></i> Logout</a>
+            <div class="stat-content">
+                <p class="stat-label">Upcoming</p>
+                <h3 class="stat-value">5</h3>
+            </div>
+        </div>
+    </div>
 
-			</div>
-		</section>
+    <!-- Registered -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-success-subtle text-success">
+                <span class="material-symbols-outlined">person_add</span>
+            </div>
 
-	</div>
-	<div class="col">
+            <div class="stat-content">
+                <p class="stat-label">Registered</p>
+                <h3 class="stat-value">2,480</h3>
+            </div>
+        </div>
+    </div>
 
-		<div class="tabs">
-			<ul class="nav nav-tabs tabs-primary">
-				<!--<li class="nav-item active">
-					<a class="nav-link" href="#overview" data-toggle="tab">Overview</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#edit" data-toggle="tab">Edit</a>
-				</li>-->
-			</ul>
-			<div class="tab-content">
-				<div id="overview" class="tab-pane active">
+    <!-- Check In Rate -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-danger-subtle text-danger">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
 
-					<div class="p-3">
-						<h3 class="mb-4"><span id="greetings">Greetings...</span></h3>
-
-						<h4 class="mb-3">Pintasan</h4>
-
-						<section class="mb-3">
-							<a href="/article/add/" class="btn btn-secondary btn-sm"><i class="fa fa-newspaper"></i> Tambah Berita</a>
-							<a href="/gallery/add/" class="btn btn-secondary btn-sm"><i class="fa fa-photo-video"></i> Tambah Galeri</a>
-							<!-- <a href="/portfolio/add/" class="btn btn-secondary btn-sm"><i class="fa fa-file-alt"></i> Add Portfolio</a>
-							<a href="/testimony/add/" class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i> Add Testimony</a> -->
-							<a href="/contact/update/" class="btn btn-secondary btn-sm"><i class="fa fa-book-alt"></i> Perbarui Kontak</a>
-							<a href="/profile/" class="btn btn-secondary btn-sm"><i class="fa fa-info"></i> Perbarui Profil</a>
-						</section>
-
-						<h4 class="mb-3 pt-4">Pengaturan Profil</h4>
-						<a href="/admin/profile/update/" class="btn btn-info btn-sm"><i class="fa fa-database"></i> Ganti Profile</a>
-						<a href="/password/reset/" class="btn btn-warning btn-sm"><i class="fa fa-key"></i> Ganti Password</a>
-
-
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="stat-content">
+                <p class="stat-label">Check-in Rate</p>
+                <h3 class="stat-value">94.2%</h3>
+            </div>
+        </div>
+    </div>
 
 </div>
+<!-- Event Grid -->
+<div class="row g-4">
+<!-- Event 1 -->
+<div class="col-12 col-md-6 col-xl-4">
+<div class="event-card">
+<div class="position-relative">
+<img alt="Conference" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-ER_Wuppowwaik0rY7kvwGiM_V6SNpLYFsUJc-WK47SGUKFmPZCtykm3Wl3Y9muCaNDJAVhRbbu-S9_zn3sNWBmPp7_ewGaBWq4veEEOfmJpyTyHt86pFx8hz-clk0jkEpDk3lyli08vRRk4IE1_RNWsQbLpWEqGwtMKlEA9qq2Cq0MbfBKjvkwcg0QC4m29AsqyfgC8EC5brhRr6hxjgsBVSFwI2xg4_VUk9ETU_ZBjxgHEoihqq0OmhkORH8Ld6_4yq3xPFKtA"/>
+<span class="badge badge-floating bg-success-subtle text-success rounded-pill">Active</span>
+</div>
+<div class="p-4">
+<div class="d-flex justify-content-between align-items-start mb-1">
+<h5 class="fw-bold mb-0">Tech Conference 2024</h5>
+<button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<p class="text-muted small mb-4">
+<span class="material-symbols-outlined small">location_on</span> San Francisco, CA 
+                            <span class="mx-2">•</span>
+<span class="material-symbols-outlined small">calendar_month</span> Oct 12-14
+                        </p>
+<div class="mb-4">
+<div class="d-flex justify-content-between small mb-2">
+<span class="text-muted">Attendance Progress</span>
+<span class="fw-bold">850 / 1000</span>
+</div>
+<div class="progress">
+<div class="progress-bar bg-danger" role="progressbar" style="width: 85%"></div>
+</div>
+</div>
+<div class="d-flex justify-content-between align-items-center">
+<div class="avatar-group">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaeG6Zpt7j3L_2pdt2xJeuL0YBMC9vLRaIveGQ9ze3lrwFVXmFOtZ9UyxBmqG3cDujiZwH8IrJ8ONzfW9RTeC7uGjgVSX1Bes22FC544KHY1E8bmTg_XojLHkWHkpmX6LtEwi_d-go0Nr-C187YcBzeXzKphma2twJgjez-mxTFwJlG_y8pbG1hLYQPJQyKes82lvAh0wl4huLh8pOCWmg3JCiZR68vIbNSJ4cpvqVcljo3DcPppMiCW-rO8eMrSQ1fGjRtp5rd9c"/>
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbnh56Q-rLoDYGgxdd-5I9pi_Z8N2NwOzlzHo5l76qIM0vzb4obQrMrOxNkIPoF8R7WPxAYn2CCtVbPxtNqS56HvjpcOS4lBiVfp6m6DaYqGdYIQGFpdQvxz6OlmKAVFDPNGATevamWMqFEUhuOE6XnXdq8CqAkRRNf2iHR2XL4_-R_4w2QNLnFu8YWfIcF6znnEZnI_h3N94S0rl5fGZj2rEuu7ZwWp7D1S5LE0Ae2dmpDztEux4NQwgQQy40nu4OgDnvWu_CJck"/>
+<div class="avatar-more">+4</div>
+</div>
+<a class="text-danger fw-bold text-decoration-none small" href="#">Manage Event <span class="material-symbols-outlined small">arrow_forward</span></a>
+</div>
+</div>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="col-12 col-md-6 col-xl-4">
+<div class="event-card">
+<div class="position-relative">
+<img alt="Gala" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHB8Ktjsrxk7xt561vtyUacbrAzlO3BW1iODrXdZKQGD9_uFsHDbTxxjIxQ2_2Y3ZYvegWdlAf2lP8708Osa3sequLFFkRqan1Ecu9nF6JVFhhyip1EXcgn9yuVlUmR_nB414MBbwL6h3iDymOMvtZtVCGCGSEBtzheIedI6P-zGthCCv0i_uGld-WXSC6570EHeikdMkxpdccgjD1g-az4bPodozENJGs3kC-MuzR81gwGWsO3aYLmZ2B6rZx0PKJHDMXPDws3KU"/>
+<span class="badge badge-floating bg-warning-subtle text-warning rounded-pill">Planning</span>
+</div>
+<div class="p-4">
+<div class="d-flex justify-content-between align-items-start mb-1">
+<h5 class="fw-bold mb-0">Corporate Gala</h5>
+<button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<p class="text-muted small mb-4">
+<span class="material-symbols-outlined small">location_on</span> New York City, NY 
+                            <span class="mx-2">•</span>
+<span class="material-symbols-outlined small">calendar_month</span> Nov 05
+                        </p>
+<div class="mb-4">
+<div class="d-flex justify-content-between small mb-2">
+<span class="text-muted">Vendor Setup</span>
+<span class="fw-bold">45%</span>
+</div>
+<div class="progress">
+<div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
+</div>
+</div>
+<div class="d-flex justify-content-between align-items-center">
+<div class="avatar-group">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrQ9ufI-9S2f0PIHZYPLzfrZk-IPZpHsMXBN2pHeqIGrm5pGsZy_FN99M84jfU4-2iQ_NHl_ynAn9ZjkbAkV8R5psBFMAcqy5c4FsdBZ1KE-F_6LWMKjdbSaiV-cxyj37---VrY-APo-up1ip_bh6oZIXFU2ec3_J7uTfP2xfpLgv2NjzRij5fd3MPaT2DM3ThOFPFksLPVhDrrCDCbWLqci1LE71kEuB8nrrrviVQbN3oeGRaX5ni7Fr1S3Cnurl5gycM-yr4m-g"/>
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcIV2X-piFEjHjYa6uiZhj9DfaMDcCudaSjb5OvoHECQd6jADTfPCJZQ4_U9Z7jqFaAfXggwJuztr1ZP_uMrquKUEYHVGyVRr9z56TBWWBKYFc99LO2LifMP4l9UQckXU5OY_UJrQjS2UNR92iftCXDCMnppDmPzqZb-WuUSTG3YvC2zp7A2vuDWh4sxB-aJLjjr-YJgJUJixML0nLWPvQt0rro6fwvaUV62U7v4TWSq5Fk8MslbW1zof_sizLZdpXk0YMRiMBTKc"/>
+</div>
+<a class="text-danger fw-bold text-decoration-none small" href="#">Edit Details <span class="material-symbols-outlined small">edit</span></a>
+</div>
+</div>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="col-12 col-md-6 col-xl-4">
+<div class="event-card">
+<div class="position-relative">
+<img alt="Meeting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi-faShXLL5C7loQz-2JqLxPTujB1qx-B13BKzI6TdjvHSni2laXSDzXz_aGLMmFzhxtTcGx2M7BWWBxEb3hG0OaYu59GZDruqjmo6NYTz4shfEnaCTYviZ3kPX7RsEU95YtSVsI3M91KRUbD7_T-MF8LOdnjrA5gYJINZZVkZagcCdOfx3HHR2xnHkILzibWzDbm3f0imGw9d0XPDRPWuyDxWEkYSrnVXjeXqCUz7i_YAZtxH2jx2T5enFxpgYIRHy5_vALWEFmE"/>
+<span class="badge badge-floating bg-info-subtle text-info rounded-pill">Onboarding</span>
+</div>
+<div class="p-4">
+<div class="d-flex justify-content-between align-items-start mb-1">
+<h5 class="fw-bold mb-0">Annual Meeting</h5>
+<button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<p class="text-muted small mb-4">
+<span class="material-symbols-outlined small">location_on</span> Chicago, IL 
+                            <span class="mx-2">•</span>
+<span class="material-symbols-outlined small">calendar_month</span> Dec 20
+                        </p>
+<div class="mb-4">
+<div class="d-flex justify-content-between small mb-2">
+<span class="text-muted">Guest Registration</span>
+<span class="fw-bold">120 / 300</span>
+</div>
+<div class="progress">
+<div class="progress-bar bg-info" role="progressbar" style="width: 40%"></div>
+</div>
+</div>
+<div class="d-flex justify-content-between align-items-center">
+<div class="avatar-group">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0spDiBQKbxLCzWTKE1JxJjaTUz8PlnNoh5EaLtmP5NtL1WA2__2Oq7GJLv8P_vNH33mekLAU9lDb-xVck1Oa6xY3M15C6FRSIZlXkIbelvXAh0n5gE04wQIHTbbHz1fQ83_-oqOKLIOy3QURdTBBEI84xOnJR0YENtFNUybqvKrwJWug0jTcX6BOt-AetTI4aUtZ440jFntYmS1GRvKY_K8a9gCvPS0aE7xzEZIRxcdP8S_OytMl9VrJXe155zJtBcRRNy2FT8x8"/>
+</div>
+<a class="text-danger fw-bold text-decoration-none small" href="#">Invite Guests <span class="material-symbols-outlined small">mail</span></a>
+</div>
+</div>
+</div>
+</div>
+<!-- Placeholder Card -->
+<div class="col-12 col-md-6 col-xl-4">
+<div class="create-event-placeholder">
+<div class="icon-circle">
+<span class="material-symbols-outlined fs-2">add_circle</span>
+</div>
+<h5 class="fw-bold text-secondary">Create New Event</h5>
+<p class="text-muted small px-4">Launch a new registration and logistics dashboard</p>
+</div>
+</div>
+</div>
+<!-- Recent Activity Table -->
+<section class="mt-5">
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+<div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
+<h5 class="fw-bold mb-0">Recent Check-in Activity</h5>
+<button class="btn btn-link text-danger fw-bold text-decoration-none p-0">View All Logs</button>
+</div>
+<div class="table-responsive">
+<table class="table custom-table mb-0">
+<thead>
+<tr>
+<th>Guest Name</th>
+<th>Event</th>
+<th>Time</th>
+<th>Status</th>
+<th class="text-end">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">JD</div>
+<span class="fw-semibold">Jane Doe</span>
+</div>
+</td>
+<td class="text-muted small">Tech Conference 2024</td>
+<td class="text-muted small">10:24 AM</td>
+<td><span class="badge bg-success-subtle text-success fw-bold px-2 py-1" style="font-size: 10px;">SUCCESS</span></td>
+<td class="text-end"><button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">visibility</span></button></td>
+</tr>
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">MS</div>
+<span class="fw-semibold">Michael Smith</span>
+</div>
+</td>
+<td class="text-muted small">Tech Conference 2024</td>
+<td class="text-muted small">10:21 AM</td>
+<td><span class="badge bg-success-subtle text-success fw-bold px-2 py-1" style="font-size: 10px;">SUCCESS</span></td>
+<td class="text-end"><button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">visibility</span></button></td>
+</tr>
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">RH</div>
+<span class="fw-semibold">Robert H.</span>
+</div>
+</td>
+<td class="text-muted small">Tech Conference 2024</td>
+<td class="text-muted small">10:18 AM</td>
+<td><span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1" style="font-size: 10px;">MANUAL</span></td>
+<td class="text-end"><button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">visibility</span></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
 <script>
     $(document).ready(function () {
         var thehours = new Date().getHours();
@@ -139,5 +658,6 @@
 {% block query %}
 <!-- Specific Page Vendor -->
 <script type="text/javascript" src="{%static 'autosize/autosize.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}
