@@ -19,7 +19,7 @@ class StatusParticipant(models.Model):
     information = models.CharField(max_length=225)
 
     class Meta:
-        db_table = 'form_question_option'
+        db_table = 'status_participant'
 
     def __str__(self):
         return self.status_name

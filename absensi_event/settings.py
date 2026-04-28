@@ -128,6 +128,7 @@ WSGI_APPLICATION = 'absensi_event.wsgi.application'
 #ASGI_APPLICATION = 'nganggur.asgi.application'
 
 #reCAPTCHA
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # RECAPTCHA_PUBLIC_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PBC_KEY')
 # RECAPTCHA_PRIVATE_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PVT_KEY')
 
