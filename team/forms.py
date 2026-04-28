@@ -23,7 +23,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email, validate_integer, RegexValidator, URLValidator, MaxValueValidator, MinValueValidator
 
 #Inner Class in App
-from ads.models import *
 from team.models import *
 from datetime import date
 from pathlib import Path
@@ -82,78 +81,4 @@ class NarationForm(forms.ModelForm):
 
     field_order = ["title","brief","naration","quote"]
 
-
-class IqamahForm(forms.ModelForm):
-    pilihan_is_active = [('0', 'Tidak Tampil'), ('1', 'Tampil')]
-    is_active = forms.ChoiceField(
-        label='Status',
-        choices=pilihan_is_active,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-    class Meta:
-        model = BannerIqamah
-        fields = [
-            "title",
-            "description",
-            "photo",
-            "is_active",
-            "time_shubuh",
-            "time_dzuhur",
-            "time_ashar",
-            "time_maghrib",
-            "time_isya",
-        ]
-
-        labels = {
-            "title": "Judul",
-            "description": "Deskripsi",
-            'photo': 'Foto Banner',
-            "time_shubuh": "Waktu Shubuh",
-            "time_dzuhur": "Waktu Dzuhur",
-            "time_ashar": "Waktu Ashar",
-            "time_maghrib": "Waktu Maghrib",
-            "time_isya": "Waktu Isya",
-        }
-
-        widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
-            "time_shubuh": forms.TextInput(attrs={"class": "form-control"}),
-            "time_dzuhur": forms.TextInput(attrs={"class": "form-control"}),
-            "time_ashar": forms.TextInput(attrs={"class": "form-control"}),
-            "time_maghrib": forms.TextInput(attrs={"class": "form-control"}),
-            "time_isya": forms.TextInput(attrs={"class": "form-control"}),
-        }
-
-        field_order = [
-            "title",
-            "description",
-            "photo",
-            "is_active",
-            "time_shubuh",
-            "time_dzuhur",
-            "time_ashar",
-            "time_maghrib",
-            "time_isya",
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super(IqamahForm, self).__init__(*args, **kwargs)
-
-        # 🔥 set initial dari instance (True/False → 1/0)
-        if self.instance and self.instance.pk:
-            self.initial['is_active'] = '1' if self.instance.is_active else '0'
-
-    def clean_is_active(self):
-        value = self.cleaned_data['is_active']
-        return bool(int(value))   # 🔥 convert "0/1" -> False/True
-
-    def clean_photo(self):
-        photo = self.cleaned_data.get('photo')
-
-        if photo:
-            if photo.size > 5 * 1024 * 1024:  # 5MB
-                raise forms.ValidationError("Ukuran foto maksimal 5 MB")
-
-        return photo
 

@@ -40,9 +40,9 @@ from rest_framework.authtoken.models import Token
 from authentication.models import *
 from authentication.auth_forms import *
 
-from ads.models import *
-from ads.filters import *
-from ads.ads_forms import *
+from banner.models import *
+from banner.filters import *
+from banner.ads_forms import *
 
 #Set Loggin
 import logging

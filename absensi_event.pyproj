@@ -128,12 +128,10 @@
     <Compile Include="utils\functions.py" />
     <Compile Include="utils\utils.py" />
     <Compile Include="utils\__init__.py" />
-    <Compile Include="views\ads_views.py" />
+    <Compile Include="views\banner_views.py" />
     <Compile Include="views\auth_views.py" />
-    <Compile Include="views\qurban_views.py" />
     <Compile Include="views\information_views.py" />
     <Compile Include="views\finance_views.py" />
-    <Compile Include="views\career_views.py" />
     <Compile Include="views\complaint_views.py" />
     <Compile Include="views\fe_views.py" />
     <Compile Include="views\gallery_views.py" />

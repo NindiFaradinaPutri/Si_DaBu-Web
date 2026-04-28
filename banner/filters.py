@@ -2,7 +2,7 @@ import django_filters as filter
 from django.db.models import Q, CharField, Value, Sum, F, Case, When, Exists, Prefetch
 
 from service.models import *
-from ads.models import *
+from banner.models import *
 
 class PhotoVideoAdsFilter(filter.FilterSet):
     keyword = filter.CharFilter(lookup_expr='icontains',label="Kata Kunci",method='search_keyword')

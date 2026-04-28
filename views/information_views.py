@@ -21,7 +21,7 @@ from team.models import *
 from information.models import *
 from information.forms import *
 from portfolio.models import *
-from ads.models import *
+from banner.models import *
 from gallery.models import *
 
 #Set Masking

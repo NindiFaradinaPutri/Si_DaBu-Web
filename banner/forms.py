@@ -23,7 +23,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email, validate_integer, RegexValidator, URLValidator, MaxValueValidator, MinValueValidator
 
 #Inner Class in App
-from ads.models import *
+from banner.models import *
 from datetime import date
 from pathlib import Path
 

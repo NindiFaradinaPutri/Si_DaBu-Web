@@ -17,13 +17,11 @@ from news import ajaxs as news_ajaxs
 from portfolio import ajaxs as prf_ajaxs
 from gallery import ajaxs as gal_ajaxs
 
-from views import (auth_views, fe_views, news_views, ads_views, portfolio_views, gallery_views, profile_views, team_views, career_views, mobile_views, complaint_views, finance_views as finn,information_views as info,kegiatan_views as keg, qurban_views as qurban)
+from views import (auth_views, fe_views, news_views, banner_views, portfolio_views, gallery_views, profile_views, team_views, mobile_views, complaint_views, finance_views as finn,information_views as info)
 from views.mobile import mobile_auth_views as mobile_auth
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
-from kegiatan import ajaxs as keg_ajaxs, prints as keg_prints
 from information import ajaxs as info_ajaxs
-from qurban import ajaxs as qurban_ajaxs
 
 
 urlpatterns = [
@@ -74,9 +72,9 @@ urlpatterns = [
     url(r'^ajax/check_account_activation/$', auth_ajaxs.check_account_activation,name="check_account_activation"),
 
     #Banner
-    path('banner/list/', ads_views.banner_list, name='banner_list'),
-    path('banner/add/', ads_views.banner_add, name='banner_add'),  
-    re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', ads_views.banner_update, name='banner_update'),
+    path('banner/list/', banner_views.banner_list, name='banner_list'),
+    path('banner/add/', banner_views.banner_add, name='banner_add'),  
+    re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
 
     #About
     path('event/', fe_views.event_frontend, name='event'),
@@ -254,40 +252,40 @@ urlpatterns = [
     path('naration/', team_views.naration_update, name='naration_update'),
 
     # Show kegiatan zakat   
-    path('kegiatan_akuntasi/', keg.show_kegiatan_transaksi, name='kegiatan_akuntasi'),
-    url(r'^ajax/filter_gl_by_date_zakat/$', keg_ajaxs.filter_gl_by_date,name="filter_gl_by_date_zakat"),
-    url(r'^ajax/filter_gl_by_month_zakat/$', keg_ajaxs.filter_gl_by_month,name="filter_gl_by_month_zakat"),
+    # path('kegiatan_akuntasi/', keg.show_kegiatan_transaksi, name='kegiatan_akuntasi'),
+    # url(r'^ajax/filter_gl_by_date_zakat/$', keg_ajaxs.filter_gl_by_date,name="filter_gl_by_date_zakat"),
+    # url(r'^ajax/filter_gl_by_month_zakat/$', keg_ajaxs.filter_gl_by_month,name="filter_gl_by_month_zakat"),
 
     # New Kegiatan Zakat
-    path('transaction/zakat/', keg.kegiatan_transaksi_list, name='transaction_zakat_list'),
-    path('transaction/zakat/update/', keg.kegiatan_transaksi_update, name='transaction_zakat_update'),
-    url(r'^ajax/addform_kg/$', keg_ajaxs.addform_gl,name="addform_kg"),
-    url(r'^ajax/delete_kg/$', keg_ajaxs.delete_gl,name="delete_kg"),
+    # path('transaction/zakat/', keg.kegiatan_transaksi_list, name='transaction_zakat_list'),
+    # path('transaction/zakat/update/', keg.kegiatan_transaksi_update, name='transaction_zakat_update'),
+    # url(r'^ajax/addform_kg/$', keg_ajaxs.addform_gl,name="addform_kg"),
+    # url(r'^ajax/delete_kg/$', keg_ajaxs.delete_gl,name="delete_kg"),
 #     re_path(r'^print/khotbah/jumats/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
 #             keg_prints.print_khotbah_jumat, name="print_khotbah_jumats"),
-    re_path(r'^print/kegiatan/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
-           keg_prints.print_ringkasan_zakat, name="print_ringkasan"),
-    re_path(r'^print/keuangan/kegiatan(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
-           keg_prints.print_keuangan_zakat, name="print_keuangan_kegiatan"),
+    # re_path(r'^print/kegiatan/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
+    #        keg_prints.print_ringkasan_zakat, name="print_ringkasan"),
+    # re_path(r'^print/keuangan/kegiatan(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
+    #        keg_prints.print_keuangan_zakat, name="print_keuangan_kegiatan"),
     
     # coa zakat
-    path('coa/group/zakat/', keg.coa_group_list, name='coa_group_list'),
-    path('coa/group/zakat/add/', keg.coa_group_add, name='coa_group_add'),
-    re_path(r'^coa/group/zakat/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', keg.coa_group_update, name='coa_group_update'),
+    # path('coa/group/zakat/', keg.coa_group_list, name='coa_group_list'),
+    # path('coa/group/zakat/add/', keg.coa_group_add, name='coa_group_add'),
+    # re_path(r'^coa/group/zakat/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', keg.coa_group_update, name='coa_group_update'),
 
-    path('coa/zakat/', keg.coa_list, name='coa_list'),
-    path('coa/zakat/add/', keg.coa_add, name='coa_add'),
-    re_path(r'^coa/zakat/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', keg.coa_update, name='coa_update'),
+    # path('coa/zakat/', keg.coa_list, name='coa_list'),
+    # path('coa/zakat/add/', keg.coa_add, name='coa_add'),
+    # re_path(r'^coa/zakat/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', keg.coa_update, name='coa_update'),
     
-    #qurban
-    path('qurban/', qurban.qurban_list, name='qurban_list'),
-    re_path(r'^qurban/update/$', qurban.qurban_update, name='qurban_update'),
+    # #qurban
+    # path('qurban/', qurban.qurban_list, name='qurban_list'),
+    # re_path(r'^qurban/update/$', qurban.qurban_update, name='qurban_update'),
     
-    path('qurban/type/', qurban.qurban_type_list, name='qurban_type_list'),
-    path('qurban/type/add/', qurban.qurban_type_add, name='qurban_type_add'),
-    re_path(r'^qurban/type/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', qurban.qurban_type_update, name='qurban_type_update'),
-    url(r'^ajax/addform_qurban/$', qurban_ajaxs.addform_qurban,name="addform_qurban"),
-    url(r'^ajax/delete_qurban/$', qurban_ajaxs.delete_qurban,name="delete_qurban"),
+    # path('qurban/type/', qurban.qurban_type_list, name='qurban_type_list'),
+    # path('qurban/type/add/', qurban.qurban_type_add, name='qurban_type_add'),
+    # re_path(r'^qurban/type/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', qurban.qurban_type_update, name='qurban_type_update'),
+    # url(r'^ajax/addform_qurban/$', qurban_ajaxs.addform_qurban,name="addform_qurban"),
+    # url(r'^ajax/delete_qurban/$', qurban_ajaxs.delete_qurban,name="delete_qurban"),
 
 
     # ===== Mobile =====

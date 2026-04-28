@@ -58,21 +58,19 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     'app',
-    'ads',
+    'banner',
     'authentication',
-    'career',
     'complaint',
+    'event',
+    'finance',
+    'form',
     'gallery',
+    'information',
     'news',
     'portfolio',
     'profile',
     'team',
-    'utils',
-    'views',
-    'finance',
-    'information',
-    'kegiatan',
-    'qurban',
+    'participant',
 
     'django_tables2',
     'django_filters',
@@ -130,8 +128,9 @@ WSGI_APPLICATION = 'absensi_event.wsgi.application'
 #ASGI_APPLICATION = 'nganggur.asgi.application'
 
 #reCAPTCHA
-RECAPTCHA_PUBLIC_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PBC_KEY')
-RECAPTCHA_PRIVATE_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PVT_KEY')
+# RECAPTCHA_PUBLIC_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PBC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.environ.get('ABSENSI_EVENT_RECHA_PVT_KEY')
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {

@@ -26,8 +26,6 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 
 from finance.models import *
-from kegiatan.models import *
-#from kegiatan.models import *
 
 current_tzinfo = timezone.get_current_timezone()
 

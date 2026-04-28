@@ -1,5 +1,4 @@
 import os
-from typing import Required
 from django.db import models
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,PermissionsMixin
@@ -54,7 +53,7 @@ class FormQuestion(models.Model):
     id_form = models.ForeignKey(Form, on_delete=models.CASCADE)
     label = models.TextField()
     type = models.CharField(max_length=50, choices=QUESTION_TYPE_CHOICES)
-    required = models.BooleanField(default=True)
+    form_required = models.BooleanField(default=True)
     order = models.IntegerField(default = 0)
     help_text = models.TextField(blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)

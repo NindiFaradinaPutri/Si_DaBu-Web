@@ -58,8 +58,8 @@ logger = logging.getLogger(__file__)
 
 from app.decorators import *
 from utils.utils import *
-from ads.models import *
-from ads.forms import *
+from banner.models import *
+from banner.forms import *
 
 #Set Masking
 from hashids import Hashids

@@ -1,6 +1,5 @@
 import email
 import os
-from typing import Required
 from django.db import models
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,PermissionsMixin
