@@ -115,7 +115,7 @@ def home(request):
     )
 
 def event_frontend(request):
-    menu = ['Beranda','Sejarah Kami']
+    menu = ['Beranda','Event']
 
     profile = Profile.objects.filter(id = 1).first()
     contact = Contact.objects.filter(id = 1).first()
@@ -124,7 +124,7 @@ def event_frontend(request):
     naration = TeamNaration.objects.filter(id = 1).first()
 
     context = {
-            'title':'Sejarah Kami',
+            'title':'Event',
             'menu':menu,
             'profile':profile,
             'contact':contact,
