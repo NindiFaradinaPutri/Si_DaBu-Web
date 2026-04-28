@@ -11,21 +11,260 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
-        :root {
-            --bs-primary: #e31e24;
-            --bs-primary-rgb: 227, 30, 36;
-            --bs-body-font-family: 'Inter', sans-serif;
-            --silatama-red: #e31e24;
-            --silatama-gray-light: #f8f9fb;
-            --silatama-border: #e2e2e2;
-        }
+    :root {
+        --bs-primary: #ba0013;
+        --bs-primary-rgb: 186, 0, 19;
+        --silatama-red: #E31E24;
+        --surface-bg: #f8f9fb;
+    }
 
-        body {
-            background-color: var(--silatama-gray-light);
-            font-size: 0.9375rem;
-        }
+    html {
+        overflow-x: auto;
+    }
 
-        .top-app-bar {
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--surface-bg);
+        color: #191c1e;
+
+        /* tambahan scroll horizontal */
+        overflow-x: auto;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+        vertical-align: middle;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 256px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: white;
+        border-right: 1px solid #dee2e6;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1.5rem;
+        color: #5e5e5e;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-right: 4px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .nav-link.active {
+        color: var(--silatama-red);
+        background-color: #fff5f5;
+        border-right-color: var(--silatama-red);
+    }
+
+    /* Main Content Adjustments */
+    .main-content {
+        margin-left: 256px;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+
+        /* tambahan agar bisa scroll horizontal */
+        overflow-x: auto;
+        width: calc(100% - 256px);
+    }
+
+    /* tambahan agar seluruh section bisa scroll */
+    main {
+        overflow-x: auto;
+    }
+
+    /* Stats Card */
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Label */
+.stat-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6c757d;
+    letter-spacing: 1px;
+}
+
+
+.stats-wrapper {
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #edf0f2;
+    border-radius: 20px;
+    padding: 24px;
+    height: 100%;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* header */
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+/* label */
+.stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* icon wrapper */
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon span {
+    font-size: 22px;
+}
+
+/* number */
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+/* description */
+.stat-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 0;
+}
+
+/* progress */
+.custom-progress {
+    width: 100%;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.custom-progress-bar {
+    width: 77%;
+    height: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    border-radius: 999px;
+}
+
+/* subtle icon colors */
+.icon-total {
+    background: #f8fafc;
+}
+
+.icon-checkin {
+    background: #ecfdf3;
+}
+
+.icon-remaining {
+    background: #fef2f2;
+}
+/* Icon */
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon span {
+    font-size: 24px;
+}
+
+/* Number */
+.stat-value {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #191c1e;
+}
+
+/* Description */
+.stat-desc {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Custom Progress */
+.custom-progress {
+    width: 100%;
+    height: 8px;
+    background: #edf2f7;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.custom-progress-bar {
+    width: 77%;
+    height: 100%;
+    background: linear-gradient(90deg, #198754, #28c76f);
+    border-radius: 50px;
+}
+
+    .top-app-bar {
         height: 64px;
         position: fixed;
         top: 0;
@@ -59,6 +298,236 @@
         margin-left: 0.5rem;
     }
 
+    .btn-primary {
+        background-color: var(--silatama-red);
+        border-color: var(--silatama-red);
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #ba0013;
+        border-color: #ba0013;
+    }
+
+    .stats-wrapper {
+    width: 100%;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 110px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 0;
+    color: #191c1e;
+}
+
+.icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-box span {
+    font-size: 28px;
+}
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .event-card {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .event-card img {
+        height: 192px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .event-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .badge-floating {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 9999px;
+    }
+
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar-group img,
+    .avatar-group .avatar-more {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-left: -8px;
+    }
+
+    .avatar-group img:first-child {
+        margin-left: 0;
+    }
+
+    .avatar-more {
+        background: #f3f4f6;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fab-qr {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--silatama-red);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(227, 30, 36, 0.3);
+        border: none;
+        z-index: 1050;
+        transition: transform 0.2s;
+    }
+
+    .fab-qr:hover {
+        transform: scale(1.1);
+    }
+
+    .custom-table th {
+        background-color: #f8f9fa;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6c757d;
+        padding: 1rem 1.5rem;
+    }
+
+    .custom-table td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+    }
+
+    /* table scroll horizontal */
+    .table-responsive {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .create-event-placeholder {
+        border: 2px dashed #dee2e6;
+        border-radius: 0.75rem;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .create-event-placeholder:hover {
+        border-color: var(--silatama-red);
+        background-color: #fff5f5;
+    }
+
+    .create-event-placeholder .icon-circle {
+        width: 64px;
+        height: 64px;
+        background: #f3f4f6;
+        color: #9ca3af;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .create-event-placeholder:hover .icon-circle {
+        background: #ffebeb;
+        color: var(--silatama-red);
+    }
+
+    :root {
+            --bs-primary: #e31e24;
+            --bs-primary-rgb: 227, 30, 36;
+            --bs-body-font-family: 'Inter', sans-serif;
+            --silatama-red: #e31e24;
+            --silatama-gray-light: #f8f9fb;
+            --silatama-border: #e2e2e2;
+        }
+
+        body {
+            background-color: var(--silatama-gray-light);
+            font-size: 0.9375rem;
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             display: inline-block;
@@ -67,19 +536,7 @@
         }
 
         /* Sidebar Styling */
-        .sidebar {
-        width: 256px;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        background: white;
-        border-right: 1px solid #dee2e6;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem 0;
-    }
+        
 
         .nav-link {
             color: #64748b;
@@ -240,8 +697,7 @@
             font-size: 0.75rem;
             color: #94a3b8;
         }
-    </style>
-    
+</style>
 <!-- start: page -->
 <div id="main-content">
 
@@ -288,40 +744,65 @@
 </div>
 </div>
 <!-- Stats Grid -->
-<div class="row g-4 mb-4">
-<div class="col-md-4">
-<div class="stat-card">
-<div class="d-flex justify-content-between mb-3">
-<span class="text-secondary fw-bold small">TOTAL GUESTS</span>
-<span class="material-symbols-outlined text-secondary opacity-50">groups</span>
-</div>
-<div class="stat-value">2,450</div>
-<small class="text-muted">Registered across all categories</small>
-</div>
-</div>
-<div class="col-md-4">
-<div class="stat-card">
-<div class="d-flex justify-content-between mb-3">
-<span class="text-secondary fw-bold small">CHECKED-IN</span>
-<span class="material-symbols-outlined text-success">check_circle</span>
-</div>
-<div class="stat-value">1,892</div>
-<div class="progress mb-2" style="height: 6px;">
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="77" class="progress-bar bg-success" role="progressbar" style="width: 77%"></div>
-</div>
-<small class="text-success fw-bold">77% Attendance Rate</small>
-</div>
-</div>
-<div class="col-md-4">
-<div class="stat-card">
-<div class="d-flex justify-content-between mb-3">
-<span class="text-secondary fw-bold small">REMAINING</span>
-<span class="material-symbols-outlined text-danger">pending</span>
-</div>
-<div class="stat-value">558</div>
-<small class="text-muted">Awaiting arrival</small>
-</div>
-</div>
+<!-- Stats Section -->
+<div class="row g-3 mb-5 stats-wrapper">
+
+    <!-- Total Guests -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-primary-subtle text-primary">
+                <span class="material-symbols-outlined">groups</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Total Guests</p>
+                <h3 class="stat-value">2,480</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checked In -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-success-subtle text-success">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Checked In</p>
+                <h3 class="stat-value">1,922</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-danger-subtle text-danger">
+                <span class="material-symbols-outlined">pending</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Remaining</p>
+                <h3 class="stat-value">558</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Rate -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-warning-subtle text-warning">
+                <span class="material-symbols-outlined">analytics</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Attendance Rate</p>
+                <h3 class="stat-value">77%</h3>
+            </div>
+        </div>
+    </div>
+
 </div>
 <!-- Table Section -->
 <div class="guest-table-card">

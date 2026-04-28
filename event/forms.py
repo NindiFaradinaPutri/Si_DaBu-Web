@@ -1,0 +1,144 @@
+"""
+Definition of forms.
+"""
+
+from django import forms
+from django.forms import modelformset_factory, formset_factory
+
+from django.contrib import admin
+from django.contrib.auth import (
+    authenticate, get_user_model, password_validation,
+)
+from django.contrib.auth.forms import AuthenticationForm,  ReadOnlyPasswordHashField
+from django.contrib.auth.models import Group, Permission
+from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.contrib.auth.password_validation import validate_password 
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.validators import ASCIIUsernameValidator
+
+from django.utils.translation import ugettext_lazy as _
+
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email, validate_integer, RegexValidator, URLValidator, MaxValueValidator, MinValueValidator
+
+#Inner Class in App
+from banner.models import *
+from datetime import date
+from pathlib import Path
+
+#FORM BANNER
+from django import forms
+from .models import Event, EventPhoto
+
+
+class EventForm(forms.ModelForm):
+
+    class Meta:
+        model = Event
+        fields = [
+            'name',
+            'date',
+            'time',
+            'location',
+            'location_map',
+            'information'
+        ]
+
+        labels = {
+            'name': 'Nama Event',
+            'date': 'Tanggal Event',
+            'time': 'Waktu Event',
+            'location': 'Lokasi',
+            'location_map': 'Link Google Maps',
+            'information': 'Informasi Event',
+        }
+
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Masukkan nama event'
+                }
+            ),
+
+            'date': forms.DateInput(
+                attrs={
+                    'class': 'form-control',
+                    'type': 'date'
+                }
+            ),
+
+            'time': forms.TimeInput(
+                attrs={
+                    'class': 'form-control',
+                    'type': 'time'
+                }
+            ),
+
+            'location': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Contoh: Masjid Raya Balikpapan'
+                }
+            ),
+
+            'location_map': forms.URLInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'https://maps.google.com/...'
+                }
+            ),
+
+            'information': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 4,
+                    'placeholder': 'Deskripsi atau informasi event'
+                }
+            ),
+        }
+
+    field_order = [
+        'name',
+        'date',
+        'time',
+        'location',
+        'location_map',
+        'information'
+    ]
+
+
+class EventPhotoForm(forms.ModelForm):
+
+    class Meta:
+        model = EventPhoto
+        fields = [
+            'information',
+            'photo'
+        ]
+
+        labels = {
+            'information': 'Keterangan Foto',
+            'photo': 'Poster Event'
+        }
+
+        widgets = {
+            'information': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Contoh: Poster Event'
+                }
+            ),
+
+            'photo': forms.ClearableFileInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
+        }
+
+    field_order = [
+        'information',
+        'photo'
+    ]

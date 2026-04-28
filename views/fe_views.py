@@ -59,6 +59,7 @@ from django.db.models.functions import Replace
 from django.db.models import Value
 
 from banner.models import Banner
+from event.models import *
 from team.models import *
 from team.forms import *
 
@@ -97,14 +98,14 @@ def home(request):
 
     profile = Profile.objects.filter(id = 1).first()
 
-    banner = Banner.objects.filter(category = 2).order_by('id')
+    event = Event.objects.all().order_by('id')
 
     context = {
             'title':'Halaman Beranda',
             'kegiatans':kegiatans,
             'client':client,
             'profile':profile,
-            'banner':banner,
+            'banner':event,
         }
       
 
