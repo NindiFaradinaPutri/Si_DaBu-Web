@@ -54,6 +54,8 @@ from django.db.models import Value
 
 #Set Logg
 import logging
+
+from event.forms import EventForm, EventPhotoForm
 logger = logging.getLogger(__file__)
 
 from app.decorators import *
@@ -74,57 +76,97 @@ def event_list(request):
 
     context = {'title':title,
                'banner':banner,}
-    return render(request, 'backend/banner/event_list.html', context)
+    return render(request, 'backend/event/event_list.html', context)
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
 def event_add(request):
     assert isinstance(request, HttpRequest)
-    title = 'Tambah Banner'
+    title = 'Tambah Event'
 
     if request.method == 'POST':
         try:
-            is_active = request.POST.get('is_active',None)
-            bannerForm = BannerForm(data = request.POST, files = request.FILES)
-            if bannerForm.is_valid():
-                banner = bannerForm.save(commit=False)
-                banner.is_active = is_active
-                banner.save()
-                
-                messages.add_message(request,messages.INFO,'Banner '+banner.title+' is saved.')
+            event_form = EventForm(
+                data=request.POST
+            )
 
-                return redirect('/banner/list/')
+            photo_form = EventPhotoForm(
+                data=request.POST,
+                files=request.FILES
+            )
+
+            if event_form.is_valid() and photo_form.is_valid():
+
+                # save event terlebih dahulu
+                event = event_form.save()
+
+                # save photo jika ada upload
+                if request.FILES.get('photo'):
+                    event_photo = photo_form.save(commit=False)
+                    event_photo.id_event = event
+                    event_photo.save()
+
+                messages.success(
+                    request,
+                    f'Event {event.name} berhasil disimpan.'
+                )
+
+                return redirect('/event/list/')
+
             else:
-                raise forms.ValidationError("Data banner tidak valid.")
+                raise ValidationError("Data event tidak valid.")
+
         except ValidationError as e:
-            messages.add_message(request,messages.ERROR,'Banner failed to save.')
-            bannerForm = BannerForm(request.POST, request.FILES)
+            messages.error(
+                request,
+                'Event gagal disimpan.'
+            )
 
             context = {
-                'title':title,
-                'form':bannerForm,
+                'title': title,
+                'event_form': event_form,
+                'photo_form': photo_form,
             }
-    
-            return render(request,'backend/banner/banner_form.html',context)
+
+            return render(
+                request,
+                'backend/event/event_form.html',
+                context
+            )
+
         except Exception as e:
-            messages.add_message(request,messages.ERROR,'Banner failed to save.')
-            bannerForm = BannerForm(request.POST, request.FILES)
+            messages.error(
+                request,
+                'Event gagal disimpan.'
+            )
 
             context = {
-                'title':title,
-                'form':bannerForm,
+                'title': title,
+                'event_form': event_form,
+                'photo_form': photo_form,
             }
-    
-            return render(request,'backend/banner/banner_form.html',context)
+
+            return render(
+                request,
+                'backend/event/event_form.html',
+                context
+            )
+
     else:
-        bannerForm = BannerForm()
+        event_form = EventForm()
+        photo_form = EventPhotoForm()
 
         context = {
-            'title':title,
-            'form':bannerForm,
-            }
+            'title': title,
+            'event_form': event_form,
+            'photo_form': photo_form,
+        }
 
-        return render(request,'backend/banner/banner_form.html',context)
+        return render(
+            request,
+            'backend/event/event_form.html',
+            context
+        )
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
