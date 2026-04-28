@@ -1,0 +1,563 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+{% include "template/modals/delete_confirmation.html" with info_data="" %}
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --bs-primary: #e31e24;
+            --bs-primary-rgb: 227, 30, 36;
+            --bs-body-font-family: 'Inter', sans-serif;
+            --silatama-red: #e31e24;
+            --silatama-gray-light: #f8f9fb;
+            --silatama-border: #e2e2e2;
+        }
+
+        body {
+            background-color: var(--silatama-gray-light);
+            font-size: 0.9375rem;
+        }
+
+        .top-app-bar {
+        height: 64px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 256px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        justify-content: space-between;
+    }
+
+    /* Component Specifics */
+    .search-bar {
+        background-color: #f3f4f6;
+        border-radius: 0.5rem;
+        width: 384px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .search-bar input {
+        background: transparent;
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+    }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: 256px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 1px solid var(--silatama-border);
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: #64748b;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            border-right: 4px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #f1f5f9;
+            color: var(--silatama-red);
+        }
+
+        .nav-link.active {
+            color: var(--silatama-red);
+            background-color: #fef2f2;
+            border-right-color: var(--silatama-red);
+            font-weight: 700;
+        }
+
+        /* Content Area */
+        #main-content {
+            margin-left: 256px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Topbar Styling */
+        .top-navbar {
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid var(--silatama-border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1040;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-container .material-symbols-outlined {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-input {
+            padding-left: 40px;
+            background-color: var(--silatama-gray-light);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        /* Cards and Stats */
+        .stat-card {
+            background: white;
+            border: 1px solid var(--silatama-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Table Styling */
+        .guest-table-card {
+            background: white;
+            border: 1px solid var(--silatama-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background-color: white;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .table tbody td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Badges */
+        .badge-vip { background-color: #f3e8ff; color: #7e22ce; }
+        .badge-speaker { background-color: #dbeafe; color: #1d4ed8; }
+        .badge-attendee { background-color: #f1f5f9; color: #475569; }
+        .badge-present { background-color: #dcfce7; color: #15803d; }
+        .badge-absent { background-color: #f1f5f9; color: #64748b; }
+
+        .btn-primary {
+            background-color: var(--silatama-red);
+            border-color: var(--silatama-red);
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background-color: #c41217;
+            border-color: #c41217;
+        }
+
+        .btn-outline-secondary {
+            border-color: #cbd5e1;
+            color: #475569;
+        }
+
+        .pagination .page-link {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-color: #e2e8f0;
+        }
+
+        .pagination .active .page-link {
+            background-color: var(--silatama-red);
+            border-color: var(--silatama-red);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        footer {
+            margin-left: 256px;
+            padding: 1.5rem 2rem;
+            background: white;
+            border-top: 1px solid var(--silatama-border);
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+    </style>
+    
+<!-- start: page -->
+<div id="main-content">
+
+<header class="top-app-bar">
+<div class="search-bar">
+<span class="material-symbols-outlined text-muted">search</span>
+<input placeholder="Search events or guests..." type="text"/>
+</div>
+<div class="d-flex align-items-center gap-3">
+<button class="btn btn-link text-muted p-2 position-relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
+</button>
+<button class="btn btn-link text-muted p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="vr mx-2" style="height: 32px;"></div>
+<div class="d-flex align-items-center gap-2">
+<div class="text-end d-none d-md-block">
+<p class="mb-0 fw-bold small">Alex Rivera</p>
+<p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
+</div>
+<img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
+</div>
+</div>
+</header>
+<!-- Main Content Body -->
+<main class="container-fluid p-4" style="max-width: 1280px; margin: 0 auto;">
+<!-- Header Section -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
+<div>
+<h2 class="fw-bold mb-1">Global Tech Summit 2024</h2>
+<p class="text-secondary mb-0">Manage and track attendance for your primary guest list.</p>
+</div>
+<div class="d-flex gap-2">
+<button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
+<span class="material-symbols-outlined fs-5">upload_file</span>
+                    Import Excel/CSV
+                </button>
+<button class="btn btn-primary d-flex align-items-center gap-2 px-3">
+<span class="material-symbols-outlined fs-5">person_add</span>
+                    Add Guest
+                </button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="row g-4 mb-4">
+<div class="col-md-4">
+<div class="stat-card">
+<div class="d-flex justify-content-between mb-3">
+<span class="text-secondary fw-bold small">TOTAL GUESTS</span>
+<span class="material-symbols-outlined text-secondary opacity-50">groups</span>
+</div>
+<div class="stat-value">2,450</div>
+<small class="text-muted">Registered across all categories</small>
+</div>
+</div>
+<div class="col-md-4">
+<div class="stat-card">
+<div class="d-flex justify-content-between mb-3">
+<span class="text-secondary fw-bold small">CHECKED-IN</span>
+<span class="material-symbols-outlined text-success">check_circle</span>
+</div>
+<div class="stat-value">1,892</div>
+<div class="progress mb-2" style="height: 6px;">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="77" class="progress-bar bg-success" role="progressbar" style="width: 77%"></div>
+</div>
+<small class="text-success fw-bold">77% Attendance Rate</small>
+</div>
+</div>
+<div class="col-md-4">
+<div class="stat-card">
+<div class="d-flex justify-content-between mb-3">
+<span class="text-secondary fw-bold small">REMAINING</span>
+<span class="material-symbols-outlined text-danger">pending</span>
+</div>
+<div class="stat-value">558</div>
+<small class="text-muted">Awaiting arrival</small>
+</div>
+</div>
+</div>
+<!-- Table Section -->
+<div class="guest-table-card">
+<!-- Filter Bar -->
+<div class="px-4 py-3 bg-light border-bottom d-flex flex-wrap align-items-center justify-content-between gap-3">
+<div class="d-flex align-items-center gap-2">
+<span class="small fw-bold text-secondary text-uppercase letter-spacing-1 me-2">Filter by:</span>
+<select class="form-select form-select-sm w-auto">
+<option>All Categories</option>
+<option>VIP</option>
+<option>Speaker</option>
+<option>Attendee</option>
+</select>
+<select class="form-select form-select-sm w-auto">
+<option>All Statuses</option>
+<option>Present</option>
+<option>Absent</option>
+</select>
+</div>
+<div class="d-flex gap-1">
+<button class="btn btn-sm btn-white border-0">
+<span class="material-symbols-outlined text-secondary">filter_list</span>
+</button>
+<button class="btn btn-sm btn-white border-0">
+<span class="material-symbols-outlined text-secondary">download</span>
+</button>
+</div>
+</div>
+<!-- Guest Table -->
+<div class="table-responsive">
+<table class="table mb-0">
+<thead>
+<tr>
+<th>Guest Name</th>
+<th>Organization</th>
+<th>Category</th>
+<th class="text-center">Check-in Status</th>
+<th class="text-center">QR Ticket</th>
+<th class="text-end">Actions</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="avatar bg-danger-subtle text-danger">JD</div>
+<div>
+<div class="fw-bold text-dark">Jane Doe</div>
+<div class="small text-secondary">jane.doe@techcorp.com</div>
+</div>
+</div>
+</td>
+<td>TechCorp Industries</td>
+<td>
+<span class="badge rounded-pill badge-vip px-3 py-1 fw-bold small">VIP</span>
+</td>
+<td class="text-center">
+<span class="badge rounded-pill badge-present px-3 py-1">Present</span>
+</td>
+<td class="text-center">
+<span class="material-symbols-outlined text-success">qr_code_2</span>
+</td>
+<td class="text-end">
+<button class="btn btn-link text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="avatar bg-secondary-subtle text-secondary">MS</div>
+<div>
+<div class="fw-bold text-dark">Michael Smith</div>
+<div class="small text-secondary">m.smith@innovate.io</div>
+</div>
+</div>
+</td>
+<td>Innovate IO</td>
+<td>
+<span class="badge rounded-pill badge-speaker px-3 py-1 fw-bold small">Speaker</span>
+</td>
+<td class="text-center">
+<span class="badge rounded-pill badge-absent px-3 py-1">Absent</span>
+</td>
+<td class="text-center">
+<span class="material-symbols-outlined text-light">qr_code_2</span>
+</td>
+<td class="text-end">
+<button class="btn btn-link text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="avatar bg-light text-dark">AL</div>
+<div>
+<div class="fw-bold text-dark">Alice Liang</div>
+<div class="small text-secondary">alice.l@university.edu</div>
+</div>
+</div>
+</td>
+<td>State University</td>
+<td>
+<span class="badge rounded-pill badge-attendee px-3 py-1 fw-bold small">Attendee</span>
+</td>
+<td class="text-center">
+<span class="badge rounded-pill badge-present px-3 py-1">Present</span>
+</td>
+<td class="text-center">
+<span class="material-symbols-outlined text-success">qr_code_2</span>
+</td>
+<td class="text-end">
+<button class="btn btn-link text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="avatar bg-danger-subtle text-danger">RK</div>
+<div>
+<div class="fw-bold text-dark">Robert King</div>
+<div class="small text-secondary">r.king@global.com</div>
+</div>
+</div>
+</td>
+<td>Global Dynamics</td>
+<td>
+<span class="badge rounded-pill badge-vip px-3 py-1 fw-bold small">VIP</span>
+</td>
+<td class="text-center">
+<span class="badge rounded-pill badge-absent px-3 py-1">Absent</span>
+</td>
+<td class="text-center">
+<span class="material-symbols-outlined text-light">qr_code_2</span>
+</td>
+<td class="text-end">
+<button class="btn btn-link text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr>
+<td>
+<div class="d-flex align-items-center gap-3">
+<div class="avatar bg-secondary-subtle text-secondary">SC</div>
+<div>
+<div class="fw-bold text-dark">Sarah Connor</div>
+<div class="small text-secondary">s.connor@cyberdyne.systems</div>
+</div>
+</div>
+</td>
+<td>Cyberdyne Systems</td>
+<td>
+<span class="badge rounded-pill badge-speaker px-3 py-1 fw-bold small">Speaker</span>
+</td>
+<td class="text-center">
+<span class="badge rounded-pill badge-present px-3 py-1">Present</span>
+</td>
+<td class="text-center">
+<span class="material-symbols-outlined text-success">qr_code_2</span>
+</td>
+<td class="text-end">
+<button class="btn btn-link text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between">
+<span class="small text-secondary fw-medium">Showing 1-5 of 2,450 guests</span>
+<nav>
+<ul class="pagination pagination-sm mb-0 gap-1">
+<li class="page-item disabled">
+<a class="page-link d-flex align-items-center" href="#"><span class="material-symbols-outlined fs-6">chevron_left</span></a>
+</li>
+<li class="page-item active"><a class="page-link" href="#">1</a></li>
+<li class="page-item"><a class="page-link" href="#">2</a></li>
+<li class="page-item"><a class="page-link" href="#">3</a></li>
+<li class="page-item disabled"><span class="page-link border-0">...</span></li>
+<li class="page-item"><a class="page-link" href="#">490</a></li>
+<li class="page-item">
+<a class="page-link d-flex align-items-center" href="#"><span class="material-symbols-outlined fs-6">chevron_right</span></a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</main>
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.bootstrap4.css' %}">
+<style>
+	.img-photo {
+		height: 150px;
+		width: 300px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>
+<script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+{% endblock %}
