@@ -58,6 +58,7 @@ from rest_framework.authtoken.models import Token
 from django.db.models.functions import Replace
 from django.db.models import Value
 
+from banner.models import Banner
 from team.models import *
 from team.forms import *
 
