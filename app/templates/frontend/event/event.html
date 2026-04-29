@@ -9,6 +9,10 @@
 <!-- Material Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+
 <style>
     body{
         background:#f8f9fb;
@@ -49,6 +53,13 @@
     .meta-icon{
         color:var(--primary);
         font-size:28px;
+    }
+
+    .category-label{
+        color:var(--primary);
+        font-size:13px;
+        font-weight:600;
+        text-transform:uppercase;
     }
 
     .event-image{
@@ -168,6 +179,32 @@
         'opsz' 24
     }
 
+     .participant-box{
+    background: white;
+    border: 1px solid #ffffff;
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.participant-icon{
+    width:55px;
+    height:55px;
+    background: linear-gradient(135deg,#ba0013,#93000d);
+    color:white;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.participant-total{
+    font-size:28px;
+    font-weight:700;
+    color:#212529;
+}
+
     @media(max-width:768px){
         .hero-title{
             font-size:30px;
@@ -186,24 +223,39 @@
 
         <!-- LEFT CONTENT -->
         <div class="col-lg-7">
+
+            <!-- Event Status -->
             <div class="event-badge mb-2">
-                Global Tech Summit 2024
+                <span class="badge px-3 py-2 rounded-pill {{ event_badge_class }}">
+                    {{ event_status }}
+                </span>
             </div>
 
+            <!-- Category -->
+            <div class="category-label mb-2">
+                <span class="material-symbols-outlined align-middle">
+                    sell
+                </span>
+                Seminar
+            </div>
+
+            <!-- Title -->
             <h1 class="hero-title mb-3">
-                Future-Proofing the Digital Frontier
+                {{ event.name }}
             </h1>
 
+            <!-- Description -->
             <p class="text-muted mb-4">
-                Join 5,000+ industry leaders, engineers, and visionaries
-                for a three-day exploration of AI, sustainable infrastructure,
-                and decentralized networks.
+                {{ event.information }}
             </p>
 
-            <!-- META INFO -->
+            <!-- META BOX -->
             <div class="event-meta-box">
+
+                <!-- Row Date Time Location -->
                 <div class="row g-4">
 
+                    <!-- Date -->
                     <div class="col-md-4">
                         <div class="d-flex align-items-start gap-2">
                             <span class="material-symbols-outlined meta-icon">
@@ -211,11 +263,14 @@
                             </span>
                             <div>
                                 <small class="text-muted d-block">Date</small>
-                                <strong>Oct 24-26, 2024</strong>
+                                <strong>
+                                    {{ event.date|date:"j F Y" }}
+                                </strong>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Time -->
                     <div class="col-md-4">
                         <div class="d-flex align-items-start gap-2">
                             <span class="material-symbols-outlined meta-icon">
@@ -223,11 +278,18 @@
                             </span>
                             <div>
                                 <small class="text-muted d-block">Time</small>
-                                <strong>09:00 AM - 06:00 PM</strong>
+                                <strong>
+                                    {% if event.time %}
+                                        {{ event.time|time:"H:i" }} WITA
+                                    {% else %}
+                                        Flexible Time
+                                    {% endif %}
+                                </strong>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Location -->
                     <div class="col-md-4">
                         <div class="d-flex align-items-start gap-2">
                             <span class="material-symbols-outlined meta-icon">
@@ -235,29 +297,61 @@
                             </span>
                             <div>
                                 <small class="text-muted d-block">Location</small>
-                                <strong>SF Convention Center</strong>
+                                <strong>
+                                    {{ event.location }}
+                                </strong>
                             </div>
                         </div>
                     </div>
 
                 </div>
+
+                <!-- Participant Box -->
+                <div class="participant-box mt-4">
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="participant-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div>
+                            <small class="text-muted d-block">
+                                Current Participants
+                            </small>
+
+                            <strong class="participant-total">
+                                {{ participant_count }}
+                            </strong>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
+
 
         <!-- RIGHT IMAGE -->
         <div class="col-lg-5">
-            <div class="position-relative">
-                <img 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWMz4Pbf03tORTmoqM9fTkfFfjuRaWtB3SeD9u-N3PZsJdOmSpIpGRwTCNGZV3SVW8GLe4H7dJlKzxkk4f94huIliA_yCz0ZEnCH5ZqPkGEMTHuamgOqukkhYNYwI5O44BLocgwGiTWZvVXPONVigIuZcZ5OCE0z1rMlcix3AqLOmaPenxTuRy_vtpCGORt1s6gf5bsCt_nVcvYDzUFTKbvMrEf35X4GiMTcGTd3kgiF6Sy1wQ4Vj4urn8n96F2oTsZ1gvv7rcLN7U"
-                    class="event-image"
-                >
+            <div class="position-relative h-100">
 
-                <div class="ticket-badge">
-                    <span class="material-symbols-outlined">stars</span>
-                    Limited Tickets Remaining
-                </div>
+                {% if event_photo and event_photo.photo %}
+                    <img 
+                        src="{{ event_photo.photo.url }}"
+                        class="event-image"
+                        alt="{{ event.name }}"
+                    >
+                {% else %}
+                    <img 
+                        src="{% static 'images/default-event.jpg' %}"
+                        class="event-image"
+                        alt="Default Event"
+                    >
+                {% endif %}
+
             </div>
         </div>
+
     </div>
 
 
@@ -272,18 +366,26 @@
                 <h4 class="mb-3">Attendance Progress</h4>
 
                 <div class="progress mb-2">
-                    <div class="progress-bar" style="width:85%"></div>
+                    <div 
+                        class="progress-bar"
+                        style="width:{{ progress_percentage }}%">
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-between text-muted small">
-                    <span>85% Capacity Reached</span>
-                    <span>4,250 / 5,000</span>
+                    <span>
+                        {{ progress_percentage }}% Capacity Reached
+                    </span>
+
+                    <span>
+                        {{ participant_count }} / {{ max_capacity }}
+                    </span>
                 </div>
             </div>
 
-            <!-- Why Attend -->
+            <!-- Event Info -->
             <div class="custom-card">
-                <h4 class="mb-4">Why Attend?</h4>
+                <h4 class="mb-4">Event Highlights</h4>
 
                 <ul class="list-unstyled">
 
@@ -291,21 +393,21 @@
                         <span class="material-symbols-outlined feature-icon">
                             check_circle
                         </span>
-                        <span>Access to 50+ Keynote Sessions and Workshops</span>
+                        <span>Professional networking opportunities</span>
                     </li>
 
                     <li class="d-flex gap-2 mb-3">
                         <span class="material-symbols-outlined feature-icon">
                             check_circle
                         </span>
-                        <span>Exclusive Networking Lounge Access</span>
+                        <span>Exclusive event sessions</span>
                     </li>
 
                     <li class="d-flex gap-2">
                         <span class="material-symbols-outlined feature-icon">
                             check_circle
                         </span>
-                        <span>Digital Event Pass Access</span>
+                        <span>Access to digital event materials</span>
                     </li>
 
                 </ul>
@@ -322,42 +424,56 @@
                     Please fill in your details to secure your spot.
                 </p>
 
-                <form>
+                <form method="POST">
+                    {% csrf_token %}
 
                     <div class="row g-3 mb-3">
+
                         <div class="col-md-6">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control">
+                            <label class="form-label">
+                                Full Name
+                            </label>
+                            <input 
+                                type="text"
+                                name="name"
+                                class="form-control"
+                                required
+                            >
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" class="form-control">
+                            <label class="form-label">
+                                Email Address
+                            </label>
+                            <input 
+                                type="email"
+                                name="email"
+                                class="form-control"
+                            >
                         </div>
+
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Organization / Company</label>
-                        <input type="text" class="form-control">
+                        <label class="form-label">
+                            Phone Number
+                        </label>
+                        <input 
+                            type="text"
+                            name="phone"
+                            class="form-control"
+                        >
                     </div>
 
-                    <!-- Category -->
                     <div class="mb-4">
-                        <label class="form-label">Category</label>
-
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="category-box">Attendee</div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="category-box">Speaker</div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="category-box">Press</div>
-                            </div>
-                        </div>
+                        <label class="form-label">
+                            Location
+                        </label>
+                        <input 
+                            type="text"
+                            name="location"
+                            class="form-control"
+                        >
                     </div>
 
                     <button class="btn btn-primary-custom w-100 py-3">
@@ -366,10 +482,6 @@
                             arrow_forward
                         </span>
                     </button>
-
-                    <p class="text-center text-muted mt-3 small">
-                        By registering, you agree to our Terms of Service and Privacy Policy.
-                    </p>
 
                 </form>
             </div>
@@ -383,33 +495,26 @@
 
         <div class="p-4 border-bottom">
             <h4 class="mb-1">Venue & Directions</h4>
-            <small class="text-muted">
-                San Francisco Convention Center
-            </small>
+
+            
         </div>
 
         <div class="position-relative">
-            <img 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKNDEfLdgOuh44Ew9-9J8bBPHb92ZsNCwk8oS8hyct3qvdFUXYnYbAly3cHJuwpQaU-JgQUS0JomehBC2PqKyH-KYpxXEwFsMxWqWRnEATVaLVuq2vmp257O9Zn6ojYmuLSix3MTXmDzNtTHR0tOLtY2fESr4v-fXtRTd8dHcDPO2s5Qb-BRgyVEF-UGdgIebw6cOPda2cS-oLQ0b7omFCnMADvrNN7wG977hnwBnMlvoNCbeg0vYDcI-5KbWR9_cC0TkKdloCTeOC"
-                class="venue-map"
-            >
 
-            <div class="location-box">
+            {% if event.location_map %}
+                <iframe
+                    src="{{ event.location_map }}"
+                    width="100%"
+                    height="350"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            {% endif %}
 
-                <div class="location-icon">
-                    <span class="material-symbols-outlined">
-                        location_on
-                    </span>
-                </div>
+           
 
-                <div>
-                    <strong>Global Tech Summit</strong><br>
-                    <small class="text-muted">
-                        North Hall, Level 2
-                    </small>
-                </div>
-
-            </div>
+            
         </div>
     </div>
 

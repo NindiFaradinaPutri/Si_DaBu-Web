@@ -283,173 +283,146 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <section class="py-5">
         <div class="container">
 
-            <div class="row g-4">
+          <div class="row g-4">
 
-                <!-- CARD 1 -->
-                <div class="col-md-6 col-xl-4">
-                    <div class="event-card">
+    {% for item in events %}
+    <div class="col-md-6 col-xl-4">
+        <div class="event-card">
 
-                        <div class="position-relative overflow-hidden">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj3XGTHjA0ORCQxmoeP0zQOahPzT1N8u6XiGjokQPIk7AmfcOPdeMldjTImq0osz3R4WVNm8cg35dNBX__oXmkcf-onhAkfdqEpP3_XPD-1WmLQy8DsszHcTghDSQtAImWiHvwL8Yba8acV6E0-XPAcmprdyvUEWU1qyaIRYC4YqJsysrIXu7ncxYPuGpPCmu8ve6qSAeZzg4vidWkN7NKPY-JylXxh_0KywCHckFEhw0x4yap0cv_clkoNCyDbYuM4iUaIvld2J8"
-                                 class="event-image">
+            <!-- Event Image -->
+            <div class="position-relative overflow-hidden">
 
-                            <div class="status-badge">
-                                <span class="badge-custom badge-active">
-                                    ACTIVE
-                                </span>
-                            </div>
-                        </div>
+                {% if item.photo and item.photo.photo %}
+                    <img src="{{ item.photo.photo.url }}"
+                         class="event-image"
+                         alt="{{ item.event.name }}">
+                {% else %}
+                    <img src="{% static 'images/default-event.jpg' %}"
+                         class="event-image"
+                         alt="Default Event">
+                {% endif %}
 
-                        <div class="p-4">
-                            <div class="category-label mb-2">
-                                <span class="material-symbols-outlined align-middle">sell</span>
-                                Tech Expo
-                            </div>
+                <!-- Status Badge -->
+                <div class="status-badge">
+                    <span class="badge-custom {{ item.badge_class }}">
+                        {{ item.status }}
+                    </span>
+                </div>
+            </div>
 
-                            <h4 class="event-title mb-3">
-                                International Tech Expo 2024
-                            </h4>
+            <div class="p-4">
 
-                            <div class="event-meta mb-2">
-                                📅 Oct 24, 2024 • 09:00 AM
-                            </div>
-
-                            <div class="event-meta mb-4">
-                                📍 Singapore Convention Centre
-                            </div>
-
-                            <p class="text-muted">
-                                Discover the future of digital transformation 
-                                and AI integration.
-                            </p>
-
-                            <div class="d-flex gap-2 mt-4">
-                                <button class="btn btn-primary-custom flex-fill">
-                                    Register Now
-                                </button>
-
-                                <button class="btn btn-outline-custom">
-                                    Details
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="category-label mb-2">
+                    <span class="material-symbols-outlined align-middle">
+                        sell
+                    </span>
+                    Seminar
                 </div>
 
+                <!-- Event Title -->
+                <h4 class="event-title mb-3">
+                    {{ item.event.name }}
+                </h4>
 
-                <!-- CARD 2 -->
-                <div class="col-md-6 col-xl-4">
-                    <div class="event-card">
-
-                        <div class="position-relative">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvCn1sF4oS3CfTr61iHfIsraow3DhOuseSuASP007nZXFpGEdBJLU_aCxrKx7BgH2kJvNepNUDVMqhjTzbFTC837UC-z2zRej55KFNO_IZ3ms9PZsCNMIKsqHqPawkt2BYQ5VHHF79fw4J5vDO4Bi2ps2Fj25IQvWTp9tUBarCrolQW23DVF3UBKOSq3CQMhoisUYoPamq6WRAajCr_AUjTWQIjOsfUfFvyTlS7NCT1fLHPKLFohZagVbt3x_9lI-i3VH5WswrNuE"
-                                 class="event-image">
-
-                            <div class="status-badge">
-                                <span class="badge-custom badge-upcoming">
-                                    UPCOMING
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="p-4">
-                            <div class="category-label mb-2">Workshop</div>
-
-                            <h4 class="event-title mb-3">
-                                Agile Leadership Summit
-                            </h4>
-
-                            <div class="event-meta mb-2">
-                                📅 Nov 12, 2024 • 10:30 AM
-                            </div>
-
-                            <div class="event-meta mb-4">
-                                📍 Grand Hyatt, Jakarta
-                            </div>
-
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary-custom flex-fill">
-                                    Register Now
-                                </button>
-
-                                <button class="btn btn-outline-custom">
-                                    Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Date -->
+                <div class="event-meta mb-2">
+                    <i class="bi bi-calendar-event text-danger me-2"></i>
+                    {{ item.event.date|date:"j F Y" }}
                 </div>
 
+                <!-- Time -->
+                {% if item.event.time %}
+                <div class="event-meta mb-2">
+                    <i class="bi bi-clock-fill text-warning me-2"></i>
+                    {{ item.event.time|time:"H:i" }} WITA
+                </div>
+                {% endif %}
 
-                <!-- CARD 3 -->
-                <div class="col-md-6 col-xl-4">
-                    <div class="event-card">
+                <!-- Location -->
+                <div class="event-meta mb-2">
+                    <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                    {{ item.event.location }}
+                </div>
 
-                        <div class="position-relative">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIzkmZjQQUJNNCsSZvEVz4qPeZN68f622qzuUpwpILW2H7OmhCkb0aDvK-mhPlPbIJWDLthZPCX0Q_iSfy3Sq6_C187fwmsbBHaIXS3BJpl5Dyq96VoJG_9WSILln6lmtiDEHULR6jrao-pHPUcZWe1MVL9nx_YXOAqO4oHN4PzNL-AMG6yMpD1L9AMgXCTd-iBWzyUUNL4d0MP6Yx8NnCeK_1se8h4ZplhaEBlUlkoJ9ocLAk_GZ1ViILVK0LECn8K6aKXk8K1PE"
-                                 class="event-image">
+                <!-- Participants -->
+                <div class="event-meta mb-3">
+                    <i class="bi bi-people-fill me-2" style="color:#0d6efd;"></i>
+                    {{ item.participant_count }} Participants
+                </div>
 
-                            <div class="status-badge">
-                                <span class="badge-custom badge-completed">
-                                    COMPLETED
-                                </span>
-                            </div>
-                        </div>
+                <!-- Description -->
+                <p class="text-muted">
+                    {{ item.event.information|truncatewords:15 }}
+                </p>
 
-                        <div class="p-4">
-                            <div class="category-label mb-2">Seminar</div>
+                <!-- Buttons -->
+                <div class="d-flex gap-2 mt-4">
 
-                            <h4 class="event-title mb-3">
-                                Data Integrity Forum
-                            </h4>
+                    {% if item.can_register %}
+                        <button class="btn {{ item.button_class }} flex-fill">
+                            {{ item.button_text }}
+                        </button>
+                    {% else %}
+                        <button class="btn btn-secondary flex-fill" disabled>
+                            Registration Closed
+                        </button>
+                    {% endif %}
 
-                            <div class="event-meta mb-2">
-                                📅 Sep 15, 2024 • 02:00 PM
-                            </div>
+                    <a href="/event/"
+                    class="btn btn-outline-custom">
+                        Details
+                    </a>
 
-                            <div class="event-meta mb-4">
-                                📍 Virtual Event
-                            </div>
-
-                            <button class="btn btn-secondary w-100">
-                                Registration Closed
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
             </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
 
 
             <!-- PAGINATION -->
-            <div class="mt-5 d-flex justify-content-center">
-                <nav>
-                    <ul class="pagination">
+           <div class="mt-5 d-flex justify-content-center">
+    <nav>
+        <ul class="pagination">
 
-                        <li class="page-item">
-                            <a class="page-link" href="#">«</a>
-                        </li>
+            {% if events.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ events.previous_page_number }}">
+                    «
+                </a>
+            </li>
+            {% endif %}
 
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
+            {% for num in events.paginator.page_range %}
+                {% if events.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">
+                            {{ num }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
 
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
+            {% if events.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ events.next_page_number }}">
+                    »
+                </a>
+            </li>
+            {% endif %}
 
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">»</a>
-                        </li>
-
-                    </ul>
-                </nav>
-            </div>
+        </ul>
+    </nav>
+</div>
 
         </div>
     </section>

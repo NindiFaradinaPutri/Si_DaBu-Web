@@ -15,9 +15,11 @@ class Event(models.Model):
     date = models.DateField(null=False, blank=False)
     time = models.TimeField(null=True, blank=True)
     location = models.CharField(max_length=250, null=False, blank=False)
-    location_map = models.URLField(null=True, blank=True)
+    location_map =  models.CharField(max_length=1000, null=False, blank=False)
     information = models.TextField()
     unique_name = models.UUIDField(default=uuid4, editable=False, unique=True)
+    is_form = models.BooleanField(default=False)
+    url_form =  models.CharField(max_length=1000, null=False, blank=False)
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)
     update_date = models.DateTimeField(auto_now=True, blank=False)
 

@@ -82,7 +82,8 @@ urlpatterns = [
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
 
     #About
-    path('event/', fe_views.event_frontend, name='event'),
+    # path('event/', fe_views.event_frontend, name='event'),
+    path('event/<int:id>/',fe_views.event_frontend,name='event_frontend'),
     path('profile/', profile_views.profile, name='profile'),
 
     #Portfolio
