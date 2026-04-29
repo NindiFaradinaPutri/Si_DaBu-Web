@@ -31,6 +31,7 @@ class Participant(models.Model):
     location = models.CharField(max_length=150, null=True, blank=True)
     status_user_id = models.ForeignKey(StatusParticipant, on_delete=models.SET_NULL,null=True, blank=True)
     unique_user = models.UUIDField(default=uuid4, editable=False, unique=True)
+    id_event = models.ForeignKey(Event,on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         db_table = 'participant'
