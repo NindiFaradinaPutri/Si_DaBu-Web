@@ -217,8 +217,10 @@ def home(request):
         context
     )
 
+
 def event_frontend(request, id):
     menu = ['Beranda', 'Detail Event']
+
 
     profile = Profile.objects.filter(id=1).first()
     contact = Contact.objects.filter(id=1).first()
@@ -300,6 +302,7 @@ def event_frontend(request, id):
         'event_status': event_status,
         'event_badge_class': event_badge_class,
     }
+
 
     return render(
         request,

@@ -58,6 +58,7 @@
     <Compile Include="complaint\filters.py" />
     <Compile Include="complaint\forms.py" />
     <Compile Include="complaint\migrations\__init__.py" />
+    <Compile Include="form\forms.py" />
     <Compile Include="form\migrations\__init__.py" />
     <Compile Include="complaint\models.py" />
     <Compile Include="complaint\tables.py" />
@@ -675,6 +676,8 @@
     <Folder Include="news\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\js\absensi_form.js" />
+    <Content Include="app\templates\template\forms\tmp_absensi_form.html" />
     <Content Include="banner\migrations\__pycache__\0001_initial.cpython-39.pyc" />
     <Content Include="banner\migrations\__pycache__\__init__.cpython-39.pyc" />
     <Content Include="app\static\animate\css\animate.css" />
