@@ -59,6 +59,8 @@ logger = logging.getLogger(__file__)
 from app.decorators import *
 from utils.utils import *
 from gallery.models import *
+from event.models import *
+from participant.models import *
 from gallery.forms import *
 
 #Set Masking
@@ -66,34 +68,85 @@ from hashids import Hashids
 hashid = Hashids(salt='silatama systems.', min_length=16)
 
 def list_event(request):
-    assert isinstance(request, HttpRequest)
-    menu = ['Beranda','Galeri']
-    title = 'Galeri'
+    title = "Event List"
 
-    gallery_query = Gallery.objects.all().order_by('-id')
+    events = Event.objects.all().order_by('date', 'time')
 
-    page = request.GET.get('page',1)
+    now = timezone.localtime()
+    today = now.date()
+    current_time = now.time()
 
-    paginator = Paginator(gallery_query, per_page=9)
+    event_data = []
+
+    for event in events:
+        photo = EventPhoto.objects.filter(
+            id_event=event
+        ).first()
+
+        participant_count = Participant.objects.filter(
+            id_event=event
+        ).count()
+
+        # default
+        status = "EVENT FINISHED"
+        badge_class = "badge-completed"
+        button_text = "Registration Closed"
+        button_class = "btn-secondary"
+        can_register = False
+
+        if event.date > today:
+            status = "INCOMING"
+            badge_class = "badge-upcoming"
+            button_text = "Register Now"
+            button_class = "btn-primary-custom"
+            can_register = True
+
+        elif event.date == today:
+            if event.time:
+                if event.time.hour == current_time.hour:
+                    status = "LIVE MANAGEMENT"
+                    badge_class = "badge-active"
+                    button_text = "Register Now"
+                    button_class = "btn-primary-custom"
+                    can_register = True
+
+                elif event.time.hour > current_time.hour:
+                    status = "INCOMING"
+                    badge_class = "badge-upcoming"
+                    button_text = "Register Now"
+                    button_class = "btn-primary-custom"
+                    can_register = True
+
+        event_data.append({
+            "event": event,
+            "photo": photo,
+            "status": status,
+            "badge_class": badge_class,
+            "button_text": button_text,
+            "button_class": button_class,
+            "can_register": can_register,
+            "participant_count": participant_count
+        })
+
+    paginator = Paginator(event_data, 9)
+    page = request.GET.get('page', 1)
 
     try:
-        gallery = paginator.page(page)
+        paginated_events = paginator.page(page)
     except PageNotAnInteger:
-        gallery = paginator.page(1)
+        paginated_events = paginator.page(1)
     except EmptyPage:
-        gallery = paginator.page(paginator.num_pages)
+        paginated_events = paginator.page(paginator.num_pages)
 
     context = {
-        'title':title,
-        'menu':menu,
-        'gallery':gallery,
-        'data':'all',
-        }
+        "title": title,
+        "events": paginated_events,
+    }
 
     return render(
         request,
-        'frontend/event/list_event.html',
-        context,
+        "frontend/event/list_event.html",
+        context
     )
 
 def gallery_category(request,category):
