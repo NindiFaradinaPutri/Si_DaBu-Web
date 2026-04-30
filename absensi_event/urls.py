@@ -22,6 +22,7 @@ from views.mobile import mobile_auth_views as mobile_auth
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
+from event import ajaxs as event_ajaxs
 
 
 urlpatterns = [
@@ -81,6 +82,8 @@ urlpatterns = [
     path('banner/list/', banner_views.banner_list, name='banner_list'),
     path('banner/add/', banner_views.banner_add, name='banner_add'),  
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
+
+    url(r'^ajax/create_event/$', event_ajaxs.create_event,name="create_event"),
 
     #About
     

@@ -45,34 +45,6 @@ function renderConfig(selectElement) {
 
     switch (type) {
 
-        case "short_text":
-        case "long_text":
-            container.innerHTML = `
-        <div class="form-group">
-          <label>Informasi</label>
-          <input type="text" id="placeholder" class="form-control"/>
-        </div>
-      `;
-            break;
-
-        case "number":
-            container.innerHTML = `
-            <div class="form-group">
-                <label>Range Nilai</label>
-                <div class="row">
-                    <div class="col-md-6 col-12">
-                        <label>Min</label>
-                        <input type="number" class="form-control min" />
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <label>Max</label>
-                        <input type="number" class="form-control max" />
-                    </div>
-                </div>
-            </div>
-      `;
-            break;
-
         case "single_choice":
         case "multiple_choice":
         case "dropdown":
@@ -97,27 +69,14 @@ function renderConfig(selectElement) {
 
             break;
 
+        case "short_text":
+        case "long_text":
         case "rating":
-            container.innerHTML = `
-        <div class="form-group">
-          <label>Max Rating</label>
-          <input type="number" id="rating_max" value="5"/>
-        </div>
-      `;
-            break;
-
         case "file_upload":
         case "image_upload":
-            container.innerHTML = `
-        <div class="form-group">
-          <label>Allowed File Types</label>
-          <input type="text" id="file_types" placeholder="jpg,png,pdf"/>
-        </div>
-      `;
-            break;
-
         default:
-            container.innerHTML = "";
+            container.innerHTML = '';
+            break;
     }
 }
 
@@ -171,7 +130,20 @@ document.addEventListener("submit", function (e) {
                 data.options.push(input.value.trim());
             }
         });
-    }
+    };
 
-    console.log("DATA:", data);
+    $.ajax({
+        type: "POST",
+        url: '/ajax/create_event/',
+        datatype: 'json',
+        data: { 'data': data },
+        success: function (data) {
+            jadwal_sholat = JSON.parse(data.jadwal_sholat);
+            setPrayTime();
+            init();
+            current_date = new Date();
+        }
+    });
+
+    
 });

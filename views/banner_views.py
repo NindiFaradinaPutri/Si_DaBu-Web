@@ -369,3 +369,5 @@ def banner_update(request, status, id):
             messages.add_message(request,messages.WARNING,'Banner '+banner.title+' successfuly deleted.')
             banner.delete()
             return redirect('/banner/list/')
+
+

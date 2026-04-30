@@ -827,13 +827,16 @@
                         <span class="material-symbols-outlined text-danger fs-3">quiz</span>
                         <h3 class="h4 mb-0 fw-bold">Engagement Questions</h3>
                     </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <button type="button" id="add-question-btn" class="btn btn-primary-custom w-100 py-3 fw-bold mb-4">
+                            <span class="material-symbols-outlined fs-5 me-2">add</span>
+                            Add Question
+                        </button>
+                    </div>
                 </div>
 
                 <!-- BUTTON ADD -->
-                <button type="button" id="add-question-btn" class="btn btn-primary-custom w-100 py-3 fw-bold mb-4">
-                    <span class="material-symbols-outlined fs-5 me-2">add</span>
-                    Add Question
-                </button>
+                
 
                 <!-- CONTAINER -->
                 <div id="question-container"></div>
@@ -857,6 +860,10 @@
                     {% include 'template/forms/tmp_absensi_form.html' %}
                 </div>
             </div>
+
+            <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold mb-4">
+                Simpan
+            </button>
         </div>
     </main>
 </form>
