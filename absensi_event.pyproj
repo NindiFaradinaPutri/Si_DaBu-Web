@@ -58,6 +58,7 @@
     <Compile Include="complaint\filters.py" />
     <Compile Include="complaint\forms.py" />
     <Compile Include="complaint\migrations\__init__.py" />
+    <Compile Include="form\forms.py" />
     <Compile Include="form\migrations\__init__.py" />
     <Compile Include="complaint\models.py" />
     <Compile Include="complaint\tables.py" />
@@ -144,6 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="absensi_event\migrations\" />
+    <Folder Include="app\static\media\event\" />
+    <Folder Include="app\templates\backend\event\" />
+    <Folder Include="app\templates\frontend\event\" />
+    <Folder Include="app\templates\frontend\kegiatan\" />
     <Folder Include="banner\migrations\" />
     <Folder Include="banner\migrations\__pycache__\" />
     <Folder Include="app\" />
@@ -675,6 +680,14 @@
     <Folder Include="news\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\js\absensi_form.js" />
+    <Content Include="app\static\media\event\WhatsApp_Image_2026-04-27_at_08.jpeg" />
+    <Content Include="app\templates\backend\event\event_form.html" />
+    <Content Include="app\templates\backend\event\event_list.html" />
+    <Content Include="app\templates\frontend\event\event.html" />
+    <Content Include="app\templates\frontend\event\list_event.html" />
+    <Content Include="app\templates\frontend\kegiatan\kegiatan_akuntasi_show.html" />
+    <Content Include="app\templates\template\forms\tmp_absensi_form.html" />
     <Content Include="banner\migrations\__pycache__\0001_initial.cpython-39.pyc" />
     <Content Include="banner\migrations\__pycache__\__init__.cpython-39.pyc" />
     <Content Include="app\static\animate\css\animate.css" />

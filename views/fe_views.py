@@ -221,8 +221,10 @@ def home(request):
         context
     )
 
+
 def event_frontend(request, id):
     menu = ['Beranda', 'Detail Event']
+
 
     profile = Profile.objects.filter(id=1).first()
     contact = Contact.objects.filter(id=1).first()
@@ -339,6 +341,7 @@ def event_frontend(request, id):
         # qr
         'qr_code_base64': qr_code_base64,
     }
+
 
     return render(
         request,

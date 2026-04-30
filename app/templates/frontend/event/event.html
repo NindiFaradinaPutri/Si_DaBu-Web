@@ -14,190 +14,186 @@
 
 
 <style>
-    body{
-        background:#f8f9fb;
-        font-family:'Inter', sans-serif;
+    body {
+        background: #f8f9fb;
+        font-family: 'Inter', sans-serif;
     }
 
-    :root{
-        --primary:#ba0013;
-        --primary-dark:#93000d;
-        --secondary:#6c757d;
-        --border:#e9ecef;
+    :root {
+        --primary: #ba0013;
+        --primary-dark: #93000d;
+        --secondary: #6c757d;
+        --border: #e9ecef;
     }
 
-    .section-space{
-        padding:80px 0;
+    .section-space {
+        padding: 80px 0;
     }
 
-    .event-badge{
-        color:var(--primary);
-        font-size:14px;
-        font-weight:600;
-        letter-spacing:2px;
-        text-transform:uppercase;
+    .event-badge {
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
 
-    .hero-title{
-        font-size:42px;
-        font-weight:700;
-        line-height:1.2;
+    .hero-title {
+        font-size: 42px;
+        font-weight: 700;
+        line-height: 1.2;
     }
 
-    .event-meta-box{
-        background:#f1f3f5;
-        border-radius:16px;
-        padding:25px;
+    .event-meta-box {
+        background: #f1f3f5;
+        border-radius: 16px;
+        padding: 25px;
     }
 
-    .meta-icon{
-        color:var(--primary);
-        font-size:28px;
+    .meta-icon {
+        color: var(--primary);
+        font-size: 28px;
     }
 
-    .category-label{
-        color:var(--primary);
-        font-size:13px;
-        font-weight:600;
-        text-transform:uppercase;
+    .category-label {
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
     }
 
-    .event-image{
-        width:100%;
-        height:100%;
-        min-height:380px;
-        object-fit:cover;
-        border-radius:20px;
+    .event-image {
+        width: 100%;
+        height: 100%;
+        min-height: 380px;
+        object-fit: cover;
+        border-radius: 20px;
     }
 
-    .ticket-badge{
-        position:absolute;
-        bottom:20px;
-        left:20px;
-        background:rgba(255,255,255,0.15);
-        backdrop-filter:blur(12px);
-        color:white;
-        padding:10px 18px;
-        border-radius:50px;
-        display:flex;
-        align-items:center;
-        gap:8px;
-        font-weight:600;
+    .ticket-badge {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
     }
 
-    .custom-card{
-        background:white;
-        border:1px solid var(--border);
-        border-radius:20px;
-        padding:25px;
-        box-shadow:0 8px 25px rgba(0,0,0,0.04);
+    .custom-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.04);
     }
 
-    .progress{
-        height:10px;
-        border-radius:20px;
-        overflow:hidden;
+    .progress {
+        height: 10px;
+        border-radius: 20px;
+        overflow: hidden;
     }
 
-    .progress-bar{
-        background:var(--primary);
+    .progress-bar {
+        background: var(--primary);
     }
 
-    .feature-icon{
-        color:var(--primary);
-        font-size:22px;
-        margin-top:2px;
+    .feature-icon {
+        color: var(--primary);
+        font-size: 22px;
+        margin-top: 2px;
     }
 
-    .btn-primary-custom{
-        background:var(--primary);
-        color:white;
-        border:none;
-        border-radius:12px;
-        font-weight:600;
+    .btn-primary-custom {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
     }
 
-    .btn-primary-custom:hover{
-        background:var(--primary-dark);
-        color:white;
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+    .category-box {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: .3s;
+        font-weight: 500;
     }
 
-    .category-box{
-        border:1px solid #ddd;
-        border-radius:12px;
-        padding:15px;
-        text-align:center;
-        cursor:pointer;
-        transition:.3s;
-        font-weight:500;
+        .category-box:hover {
+            background: #fff5f5;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+    .venue-map {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        filter: grayscale(100%);
+        opacity: .85;
     }
 
-    .category-box:hover{
-        background:#fff5f5;
-        border-color:var(--primary);
-        color:var(--primary);
+    .location-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 16px;
+        padding: 15px 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        gap: 15px;
     }
 
-    .venue-map{
-        width:100%;
-        height:350px;
-        object-fit:cover;
-        filter:grayscale(100%);
-        opacity:.85;
-    }
-
-    .location-box{
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%, -50%);
-        background:white;
-        border-radius:16px;
-        padding:15px 20px;
-        box-shadow:0 10px 30px rgba(0,0,0,0.08);
-        display:flex;
-        align-items:center;
-        gap:15px;
-    }
-
-    .location-icon{
-        background:var(--primary);
-        color:white;
-        width:50px;
-        height:50px;
-        border-radius:12px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
+    .location-icon {
+        background: var(--primary);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .material-symbols-outlined {
-        font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
     }
 
-     .participant-box{
-    background: white;
-    border: 1px solid #ffffff;
-    border-radius: 16px;
-    padding: 18px 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
+    .participant-box {
+        background: white;
+        border: 1px solid #ffffff;
+        border-radius: 16px;
+        padding: 18px 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
 
-.participant-icon{
-    width:55px;
-    height:55px;
-    background: linear-gradient(135deg,#ba0013,#93000d);
-    color:white;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-}
+    .participant-icon {
+        width: 55px;
+        height: 55px;
+        background: linear-gradient(135deg,#ba0013,#93000d);
+        color: white;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
 
 .participant-total{
     font-size:28px;
@@ -258,13 +254,13 @@
     color: rgba(255,255,255,0.8);
 }
 
-    @media(max-width:768px){
-        .hero-title{
-            font-size:30px;
+    @media(max-width:768px) {
+        .hero-title {
+            font-size: 30px;
         }
 
-        .section-space{
-            padding:50px 0;
+        .section-space {
+            padding: 50px 0;
         }
     }
 </style>
@@ -333,9 +329,9 @@
                                 <small class="text-muted d-block">Time</small>
                                 <strong>
                                     {% if event.time %}
-                                        {{ event.time|time:"H:i" }} WITA
+                                    {{ event.time|time:"H:i" }} WITA
                                     {% else %}
-                                        Flexible Time
+                                    Flexible Time
                                     {% endif %}
                                 </strong>
                             </div>
@@ -389,17 +385,13 @@
             <div class="position-relative h-100">
 
                 {% if event_photo and event_photo.photo %}
-                    <img 
-                        src="{{ event_photo.photo.url }}"
-                        class="event-image"
-                        alt="{{ event.name }}"
-                    >
+                <img src="{{ event_photo.photo.url }}"
+                     class="event-image"
+                     alt="{{ event.name }}">
                 {% else %}
-                    <img 
-                        src="{% static 'images/default-event.jpg' %}"
-                        class="event-image"
-                        alt="Default Event"
-                    >
+                <img src="{% static 'images/default-event.jpg' %}"
+                     class="event-image"
+                     alt="Default Event">
                 {% endif %}
 
             </div>
@@ -419,9 +411,8 @@
                 <h4 class="mb-3">Attendance Progress</h4>
 
                 <div class="progress mb-2">
-                    <div 
-                        class="progress-bar"
-                        style="width:{{ progress_percentage }}%">
+                    <div class="progress-bar"
+                         style="width:{{ progress_percentage }}%">
                     </div>
                 </div>
 
@@ -578,25 +569,24 @@
         <div class="p-4 border-bottom">
             <h4 class="mb-1">Venue & Directions</h4>
 
-            
+
         </div>
 
         <div class="position-relative">
 
             {% if event.location_map %}
-                <iframe
-                    src="{{ event.location_map }}"
+            <iframe src="{{ event.location_map }}"
                     width="100%"
                     height="350"
                     style="border:0;"
                     allowfullscreen=""
                     loading="lazy">
-                </iframe>
+            </iframe>
             {% endif %}
 
-           
 
-            
+
+
         </div>
     </div>
 
@@ -606,6 +596,10 @@
 
 
 {% block theme %}
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'app/js/absensi_form.js'%}"></script>
 {% endblock %}
 
 {% block header %}
