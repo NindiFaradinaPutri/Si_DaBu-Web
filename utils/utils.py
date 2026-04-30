@@ -29,7 +29,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework import status
 from rest_framework.response import Response
-
+import re
 from django.contrib import messages
 import logging
 logger = logging.getLogger(__file__)
@@ -154,3 +154,48 @@ def error_method():
 
     context = {"metadata": metadata}
     return Response(context,status=status_code)
+
+
+def normalize(text):
+    """
+    Normalisasi:
+    - lowercase
+    - hapus spasi
+    - hapus simbol
+    """
+    if not text:
+        return ""
+    return re.sub(r'[^a-z0-9]', '', str(text).lower())
+
+
+def find_column(df, keywords):
+    """
+    Cari kolom berdasarkan keyword fleksibel
+    """
+    normalized_cols = {
+        normalize(col): col for col in df.columns
+    }
+
+    for key in keywords:
+        key_norm = normalize(key)
+
+        for col_norm, original_col in normalized_cols.items():
+            if key_norm in col_norm:
+                return original_col
+
+    return None
+
+
+def format_datetime_indo(dt_str):
+    try:
+        dt = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+
+        bulan = [
+            "Januari", "Februari", "Maret", "April",
+            "Mei", "Juni", "Juli", "Agustus",
+            "September", "Oktober", "November", "Desember"
+        ]
+
+        return f"{dt.day} {bulan[dt.month-1]} {dt.year}, {dt.strftime('%H:%M')} WIB"
+    except:
+        return dt_str

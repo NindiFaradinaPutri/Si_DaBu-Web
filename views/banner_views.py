@@ -48,6 +48,7 @@ from django.utils.safestring import SafeString
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
+from form.models import FormResponse
 from rest_framework.authtoken.models import Token
 from django.db.models.functions import Replace
 from django.db.models import Value
@@ -56,11 +57,13 @@ from django.db.models import Value
 import logging
 
 from event.forms import EventForm, EventPhotoForm
+from participant.models import Participant
 logger = logging.getLogger(__file__)
 
 from app.decorators import *
 from utils.utils import *
 from banner.models import *
+from event.models import *
 from banner.forms import *
 
 #Set Masking
@@ -69,14 +72,144 @@ hashid = Hashids(salt='silatama systems.', min_length=16)
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
-def event_list(request):
+def event_list(request, id):
     assert isinstance(request, HttpRequest)
-    title = 'List Banner'
-    banner = Banner.objects.all().order_by('title')
 
-    context = {'title':title,
-               'banner':banner,}
-    return render(request, 'backend/event/event_list.html', context)
+    # ambil event
+    event = Event.objects.filter(id=id).first()
+
+    # queryset participant
+    participant_queryset = Participant.objects.filter(
+        id_event=event
+    ).select_related(
+        "status_user_id"
+    ).order_by("-id")
+
+    # =========================
+    # STATISTICS
+    # =========================
+    total_participants = participant_queryset.count()
+
+    checked_in = participant_queryset.filter(
+        status_user_id__status_name__iexact="Present"
+    ).count()
+
+    remaining = participant_queryset.filter(
+        status_user_id__status_name__iexact="Register"
+    ).count()
+
+    attendance_rate = 0
+    if total_participants > 0:
+        attendance_rate = round(
+            (checked_in / total_participants) * 100
+        )
+
+    form_responses_qs = FormResponse.objects.select_related("participant").filter(
+        participant__id_event=event
+        ).order_by("-id")
+
+    dynamic_headers = []
+    dynamic_rows = []
+
+    base_headers = [
+    "name",
+    "email",
+    "phone",
+    "status",
+    "qr_code",
+    "location",
+    ]
+
+    # =========================
+    # AMBIL HEADER DARI JSON
+    # =========================
+    json_headers = []
+
+    for fr in form_responses_qs:
+        excel_data = fr.data_response.get("excel_data", {})
+        if not json_headers:
+            json_headers = list(excel_data.keys())
+
+    # =========================
+    # FILTER HEADER JSON (buang yg duplikat participant)
+    # =========================
+    filtered_json_headers = []
+
+    for header in json_headers:
+        is_all_same = True
+
+        for fr in form_responses_qs:
+            excel_data = fr.data_response.get("excel_data", {})
+            val = str(excel_data.get(header, "") or "").strip().lower()
+
+            p = fr.participant
+
+            if val not in [
+                str(p.name or "").lower(),
+                str(p.email or "").lower(),
+                str(p.phone or "").lower(),
+                str(p.location or "").lower(),
+            ]:
+                is_all_same = False
+                break
+
+        if not is_all_same:
+            filtered_json_headers.append(header)
+
+    # =========================
+    # FINAL HEADER (GABUNG)
+    # =========================
+    final_headers = base_headers + filtered_json_headers
+
+    for fr in form_responses_qs:
+        excel_data = fr.data_response.get("excel_data", {})
+
+        # ambil header (hanya sekali)
+        if not dynamic_headers:
+            dynamic_headers = list(excel_data.keys())
+
+        dynamic_rows.append(excel_data)
+
+    # optional: rename header Timestamp → Waktu Pendaftaran
+    clean_headers = []
+    for h in dynamic_headers:
+        if h.lower() == "timestamp":
+            clean_headers.append("Tanggal & Waktu Pendaftaran")
+        else:
+            clean_headers.append(h)
+    # =========================
+    # PAGINATION
+    # =========================
+    page_number = request.GET.get("page", 1)
+
+    paginator = Paginator(
+        participant_queryset,
+        5  # tampilkan 10 participant per halaman
+    )
+
+    participants = paginator.get_page(page_number)
+
+    context = {
+        "event": event,
+        "participants": participants,
+        "total_participants": total_participants,
+        "checked_in": checked_in,
+        "remaining": remaining,
+        "attendance_rate": attendance_rate,
+
+        # 🔥 tambahan
+        "dynamic_headers": dynamic_headers,
+        "clean_headers": clean_headers,
+        "dynamic_rows": dynamic_rows,
+        "final_headers": final_headers
+    }
+
+    return render(
+        request,
+        "backend/event/event_list.html",
+        context
+    )
+
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
@@ -235,16 +368,6 @@ def event_update(request, status, id):
 
 
 
-
-
-
-
-
-
-
-
-
-
 @login_required(login_url='/admin/who-login/')
 @admin_only
 def banner_list(request):
@@ -369,3 +492,20 @@ def banner_update(request, status, id):
             messages.add_message(request,messages.WARNING,'Banner '+banner.title+' successfuly deleted.')
             banner.delete()
             return redirect('/banner/list/')
+        
+
+
+@login_required(login_url='/admin/who-login/')
+@admin_only
+def participant_upload(request, id):
+    event = Event.objects.filter(id=id).first()
+
+    context = {
+        "event": event
+    }
+
+    return render(
+        request,
+        'backend/participant/upload_participant.html',
+        context
+    )

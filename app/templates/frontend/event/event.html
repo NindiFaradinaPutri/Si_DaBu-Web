@@ -205,6 +205,59 @@
     color:#212529;
 }
 
+.external-form-box{
+    background: linear-gradient(135deg, #ba0013, #93000d);
+    border-radius: 24px;
+    padding: 40px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(186,0,19,0.25);
+}
+
+.external-form-box h2{
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.external-form-box p{
+    color: rgba(255,255,255,0.85);
+}
+
+.qr-box{
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 25px 0;
+}
+
+.qr-box img{
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+}
+
+.btn-google-form{
+    background: white;
+    color: #ba0013;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 14px 28px;
+    text-decoration: none;
+    display: inline-block;
+    transition: .3s;
+}
+
+.btn-google-form:hover{
+    background: #f8f9fa;
+    color: #93000d;
+}
+
+.scan-text{
+    font-size:14px;
+    color: rgba(255,255,255,0.8);
+}
+
     @media(max-width:768px){
         .hero-title{
             font-size:30px;
@@ -416,78 +469,107 @@
 
 
         <!-- REGISTRATION FORM -->
-        <div class="col-lg-8">
-            <div class="custom-card">
+       <div class="col-lg-8">
 
-                <h2 class="mb-2">Guest Registration</h2>
-                <p class="text-muted mb-4">
-                    Please fill in your details to secure your spot.
-                </p>
+    {% if event.is_form %}
+    <!-- INTERNAL FORM -->
+    <div class="custom-card">
 
-                <form method="POST">
-                    {% csrf_token %}
+        <h2 class="mb-2">Guest Registration</h2>
+        <p class="text-muted mb-4">
+            Please fill in your details to secure your spot.
+        </p>
 
-                    <div class="row g-3 mb-3">
+        <form method="POST">
+            {% csrf_token %}
 
-                        <div class="col-md-6">
-                            <label class="form-label">
-                                Full Name
-                            </label>
-                            <input 
-                                type="text"
-                                name="name"
-                                class="form-control"
-                                required
-                            >
-                        </div>
+            <div class="row g-3 mb-3">
 
-                        <div class="col-md-6">
-                            <label class="form-label">
-                                Email Address
-                            </label>
-                            <input 
-                                type="email"
-                                name="email"
-                                class="form-control"
-                            >
-                        </div>
+                <div class="col-md-6">
+                    <label class="form-label">Full Name</label>
+                    <input 
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        required
+                    >
+                </div>
 
-                    </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email Address</label>
+                    <input 
+                        type="email"
+                        name="email"
+                        class="form-control"
+                    >
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">
-                            Phone Number
-                        </label>
-                        <input 
-                            type="text"
-                            name="phone"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">
-                            Location
-                        </label>
-                        <input 
-                            type="text"
-                            name="location"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <button class="btn btn-primary-custom w-100 py-3">
-                        Register Now
-                        <span class="material-symbols-outlined ms-2">
-                            arrow_forward
-                        </span>
-                    </button>
-
-                </form>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input 
+                    type="text"
+                    name="phone"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Location</label>
+                <input 
+                    type="text"
+                    name="location"
+                    class="form-control"
+                >
+            </div>
+
+            <button class="btn btn-primary-custom w-100 py-3">
+                Register Now
+                <span class="material-symbols-outlined ms-2">
+                    arrow_forward
+                </span>
+            </button>
+        </form>
 
     </div>
+
+    {% else %}
+    <!-- GOOGLE FORM QR -->
+    <div class="external-form-box">
+
+        <h2>Register via Google Form</h2>
+
+        <p>
+            Scan the QR code below or click the button 
+            to complete your registration.
+        </p>
+
+        {% if qr_code_base64 %}
+        <div class="qr-box">
+            <img 
+                src="data:image/png;base64,{{ qr_code_base64 }}"
+                alt="QR Code Registration"
+            >
+        </div>
+        {% endif %}
+
+        <p class="scan-text">
+            Fast registration for external attendees
+        </p>
+
+        <a 
+            href="{{ event.url_form }}"
+            target="_blank"
+            class="btn-google-form mt-3"
+        >
+            Register via Google Form
+        </a>
+
+    </div>
+    {% endif %}
+
+</div>
 
 
     <!-- VENUE -->
