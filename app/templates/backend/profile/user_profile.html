@@ -372,12 +372,12 @@
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
 <div>
 <h2 class="fw-bold mb-1">Event Dashboard</h2>
-<p class="text-muted mb-0">Manage your active and upcoming event logistics.</p>
+<p class="text-muted mb-0">Manage your active and upcoming event.</p>
 </div>
-<button class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2">
-<span class="material-symbols-outlined">add</span>
-                New Event
-            </button>
+<a href="{% url 'event_add' %}" class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2">
+    <span class="material-symbols-outlined">add</span>
+    New Event
+</a>
 </div>
 <!-- Stats Overview -->
 <div class="row g-3 mb-5 stats-wrapper">
@@ -391,7 +391,7 @@
 
             <div class="stat-content">
                 <p class="stat-label">Total Events</p>
-                <h3 class="stat-value">12</h3>
+                <h3 class="stat-value">{{ total_events }}</h3>
             </div>
         </div>
     </div>
@@ -405,7 +405,7 @@
 
             <div class="stat-content">
                 <p class="stat-label">Upcoming</p>
-                <h3 class="stat-value">5</h3>
+                <h3 class="stat-value">{{ upcoming_events_count }}</h3>
             </div>
         </div>
     </div>
@@ -419,7 +419,7 @@
 
             <div class="stat-content">
                 <p class="stat-label">Registered</p>
-                <h3 class="stat-value">2,480</h3>
+                <h3 class="stat-value">{{ registered_count }}</h3>
             </div>
         </div>
     </div>
@@ -433,7 +433,7 @@
 
             <div class="stat-content">
                 <p class="stat-label">Check-in Rate</p>
-                <h3 class="stat-value">94.2%</h3>
+                <h3 class="stat-value">{{ checkin_rate }}%</h3>
             </div>
         </div>
     </div>
@@ -441,127 +441,103 @@
 </div>
 <!-- Event Grid -->
 <div class="row g-4">
-<!-- Event 1 -->
+
+{% for event in events %}
+
 <div class="col-12 col-md-6 col-xl-4">
-<div class="event-card">
-<div class="position-relative">
-<img alt="Conference" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-ER_Wuppowwaik0rY7kvwGiM_V6SNpLYFsUJc-WK47SGUKFmPZCtykm3Wl3Y9muCaNDJAVhRbbu-S9_zn3sNWBmPp7_ewGaBWq4veEEOfmJpyTyHt86pFx8hz-clk0jkEpDk3lyli08vRRk4IE1_RNWsQbLpWEqGwtMKlEA9qq2Cq0MbfBKjvkwcg0QC4m29AsqyfgC8EC5brhRr6hxjgsBVSFwI2xg4_VUk9ETU_ZBjxgHEoihqq0OmhkORH8Ld6_4yq3xPFKtA"/>
-<span class="badge badge-floating bg-success-subtle text-success rounded-pill">Active</span>
+    <div class="event-card">
+
+        <!-- IMAGE -->
+        <div class="position-relative">
+
+            {% with event.eventphoto_set.first as photo %}
+                {% if photo and photo.photo %}
+                    <img src="{{ photo.photo.url }}" alt="{{ event.name }}">
+                {% else %}
+                    <img src="/media/news/photo/PhotoBootstrap.png" alt="Default Event">
+                {% endif %}
+            {% endwith %}
+
+            <!-- STATUS (simple logic) -->
+            <span class="badge badge-floating {{ event.badge_class }} rounded-pill">
+                {{ event.status }}
+            </span>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="p-4">
+
+            <div class="d-flex justify-content-between align-items-start mb-1">
+                <h5 class="fw-bold mb-0">{{ event.name }}</h5>
+                <button class="btn btn-link text-muted p-0">
+                    <span class="material-symbols-outlined">more_vert</span>
+                </button>
+            </div>
+
+           <div class="text-muted small mb-4">
+
+    <!-- LOCATION -->
+    <div class="d-flex align-items-center gap-2 mb-1">
+        <span class="material-symbols-outlined small">location_on</span>
+        <span>{{ event.location }}</span>
+    </div>
+
+    <!-- DATE & TIME -->
+    <div class="d-flex align-items-center gap-2">
+        <span class="material-symbols-outlined small">calendar_month</span>
+        <span>
+            {{ event.date }}
+            {% if event.time %}
+                • {{ event.time }}
+            {% endif %}
+        </span>
+    </div>
+
 </div>
-<div class="p-4">
-<div class="d-flex justify-content-between align-items-start mb-1">
-<h5 class="fw-bold mb-0">Tech Conference 2024</h5>
-<button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">more_vert</span></button>
+
+            <!-- PROGRESS -->
+            
+
+            <!-- FOOTER -->
+            <div class="d-flex justify-content-between align-items-center">
+
+
+                <a class="text-danger fw-bold text-decoration-none small" href="{% url 'event_list' event.id %}">
+                    Manage Event
+                    <span class="material-symbols-outlined small">arrow_forward</span>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
 </div>
-<p class="text-muted small mb-4">
-<span class="material-symbols-outlined small">location_on</span> San Francisco, CA 
-                            <span class="mx-2">•</span>
-<span class="material-symbols-outlined small">calendar_month</span> Oct 12-14
-                        </p>
-<div class="mb-4">
-<div class="d-flex justify-content-between small mb-2">
-<span class="text-muted">Attendance Progress</span>
-<span class="fw-bold">850 / 1000</span>
-</div>
-<div class="progress">
-<div class="progress-bar bg-danger" role="progressbar" style="width: 85%"></div>
-</div>
-</div>
-<div class="d-flex justify-content-between align-items-center">
-<div class="avatar-group">
-<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaeG6Zpt7j3L_2pdt2xJeuL0YBMC9vLRaIveGQ9ze3lrwFVXmFOtZ9UyxBmqG3cDujiZwH8IrJ8ONzfW9RTeC7uGjgVSX1Bes22FC544KHY1E8bmTg_XojLHkWHkpmX6LtEwi_d-go0Nr-C187YcBzeXzKphma2twJgjez-mxTFwJlG_y8pbG1hLYQPJQyKes82lvAh0wl4huLh8pOCWmg3JCiZR68vIbNSJ4cpvqVcljo3DcPppMiCW-rO8eMrSQ1fGjRtp5rd9c"/>
-<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbnh56Q-rLoDYGgxdd-5I9pi_Z8N2NwOzlzHo5l76qIM0vzb4obQrMrOxNkIPoF8R7WPxAYn2CCtVbPxtNqS56HvjpcOS4lBiVfp6m6DaYqGdYIQGFpdQvxz6OlmKAVFDPNGATevamWMqFEUhuOE6XnXdq8CqAkRRNf2iHR2XL4_-R_4w2QNLnFu8YWfIcF6znnEZnI_h3N94S0rl5fGZj2rEuu7ZwWp7D1S5LE0Ae2dmpDztEux4NQwgQQy40nu4OgDnvWu_CJck"/>
-<div class="avatar-more">+4</div>
-</div>
-<a class="text-danger fw-bold text-decoration-none small" href="#">Manage Event <span class="material-symbols-outlined small">arrow_forward</span></a>
-</div>
-</div>
-</div>
-</div>
-<!-- Event 2 -->
-<div class="col-12 col-md-6 col-xl-4">
-<div class="event-card">
-<div class="position-relative">
-<img alt="Gala" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHB8Ktjsrxk7xt561vtyUacbrAzlO3BW1iODrXdZKQGD9_uFsHDbTxxjIxQ2_2Y3ZYvegWdlAf2lP8708Osa3sequLFFkRqan1Ecu9nF6JVFhhyip1EXcgn9yuVlUmR_nB414MBbwL6h3iDymOMvtZtVCGCGSEBtzheIedI6P-zGthCCv0i_uGld-WXSC6570EHeikdMkxpdccgjD1g-az4bPodozENJGs3kC-MuzR81gwGWsO3aYLmZ2B6rZx0PKJHDMXPDws3KU"/>
-<span class="badge badge-floating bg-warning-subtle text-warning rounded-pill">Planning</span>
-</div>
-<div class="p-4">
-<div class="d-flex justify-content-between align-items-start mb-1">
-<h5 class="fw-bold mb-0">Corporate Gala</h5>
-<button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">more_vert</span></button>
-</div>
-<p class="text-muted small mb-4">
-<span class="material-symbols-outlined small">location_on</span> New York City, NY 
-                            <span class="mx-2">•</span>
-<span class="material-symbols-outlined small">calendar_month</span> Nov 05
-                        </p>
-<div class="mb-4">
-<div class="d-flex justify-content-between small mb-2">
-<span class="text-muted">Vendor Setup</span>
-<span class="fw-bold">45%</span>
-</div>
-<div class="progress">
-<div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
-</div>
-</div>
-<div class="d-flex justify-content-between align-items-center">
-<div class="avatar-group">
-<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrQ9ufI-9S2f0PIHZYPLzfrZk-IPZpHsMXBN2pHeqIGrm5pGsZy_FN99M84jfU4-2iQ_NHl_ynAn9ZjkbAkV8R5psBFMAcqy5c4FsdBZ1KE-F_6LWMKjdbSaiV-cxyj37---VrY-APo-up1ip_bh6oZIXFU2ec3_J7uTfP2xfpLgv2NjzRij5fd3MPaT2DM3ThOFPFksLPVhDrrCDCbWLqci1LE71kEuB8nrrrviVQbN3oeGRaX5ni7Fr1S3Cnurl5gycM-yr4m-g"/>
-<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcIV2X-piFEjHjYa6uiZhj9DfaMDcCudaSjb5OvoHECQd6jADTfPCJZQ4_U9Z7jqFaAfXggwJuztr1ZP_uMrquKUEYHVGyVRr9z56TBWWBKYFc99LO2LifMP4l9UQckXU5OY_UJrQjS2UNR92iftCXDCMnppDmPzqZb-WuUSTG3YvC2zp7A2vuDWh4sxB-aJLjjr-YJgJUJixML0nLWPvQt0rro6fwvaUV62U7v4TWSq5Fk8MslbW1zof_sizLZdpXk0YMRiMBTKc"/>
-</div>
-<a class="text-danger fw-bold text-decoration-none small" href="#">Edit Details <span class="material-symbols-outlined small">edit</span></a>
-</div>
-</div>
-</div>
-</div>
-<!-- Event 3 -->
-<div class="col-12 col-md-6 col-xl-4">
-<div class="event-card">
-<div class="position-relative">
-<img alt="Meeting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi-faShXLL5C7loQz-2JqLxPTujB1qx-B13BKzI6TdjvHSni2laXSDzXz_aGLMmFzhxtTcGx2M7BWWBxEb3hG0OaYu59GZDruqjmo6NYTz4shfEnaCTYviZ3kPX7RsEU95YtSVsI3M91KRUbD7_T-MF8LOdnjrA5gYJINZZVkZagcCdOfx3HHR2xnHkILzibWzDbm3f0imGw9d0XPDRPWuyDxWEkYSrnVXjeXqCUz7i_YAZtxH2jx2T5enFxpgYIRHy5_vALWEFmE"/>
-<span class="badge badge-floating bg-info-subtle text-info rounded-pill">Onboarding</span>
-</div>
-<div class="p-4">
-<div class="d-flex justify-content-between align-items-start mb-1">
-<h5 class="fw-bold mb-0">Annual Meeting</h5>
-<button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">more_vert</span></button>
-</div>
-<p class="text-muted small mb-4">
-<span class="material-symbols-outlined small">location_on</span> Chicago, IL 
-                            <span class="mx-2">•</span>
-<span class="material-symbols-outlined small">calendar_month</span> Dec 20
-                        </p>
-<div class="mb-4">
-<div class="d-flex justify-content-between small mb-2">
-<span class="text-muted">Guest Registration</span>
-<span class="fw-bold">120 / 300</span>
-</div>
-<div class="progress">
-<div class="progress-bar bg-info" role="progressbar" style="width: 40%"></div>
-</div>
-</div>
-<div class="d-flex justify-content-between align-items-center">
-<div class="avatar-group">
-<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0spDiBQKbxLCzWTKE1JxJjaTUz8PlnNoh5EaLtmP5NtL1WA2__2Oq7GJLv8P_vNH33mekLAU9lDb-xVck1Oa6xY3M15C6FRSIZlXkIbelvXAh0n5gE04wQIHTbbHz1fQ83_-oqOKLIOy3QURdTBBEI84xOnJR0YENtFNUybqvKrwJWug0jTcX6BOt-AetTI4aUtZ440jFntYmS1GRvKY_K8a9gCvPS0aE7xzEZIRxcdP8S_OytMl9VrJXe155zJtBcRRNy2FT8x8"/>
-</div>
-<a class="text-danger fw-bold text-decoration-none small" href="#">Invite Guests <span class="material-symbols-outlined small">mail</span></a>
-</div>
-</div>
-</div>
+
+{% endfor %}
+
+<!-- CREATE EVENT CARD (tetap static di bawah) -->
+<a href="{% url 'event_add' %}" class="col-12 col-md-6 col-xl-4 text-decoration-none">
+    <div class="create-event-placeholder">
+
+        <div class="icon-circle">
+            <span class="material-symbols-outlined fs-2">add_circle</span>
+        </div>
+
+        <h5 class="fw-bold text-secondary">Create New Event</h5>
+
+        <p class="text-muted small px-4">
+            Launch a new registration and logistics dashboard
+        </p>
+
+    </div>
+</a>
+
 </div>
 <!-- Placeholder Card -->
-<div class="col-12 col-md-6 col-xl-4">
-<div class="create-event-placeholder">
-<div class="icon-circle">
-<span class="material-symbols-outlined fs-2">add_circle</span>
-</div>
-<h5 class="fw-bold text-secondary">Create New Event</h5>
-<p class="text-muted small px-4">Launch a new registration and logistics dashboard</p>
-</div>
-</div>
-</div>
+
 <!-- Recent Activity Table -->
-<section class="mt-5">
+<!-- <section class="mt-5">
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 <div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
 <h5 class="fw-bold mb-0">Recent Check-in Activity</h5>
@@ -619,7 +595,7 @@
 </table>
 </div>
 </div>
-</section>
+</section> -->
 </main>
 <script>
     $(document).ready(function () {
