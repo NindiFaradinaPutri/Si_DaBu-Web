@@ -1,14 +1,47 @@
-//trigger question answer
-document.getElementById("question-type").addEventListener("change", function () {
-    renderConfig(this.value);
+let questionIndex = 0;
+
+// ADD QUESTION
+document.getElementById("add-question-btn").addEventListener("click", function () {
+
+    const container = document.getElementById("question-container");
+    const template = document.getElementById("question-template");
+
+    let clone = template.cloneNode(true);
+
+    clone.classList.remove("d-none");
+    clone.removeAttribute("id");
+
+    // SET RADIO NAME BIAR TIDAK TABRAKAN
+    let radios = clone.querySelectorAll('input[type="radio"]');
+    radios.forEach((radio, i) => {
+        radio.name = "correct_answer_" + questionIndex;
+        radio.value = ["A", "B", "C", "D"][i];
+    });
+
+    // REMOVE BUTTON
+    clone.querySelector(".remove-question").addEventListener("click", function () {
+        clone.remove();
+    });
+
+    container.appendChild(clone);
+
+    questionIndex++;
 });
 
-// initial render
-renderConfig(document.getElementById("question-type").value);
+//trigger question answer
+document.addEventListener("change", function (e) {
+    if (e.target.classList.contains("question-type")) {
+        renderConfig(e.target);
+    }
+});
 
 //Render Config 
-function renderConfig(type) {
-    const container = document.getElementById("dynamic-config");
+function renderConfig(selectElement) {
+    const type = selectElement.value;
+
+    //Cari container dalam question yang sama
+    const wrapper = selectElement.closest(".question-item");
+    const container = wrapper.querySelector(".dynamic-config");
 
     switch (type) {
 
@@ -16,7 +49,7 @@ function renderConfig(type) {
         case "long_text":
             container.innerHTML = `
         <div class="form-group">
-          <label>Placeholder</label>
+          <label>Informasi</label>
           <input type="text" id="placeholder" class="form-control"/>
         </div>
       `;
@@ -24,12 +57,19 @@ function renderConfig(type) {
 
         case "number":
             container.innerHTML = `
-        <div class="form-group">
-          <label>Min</label>
-          <input type="number" id="min"/>
-          <label>Max</label>
-          <input type="number" id="max"/>
-        </div>
+            <div class="form-group">
+                <label>Range Nilai</label>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label>Min</label>
+                        <input type="number" class="form-control min" />
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label>Max</label>
+                        <input type="number" class="form-control max" />
+                    </div>
+                </div>
+            </div>
       `;
             break;
 
@@ -37,14 +77,24 @@ function renderConfig(type) {
         case "multiple_choice":
         case "dropdown":
             container.innerHTML = `
-        <div class="form-group">
-          <label>Options</label>
-          <div id="options"></div>
-          <button type="button" onclick="addOption()">+ Tambah Option</button>
-        </div>
-      `;
-            addOption();
-            addOption();
+                <div class="form-group">
+                  <label>Pilihan</label>
+                  <div class="options"></div>
+                  <button type="button" onclick="addOption()" class="add-option-btn">+ Tambah Pilihan</button>
+                </div>
+              `;
+
+            console.log("wrapper:", wrapper);
+            console.log("container:", container);
+            console.log("options:", container.querySelector(".options"));
+
+            const optionsContainer = container.querySelector(".options");
+            console.log("optionsContainer:", optionsContainer);
+
+            if (optionsContainer) {
+                addOption(optionsContainer);
+            }
+
             break;
 
         case "rating":
@@ -71,15 +121,26 @@ function renderConfig(type) {
     }
 }
 
+document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("add-option-btn")) {
+        const optionContainer = e.target.previousElementSibling;
+        addOption(optionContainer);
+    } else if (e.target.classList.contains("remove-option")) {
+        e.target.parentElement.remove();
+    }
+});
+
 //Dynamic Options
-function addOption(value = "") {
-    const container = document.getElementById("options");
+function addOption(container, value = "") {
+    if (!container) {
+        console.error("Container options tidak ditemukan!");
+        return;
+    }
 
     const div = document.createElement("div");
-    div.classList.add("option-item");
 
     div.innerHTML = `
-    <input type="text" class="option-input" value="${value}" placeholder="Option" />
+    <input type="text" class="option-input" value="${value}" placeholder="Pilihan" />
     <button type="button" onclick="this.parentElement.remove()">Hapus</button>
   `;
 
@@ -87,54 +148,30 @@ function addOption(value = "") {
 }
 
 //Handle Submit
-document.getElementById("question-form").addEventListener("submit", function (e) {
+document.addEventListener("submit", function (e) {
+    if (!e.target.classList.contains("question-form")) return;
+
     e.preventDefault();
 
-    const type = document.getElementById("question-type").value;
+    const form = e.target;
+
+    const type = form.querySelector(".question-type").value;
 
     let data = {
-        label: document.getElementById("label").value,
+        label: form.querySelector(".label").value,
         type: type,
-        required: document.getElementById("required").checked,
+        required: form.querySelector(".required").checked,
         config: {},
         options: []
     };
 
-    // HANDLE CONFIG
-    if (type === "short_text" || type === "long_text") {
-        data.config.placeholder = document.getElementById("placeholder")?.value;
-    }
-
-    if (type === "number") {
-        data.config.min = document.getElementById("min")?.value;
-        data.config.max = document.getElementById("max")?.value;
-    }
-
-    if (type === "rating") {
-        data.config.max = document.getElementById("rating_max")?.value;
-    }
-
-    if (type === "file_upload" || type === "image_upload") {
-        data.config.types = document.getElementById("file_types")?.value;
-    }
-
-    // HANDLE OPTIONS
     if (["single_choice", "multiple_choice", "dropdown"].includes(type)) {
-        document.querySelectorAll(".option-input").forEach(input => {
+        form.querySelectorAll(".option-input").forEach(input => {
             if (input.value.trim()) {
                 data.options.push(input.value.trim());
             }
         });
     }
 
-    console.log("DATA KIRIM:", data);
-
-    // AJAX ke backend Django
-    fetch("/api/questions/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
+    console.log("DATA:", data);
 });

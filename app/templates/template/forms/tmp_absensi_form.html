@@ -1,3 +1,5 @@
+{% load static %}
+
 <form id="question-form">
 
     <!-- LABEL -->
@@ -9,7 +11,7 @@
     <!-- TYPE -->
     <div class="form-group">
         <label>Tipe Pertanyaan</label>
-        <select id="question-type" class="form-control">
+        <select class="form-control question-type">
             <option value="short_text">Short Text</option>
             <option value="long_text">Long Text</option>
             <option value="number">Number</option>
@@ -40,7 +42,9 @@
     </div>
 
     <!-- DINAMIC AREA -->
-    <div id="dynamic-config"></div>
+    <div class="dynamic-config"></div>
 
     <button type="submit">Simpan</button>
+    
 </form>
+

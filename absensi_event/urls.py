@@ -72,7 +72,8 @@ urlpatterns = [
     url(r'^ajax/check_account_activation/$', auth_ajaxs.check_account_activation,name="check_account_activation"),
 
     #Banner
-
+    # path('event/', fe_views.event_frontend, name='event'),
+    path('event/<int:id>/',fe_views.event_frontend,name='event'),
     path('event/list/', banner_views.event_list, name='event_list'),
     path('event/add/', banner_views.event_add, name='event_add'), 
     re_path(r'^event/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.event_update, name='event_update'), 
@@ -82,8 +83,7 @@ urlpatterns = [
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
 
     #About
-    # path('event/', fe_views.event_frontend, name='event'),
-    path('event/<int:id>/',fe_views.event_frontend,name='event_frontend'),
+    
     path('profile/', profile_views.profile, name='profile'),
 
     #Portfolio
