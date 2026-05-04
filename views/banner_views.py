@@ -495,17 +495,4 @@ def banner_update(request, status, id):
         
 
 
-@login_required(login_url='/admin/who-login/')
-@admin_only
-def participant_upload(request, id):
-    event = Event.objects.filter(id=id).first()
 
-    context = {
-        "event": event
-    }
-
-    return render(
-        request,
-        'backend/participant/upload_participant.html',
-        context
-    )
