@@ -26,6 +26,14 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name + "-" + self.date
+    
+    @property
+    def poster(self):
+        photo = EventPhoto.objects.filter(id_event = self.id).first()
+        if photo:
+            return photo.photo.url
+        else:
+            return ""
 
 class EventPhoto(models.Model):
     id_event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False, blank=False)
