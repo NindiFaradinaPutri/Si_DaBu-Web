@@ -1,0 +1,513 @@
+{% extends "layout/consulting_admin.html" %}
+{% load custom_tags %}
+{% load static %}
+
+{% block content %}
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root {
+        --bs-primary: #ba0013;
+        --bs-primary-rgb: 186, 0, 19;
+        --silatama-red: #E31E24;
+        --surface-bg: #f8f9fb;
+    }
+
+    html {
+        overflow-x: auto;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--surface-bg);
+        color: #191c1e;
+
+        /* tambahan scroll horizontal */
+        overflow-x: auto;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+        vertical-align: middle;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 256px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: white;
+        border-right: 1px solid #dee2e6;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0;
+    }
+
+     #main-content {
+            margin-left: 260px;
+            padding-top: 80px;
+        }
+
+        .nav-link {
+            color: var(--secondary-color);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            border-radius: 8px;
+            margin: 0.25rem 1rem;
+        }
+
+        .nav-link:hover {
+            background-color: #e9ecef;
+            color: var(--bs-primary);
+        }
+
+        .nav-link.active {
+            background-color: #fff1f2;
+            color: var(--bs-primary);
+            border-right: 4px solid var(--bs-primary);
+        }
+
+        /* Header Styling */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+            height: 64px;
+        }
+
+        /* Roulette Wheel Custom Styling */
+        .roulette-container {
+            position: relative;
+            width: 480px;
+            height: 480px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .roulette-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid #191c1e;
+            position: relative;
+            overflow: hidden;
+            background: conic-gradient(
+                #ba0013 0deg 30deg,
+                #191c1e 30deg 60deg,
+                #ba0013 60deg 90deg,
+                #191c1e 90deg 120deg,
+                #ba0013 120deg 150deg,
+                #191c1e 150deg 180deg,
+                #ba0013 180deg 210deg,
+                #191c1e 210deg 240deg,
+                #ba0013 240deg 270deg,
+                #191c1e 270deg 300deg,
+                #ba0013 300deg 330deg,
+                #191c1e 330deg 360deg
+            );
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .wheel-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .segment-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            transform-origin: 0% 50%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Position each label in the middle of its 30deg segment */
+        .label-0 { transform: translateY(-50%) rotate(15deg); }
+        .label-1 { transform: translateY(-50%) rotate(45deg); }
+        .label-2 { transform: translateY(-50%) rotate(75deg); }
+        .label-3 { transform: translateY(-50%) rotate(105deg); }
+        .label-4 { transform: translateY(-50%) rotate(135deg); }
+        .label-5 { transform: translateY(-50%) rotate(165deg); }
+        .label-6 { transform: translateY(-50%) rotate(195deg); }
+        .label-7 { transform: translateY(-50%) rotate(225deg); }
+        .label-8 { transform: translateY(-50%) rotate(255deg); }
+        .label-9 { transform: translateY(-50%) rotate(285deg); }
+        .label-10 { transform: translateY(-50%) rotate(315deg); }
+        .label-11 { transform: translateY(-50%) rotate(345deg); }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            border: 6px solid #191c1e;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .wheel-center::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--bs-primary);
+            border-radius: 50%;
+            box-shadow: inset 0 2px 2px rgba(0,0,0,0.2);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            width: 44px;
+            height: 54px;
+            background: white;
+            border: 4px solid #191c1e;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            padding-top: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .wheel-pointer::after {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--bs-primary);
+            border-radius: 3px;
+        }
+
+        .btn-primary-silatama {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+            color: white;
+            padding: 1rem 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(186, 0, 19, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-silatama:hover {
+            background-color: #93000d;
+            border-color: #93000d;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(186, 0, 19, 0.3);
+        }
+
+        .btn-primary-silatama:active {
+            transform: scale(0.98);
+        }
+
+        .stat-card {
+            border: 1px solid #dee2e6;
+            border-radius: 16px;
+            background: white;
+            padding: 1.5rem;
+        }
+
+        .winner-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .live-activity-card {
+            background-color: #191c1e;
+            color: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+         .top-app-bar {
+        height: 64px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 256px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        justify-content: space-between;
+    }
+
+    /* Component Specifics */
+    .search-bar {
+        background-color: #f3f4f6;
+        border-radius: 0.5rem;
+        width: 384px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+    }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 991.98px) {
+            #sidebar { display: none; }
+            #main-content { margin-left: 0; }
+        }
+
+   
+</style>
+
+
+<main id="main-content">
+
+    <header class="top-app-bar">
+<div class="search-bar">
+<span class="material-symbols-outlined text-muted">search</span>
+<input placeholder="Search events or guests..." type="text"/>
+</div>
+<div class="d-flex align-items-center gap-3">
+<button class="btn btn-link text-muted p-2 position-relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
+</button>
+<button class="btn btn-link text-muted p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="vr mx-2" style="height: 32px;"></div>
+<div class="d-flex align-items-center gap-2">
+<div class="text-end d-none d-md-block">
+<p class="mb-0 fw-bold small">Alex Rivera</p>
+<p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
+</div>
+<img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
+</div>
+</div>
+</header>
+<div class="container-fluid p-4">
+<!-- Stats Row -->
+<div class="row g-4 mb-5">
+<div class="col-md-4">
+<div class="stat-card d-flex align-items-center gap-3">
+<div class="p-3 bg-danger bg-opacity-10 rounded-3 text-danger">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<small class="text-uppercase text-muted fw-bold ls-1" style="font-size: 11px;">Total Pool</small>
+<h4 class="mb-0 fw-bold">$25,000.00</h4>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="stat-card d-flex align-items-center gap-3">
+<div class="p-3 bg-light rounded-3 text-secondary">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<small class="text-uppercase text-muted fw-bold ls-1" style="font-size: 11px;">Eligible Participants</small>
+<h4 class="mb-0 fw-bold">1,284</h4>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="stat-card d-flex align-items-center gap-3">
+<div class="p-3 bg-success bg-opacity-10 rounded-3 text-success">
+<span class="material-symbols-outlined">card_giftcard</span>
+</div>
+<div>
+<small class="text-uppercase text-muted fw-bold ls-1" style="font-size: 11px;">Prizes Remaining</small>
+<h4 class="mb-0 fw-bold">12 / 15</h4>
+</div>
+</div>
+</div>
+</div>
+<div class="row g-4">
+<!-- Roulette Wheel Area -->
+<div class="col-lg-8">
+<div class="bg-white border rounded-4 p-5 text-center position-relative overflow-hidden shadow-sm">
+<!-- Background Accents -->
+<div class="position-absolute top-0 end-0 bg-danger opacity-05 rounded-circle" style="width: 300px; height: 300px; margin-top: -150px; margin-right: -150px;"></div>
+<div class="position-absolute bottom-0 start-0 bg-danger opacity-05 rounded-circle" style="width: 200px; height: 200px; margin-bottom: -100px; margin-left: -100px;"></div>
+<div class="mb-4">
+<h2 class="fw-bold mb-1">Grand Prize Draw</h2>
+<p class="text-muted">Spin the wheel to select the next lucky winner from the pool.</p>
+</div>
+<!-- The Roulette Wheel -->
+<div class="roulette-container mb-5">
+<div class="wheel-pointer"></div>
+<div class="roulette-wheel">
+<div class="wheel-labels">
+<div class="segment-label label-0">Jessica Thorne</div>
+<div class="segment-label label-1">Marcus Chen</div>
+<div class="segment-label label-2">Elena Rodriguez</div>
+<div class="segment-label label-3">David Miller</div>
+<div class="segment-label label-4">Sarah Park</div>
+<div class="segment-label label-5">Alex Wong</div>
+<div class="segment-label label-6">Emma Stone</div>
+<div class="segment-label label-7">Chris Pratt</div>
+<div class="segment-label label-8">Maya Angelou</div>
+<div class="segment-label label-9">Leo Messi</div>
+<div class="segment-label label-10">Serena Williams</div>
+<div class="segment-label label-11">Tom Hanks</div>
+</div>
+</div>
+<div class="wheel-center"></div>
+</div>
+<div class="mt-4">
+<button class="btn btn-primary-silatama fs-4 d-flex align-items-center gap-3 mx-auto">
+<span class="material-symbols-outlined fs-2" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                Spin to Win
+                            </button>
+<p class="mt-3 text-uppercase text-muted fw-bold small">Current Prize: 10.5" Premium Tablet</p>
+</div>
+</div>
+</div>
+<!-- Winners Sidebar Area -->
+<div class="col-lg-4">
+<div class="card border-0 border-bottom rounded-4 overflow-hidden mb-4 shadow-sm">
+<div class="card-header bg-light bg-opacity-50 border-bottom p-4 d-flex justify-content-between align-items-center">
+<h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+<span class="material-symbols-outlined text-danger" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                                Hall of Winners
+                            </h5>
+<span class="badge bg-danger bg-opacity-10 text-danger rounded-pill">Live Updates</span>
+</div>
+<ul class="list-group list-group-flush">
+<!-- Winner 1 -->
+<li class="list-group-item p-4 d-flex align-items-center gap-3 border-light">
+<div class="position-relative">
+<img alt="Jessica" class="winner-avatar border border-2 border-danger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx1C2BxPU0KEqV2sHJfIGP1GsSqOhcEvSkDLF8NHNtNHpTAqDM-ZnPXdueKy4q3QgjAJCjPt1rEsGGzdooTVIMCTp3k7fv-_0kWzJh1AB60ttrpKnf2K8xbRermbAoKYgnsbkeGqabd5JktdVjyoHSuJjvuRtbM9plVN0xZSMufcVfPKQwzZ2uQPzg56yKMRK15mGM-yljTsSiCakE22gqLxoI9GL-r-ruwAiGvHRugsOgHuu4CnOtN-IRyeS4TOZYggaS0ODhjwk"/>
+<span class="position-absolute bottom-0 end-0 bg-warning rounded-circle border border-white p-1" style="line-height: 0;">
+<span class="material-symbols-outlined text-white" style="font-size: 8px; font-variation-settings: 'FILL' 1;">star</span>
+</span>
+</div>
+<div class="flex-grow-1">
+<h6 class="mb-0 fw-bold">Jessica Thorne</h6>
+<small class="text-muted">ID: #SL-9942</small>
+</div>
+<div class="text-end">
+<div class="text-danger fw-bold small text-uppercase">MacBook Air</div>
+<small class="text-muted" style="font-size: 10px;">2 mins ago</small>
+</div>
+</li>
+<!-- Winner 2 -->
+<li class="list-group-item p-4 d-flex align-items-center gap-3 border-light">
+<img alt="Marcus" class="winner-avatar border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0QcEK0BHRfij3SPr9cnMiJjSF7OQCea_WabEc3K4zKIT26DpyIMP9nwEHJiYGwostv_DVQCU2d0IwYsgALQ08KX_Zz436s-36wKdgIIsuHj6ICv0_wXGLn6qS1G3OyqJ5TmkmG9nhUkNpmNg-kNuW9oI3lATiFXiPUoBvfoo1yAuBX2DhjPcW7fpcdQkwrMCbkr-A2CHbdHJSU0nIAQAripxregsWxc9hWWt3GJSEpAexK8vFvncZ7Hhb6R1cUWbicYI1e_37d-Q"/>
+<div class="flex-grow-1">
+<h6 class="mb-0 fw-bold">Marcus Chen</h6>
+<small class="text-muted">ID: #SL-1025</small>
+</div>
+<div class="text-end">
+<div class="text-muted fw-bold small text-uppercase">Noise Pods</div>
+<small class="text-muted" style="font-size: 10px;">14 mins ago</small>
+</div>
+</li>
+<!-- Winner 3 -->
+<li class="list-group-item p-4 d-flex align-items-center gap-3 border-light">
+<img alt="Elena" class="winner-avatar border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH2kpC72ocWrTQtQVrZq4zN_dLTX7O4K_6eEz1eljPtCKX59V_NbYxyjx2XsYo8zEQ44MxQ9xx43MQ5culMe9M4KQOwRGnl9m9sAJuUsPC0rzUcQ2hX-LJi9WSkqft4QKg_pyr1MsMahhxs17sZUwJzG-kG2E3zHM_6MmA5mrabq3gZx-OxWVN1ndq3lFC4snFPa5__80GeH_YDGrkLWn5O7_Gf0MZPWkF3HqxMR-gefk4V23A7sU7mfIwAUcHm2A4C0VUqddL0zI"/>
+<div class="flex-grow-1">
+<h6 class="mb-0 fw-bold">Elena Rodriguez</h6>
+<small class="text-muted">ID: #SL-4410</small>
+</div>
+<div class="text-end">
+<div class="text-muted fw-bold small text-uppercase">Smart Watch</div>
+<small class="text-muted" style="font-size: 10px;">28 mins ago</small>
+</div>
+</li>
+</ul>
+<div class="card-footer bg-light bg-opacity-50 text-center p-3">
+<button class="btn btn-link text-danger fw-bold text-decoration-none small">View All Winners</button>
+</div>
+</div>
+<!-- Progress Card -->
+<div class="card border rounded-4 p-4 mb-4 shadow-sm">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h6 class="mb-0 fw-bold">Event Capacity</h6>
+<span class="text-danger fw-bold">82%</span>
+</div>
+<div class="progress mb-3" style="height: 12px; border-radius: 6px;">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="82" class="progress-bar bg-danger" role="progressbar" style="width: 82%"></div>
+</div>
+<p class="text-muted small mb-0">1,284 of 1,560 registered participants have checked in. Lucky draw is active.</p>
+</div>
+<!-- Activity Card -->
+<div class="live-activity-card shadow-sm">
+<h6 class="mb-4 fw-bold d-flex align-items-center gap-2">
+<span class="material-symbols-outlined text-danger">analytics</span>
+                            Live Activity
+                        </h6>
+<div class="d-flex flex-column gap-3">
+<div class="d-flex gap-3 small">
+<span class="bg-success rounded-circle mt-1 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+<div><span class="fw-bold">System:</span> Randomization seed verified for Prize #12.</div>
+</div>
+<div class="d-flex gap-3 small">
+<span class="bg-primary rounded-circle mt-1 flex-shrink-0" style="width: 8px; height: 8px;"></span>
+<div><span class="fw-bold">Staff:</span> 5 new participants checked in from Gate A.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.bootstrap4.css' %}">
+
+{% endblock %}
+
+{% block query %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

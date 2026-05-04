@@ -17,9 +17,10 @@ from news import ajaxs as news_ajaxs
 from portfolio import ajaxs as prf_ajaxs
 from gallery import ajaxs as gal_ajaxs
 from banner import ajaxs as banner_ajaxs
+from event import ajaxs as even_ajaxs
 
 
-from views import (auth_views, fe_views, news_views, banner_views, portfolio_views, gallery_views, profile_views, team_views, mobile_views, complaint_views, finance_views as finn,information_views as info)
+from views import (auth_views, fe_views, news_views, banner_views, portfolio_views, gallery_views, profile_views, team_views, mobile_views, complaint_views, finance_views as finn,information_views as info,event_views as even)
 from views.mobile import mobile_auth_views as mobile_auth
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
@@ -73,16 +74,23 @@ urlpatterns = [
     #Ajax
     url(r'^ajax/check_account_activation/$', auth_ajaxs.check_account_activation,name="check_account_activation"),
 
-    #Banner
+    #Event
     # path('event/', fe_views.event_frontend, name='event'),
     path('event/<int:id>/',fe_views.event_frontend,name='event'),
+    path('list_event/', even.list_event, name='list_event'),
     # path('event/list/', banner_views.event_list, name='event_list'),
     path('event/list/<int:id>/', banner_views.event_list, name='event_list'),
     path('event/add/', banner_views.event_add, name='event_add'), 
     re_path(r'^event/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.event_update, name='event_update'), 
     # path('participant/upload/', banner_views.participant_upload, name='participant_upload'),
-    path('participant/upload/<int:id>/', banner_views.participant_upload, name='participant_upload'),
-    url(r'^ajax/upload_participant_bulk/$', banner_ajaxs.upload_participant,name="upload_participant"),
+    path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
+    url(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
+    url(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
+    path('doorprize/', even.doorprize, name='doorprize'),
+
+    path('team/add/', even.team_add, name='team_add'),
+    re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', even.team_update, name='team_update'),
+    path('team/', fe_views.ourteam, name='ourteam'),
 
     path('banner/list/', banner_views.banner_list, name='banner_list'),
     path('banner/add/', banner_views.banner_add, name='banner_add'),  
@@ -129,7 +137,6 @@ urlpatterns = [
     url(r'^ajax/view_service/$', prf_ajaxs.view_service,name="view_service"),
 
     #Gallery
-    path('list_event/', gallery_views.list_event, name='list_event'),
     path('gallery/list/', gallery_views.gallery_list, name='gallery_list'),
     path('gallery/add/', gallery_views.gallery_add, name='gallery_add'),
     re_path(r'^gallery/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', gallery_views.gallery_update, name='gallery_update'),
@@ -160,10 +167,10 @@ urlpatterns = [
     # re_path(r'^career/detail/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', career_views.career_detail_update, name='career_detail_update'),
 
     #Team
-    path('team/list/', team_views.team_list, name='team_list'),
-    path('team/add/', team_views.team_add, name='team_add'),
-    re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', team_views.team_update, name='team_update'),
-    path('team/', fe_views.ourteam, name='ourteam'),
+    # path('team/list/', team_views.team_list, name='team_list'),
+    # path('team/add/', team_views.team_add, name='team_add'),
+    # re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', team_views.team_update, name='team_update'),
+    # path('team/', fe_views.ourteam, name='ourteam'),
 
     #Testimony
     path('testimony/list/', portfolio_views.testimony_list, name='testimony_list'),
