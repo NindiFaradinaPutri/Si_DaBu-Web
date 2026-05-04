@@ -20,7 +20,7 @@ from banner import ajaxs as banner_ajaxs
 
 
 from views import (auth_views, fe_views, news_views, banner_views, portfolio_views, gallery_views, profile_views, team_views, mobile_views, complaint_views, finance_views as finn,information_views as info)
-from views.mobile import mobile_auth_views as mobile_auth
+from views.mobile import mobile_auth_views as mobile_auth, mobile_event_views as mobile_event
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
@@ -303,6 +303,9 @@ urlpatterns = [
     # ===== Mobile =====
 
     path('mobile/login/', mobile_auth.login_user, name='mobile_login_user'),
+    path('mobile/list_events/', mobile_event.list_events, name='mobile_list_events'),
+    path('mobile/event_detail/', mobile_event.event_detail, name='mobile_event_detail'),
+    path('mobile/check_participant/', mobile_event.check_participant, name='mobile_check_participant'),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 
