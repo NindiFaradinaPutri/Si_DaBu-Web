@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0; padding:0; background:#f8f9fa; font-family:Arial, sans-serif; color:#1a1a1a;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fa; padding:20px 0;">
+<tr>
+<td align="center">
+
+<!-- MAIN CONTAINER -->
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border:1px solid #eee;">
+
+<tr>
+<td style="padding:30px;">
+
+<h2 style="margin:0 0 20px 0;">Your Entry Ticket</h2>
+
+<!-- CONTENT ROW -->
+<table width="100%" cellpadding="0" cellspacing="0">
+<td width="45%" valign="top" style="padding:20px; text-align:center;">
+    
+    <img src="{{ qr_code }}" width="200" style="display:block; margin:0 auto 15px auto;">
+    
+    <div style="font-size:11px; color:#999; text-transform:uppercase;">Ticket ID</div>
+    <div style="font-weight:bold; font-size:16px;">{{ participant.unique_user }}</div>
+
+</td>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+
+<!-- RIGHT (DETAILS) -->
+<td width="55%" valign="top" style="padding:20px;">
+
+    <div style="background:#fff5f6; color:#C8102E; font-weight:bold; font-size:10px; padding:4px 10px; display:inline-block; margin-bottom:10px;">
+        CONFIRMED
+    </div>
+
+    <h2 style="margin:0 0 20px 0;">{{ event.name }}</h2>
+
+    <!-- DATE -->
+    <p style="margin:0 0 10px 0;">
+        <strong>Date:</strong><br>
+        {{ event.date|date:"l, j F Y" }}<br>
+        <span style="color:#666;">{{ event.time|date:"g:i A" }}</span>
+    </p>
+
+    <!-- LOCATION -->
+    <p style="margin:0 0 10px 0;">
+        <strong>Location:</strong><br>
+        {{ event.location }}<br>
+        <span style="color:#666;">{{ event.location_map }}</span>
+    </p>
+
+    <!-- PARTICIPANT -->
+    <div style="margin-top:20px; padding:15px; background:#f8f9fa; border:1px solid #eee;">
+        <div style="font-weight:bold;">{{ participant.name }}</div>
+        <div style="font-size:12px; color:#666;">{{ instansi }}</div>
+    </div>
+
+</td>
+
+</tr>
+</table>
+
+</td>
+</tr>
+
+<!-- TIP -->
+<tr>
+<td style="background:#0f172a; color:#ffffff; padding:20px;">
+    <strong>Tip</strong><br>
+    <span style="font-size:13px; opacity:0.8;">
+        Arrive 30 minutes before the event starts for smooth check-in.
+    </span>
+</td>
+</tr>
+
+<!-- FOOTER -->
+<tr>
+<td style="padding:20px; font-size:12px; color:#666;">
+    <strong>PresenGO</strong><br>
+    © 2026 PresenGO
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

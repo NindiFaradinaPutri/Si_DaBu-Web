@@ -20,8 +20,12 @@ from banner import ajaxs as banner_ajaxs
 from event import ajaxs as even_ajaxs
 
 
+
 from views import (auth_views, fe_views, news_views, banner_views, portfolio_views, gallery_views, profile_views, team_views, mobile_views, complaint_views, finance_views as finn,information_views as info,event_views as even)
-from views.mobile import mobile_auth_views as mobile_auth
+
+
+from views.mobile import mobile_auth_views as mobile_auth, mobile_event_views as mobile_event
+
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
@@ -32,7 +36,6 @@ urlpatterns = [
     path('error_404/', auth_views.handler404, name='error_404'),
     path('error_403/', auth_views.handler403, name='error_403'),
     path('error_500/', auth_views.handler500, name='error_500'),
-       
     #Home
     path('', fe_views.home, name='index'),
     path('home/', fe_views.home, name='home'),
@@ -170,7 +173,10 @@ urlpatterns = [
     # path('team/list/', team_views.team_list, name='team_list'),
     # path('team/add/', team_views.team_add, name='team_add'),
     # re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', team_views.team_update, name='team_update'),
-    # path('team/', fe_views.ourteam, name='ourteam'),
+    # path('team/', fe_views.ourteam, name='ourteam'),\
+
+    #Print Bagde
+    re_path(r'^event/print-badge/(?P<id>[0-9a-zA-Z-_]+)/$', even.print_badge,name='print_bagde'),
 
     #Testimony
     path('testimony/list/', portfolio_views.testimony_list, name='testimony_list'),
@@ -310,6 +316,9 @@ urlpatterns = [
     # ===== Mobile =====
 
     path('mobile/login/', mobile_auth.login_user, name='mobile_login_user'),
+    path('mobile/list_events/', mobile_event.list_events, name='mobile_list_events'),
+    path('mobile/event_detail/', mobile_event.event_detail, name='mobile_event_detail'),
+    path('mobile/check_participant/', mobile_event.check_participant, name='mobile_check_participant'),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 

@@ -295,6 +295,8 @@ def upload_participant(request):
                 "form_response_id": form_response.id
             })
 
+        create_and_send_qremail(request,event_id)
+
         return JsonResponse({
             "status": "success",
             "message": "Upload berhasil",
