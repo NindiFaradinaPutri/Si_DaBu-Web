@@ -41,7 +41,6 @@ from django.template import RequestContext
 
 #EMAIL VERIFICATION AND TOKEN
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
