@@ -16,6 +16,8 @@ from complaint import ajaxs as complaint_ajaxs
 from news import ajaxs as news_ajaxs
 from portfolio import ajaxs as prf_ajaxs
 from gallery import ajaxs as gal_ajaxs
+from banner import ajaxs as banner_ajaxs
+
 
 from views import (auth_views, fe_views, news_views, banner_views, portfolio_views, gallery_views, profile_views, team_views, mobile_views, complaint_views, finance_views as finn,information_views as info)
 from views.mobile import mobile_auth_views as mobile_auth
@@ -75,9 +77,13 @@ urlpatterns = [
     #Banner
     # path('event/', fe_views.event_frontend, name='event'),
     path('event/<int:id>/',fe_views.event_frontend,name='event'),
-    path('event/list/', banner_views.event_list, name='event_list'),
+    # path('event/list/', banner_views.event_list, name='event_list'),
+    path('event/list/<int:id>/', banner_views.event_list, name='event_list'),
     path('event/add/', banner_views.event_add, name='event_add'), 
     re_path(r'^event/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.event_update, name='event_update'), 
+    # path('participant/upload/', banner_views.participant_upload, name='participant_upload'),
+    path('participant/upload/<int:id>/', banner_views.participant_upload, name='participant_upload'),
+    url(r'^ajax/upload_participant_bulk/$', banner_ajaxs.upload_participant,name="upload_participant"),
 
     path('banner/list/', banner_views.banner_list, name='banner_list'),
     path('banner/add/', banner_views.banner_add, name='banner_add'),  

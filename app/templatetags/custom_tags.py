@@ -215,3 +215,13 @@ def porto_word(word):
 @register.filter()
 def int_format(value):
     return int(str(value).replace('.',''))
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
+@register.filter
+def trim(value):
+    if isinstance(value, str):
+        return value.strip()
+    return value

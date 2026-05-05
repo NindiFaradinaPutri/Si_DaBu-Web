@@ -1,0 +1,1000 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+<!-- start: page -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
+<style>
+    :root {
+        --bs-primary: #ba0013;
+        --bs-primary-rgb: 186, 0, 19;
+        --silatama-red: #E31E24;
+        --surface-bg: #f8f9fb;
+    }
+
+    html {
+        overflow-x: auto;
+    }
+
+    
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--surface-bg);
+        color: #191c1e;
+
+        /* tambahan scroll horizontal */
+        overflow-x: auto;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+        vertical-align: middle;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 256px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: white;
+        border-right: 1px solid #dee2e6;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1.5rem;
+        color: #5e5e5e;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-right: 4px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .nav-link.active {
+        color: var(--silatama-red);
+        background-color: #fff5f5;
+        border-right-color: var(--silatama-red);
+    }
+
+    /* Main Content Adjustments */
+    .main-content {
+        margin-left: 256px;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+
+        /* tambahan agar bisa scroll horizontal */
+        overflow-x: auto;
+        width: calc(100% - 256px);
+    }
+
+    /* tambahan agar seluruh section bisa scroll */
+    main {
+        overflow-x: auto;
+    }
+
+    .top-app-bar {
+        height: 64px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 256px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        justify-content: space-between;
+    }
+
+    .upload-excel-box {
+    border: 2px dashed #dcdcdc;
+    border-radius: 20px;
+    padding: 60px 30px;
+    text-align: center;
+    background: #fafafa;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.upload-excel-box:hover {
+    border-color: var(--silatama-red);
+    background: #fff5f5;
+}
+
+.upload-excel-box.dragover {
+    border-color: #28a745;
+    background: #f0fff4;
+}
+
+.upload-icon-wrapper {
+    width: 90px;
+    height: 90px;
+    margin: auto;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-icon {
+    font-size: 45px;
+    color: var(--silatama-red);
+}
+
+/* BUTTON */
+.btn-primary-custom {
+    background: linear-gradient(135deg, #E31E24, #ba0013);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.btn-primary-custom:hover {
+    color: white;
+}
+
+.file-name-preview {
+    margin-top: 20px;
+}
+
+    /* Component Specifics */
+    .search-bar {
+        background-color: #f3f4f6;
+        border-radius: 0.5rem;
+        width: 384px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .search-bar input {
+        background: transparent;
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+    }
+
+    .btn-primary {
+        background-color: var(--silatama-red);
+        border-color: var(--silatama-red);
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #ba0013;
+        border-color: #ba0013;
+    }
+
+    .stats-wrapper {
+    width: 100%;
+}
+
+/* Preview Card */
+.preview-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.12);
+}
+
+
+/* Draft Badge */
+.preview-badge {
+    position: absolute;
+    
+    background: linear-gradient(135deg, #E31E24, #ba0013);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(227, 30, 36, 0.35);
+}
+
+
+
+
+.section-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+
+/* Guidance Card */
+.guidance-card {
+    background: #191c1e;
+    color: white;
+    border-radius: 18px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+
+/* Quick Action Container */
+.d-grid.gap-3 {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 110px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 0;
+    color: #191c1e;
+}
+
+.icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-box span {
+    font-size: 28px;
+}
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .event-card {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .event-card img {
+        height: 192px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .event-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .badge-floating {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 9999px;
+    }
+
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar-group img,
+    .avatar-group .avatar-more {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-left: -8px;
+    }
+
+    .avatar-group img:first-child {
+        margin-left: 0;
+    }
+
+    .avatar-more {
+        background: #f3f4f6;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fab-qr {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--silatama-red);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(227, 30, 36, 0.3);
+        border: none;
+        z-index: 1050;
+        transition: transform 0.2s;
+    }
+
+    .fab-qr:hover {
+        transform: scale(1.1);
+    }
+
+    .custom-table th {
+        background-color: #f8f9fa;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6c757d;
+        padding: 1rem 1.5rem;
+    }
+
+    .custom-table td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+    }
+
+    /* table scroll horizontal */
+    .table-responsive {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .create-event-placeholder {
+        border: 2px dashed #dee2e6;
+        border-radius: 0.75rem;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .create-event-placeholder:hover {
+        border-color: var(--silatama-red);
+        background-color: #fff5f5;
+    }
+
+    .create-event-placeholder .icon-circle {
+        width: 64px;
+        height: 64px;
+        background: #f3f4f6;
+        color: #9ca3af;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .create-event-placeholder:hover .icon-circle {
+        background: #ffebeb;
+        color: var(--silatama-red);
+    }
+
+      .sidebar-brand {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .nav-link-custom {
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #474747;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link-custom:hover {
+            background-color: #f8f9fb;
+            color: var(--primary-color);
+        }
+
+        .nav-link-custom.active {
+            background-color: #fff1f1;
+            color: var(--primary-color);
+            border-right: 4px solid var(--primary-color);
+        }
+
+        /* Main Content Styling */
+        #main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        header {
+            height: 64px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--outline-variant);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .section-card {
+    background: #ffffff;
+    border: 1px solid #d80000;
+    border-radius: 18px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: none;
+}
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #5d3f3c;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border-color: var(--outline-variant);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(227, 30, 36, 0.1);
+        }
+
+        /* Engagement Tools Style */
+        .engagement-container {
+            background-color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--outline-variant);
+        }
+
+        .option-group {
+            background: #ffffff;
+            border: 1px solid var(--outline-variant);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .option-prefix {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #5d3f3c;
+            width: 20px;
+        }
+
+        /* Custom Radio */
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Preview Card */
+        .preview-card {
+            border: 1px solid var(--outline-variant);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .preview-img-container {
+            height: 160px;
+            position: relative;
+        }
+
+        .preview-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+        }
+
+        .preview-badge {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Guidance Card */
+        .guidance-card {
+            background-color: #2e3132;
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .checklist-item.complete {
+            color: white;
+        }
+
+        .checklist-item.incomplete {
+            opacity: 0.6;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: white;
+        }
+
+        .btn-outline-custom {
+            border: 1px solid #191c1e;
+            color: #191c1e;
+            font-weight: 700;
+            padding: 1rem;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .btn-outline-custom:hover {
+            background-color: var(--surface);
+        }
+
+        .profile-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--outline-variant);
+            object-fit: cover;
+        }
+
+        .btn-primary-custom {
+    background: linear-gradient(135deg, #E31E24, #ba0013);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(227, 30, 36, 0.25);
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(227, 30, 36, 0.35);
+    color: white;
+}
+
+/* Cancel Button */
+.btn-cancel-custom {
+    background: #f8f9fa;
+    border: 1px solid #dcdfe3;
+    color: #495057;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-custom:hover {
+    background: #eceff1;
+    color: #212529;
+}
+
+/* Discard Button */
+.btn-discard-custom {
+    background: #191c1e;
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-discard-custom:hover {
+    background: #000000;
+    transform: translateY(-2px);
+    color: white;
+}
+</style>
+
+
+<header class="top-app-bar">
+<div class="search-bar">
+<span class="material-symbols-outlined text-muted">search</span>
+<input placeholder="Search events or guests..." type="text"/>
+</div>
+<div class="d-flex align-items-center gap-3">
+<button class="btn btn-link text-muted p-2 position-relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
+</button>
+<button class="btn btn-link text-muted p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="vr mx-2" style="height: 32px;"></div>
+<div class="d-flex align-items-center gap-2">
+<div class="text-end d-none d-md-block">
+<p class="mb-0 fw-bold small">Alex Rivera</p>
+<p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
+</div>
+<img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
+</div>
+</div>
+</header>
+
+
+<!-- GOOGLE FORM EXCEL UPLOAD -->
+<main class="main-content container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="section-card">
+
+                <!-- Header -->
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-danger fs-1">
+                        upload_file
+                    </span>
+
+                    <div>
+                        <h3 class="fw-bold mb-1">
+                            Google Form Excel Upload
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Upload participant data exported from Google Form
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FORM -->
+                <form id="uploadForm" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="upload-excel-box" id="dropZone">
+
+        <div class="upload-icon-wrapper">
+            <span class="material-symbols-outlined upload-icon">
+                description
+            </span>
+        </div>
+
+        <h4 class="fw-bold mt-4 mb-2">
+            Upload Excel File
+        </h4>
+
+        <p class="text-muted mb-4">
+            Drag & drop your exported Google Form file here
+            <br>
+            or click button below
+        </p>
+
+        <!-- hidden input -->
+        <input
+            type="file"
+            id="excelFile"
+            name="excelFile"
+            hidden
+            accept=".xlsx,.xls,.csv"
+        >
+
+        <button
+            type="button"
+            class="btn btn-primary-custom"
+            onclick="triggerFileInput()"
+        >
+            <span class="material-symbols-outlined me-2">upload</span>
+            Choose File
+        </button>
+
+        <div id="fileNamePreview" class="mt-3"></div>
+
+        <div class="mt-4">
+            <small class="text-muted">
+                Supported formats: XLSX, XLS, CSV
+            </small>
+        </div>
+
+        <div class="mt-4">
+            <button
+                type="button"
+                class="btn btn-success px-4"
+                id="uploadBtn"
+            >
+                Upload & Save
+            </button>
+        </div>
+
+    </div>
+</form>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.theme.css' %}">
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'dropzone/basic.css' %}">
+<link rel="stylesheet" href="{% static 'dropzone/dropzone.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-markdown/css/bootstrap-markdown.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'bootstrap-multiselect/css/bootstrap-multiselect.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-tagsinput/bootstrap-tagsinput.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-colorpicker/css/bootstrap-colorpicker.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-timepicker/css/bootstrap-timepicker.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-markdown/css/bootstrap-markdown.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'summernote/summernote-bs4.css' %}">
+
+<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror/theme/monokai.css' %}">
+<style>
+	.img_at_form {
+		width: 200px;
+		height: auto;
+		margin-left: -150px;
+	}
+</style>
+
+{% endblock %}
+
+{% block query %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+const fileInput = document.getElementById("excelFile");
+const dropZone = document.getElementById("dropZone");
+const filePreview = document.getElementById("fileNamePreview");
+
+function triggerFileInput() {
+    fileInput.click();
+}
+
+/* pilih file manual */
+fileInput.addEventListener("change", function () {
+    if (fileInput.files.length > 0) {
+        filePreview.innerHTML = `
+            <div class="alert alert-success mt-3">
+                Selected File:
+                <strong>${fileInput.files[0].name}</strong>
+            </div>
+        `;
+    }
+});
+
+/* drag over */
+dropZone.addEventListener("dragover", function(e){
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+});
+
+uploadBtn.addEventListener("click", function(){
+
+    if(fileInput.files.length === 0){
+        alert("Please choose file first");
+        return;
+    }
+
+    let formData = new FormData();
+
+    // file
+    formData.append("excelFile", fileInput.files[0]);
+
+    // csrf
+    formData.append(
+        "csrfmiddlewaretoken",
+        document.querySelector('[name=csrfmiddlewaretoken]').value
+    );
+
+    // 🔥 TAMBAHAN INI (PENTING)
+    formData.append("event_id", "{{ event.id }}");
+
+
+    uploadBtn.innerHTML = "Uploading...";
+    uploadBtn.disabled = true;
+
+    fetch("{% url 'upload_participant' %}", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        uploadBtn.innerHTML = "Upload & Save";
+        uploadBtn.disabled = false;
+
+        if(data.status === "success"){
+             Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: data.message,
+        confirmButtonColor: '#E31E24'
+    }).then(() => {
+        window.location.href = "/event/list/{{ event.id }}/";
+    });
+
+        }else{
+            alert(data.message);
+        }
+
+    })
+    .catch(error => {
+        uploadBtn.innerHTML = "Upload & Save";
+        uploadBtn.disabled = false;
+
+        alert("Upload failed");
+        console.log(error);
+    });
+
+})
+
+/* drag leave */
+dropZone.addEventListener("dragleave", function(){
+    dropZone.classList.remove("dragover");
+});
+
+/* drop file */
+dropZone.addEventListener("drop", function(e){
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    const files = e.dataTransfer.files;
+
+    if(files.length > 0){
+        fileInput.files = files;
+
+        filePreview.innerHTML = `
+            <div class="alert alert-success mt-3">
+                Selected File:
+                <strong>${files[0].name}</strong>
+            </div>
+        `;
+    }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}

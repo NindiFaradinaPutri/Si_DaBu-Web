@@ -51,6 +51,7 @@ from django.utils.safestring import SafeString
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
+from participant.models import Participant
 from rest_framework.authtoken.models import Token
 from django.db.models.functions import Replace
 from django.db.models import Value
@@ -64,6 +65,7 @@ from utils.utils import *
 from app.decorators import *
 from authentication.forms import *
 from authentication.models import *
+from event.models import *
 
 #Set Masking
 from hashids import Hashids
@@ -727,26 +729,103 @@ def admin_profile(request):
     assert isinstance(request, HttpRequest)
     title = 'Profil Admin'
     menu = ['Profil Admin','Profil']
-    
 
     if request.user.is_authenticated:
-        user_profile = UserProfile.objects.filter(user = request.user).first()
-        user_photo = UserPhoto.objects.get_by_user(user_id = request.user.id)
-        user_address = UserAddress.objects.get_by_user(user_id = request.user.id)
-        user_description = UserDescription.objects.filter(user_id = request.user.id).first()
+        user_profile = UserProfile.objects.filter(user=request.user).first()
+        user_photo = UserPhoto.objects.get_by_user(user_id=request.user.id)
+        user_address = UserAddress.objects.get_by_user(user_id=request.user.id)
+        user_description = UserDescription.objects.filter(user_id=request.user.id).first()
+
+        # =========================
+        # EVENT STATS (TIDAK DIUBAH LOGICNYA)
+        # =========================
+        now = timezone.now()
+        today = now.date()
+        current_time = now.time()
+
+        total_events = Event.objects.count()
+
+        upcoming_events = Event.objects.filter(
+            Q(date__gt=today) |
+            Q(date=today, time__gte=current_time)
+        )
+
+        upcoming_events_count = upcoming_events.count()
+
+        registered_count = Participant.objects.filter(
+            status_user_id__status_name="Register"
+        ).count()
+
+        present_count = Participant.objects.filter(
+            status_user_id__status_name="Present"
+        ).count()
+
+        checkin_rate = 0
+        if registered_count > 0:
+            checkin_rate = round((present_count / registered_count) * 100, 1)
+
+        events_qs = Event.objects.prefetch_related(
+            'eventphoto_set'
+        ).all()
+        # =========================
+        # EVENT LIST (TAMBAHAN SAJA, NON-INTRUSIVE)
+        # =========================
+        events = []
+
+        for event in events_qs:
+
+            # =========================
+            # STATUS LOGIC INLINE
+            # =========================
+            status = "EVENT FINISHED"
+            badge_class = "bg-secondary text-white"
+
+            if event.date > today:
+                status = "INCOMING"
+                badge_class = "bg-warning text-dark"
+
+            elif event.date == today:
+                if event.time:
+                    if event.time <= current_time:
+                        status = "LIVE MANAGEMENT"
+                        badge_class = "bg-danger text-white"
+                    else:
+                        status = "INCOMING"
+                        badge_class = "bg-warning text-dark"
+                else:
+                    status = "LIVE MANAGEMENT"
+                    badge_class = "bg-danger text-white"
+
+            # =========================
+            # ATTACH ATTRIBUTE KE OBJECT
+            # (tanpa append dict baru)
+            # =========================
+            event.status = status
+            event.badge_class = badge_class
+
+            events.append(event)
 
         context = {
-            'title':title,
-            'menu':menu,
-            'user':request.user,
-            'user_profile':user_profile,
-            'user_photo':user_photo,
-            'user_address':user_address,
-            'user_description':user_description,
-            'time':datetime.now().time()
-            }
+            'title': title,
+            'menu': menu,
+            'user': request.user,
+            'user_profile': user_profile,
+            'user_photo': user_photo,
+            'user_address': user_address,
+            'user_description': user_description,
+            'time': datetime.now().time(),
 
-        return render(request,'backend/profile/user_profile.html',context)
+            # STATS (UNCHANGED)
+            'total_events': total_events,
+            'upcoming_events_count': upcoming_events_count,
+            'registered_count': registered_count,
+            'checkin_rate': checkin_rate,
+
+            # EVENTS (BARU TAMBAHAN)
+            'events': events,
+        }
+
+        return render(request, 'backend/profile/user_profile.html', context)
 
 @login_required(login_url='/admin/who-login/')
 @admin_only

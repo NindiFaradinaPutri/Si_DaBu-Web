@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
+from participant.models import Participant
 from utils.functions import *
 from utils.utils import *
 
@@ -80,7 +81,8 @@ class FormQuestionOption(models.Model):
         return self.label
 
 class FormResponse(models.Model):
-    form = models.ForeignKey(Form, on_delete=models.CASCADE, null=False, blank=False)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE, null=True, blank=True)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE, null=False, blank=False)
     data_response = models.JSONField()
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)
     update_date = models.DateTimeField(auto_now=True, blank=False)

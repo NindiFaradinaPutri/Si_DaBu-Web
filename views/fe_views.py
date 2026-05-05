@@ -2,6 +2,9 @@
 Definition of views.
 """
 
+import base64
+from io import BytesIO
+
 from django.contrib.auth import password_validation, authenticate, login as user_login, logout as auth_logout
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.forms import AuthenticationForm
@@ -54,6 +57,7 @@ from django.utils.safestring import SafeString
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
+import qrcode
 from rest_framework.authtoken.models import Token
 from django.db.models.functions import Replace
 from django.db.models import Value
@@ -228,8 +232,11 @@ def event_frontend(request, id):
     tech = Technology.objects.all()
     naration = TeamNaration.objects.filter(id=1).first()
 
-    # ambil event berdasarkan ID
+    # ambil event
     event = Event.objects.filter(id=id).first()
+
+    if not event:
+        return render(request, '404.html')
 
     # ambil photo event
     event_photo = EventPhoto.objects.filter(
@@ -272,7 +279,9 @@ def event_frontend(request, id):
             event_status = "LIVE MANAGEMENT"
             event_badge_class = "bg-danger text-white"
 
-    # kapasitas
+    # =========================
+    # Attendance Progress
+    # =========================
     max_capacity = 5000
 
     if participant_count > 0:
@@ -283,6 +292,30 @@ def event_frontend(request, id):
     else:
         progress_percentage = 0
 
+    # =========================
+    # Generate QR Code jika pakai Google Form
+    # =========================
+    qr_code_base64 = None
+
+    if not event.is_form and event.url_form:
+        qr = qrcode.QRCode(
+            version=1,
+            box_size=10,
+            border=4
+        )
+
+        qr.add_data(event.url_form)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+
+        qr_code_base64 = base64.b64encode(
+            buffer.getvalue()
+        ).decode()
+
     context = {
         'title': event.name,
         'menu': menu,
@@ -292,8 +325,11 @@ def event_frontend(request, id):
         'tech': tech,
         'naration': naration,
 
+        # event
         'event': event,
         'event_photo': event_photo,
+
+        # participant
         'participant_count': participant_count,
         'max_capacity': max_capacity,
         'progress_percentage': progress_percentage,
@@ -301,6 +337,9 @@ def event_frontend(request, id):
         # status
         'event_status': event_status,
         'event_badge_class': event_badge_class,
+
+        # qr
+        'qr_code_base64': qr_code_base64,
     }
 
 

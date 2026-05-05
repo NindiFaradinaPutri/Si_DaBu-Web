@@ -1,5 +1,5 @@
 {% extends "layout/consulting_admin.html" %}
-
+{% load custom_tags %}
 {% load static %}
 
 {% block content %}
@@ -729,18 +729,20 @@
 <!-- Header Section -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
 <div>
-<h2 class="fw-bold mb-1">Global Tech Summit 2024</h2>
-<p class="text-secondary mb-0">Manage and track attendance for your primary guest list.</p>
+<h2 class="fw-bold mb-1"> {{ event.name }}</h2>
+<p class="text-secondary mb-0"> {{ event.information }}</p>
 </div>
 <div class="d-flex gap-2">
-<button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
-<span class="material-symbols-outlined fs-5">upload_file</span>
-                    Import Excel/CSV
-                </button>
-<button class="btn btn-primary d-flex align-items-center gap-2 px-3">
-<span class="material-symbols-outlined fs-5">person_add</span>
-                    Add Guest
-                </button>
+    <button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
+        <span class="material-symbols-outlined fs-5">upload_file</span>
+        Download Excel/CSV
+    </button>
+
+    <a href="{% url 'participant_upload' event.id %}"
+   class="btn btn-primary d-flex align-items-center gap-2 px-3">
+    <span class="material-symbols-outlined fs-5">cloud_upload</span>
+    Upload Google Form
+</a>
 </div>
 </div>
 <!-- Stats Grid -->
@@ -755,8 +757,8 @@
             </div>
 
             <div class="stat-content">
-                <p class="stat-label">Total Guests</p>
-                <h3 class="stat-value">2,480</h3>
+                <p class="stat-label">Total participants</p>
+                <h3 class="stat-value">{{ total_participants }}</h3>
             </div>
         </div>
     </div>
@@ -770,7 +772,7 @@
 
             <div class="stat-content">
                 <p class="stat-label">Checked In</p>
-                <h3 class="stat-value">1,922</h3>
+                <h3 class="stat-value">{{ checked_in }}</h3>
             </div>
         </div>
     </div>
@@ -784,7 +786,7 @@
 
             <div class="stat-content">
                 <p class="stat-label">Remaining</p>
-                <h3 class="stat-value">558</h3>
+                <h3 class="stat-value">{{ remaining }}</h3>
             </div>
         </div>
     </div>
@@ -798,210 +800,214 @@
 
             <div class="stat-content">
                 <p class="stat-label">Attendance Rate</p>
-                <h3 class="stat-value">77%</h3>
+                <h3 class="stat-value">{{ attendance_rate }}%</h3>
             </div>
         </div>
     </div>
 
 </div>
 <!-- Table Section -->
-<div class="guest-table-card">
-<!-- Filter Bar -->
-<div class="px-4 py-3 bg-light border-bottom d-flex flex-wrap align-items-center justify-content-between gap-3">
-<div class="d-flex align-items-center gap-2">
-<span class="small fw-bold text-secondary text-uppercase letter-spacing-1 me-2">Filter by:</span>
-<select class="form-select form-select-sm w-auto">
-<option>All Categories</option>
-<option>VIP</option>
-<option>Speaker</option>
-<option>Attendee</option>
-</select>
-<select class="form-select form-select-sm w-auto">
-<option>All Statuses</option>
-<option>Present</option>
-<option>Absent</option>
-</select>
-</div>
-<div class="d-flex gap-1">
-<button class="btn btn-sm btn-white border-0">
-<span class="material-symbols-outlined text-secondary">filter_list</span>
-</button>
-<button class="btn btn-sm btn-white border-0">
-<span class="material-symbols-outlined text-secondary">download</span>
-</button>
-</div>
-</div>
-<!-- Guest Table -->
-<div class="table-responsive">
-<table class="table mb-0">
-<thead>
+ <div class="guest-table-card">
+
+            <!-- TABLE HEADER -->
+            <div class="p-3 border-bottom bg-light d-flex justify-content-between">
+                <div>
+                    <strong>Participants List</strong>
+                </div>
+
+                <div>
+                    Total: {{ total_participants }}
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+                <table class="table mb-0">
+
+                    <thead>
 <tr>
-<th>Guest Name</th>
-<th>Organization</th>
-<th>Category</th>
-<th class="text-center">Check-in Status</th>
-<th class="text-center">QR Ticket</th>
-<th class="text-end">Actions</th>
+    {% for header in final_headers %}
+        <th>
+            {% if header == "name" %}
+                Name
+            {% elif header == "email" %}
+                Email
+            {% elif header == "phone" %}
+                Phone
+            {% elif header == "status" %}
+                Status
+            {% elif header == "qr_code" %}
+                Badge
+            {% elif header == "location" %}
+                Location
+            {% elif header|lower == "timestamp" %}
+                Tanggal & Waktu Pendaftaran
+            {% else %}
+                {{ header }}
+            {% endif %}
+        </th>
+    {% endfor %}
 </tr>
 </thead>
-<tbody>
-<!-- Row 1 -->
+
+                   <tbody>
+{% for participant in participants %}
 <tr>
+
+    {% with participant.formresponse_set.first as fr %}
+
+    {% for header in final_headers %}
+
+        {% if header == "name" %}
+            <td>
+        <div class="d-flex align-items-center gap-2">
+            <div class="avatar bg-danger-subtle text-danger">
+                {{ participant.name|slice:":2"|upper }}
+            </div>
+            <strong>{{ participant.name }}</strong>
+        </div>
+    </td>
+
+        {% elif header == "email" %}
+            <td>{{ participant.email|default:"-" }}</td>
+
+        {% elif header == "phone" %}
 <td>
-<div class="d-flex align-items-center gap-3">
-<div class="avatar bg-danger-subtle text-danger">JD</div>
-<div>
-<div class="fw-bold text-dark">Jane Doe</div>
-<div class="small text-secondary">jane.doe@techcorp.com</div>
-</div>
-</div>
+    {% if participant.phone %}
+        {% with phone=participant.phone|stringformat:"s" %}
+            
+            {% if phone|slice:":3" == "+62" %}
+                0{{ phone|slice:"3:" }}
+            
+            {% elif phone|slice:":1" == "0" %}
+                {{ phone }}
+            
+            {% else %}
+                0{{ phone }}
+            
+            {% endif %}
+
+        {% endwith %}
+    {% else %}
+        -
+    {% endif %}
 </td>
-<td>TechCorp Industries</td>
+
+        {% elif header == "status" %}
 <td>
-<span class="badge rounded-pill badge-vip px-3 py-1 fw-bold small">VIP</span>
+    {% with status=participant.status_user_id.status_name %}
+        
+        {% if status == "Present" %}
+            <span class="badge px-3 py-2 rounded-pill" style="background:#28a745; color:white;">
+                Present
+            </span>
+
+        {% elif status == "Register" %}
+            <span class="badge px-3 py-2 rounded-pill" style="background:#ffc107; color:black;">
+                Register
+            </span>
+
+        {% elif status == "Absent" %}
+            <span class="badge px-3 py-2 rounded-pill" style="background:#dc3545; color:white;">
+                Absent
+            </span>
+
+        {% elif status == "Cancel" %}
+            <span class="badge px-3 py-2 rounded-pill" style="background:#dc3545; color:white;">
+                Cancel
+            </span>
+
+        {% else %}
+            <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                {{ status }}
+            </span>
+
+        {% endif %}
+
+    {% endwith %}
 </td>
-<td class="text-center">
-<span class="badge rounded-pill badge-present px-3 py-1">Present</span>
+
+        {% elif header == "qr_code" %}
+            <td>
+    <a href="#" class="badge bg-danger d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
+        <span class="material-symbols-outlined" style="font-size:18px;">
+            badge
+        </span>
+    </a>
 </td>
-<td class="text-center">
-<span class="material-symbols-outlined text-success">qr_code_2</span>
-</td>
-<td class="text-end">
-<button class="btn btn-link text-secondary p-1">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
+
+            {% elif header == "location" %}
+            <td>{{ participant.location|default:"-" }}</td>
+
+        {% else %}
+            <td>
+                {% if fr %}
+                    {{ fr.data_response.excel_data|get_item:header|default:"-" }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        {% endif %}
+
+    {% endfor %}
+
+    {% endwith %}
+
 </tr>
-<!-- Row 2 -->
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="avatar bg-secondary-subtle text-secondary">MS</div>
-<div>
-<div class="fw-bold text-dark">Michael Smith</div>
-<div class="small text-secondary">m.smith@innovate.io</div>
-</div>
-</div>
-</td>
-<td>Innovate IO</td>
-<td>
-<span class="badge rounded-pill badge-speaker px-3 py-1 fw-bold small">Speaker</span>
-</td>
-<td class="text-center">
-<span class="badge rounded-pill badge-absent px-3 py-1">Absent</span>
-</td>
-<td class="text-center">
-<span class="material-symbols-outlined text-light">qr_code_2</span>
-</td>
-<td class="text-end">
-<button class="btn btn-link text-secondary p-1">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="avatar bg-light text-dark">AL</div>
-<div>
-<div class="fw-bold text-dark">Alice Liang</div>
-<div class="small text-secondary">alice.l@university.edu</div>
-</div>
-</div>
-</td>
-<td>State University</td>
-<td>
-<span class="badge rounded-pill badge-attendee px-3 py-1 fw-bold small">Attendee</span>
-</td>
-<td class="text-center">
-<span class="badge rounded-pill badge-present px-3 py-1">Present</span>
-</td>
-<td class="text-center">
-<span class="material-symbols-outlined text-success">qr_code_2</span>
-</td>
-<td class="text-end">
-<button class="btn btn-link text-secondary p-1">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="avatar bg-danger-subtle text-danger">RK</div>
-<div>
-<div class="fw-bold text-dark">Robert King</div>
-<div class="small text-secondary">r.king@global.com</div>
-</div>
-</div>
-</td>
-<td>Global Dynamics</td>
-<td>
-<span class="badge rounded-pill badge-vip px-3 py-1 fw-bold small">VIP</span>
-</td>
-<td class="text-center">
-<span class="badge rounded-pill badge-absent px-3 py-1">Absent</span>
-</td>
-<td class="text-center">
-<span class="material-symbols-outlined text-light">qr_code_2</span>
-</td>
-<td class="text-end">
-<button class="btn btn-link text-secondary p-1">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<!-- Row 5 -->
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="avatar bg-secondary-subtle text-secondary">SC</div>
-<div>
-<div class="fw-bold text-dark">Sarah Connor</div>
-<div class="small text-secondary">s.connor@cyberdyne.systems</div>
-</div>
-</div>
-</td>
-<td>Cyberdyne Systems</td>
-<td>
-<span class="badge rounded-pill badge-speaker px-3 py-1 fw-bold small">Speaker</span>
-</td>
-<td class="text-center">
-<span class="badge rounded-pill badge-present px-3 py-1">Present</span>
-</td>
-<td class="text-center">
-<span class="material-symbols-outlined text-success">qr_code_2</span>
-</td>
-<td class="text-end">
-<button class="btn btn-link text-secondary p-1">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
+{% endfor %}
 </tbody>
-</table>
+
+                </table>
 </div>
 <!-- Pagination -->
-<div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between">
-<span class="small text-secondary fw-medium">Showing 1-5 of 2,450 guests</span>
-<nav>
-<ul class="pagination pagination-sm mb-0 gap-1">
-<li class="page-item disabled">
-<a class="page-link d-flex align-items-center" href="#"><span class="material-symbols-outlined fs-6">chevron_left</span></a>
-</li>
-<li class="page-item active"><a class="page-link" href="#">1</a></li>
-<li class="page-item"><a class="page-link" href="#">2</a></li>
-<li class="page-item"><a class="page-link" href="#">3</a></li>
-<li class="page-item disabled"><span class="page-link border-0">...</span></li>
-<li class="page-item"><a class="page-link" href="#">490</a></li>
-<li class="page-item">
-<a class="page-link d-flex align-items-center" href="#"><span class="material-symbols-outlined fs-6">chevron_right</span></a>
-</li>
-</ul>
-</nav>
-</div>
+ <div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between">
+
+            <span class="small text-secondary fw-medium">
+                Showing {{ participants.count }} of {{ total_participants }} participants
+            </span>
+
+            {% if participants.has_other_pages %}
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+
+                    {% if participants.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ participants.previous_page_number }}">
+                            Prev
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for i in participants.paginator.page_range %}
+                        {% if participants.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link">{{ i }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="?page={{ i }}">
+                                    {{ i }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if participants.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ participants.next_page_number }}">
+                            Next
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
 </div>
 </main>
 <!-- end: page -->
