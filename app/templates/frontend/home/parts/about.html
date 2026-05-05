@@ -234,7 +234,7 @@
                         {% endif %}
 
                         <!-- Button -->
-                        <a href="{% url 'event' event.id %}" class="btn btn-event w-100">
+                        <a href="{% url 'event' item.event.id %}" class="btn btn-event w-100">
                             View Detail
                         </a>
 
@@ -260,7 +260,7 @@
 
         <!-- View More -->
         <div class="text-center mt-5">
-            <a href="/event/" 
+            <a href="/list_event/" 
                class="btn btn-outline-custom d-inline-flex align-items-center gap-2">
                 
                 Lihat Selengkapnya

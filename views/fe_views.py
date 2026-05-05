@@ -116,10 +116,12 @@ def home(request):
 
     hero_event_photo = None
     hero_event_status = None
+    hero_maps_url = ""
     hero_badge_class = "hero-badge"
 
     if hero_event:
-
+        
+        hero_maps_url = extract_maps_url(hero_event.location_map)
         hero_participant_count = Participant.objects.filter(
             id_event=hero_event
         ).count()
@@ -195,7 +197,8 @@ def home(request):
             "event": event,
             "photo": photo,
             "status": status,
-            "badge_class": badge_class
+            "badge_class": badge_class,
+            "maps_url": extract_maps_url(event.location_map)
         })
 
     context = {
@@ -213,6 +216,7 @@ def home(request):
 
         # event list section
         'event_data': event_data,
+        'hero_maps_url': hero_maps_url,  # 🔥 tambahan
     }
 
     return render(

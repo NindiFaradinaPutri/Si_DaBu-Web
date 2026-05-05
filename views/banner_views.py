@@ -98,11 +98,15 @@ def event_list(request, id):
         status_user_id__status_name__iexact="Register"
     ).count()
 
-    attendance_rate = 0
-    if total_participants > 0:
-        attendance_rate = round(
-            (checked_in / total_participants) * 100
-        )
+    attendance_rate = participant_queryset.filter(
+        status_user_id__status_name__iexact="Absent"
+    ).count()
+
+    # attendance_rate = 0
+    # if total_participants > 0:
+    #     attendance_rate = round(
+    #         (checked_in / total_participants) * 100
+    #     )
 
     form_responses_qs = FormResponse.objects.select_related("participant").filter(
         participant__id_event=event
@@ -135,7 +139,21 @@ def event_list(request, id):
     # =========================
     filtered_json_headers = []
 
+    EXCLUDED_KEYWORDS = [
+        "nama", "name", "nama lengkap",
+        "email","email address","alamat email",
+        "nomor", "phone", "hp", "telp","no hp", "nohandphone",
+        "nomor hp", "nomor telepon", "telepon"
+        "alamat", "location", "lokasi", "kota","address"
+    ]
+
     for header in json_headers:
+        header_clean = str(header).strip().lower()
+
+        # 🔥 TAMBAHAN: skip jika header mengandung keyword tertentu
+        if any(keyword in header_clean for keyword in EXCLUDED_KEYWORDS):
+            continue
+
         is_all_same = True
 
         for fr in form_responses_qs:

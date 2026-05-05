@@ -42,7 +42,9 @@ class EventForm(forms.ModelForm):
             'time',
             'location',
             'location_map',
-            'information'
+            'information',
+            'is_form',
+            'url_form'
         ]
 
         labels = {
@@ -52,6 +54,8 @@ class EventForm(forms.ModelForm):
             'location': 'Lokasi',
             'location_map': 'Link Google Maps',
             'information': 'Informasi Event',
+            'is_form': 'Use Form?',
+            'url_form': 'Link Google Form',
         }
 
         widgets = {
@@ -79,14 +83,14 @@ class EventForm(forms.ModelForm):
             'location': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Contoh: Masjid Raya Balikpapan'
+                    'placeholder': 'Contoh: Mall Living Plaza'
                 }
             ),
 
             'location_map': forms.URLInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'https://maps.google.com/...'
+                    'placeholder': 'https://www.google.com/maps/embed?pb=...'
                 }
             ),
 
@@ -97,6 +101,18 @@ class EventForm(forms.ModelForm):
                     'placeholder': 'Deskripsi atau informasi event'
                 }
             ),
+            'is_form': forms.CheckboxInput(
+                    attrs={
+                        'class': 'form-check-input'
+                    }
+                ),
+
+                'url_form': forms.URLInput(
+                    attrs={
+                        'class': 'form-control',
+                        'placeholder': 'https://your-google-form-link.com'
+                    }
+                ),
         }
 
     field_order = [
@@ -105,7 +121,10 @@ class EventForm(forms.ModelForm):
         'time',
         'location',
         'location_map',
-        'information'
+        'information',
+        'is_form',
+        'url_form'
+
     ]
 
 

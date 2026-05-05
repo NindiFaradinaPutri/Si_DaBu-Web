@@ -4,53 +4,54 @@
 <aside class="sidebar" id="sidebar">
 
     <!-- Logo -->
-    <div class="px-4 mb-4 d-flex align-items-center gap-3 sidebar-logo">
-        <div class="bg-primary rounded d-flex align-items-center justify-content-center text-white"
-             style="width: 32px; height: 32px;">
-            <span class="material-symbols-outlined fs-5"
-                  style="font-variation-settings: 'FILL' 1;">
-                dataset
-            </span>
-        </div>
+   <div class="px-4 mb-4 d-flex align-items-center gap-3 sidebar-logo">
 
-        <div class="logo-text">
-            <h1 class="h6 mb-0 fw-bold" style="color: var(--silatama-red);">
-                Silatama
-            </h1>
-            <p class="text-uppercase mb-0 text-muted fw-bold"
-               style="font-size: 10px; letter-spacing: 0.1em;">
-                Event Logistics
-            </p>
-        </div>
+    <!-- LOGO IMAGE -->
+    <div class="logo-img-wrapper">
+        <img src="/media/logo/logo-full.png" alt="Logo">
     </div>
+
+    <!-- TEXT -->
+    <div class="logo-text">
+        <h1 class="h6 mb-0 fw-bold">
+            <span class="text-dark">Presen</span>
+            <span style="color: var(--silatama-red);">GO</span>
+        </h1>
+        <p class="text-uppercase mb-0 text-muted fw-bold"
+           style="font-size: 10px; letter-spacing: 0.1em;">
+            Manage Event
+        </p>
+    </div>
+
+</div>
 
     <!-- Menu -->
     <nav class="nav flex-column flex-grow-1">
 
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" href="/admin/profile/">
             <span class="material-symbols-outlined">calendar_today</span>
             <span class="nav-text">Events</span>
         </a>
 
-        <a class="nav-link" href="#">
+        <!-- <a class="nav-link" href="#">
             <span class="material-symbols-outlined">group</span>
             <span class="nav-text">Guests</span>
-        </a>
+        </a> -->
 
-        <a class="nav-link" href="#">
+        <!-- <a class="nav-link" href="#">
             <span class="material-symbols-outlined">qr_code_scanner</span>
             <span class="nav-text">Check-in</span>
-        </a>
+        </a> -->
 
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="https://www.spinluck.art/wheelspin.html">
             <span class="material-symbols-outlined">confirmation_number</span>
             <span class="nav-text">Lucky Draw</span>
         </a>
 
-        <a class="nav-link" href="#">
+        <!-- <a class="nav-link" href="#">
             <span class="material-symbols-outlined">bar_chart</span>
             <span class="nav-text">Reports</span>
-        </a>
+        </a> -->
 
     </nav>
 
@@ -62,7 +63,7 @@
             <span class="nav-text">Help Center</span>
         </a>
 
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/logout/">
             <span class="material-symbols-outlined">logout</span>
             <span class="nav-text">Logout</span>
         </a>
@@ -96,6 +97,23 @@
 /* Collapse state */
 .sidebar.collapsed {
     width: 80px;
+}
+
+.logo-img-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+}
+
+.logo-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 /* Hide text */
