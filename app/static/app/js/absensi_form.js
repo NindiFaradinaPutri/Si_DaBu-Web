@@ -11,6 +11,13 @@ document.getElementById("add-question-btn").addEventListener("click", function (
     clone.classList.remove("d-none");
     clone.removeAttribute("id");
 
+     let inputs = clone.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        input.id = "label_" + questionIndex;
+        input.name = "label_" + questionIndex;
+    });
+
+
     // SET RADIO NAME BIAR TIDAK TABRAKAN
     let radios = clone.querySelectorAll('input[type="radio"]');
     radios.forEach((radio, i) => {
@@ -134,20 +141,40 @@ document.addEventListener("submit", function (e) {
                 data.options.push(input.value.trim());
             }
         });
-    };
+    }
 
-    $.ajax({
-        type: "POST",
-        url: '/ajax/create_event/',
-        datatype: 'json',
-        data: { 'data': data },
-        success: function (data) {
-            jadwal_sholat = JSON.parse(data.jadwal_sholat);
-            setPrayTime();
-            init();
-            current_date = new Date();
-        }
-    });
+    console.log("DATA:", data);
+});
 
-    
+
+document.addEventListener("DOMContentLoaded", function () {
+    const checkbox = document.querySelector("#id_is_form");
+    const urlWrapper = document.querySelector("#form-url-wrapper");
+    const engagementSection = document.querySelector("#engagement-section");
+
+    function toggleFormMode() {
+    const inputs = engagementSection.querySelectorAll("input, select, textarea");
+
+    if (checkbox.checked) {
+        urlWrapper.style.display = "block";
+        engagementSection.style.display = "none";
+
+        // ❗ disable validation
+        inputs.forEach(el => el.required = false);
+
+    } else {
+        urlWrapper.style.display = "none";
+        engagementSection.style.display = "block";
+
+        // ❗ aktifkan lagi kalau perlu
+        inputs.forEach(el => {
+            if (el.classList.contains("label-input")) {
+                el.required = true;
+            }
+        });
+    }
+}
+
+    toggleFormMode(); // initial load
+    checkbox.addEventListener("change", toggleFormMode);
 });

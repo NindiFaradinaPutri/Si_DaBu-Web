@@ -27,6 +27,15 @@ def path_photo(instance, photoname):
 
     return os.path.join(upload_photo_to,photoname)
 
+def path_qr_code(instance, filename):
+    upload_photo_to = instance.upload_photo_to
+
+    name, ext = os.path.splitext(filename)
+
+    base_name = instance.photo_rename if instance.photo_rename else name
+
+    return os.path.join(upload_photo_to, f"{base_name}{ext}")
+
 def path_attachment(instance, filename):
     upload_file_to = instance.upload_file_to
     ext = filename.split('.')[-1]

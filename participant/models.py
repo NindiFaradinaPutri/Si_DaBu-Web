@@ -32,11 +32,66 @@ class Participant(models.Model):
     status_user_id = models.ForeignKey(StatusParticipant, on_delete=models.SET_NULL,null=True, blank=True)
     unique_user = models.UUIDField(default=uuid4, editable=False, unique=True)
     id_event = models.ForeignKey(Event,on_delete=models.CASCADE, null=False, blank=False)
+    qr_code = models.ImageField(upload_to=path_qr_code, null=True, blank=True)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=False)
+    update_date = models.DateTimeField(auto_now=True, blank=False)
 
     class Meta:
         db_table = 'participant'
 
     def __str__(self):
         return self.name
+    
+    @property
+    def encrypt_id(self):
+        return hashid.encode(self.pk)
+
+    @property
+    def upload_photo_to(self):
+        return 'qr_code/'
+
+    @property
+    def photo_rename(self):
+        try:
+            newname = ''.join(self.unique_user.replace(" ","")).upper().join(self.id_event.unique_name.replace(" ","")).upper()
+            name = '{}{}'.format('br',newname)
+        except Exception as err:
+            name = ''
+        return name
+    
+    @property
+    def status(self):
+        status = StatusParticipant.objects.filter(id = self.status_user_id.id).first()
+        if status:
+            return status.status_name
+        else:
+            return ""
+        
+    @property
+    def photoname(self, *args, **kwargs):
+        return self.qr_code.name.split('/')[-1]
+
+    def save(self, *args, **kwargs):
+        try:
+            if self.pk:
+                old = Participant.objects.get(pk=self.pk)
+
+                if old.qr_code and old.qr_code != self.qr_code:
+                    old.qr_code.delete(save=False)
+
+        except Participant.DoesNotExist:
+            pass
+
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        try:
+            items = Participant.objects.filter(id=self.id)
+            if items:
+                for item in items:
+                    item.qr_code.delete(save=False)
+        except Exception as e:
+            pass
+        super(Participant, self).delete(*args, **kwargs)
 
 #END OF PARTICIPANT MODEL

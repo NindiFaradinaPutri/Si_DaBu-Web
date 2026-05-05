@@ -733,10 +733,14 @@
 <p class="text-secondary mb-0"> {{ event.information }}</p>
 </div>
 <div class="d-flex gap-2">
-    <button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
-        <span class="material-symbols-outlined fs-5">upload_file</span>
-        Download Excel/CSV
-    </button>
+    <button 
+    id="btnDownload"
+    data-event-id="{{ event.id }}"
+    class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
+    
+    <span class="material-symbols-outlined fs-5">download</span>
+    Download Excel/CSV
+</button>
 
     <a href="{% url 'participant_upload' event.id %}"
    class="btn btn-primary d-flex align-items-center gap-2 px-3">
@@ -780,7 +784,7 @@
     <!-- Remaining -->
     <div class="col-12 col-md-6 col-xl-3">
         <div class="stat-card h-100">
-            <div class="icon-box bg-danger-subtle text-danger">
+            <div class="icon-box bg-warning-subtle text-warning">
                 <span class="material-symbols-outlined">pending</span>
             </div>
 
@@ -794,12 +798,12 @@
     <!-- Attendance Rate -->
     <div class="col-12 col-md-6 col-xl-3">
         <div class="stat-card h-100">
-            <div class="icon-box bg-warning-subtle text-warning">
-                <span class="material-symbols-outlined">analytics</span>
+            <div class="icon-box bg-danger-subtle text-danger">
+                <span class="material-symbols-outlined">person_off</span>
             </div>
 
             <div class="stat-content">
-                <p class="stat-label">Attendance Rate</p>
+                <p class="stat-label">Absent</p>
                 <h3 class="stat-value">{{ attendance_rate }}%</h3>
             </div>
         </div>
@@ -929,7 +933,7 @@
 
         {% elif header == "qr_code" %}
             <td>
-    <a href="#" class="badge bg-danger d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
+    <a href="/event/print-badge/{{participant.encrypt_id}}" class="badge bg-danger d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
         <span class="material-symbols-outlined" style="font-size:18px;">
             badge
         </span>
@@ -1031,6 +1035,21 @@
 {% endblock %}
 
 {% block query %}
+
+<script>
+document.getElementById("btnDownload").addEventListener("click", function() {
+
+    const eventId = this.getAttribute("data-event-id");
+
+    if (!eventId) {
+        alert("Event ID tidak ditemukan");
+        return;
+    }
+
+    // 🔥 redirect ke endpoint Django
+    window.location.href = `/ajax/download_participant_bulk/?event_id=${eventId}`;
+});
+</script>
 <script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
 
 <script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
