@@ -100,7 +100,7 @@ urlpatterns = [
     path('banner/add/', banner_views.banner_add, name='banner_add'),  
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
 
-    url(r'^ajax/create_event/$', event_ajaxs.create_event,name="create_event"),
+    # url(r'^ajax/create_event/$', event_ajaxs.create_event,name="create_event"),
 
     #About
     
