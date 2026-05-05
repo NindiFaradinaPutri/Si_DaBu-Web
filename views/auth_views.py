@@ -752,17 +752,30 @@ def admin_profile(request):
 
         upcoming_events_count = upcoming_events.count()
 
-        registered_count = Participant.objects.filter(
-            status_user_id__status_name="Register"
-        ).count()
+        active_events = Event.objects.filter(
+            date=today,
+            time__hour=current_time.hour
+        )
+
+        # =========================
+        # REGISTERED (HANYA EVENT ACTIVE)
+        # =========================
+        registered_count = active_events.count()
+        # =========================
+        # GLOBAL PARTICIPANT (SEMUA EVENT)
+        # =========================
+        total_participants = Participant.objects.count()
 
         present_count = Participant.objects.filter(
-            status_user_id__status_name="Present"
+            status_user_id__status_name__iexact="Present"
         ).count()
 
+        # =========================
+        # CHECK-IN RATE (GLOBAL)
+        # =========================
         checkin_rate = 0
-        if registered_count > 0:
-            checkin_rate = round((present_count / registered_count) * 100, 1)
+        if total_participants > 0:
+            checkin_rate = round((present_count / total_participants) * 100)
 
         events_qs = Event.objects.prefetch_related(
             'eventphoto_set'

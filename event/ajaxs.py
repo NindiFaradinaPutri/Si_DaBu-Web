@@ -315,20 +315,13 @@ def upload_participant(request):
 @csrf_exempt
 def download_participant(request):
 
-    if request.method != "POST":
+    if request.method != "GET":
         return JsonResponse({
             "status": "failed",
             "message": "Invalid request"
         })
 
-    uploaded_file = request.FILES.get("excelFile")
-    event_id = request.POST.get("event_id")
-
-    if not uploaded_file:
-        return JsonResponse({
-            "status": "failed",
-            "message": "File tidak ditemukan"
-        })
+    event_id = request.GET.get("event_id")
 
     if not event_id:
         return JsonResponse({
@@ -338,132 +331,42 @@ def download_participant(request):
 
     try:
         event = Event.objects.get(id=event_id)
-        status_default = StatusParticipant.objects.get(id=3)
 
-        file_name = uploaded_file.name.lower()
+        status_present = StatusParticipant.objects.get(
+            status_name__iexact="Present"
+        )
 
-        # =========================
-        # READ FILE
-        # =========================
-        if file_name.endswith(".csv"):
-            df = pd.read_csv(uploaded_file)
+        participants = Participant.objects.filter(
+            id_event=event,
+            status_user_id=status_present
+        ).values_list("name", "email", "phone")
 
-        elif file_name.endswith(".xlsx"):
-            df = pd.read_excel(uploaded_file, engine="openpyxl")
+        # ✅ DataFrame multi kolom
+        df = pd.DataFrame(participants, columns=["Name", "Email", "Phone"])
 
-        elif file_name.endswith(".xls"):
-            df = pd.read_excel(uploaded_file, engine="xlrd")
+        # ✅ Tambah kolom status
+        df["Status"] = "Check In"
 
-        else:
-            return JsonResponse({
-                "status": "failed",
-                "message": "Format file tidak didukung"
-            })
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
-        # =========================
-        # CLEAN DATA
-        # =========================
-        def clean_value(val):
-            bulan = [
-                "Januari", "Februari", "Maret", "April",
-                "Mei", "Juni", "Juli", "Agustus",
-                "September", "Oktober", "November", "Desember"
-            ]
+        response['Content-Disposition'] = 'attachment; filename=list_name_participation_lucky_wheel.xlsx'
 
-            if isinstance(val, pd.Timestamp):
-                dt = val.to_pydatetime()
+        df.to_excel(response, index=False, header=True)
 
-                # 🔥 KONVERSI KE WITA (+1 jam dari WIB)
-                dt = dt + timedelta(hours=1)
+        return response
 
-                return f"{dt.day} {bulan[dt.month-1]} {dt.year}, {dt.strftime('%H:%M')} WITA"
-
-            elif isinstance(val, np.integer):
-                return int(val)
-
-            elif isinstance(val, np.floating):
-                return float(val)
-
-            elif pd.isna(val):
-                return ""
-
-            return val
-        
-
-        df = df.applymap(clean_value)
-        excel_json = df.to_dict(orient="records")
-
-        form_obj = Form.objects.first()
-
-        saved_data = []
-
-        # =========================
-        # LOOP DATA
-        # =========================
-        df.columns = [
-            re.sub(r"\s+", " ", str(col).replace(":", "").strip())
-            for col in df.columns
-        ]
-
-        name_col = find_column(df, [
-            "name", "nama", "nama lengkap"
-        ])
-
-        email_col = find_column(df, [
-            "email", "email address","alamat email"
-        ])
-
-        phone_col = find_column(df, [
-            "phone", "no hp", "nohandphone",
-            "nomor hp", "nomor telepon", "telepon"
-        ])
-
-        location_col = find_column(df, [
-            "location", "alamat", "kota", "address"
-        ])
-
-
-        for _, row in df.iterrows():
-
-            name = row[name_col] if name_col else ""
-            email = row[email_col] if email_col else ""
-            phone = row[phone_col] if phone_col else ""
-            location = row[location_col] if location_col else ""
-
-            participant = Participant.objects.create(
-                name=name,
-                email=email,
-                phone=phone,
-                location=location,
-                id_event=event,
-                status_user_id=status_default
-            )
-
-            # 🔥 SIMPAN JSON + PARTICIPANT ID
-            response_data = {
-                "participant_id": participant.id,
-                "participant_name": participant.name,
-                "participant_email": participant.email,
-                "participant_phone": participant.phone,
-                "excel_data": row.to_dict() 
-            }
-
-            form_response = FormResponse.objects.create(
-                form=form_obj,
-                data_response=response_data,
-                participant=participant
-            )
-
-            saved_data.append({
-                "participant_id": participant.id,
-                "form_response_id": form_response.id
-            })
-
+    except StatusParticipant.DoesNotExist:
         return JsonResponse({
-            "status": "success",
-            "message": "Upload berhasil",
-            "total_uploaded": len(saved_data),
-            "data": saved_data
+            "status": "failed",
+            "message": "Status 'Present' tidak ditemukan"
+        })
+
+    except Event.DoesNotExist:
+        return JsonResponse({
+            "status": "failed",
+            "message": "Event tidak ditemukan"
         })
 
     except Exception as e:

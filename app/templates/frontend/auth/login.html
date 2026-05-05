@@ -122,6 +122,19 @@
         background-color: #c4181d;
     }
 
+    .brand-icon-wrapper {
+    background: #ffffff;
+    padding: 16px 20px;
+    border-radius: 20px; /* bikin rounded halus */
+    box-shadow: 0 10px 25px rgba(243, 0, 0, 0.39);
+    border: 1px solid #f1f1f1;
+}
+
+.brand-logo {
+    height: 60px;
+    width: auto;
+}
+
     .security-note {
         margin-top: 2rem;
         padding-top: 1.5rem;
@@ -134,19 +147,37 @@
 
 
 <!-- Navbar -->
-<nav class="navbar navbar-light fixed-top">
-    <div class="container-fluid px-4">
-        <a class="navbar-brand" href="#">Silatama</a>
+<nav class="navbar navbar-light fixed-top bg-white shadow-sm">
+    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
 
-        <div class="d-flex align-items-center">
-            <button class="btn-icon me-2">
+        <!-- LOGO + BRAND -->
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img 
+                src="/media/logo/logo-full.png"
+                class="logo-img me-2"
+                style="height:45px;"
+            >
+            <span class="logo-text fw-bold" style="font-size:20px;">
+                <span class="text-dark">Presen</span>
+                <span style="color:#e31e24;">GO</span>
+            </span>
+        </a>
+
+        <!-- RIGHT MENU -->
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- HELP -->
+            <button class="btn btn-light rounded-circle p-2">
                 <span class="material-symbols-outlined">help</span>
             </button>
 
-            <button class="btn-icon">
+            <!-- LANGUAGE -->
+            <button class="btn btn-light rounded-circle p-2">
                 <span class="material-symbols-outlined">language</span>
             </button>
+
         </div>
+
     </div>
 </nav>
 
@@ -171,13 +202,18 @@
                     {% endif %}
 
                     <!-- Header -->
-                    <div class="text-center mb-4">
-                        <div class="d-inline-flex brand-icon-wrapper">
-                            <span class="material-symbols-outlined">event_seat</span>
-                        </div>
+                <div class="text-center mb-4">
+    <div class="d-inline-flex brand-icon-wrapper align-items-center justify-content-center">
+        <img 
+            src="/media/logo/logo-full.png"
+            alt="Logo"
+            class="brand-logo"
+        >
+    </div>
+
 
                         <h1 class="h3 fw-bold mb-1">Welcome Back</h1>
-                        <p class="text-muted mb-0">Admin Login Portal</p>
+                        <p class="text-muted mb-0">Admin Login</p>
                     </div>
 
                     <!-- FORM -->
