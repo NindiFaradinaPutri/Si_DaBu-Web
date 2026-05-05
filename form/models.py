@@ -5,7 +5,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,Permiss
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
 from participant.models import Participant
 from utils.functions import *
-from utils.utils import *
+# from utils.utils import *
 
 from event.models import *
 

@@ -52,6 +52,9 @@ from rest_framework.authtoken.models import Token
 from django.db.models.functions import Replace
 from django.db.models import Value
 
+from io import BytesIO
+from django.core.files.base import ContentFile
+
 #Set Logg
 import logging
 
@@ -64,6 +67,7 @@ from gallery.models import *
 from event.models import *
 from participant.models import *
 from gallery.forms import *
+from form.models import *
 
 #Set Masking
 from hashids import Hashids
@@ -283,3 +287,77 @@ def team_update(request, status, id):
             messages.add_message(request,messages.WARNING,''+team.name+' successfully deleted.')
             team.delete()
             return redirect('/team/list/')
+        
+# @login_required(login_url='/admin/who-login/')
+# @admin_only
+def print_badge(request, id):
+    id = decoding_id(id)
+    assert isinstance(request, HttpRequest)
+
+    participant = Participant.objects.filter(id = id).first()
+    event = Event.objects.filter(id = participant.id_event.id).first()
+
+    instansi = ""
+
+    instansi_obj = FormResponse.objects.annotate(
+        instansi=F("data_response__excel_data__Instansi (Jika ada)")
+        ).filter(participant_id = id).first()
+    if instansi_obj:
+        instansi_value = getattr(instansi_obj, 'instansi', '')
+        instansi = instansi_value or ""
+
+    context = {
+                'event':event,
+                'instansi':instansi,
+                'participant':participant,
+                }
+    return render(request, 'backend/event/badge.html',context)
+        
+# # @login_required(login_url='/admin/who-login/')
+# # @admin_only
+# def testing(request):
+#     assert isinstance(request, HttpRequest)
+#     title = 'Pengurus'
+
+#     event = Event.objects.filter(id = 2).first()
+#     participant = Participant.objects.filter(id_event = event)
+
+#     create_and_send_qremail(request,2)
+
+#     for p in participant:
+#         if not p.qr_code:
+#             qr_data = f"{event.unique_name},{p.unique_user}"
+
+#             # generate QR
+#             img = make(qr_data)
+
+#             # convert PIL image to file
+#             buffer = BytesIO()
+#             img.save(buffer, format='PNG')
+#             file_name = f"{event.unique_name}_{p.unique_user}.png"
+
+#             print("filename:", file_name)
+
+#             # save to ImageField
+#             p.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
+
+#             # save model once
+#             p.save()
+
+#             print("AFTER SAVE:", p.qr_code.name)
+
+#     url = request.build_absolute_uri(participant.first().qr_code.url)
+#     instansi = FormResponse.objects.annotate(
+#         instansi=F("data_response__excel_data__Instansi (Jika ada)")
+#         ).first()
+    
+#     current_site = get_current_site(request)
+
+#     context = {
+#                 'event': event,
+#                 'domain': current_site.domain,
+#                 'qr_code': url,
+#                 'instansi': instansi.instansi,
+#                 'participant':participant.first(),
+#                 }
+#     return render(request, 'template/registrations/attende_qrcode.html',context)

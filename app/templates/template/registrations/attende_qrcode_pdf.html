@@ -1,0 +1,30 @@
+<table width="100%" style="font-family: Arial;">
+    <tr>
+    
+    <td width="40%" align="center" style="border:1px solid #eee; padding:20px;">
+        <img src="{{ qr_code }}" width="150"><br>
+        <strong>{{ participant.unique_user }}</strong>
+    </td>
+    
+    <td width="60%" style="padding:20px;">
+        <h2>{{ event.name }}</h2>
+    
+        <p>
+            <strong>Date:</strong><br>
+            {{ event.date|date:"l, j F Y" }}<br>
+            {{ event.time|date:"g:i A" }}
+        </p>
+    
+        <p>
+            <strong>Location:</strong><br>
+            {{ event.location }}
+        </p>
+    
+        <p>
+            <strong>{{ participant.name }}</strong><br>
+            {{ instansi }}
+        </p>
+    </td>
+    
+    </tr>
+    </table>

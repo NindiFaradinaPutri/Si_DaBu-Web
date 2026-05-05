@@ -30,6 +30,10 @@ class Event(models.Model):
         return self.name + "-" + self.date
     
     @property
+    def encrypt_id(self):
+        return hashid.encode(self.pk)
+    
+    @property
     def poster(self):
         photo = EventPhoto.objects.filter(id_event = self.id).first()
         if photo:
