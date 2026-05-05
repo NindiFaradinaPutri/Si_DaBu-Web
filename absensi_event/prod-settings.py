@@ -37,7 +37,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'static','media')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('MASJID_AR_RAUDAH_SECRET_KEY'),
+SECRET_KEY = os.environ.get('ABSENSI_EVENT_SECRET_KEY'),
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -61,7 +61,7 @@ CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_HTTPONLY = False
 #SESSION_COOKIE_SECURE = False
 
-ROOT_URLCONF = 'masjid_ar_raudah.urls'
+ROOT_URLCONF = 'absensi_event.urls'
 
 CACHES = {
     'default':{
@@ -87,27 +87,25 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     'app',
-    'ads',
+    'banner',
     'authentication',
-    'career',
     'complaint',
+    'event',
+    'finance',
+    'form',
     'gallery',
+    'information',
     'news',
     'portfolio',
     'profile',
     'team',
-    'utils',
-    'views',
-    'finance',
-    'information',
-    'kegiatan',
-    'qurban',
+    'participant',
 
-    'channels',
     'django_tables2',
     'django_filters',
     'widget_tweaks',
     'rest_framework.authtoken',
+    'rest_framework',
     'django_crontab',
     'captcha',
 ]
@@ -150,12 +148,12 @@ AUTH_USER_MODEL = 'authentication.UserData'
 # WSGI_APPLICATION = 'emasjid.wsgi.application'
 # ASGI_APPLICATION = 'emasjid.asgi.application'
 
-WSGI_APPLICATION = 'masjid_ar_raudah.wsgi.application'
-ASGI_APPLICATION = 'masjid_ar_raudah.asgi.application'
+WSGI_APPLICATION = 'absensi_event.wsgi.application'
+ASGI_APPLICATION = 'absensi_event.asgi.application'
 
 #reCAPTCHA
-RECAPTCHA_PUBLIC_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PBC_KEY')
-RECAPTCHA_PRIVATE_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PVT_KEY')
+# RECAPTCHA_PUBLIC_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PBC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.environ.get('MASJID_AR_RAUDAH_RECHA_PVT_KEY')
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -254,15 +252,15 @@ CSRF_USE_SESSIONS = True
 CSRF_FAILURE_VIEW = 'views.frontend_views.csrf_failure'
 
 #KEY FOR GOOGLE MAPS
-RSAD_GOOGLE_MAP_KEY = os.environ.get('MASJID_AR_RAUDAH_GOOGLE_MAP_KEY')
+RSAD_GOOGLE_MAP_KEY = os.environ.get('ABSENSI_EVENT_GOOGLE_MAP_KEY')
 
 #EMAIL CONF
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('MASJID_AR_RAUDAH_EMAIL_ID') 
-EMAIL_HOST_PASSWORD = os.environ.get('MASJID_AR_RAUDAH_EMAIL_PASS')
+EMAIL_HOST_USER = os.environ.get('ABSENSI_EVENT_EMAIL_ID') 
+EMAIL_HOST_PASSWORD = os.environ.get('ABSENSI_EVENT_EMAIL_PASS')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -280,7 +278,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "/var/log/django/tracklog-masjid-ar-raudah.log",
+            "filename": "/var/log/django/tracklog-presengo.log",
             "formatter": "app",
         },
     },
