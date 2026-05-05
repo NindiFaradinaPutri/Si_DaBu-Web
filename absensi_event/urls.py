@@ -36,7 +36,6 @@ urlpatterns = [
     path('error_404/', auth_views.handler404, name='error_404'),
     path('error_403/', auth_views.handler403, name='error_403'),
     path('error_500/', auth_views.handler500, name='error_500'),
-       
     #Home
     path('', fe_views.home, name='index'),
     path('home/', fe_views.home, name='home'),
@@ -174,7 +173,10 @@ urlpatterns = [
     # path('team/list/', team_views.team_list, name='team_list'),
     # path('team/add/', team_views.team_add, name='team_add'),
     # re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', team_views.team_update, name='team_update'),
-    # path('team/', fe_views.ourteam, name='ourteam'),
+    # path('team/', fe_views.ourteam, name='ourteam'),\
+
+    #Print Bagde
+    re_path(r'^event/print-badge/(?P<id>[0-9a-zA-Z-_]+)/$', even.print_badge,name='print_bagde'),
 
     #Testimony
     path('testimony/list/', portfolio_views.testimony_list, name='testimony_list'),
