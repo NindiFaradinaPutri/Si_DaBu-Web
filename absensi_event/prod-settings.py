@@ -42,7 +42,7 @@ SECRET_KEY = os.environ.get('ABSENSI_EVENT_SECRET_KEY'),
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','8.215.71.152','.silatama.co.id','.masjidnuprapatan.org']
+ALLOWED_HOSTS = ['localhost','191.101.3.251','.silatama.co.id']
 
 #SSL
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'

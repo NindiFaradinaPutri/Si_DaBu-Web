@@ -7,7 +7,7 @@ from datetime import datetime
 from django.urls import path, re_path, include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView,PasswordResetConfirmView,PasswordResetCompleteView
-from django.conf.urls import url
+from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
@@ -42,16 +42,15 @@ urlpatterns = [
     path('home/', fe_views.home, name='home'),
     #path('', auth_views.login, name='index'),
 
-    url(r'^password/reset/$', PasswordResetView.as_view(template_name='template/registrations/password_reset_form.html'), name='password_reset'),
-    url(r'^password/reset/done/$', PasswordResetDoneView.as_view(template_name='template/registrations/password_reset_done.html'), name='password_reset_done'),
-    url(
-    r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
+    re_path(r'^password/reset/$', PasswordResetView.as_view(template_name='template/registrations/password_reset_form.html'), name='password_reset'),
+    re_path(r'^password/reset/done/$', PasswordResetDoneView.as_view(template_name='template/registrations/password_reset_done.html'), name='password_reset_done'),
+    re_path(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
     PasswordResetConfirmView.as_view(template_name='template/registrations/password_reset_confirm.html'),
     name='password_reset_confirm'
         ),
-    # url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    # path(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
     # PasswordResetConfirmView.as_view(template_name='template/registrations/password_reset_confirm.html'), name='password_reset_confirm'),
-    url(r'^reset/done/$', PasswordResetCompleteView.as_view(template_name='template/registrations/password_reset_complete.html'), name='password_reset_complete'),
+    re_path(r'^reset/done/$', PasswordResetCompleteView.as_view(template_name='template/registrations/password_reset_complete.html'), name='password_reset_complete'),
 
     #Authentication
     #Page
@@ -70,13 +69,13 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='/admin/who-login/'), name='logout'),
 
     #ADDRESS ACCESS
-    url(r'^ajax/akses_provinsi/$', auth_ajaxs.akses_provinsi,name="akses_provinsi"),
-    url(r'^ajax/akses_dati2/$', auth_ajaxs.akses_dati2,name="akses_dati2"),
-    url(r'^ajax/akses_kecamatan/$', auth_ajaxs.akses_kecamatan,name="akses_kecamatan"),
-    url(r'^ajax/akses_kelurahan/$', auth_ajaxs.akses_kelurahan,name="akses_kelurahan"),
+    re_path(r'^ajax/akses_provinsi/$', auth_ajaxs.akses_provinsi,name="akses_provinsi"),
+    re_path(r'^ajax/akses_dati2/$', auth_ajaxs.akses_dati2,name="akses_dati2"),
+    re_path(r'^ajax/akses_kecamatan/$', auth_ajaxs.akses_kecamatan,name="akses_kecamatan"),
+    re_path(r'^ajax/akses_kelurahan/$', auth_ajaxs.akses_kelurahan,name="akses_kelurahan"),
 
     #Ajax
-    url(r'^ajax/check_account_activation/$', auth_ajaxs.check_account_activation,name="check_account_activation"),
+    re_path(r'^ajax/check_account_activation/$', auth_ajaxs.check_account_activation,name="check_account_activation"),
 
     #Event
     # path('event/', fe_views.event_frontend, name='event'),
@@ -88,8 +87,8 @@ urlpatterns = [
     re_path(r'^event/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.event_update, name='event_update'), 
     # path('participant/upload/', banner_views.participant_upload, name='participant_upload'),
     path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
-    url(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
-    url(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
+    re_path(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
+    re_path(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
     path('doorprize/', even.doorprize, name='doorprize'),
 
     path('team/add/', even.team_add, name='team_add'),
@@ -100,7 +99,7 @@ urlpatterns = [
     path('banner/add/', banner_views.banner_add, name='banner_add'),  
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
 
-    # url(r'^ajax/create_event/$', event_ajaxs.create_event,name="create_event"),
+    # path(r'^ajax/create_event/$', event_ajaxs.create_event,name="create_event"),
 
     #About
     
@@ -108,23 +107,23 @@ urlpatterns = [
 
     #Portfolio
     path('portfolios/', portfolio_views.portfolio, name='portfolio'),
-    url(r'^ajax/filter_portfolio/$', prf_ajaxs.filter_portfolio,name='filter_portfolio'),
+    re_path(r'^ajax/filter_portfolio/$', prf_ajaxs.filter_portfolio,name='filter_portfolio'),
     path('portfolios/list/', portfolio_views.portfolio_list, name='portfolio_list'),
     path('portfolios/add/', portfolio_views.portfolio_add, name='portfolio_add'),
     re_path(r'^portfolios/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', portfolio_views.portfolio_update, name='portfolio_update'),
     re_path(r'^portfolios/(?P<id>[0-9a-zA-Z-_]+)/$', portfolio_views.portfolio_service, name='portfolio_service'),
-    url(r'^ajax/addform_portfoliophoto/$', prf_ajaxs.addform_portfoliophoto,name="addform_portfoliophoto"),
-    url(r'^ajax/view_portfolio/$', prf_ajaxs.view_portfolio,name="view_portfolio"),
-    url(r'^ajax/ctrg_portfolio/$', prf_ajaxs.ctrg_portfolio,name="ctrg_portfolio"),
+    re_path(r'^ajax/addform_portfoliophoto/$', prf_ajaxs.addform_portfoliophoto,name="addform_portfoliophoto"),
+    re_path(r'^ajax/view_portfolio/$', prf_ajaxs.view_portfolio,name="view_portfolio"),
+    re_path(r'^ajax/ctrg_portfolio/$', prf_ajaxs.ctrg_portfolio,name="ctrg_portfolio"),
 
     #News
     path('news/', news_views.news, name='news'),
     path('news/search', news_views.news_search, name='news_search'),
-    url(r'^ajax/filter_news/$', news_ajaxs.filter_news,name='filter_news'),
+    re_path(r'^ajax/filter_news/$', news_ajaxs.filter_news,name='filter_news'),
     re_path(r'^news/post/(?P<id>[0-9a-zA-Z-_]+)/$', news_views.news_detail, name='news_detail'),
     path('article/list/', news_views.news_list, name='news_list'),
     path('article/add/', news_views.news_add, name='news_add'),
-    re_path('article/delete/attachment/(?P<id>[0-9a-zA-Z-_]+)',news_views.delete_attach, name = 'delete_attach'),
+    path('article/delete/attachment/(?P<id>[0-9a-zA-Z-_]+)',news_views.delete_attach, name = 'delete_attach'),
     re_path(r'^article/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', news_views.news_update, name='news_update'),
     path('news/archive/<int:year>/',
          news_views.ArticleYearArchiveView.as_view(),
@@ -138,16 +137,16 @@ urlpatterns = [
     path('services/list/', portfolio_views.services_list, name='services_list'),
     path('services/add/', portfolio_views.services_add, name='services_add'),
     re_path(r'^services/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', portfolio_views.services_update, name='services_update'),
-    url(r'^ajax/addform_servicephoto/$', prf_ajaxs.addform_servicephoto,name="addform_servicephoto"),
-    url(r'^ajax/filter_service/$', prf_ajaxs.filter_service,name='filter_service'),
-    url(r'^ajax/view_service/$', prf_ajaxs.view_service,name="view_service"),
+    re_path(r'^ajax/addform_servicephoto/$', prf_ajaxs.addform_servicephoto,name="addform_servicephoto"),
+    re_path(r'^ajax/filter_service/$', prf_ajaxs.filter_service,name='filter_service'),
+    re_path(r'^ajax/view_service/$', prf_ajaxs.view_service,name="view_service"),
 
     #Gallery
     path('gallery/list/', gallery_views.gallery_list, name='gallery_list'),
     path('gallery/add/', gallery_views.gallery_add, name='gallery_add'),
     re_path(r'^gallery/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', gallery_views.gallery_update, name='gallery_update'),
-    url(r'^ajax/filter_gallery/$', gal_ajaxs.filter_gallery,name='filter_gallery'),
-    url(r'^ajax/view_gallery/$', gal_ajaxs.view_gallery,name="view_gallery"),
+    re_path(r'^ajax/filter_gallery/$', gal_ajaxs.filter_gallery,name='filter_gallery'),
+    re_path(r'^ajax/view_gallery/$', gal_ajaxs.view_gallery,name="view_gallery"),
     re_path(r'^gallery/category/(?P<category>\w+)/$', gallery_views.gallery_category, name='gallery_category'),
 
     #Contact Us
@@ -203,7 +202,7 @@ urlpatterns = [
     re_path(r'^complaint/category/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', complaint_views.complaint_category_update, name='complaint_category_update'),
     path('complaint/list/', complaint_views.complaint_list, name='complaint_list'),
     re_path(r'^complaint/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', complaint_views.complaint_view, name='complaint_view'),
-    url(r'^ajax/complaint_response_update/$', complaint_ajaxs.complaint_response_update,name="complaint_response_update"),
+    re_path(r'^ajax/complaint_response_update/$', complaint_ajaxs.complaint_response_update,name="complaint_response_update"),
 
     #FINANCE
     path('coa/group/', finn.coa_group_list, name='coa_group_list'),
@@ -219,14 +218,14 @@ urlpatterns = [
     # path('gl/', finn.general_ledger_list, name='gl_list'),
     # path('gl/add/', finn.general_ledger_add, name='gl_add'),
     #re_path(r'^gl/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', finn.general_ledger_update, name='gl_update'),
-    url(r'^ajax/filter_gl_by_date/$', fin_ajaxs.filter_gl_by_date,name="filter_gl_by_date"),
-    url(r'^ajax/filter_gl_by_month/$', fin_ajaxs.filter_gl_by_month,name="filter_gl_by_month"),
+    re_path(r'^ajax/filter_gl_by_date/$', fin_ajaxs.filter_gl_by_date,name="filter_gl_by_date"),
+    re_path(r'^ajax/filter_gl_by_month/$', fin_ajaxs.filter_gl_by_month,name="filter_gl_by_month"),
 
     #General Ledger Aktif
     path('transaction/book/', finn.transaction_book_list, name='transaction_book_list'),
     path('transaction/book/update/', finn.transaction_book_update, name='transaction_book_update'),
-    url(r'^ajax/addform_gl/$', fin_ajaxs.addform_gl,name="addform_gl"),
-    url(r'^ajax/delete_gl/$', fin_ajaxs.delete_gl,name="delete_gl"),
+    re_path(r'^ajax/addform_gl/$', fin_ajaxs.addform_gl,name="addform_gl"),
+    re_path(r'^ajax/delete_gl/$', fin_ajaxs.delete_gl,name="delete_gl"),
     re_path(r'^print/khotbah/jumat/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
             fin_prints.print_khotbah_jumat, name="print_khotbah_jumat"),
     re_path(r'^print/keuangan/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
@@ -235,15 +234,15 @@ urlpatterns = [
     #Catatan Ringkasan Mingguan
     path('journal/week/', finn.week_journal_list, name='week_journal_list'),
     path('journal/week/update/', finn.week_journal_update, name='week_journal_update'),
-    url(r'^ajax/addform_journal_week/$', fin_ajaxs.addform_week_journal,name="addform_week_journal"),
-    url(r'^ajax/delete_week_journal/$', fin_ajaxs.delete_week_journal,name="delete_week_journal"),
+    re_path(r'^ajax/addform_journal_week/$', fin_ajaxs.addform_week_journal,name="addform_week_journal"),
+    re_path(r'^ajax/delete_week_journal/$', fin_ajaxs.delete_week_journal,name="delete_week_journal"),
 
     #WALLPAPER
     path('wallpaper/', info.show_wallpaper, name='show_wallpaper'),
-    url(r'^ajax/synch_jadwal_sholat/$', info_ajaxs.synch_jadwal_sholat,name="synch_jadwal_sholat"),
+    re_path(r'^ajax/synch_jadwal_sholat/$', info_ajaxs.synch_jadwal_sholat,name="synch_jadwal_sholat"),
     path('wallpaper2/', info.show_wallpaper2, name='show_wallpaper2'),
     path('standbywallpaper/', info.show_wallpaper3, name='show_wallpaper3'),
-    url(r'^ajax/get_random_slide/$', info_ajaxs.get_random_slide, name='get_random_slide'),
+    re_path(r'^ajax/get_random_slide/$', info_ajaxs.get_random_slide, name='get_random_slide'),
     path('iqamah/', team_views.iqamah_update, name='iqamah_update'),
     path('sliderjumat/', info.show_slider_jumat, name='show_slider_jumat'),
     path('standbywallpaperold/', info.show_standby_wallpaper, name='show_standby_wallpaper'),
@@ -253,29 +252,29 @@ urlpatterns = [
     path('rekening/list/', info.rekening_list, name='rekening_list'),
     path('rekening/add/', info.rekening_add, name='rekening_add'),
     re_path(r'^rekening/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', info.rekening_update, name='rekening_update'),
-    url(r'^ajax/add_rekening_detail/$', info_ajaxs.add_rekening_detail,name="add_rekening_detail"),
+    re_path(r'^ajax/add_rekening_detail/$', info_ajaxs.add_rekening_detail,name="add_rekening_detail"),
 
     #KUTIPAN
     path('kutipan/', info.show_kutipan, name='show_kutipan'),
     path('kutipan/list/', info.kutipan_list, name='kutipan_list'),
     path('kutipan/add/', info.kutipan_add, name='kutipan_add'),
     re_path(r'^kutipan/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', info.kutipan_update, name='kutipan_update'),
-    url(r'^ajax/add_kutipan_detail/$', info_ajaxs.add_kutipan_detail,name="add_kutipan_detail"),
+    re_path(r'^ajax/add_kutipan_detail/$', info_ajaxs.add_kutipan_detail,name="add_kutipan_detail"),
 
     #KHUTBAH JUMAT
     path('khutbah/', info.show_khutbah, name='show_khutbah'),
     path('khutbah/list/', info.khutbah_list, name='khutbah_list'),
     path('khutbah/add/', info.khutbah_add, name='khutbah_add'),
     re_path(r'^khutbah/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', info.khutbah_update, name='khutbah_update'),
-    url(r'^ajax/add_khutbah_detail/$', info_ajaxs.add_khutbah_detail,name="add_khutbah_detail"),
+    re_path(r'^ajax/add_khutbah_detail/$', info_ajaxs.add_khutbah_detail,name="add_khutbah_detail"),
 
     #KEGIATAN MASJID
     path('kegiatan/', info.show_kegiatan, name='show_kegiatan'),
     path('kegiatan/list/', info.kegiatan_list, name='kegiatan_list'),
     path('kegiatan/add/', info.kegiatan_add, name='kegiatan_add'),
     re_path(r'^kegiatan/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', info.kegiatan_update, name='kegiatan_update'),
-    url(r'^ajax/add_kegiatan_detail/$', info_ajaxs.add_kegiatan_detail,name="add_kegiatan_detail"),
-    url(r'^ajax/view_kegiatan/$', info_ajaxs.view_kegiatan,name="view_kegiatan"),
+    re_path(r'^ajax/add_kegiatan_detail/$', info_ajaxs.add_kegiatan_detail,name="add_kegiatan_detail"),
+    re_path(r'^ajax/view_kegiatan/$', info_ajaxs.view_kegiatan,name="view_kegiatan"),
 
     path('naration/', team_views.naration_update, name='naration_update'),
 
