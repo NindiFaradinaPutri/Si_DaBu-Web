@@ -299,7 +299,7 @@ def create_and_send_qremail(request, event_id):
             'event': event,
             'domain': current_site.domain,
             'qr_code': url,
-            'instansi': instansi.instansi,
+            'instansi': instansi_value or '-',
             'participant':participant.first(),
         })
         pdf = generate_pdf(message_pdf)
