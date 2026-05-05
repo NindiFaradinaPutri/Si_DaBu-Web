@@ -25,6 +25,10 @@ document.getElementById("add-question-btn").addEventListener("click", function (
 
     container.appendChild(clone);
 
+    clone.querySelectorAll('[name="question"]').forEach(el => {
+        el.required = true;
+    });
+
     questionIndex++;
 });
 
