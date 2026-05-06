@@ -464,7 +464,43 @@
 
     {% if event.is_form %}
     <!-- INTERNAL FORM -->
-    <div class="custom-card">
+
+
+    <div class="external-form-box">
+
+        <h2>Register via Google Form</h2>
+
+        <p>
+            Scan the QR code below or click the button 
+            to complete your registration.
+        </p>
+
+        {% if qr_code_base64 %}
+        <div class="qr-box">
+            <img 
+                src="data:image/png;base64,{{ qr_code_base64 }}"
+                alt="QR Code Registration"
+            >
+        </div>
+        {% endif %}
+
+        <p class="scan-text">
+            Fast registration for external attendees
+        </p>
+
+        <a 
+            href="{{ event.url_form }}"
+            target="_blank"
+            class="btn-google-form mt-3"
+        >
+            Register via Google Form
+        </a>
+
+    </div>
+
+    {% else %}
+    <!-- GOOGLE FORM QR -->
+     <div class="custom-card">
 
         <h2 class="mb-2">Guest Registration</h2>
         <p class="text-muted mb-4">
@@ -522,40 +558,6 @@
                 </span>
             </button>
         </form>
-
-    </div>
-
-    {% else %}
-    <!-- GOOGLE FORM QR -->
-    <div class="external-form-box">
-
-        <h2>Register via Google Form</h2>
-
-        <p>
-            Scan the QR code below or click the button 
-            to complete your registration.
-        </p>
-
-        {% if qr_code_base64 %}
-        <div class="qr-box">
-            <img 
-                src="data:image/png;base64,{{ qr_code_base64 }}"
-                alt="QR Code Registration"
-            >
-        </div>
-        {% endif %}
-
-        <p class="scan-text">
-            Fast registration for external attendees
-        </p>
-
-        <a 
-            href="{{ event.url_form }}"
-            target="_blank"
-            class="btn-google-form mt-3"
-        >
-            Register via Google Form
-        </a>
 
     </div>
     {% endif %}
