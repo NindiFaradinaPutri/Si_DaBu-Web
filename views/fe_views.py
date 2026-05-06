@@ -300,7 +300,7 @@ def event_frontend(request, id):
     # =========================
     qr_code_base64 = None
 
-    if not event.is_form and event.url_form:
+    if event.is_form and event.url_form:
         qr = qrcode.QRCode(
             version=1,
             box_size=10,

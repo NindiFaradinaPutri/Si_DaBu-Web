@@ -148,33 +148,44 @@ document.addEventListener("submit", function (e) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const checkbox = document.querySelector("#id_is_form");
-    const urlWrapper = document.querySelector("#form-url-wrapper");
-    const engagementSection = document.querySelector("#engagement-section");
 
-    function toggleFormMode() {
-    const inputs = engagementSection.querySelectorAll("input, select, textarea");
+    const checkbox = document.getElementById("id_is_form");
+    const urlWrapper = document.getElementById("form-url-wrapper");
+    const engagementSection = document.getElementById("engagement-section");
+    const btnSimpan = document.getElementById("btn-simpan");
 
-    if (checkbox.checked) {
-        urlWrapper.style.display = "block";
-        engagementSection.style.display = "none";
-
-        // ❗ disable validation
-        inputs.forEach(el => el.required = false);
-
-    } else {
-        urlWrapper.style.display = "none";
-        engagementSection.style.display = "block";
-
-        // ❗ aktifkan lagi kalau perlu
-        inputs.forEach(el => {
-            if (el.classList.contains("label-input")) {
-                el.required = true;
-            }
-        });
+    if (!checkbox) {
+        console.warn("Checkbox tidak ditemukan");
+        return;
     }
-}
 
-    toggleFormMode(); // initial load
-    checkbox.addEventListener("change", toggleFormMode);
+    function toggleUI() {
+
+        const inputs = engagementSection.querySelectorAll("input, select, textarea");
+
+        if (checkbox.checked) {
+            urlWrapper.style.display = "block";
+            engagementSection.style.display = "none";
+            btnSimpan.style.display = "none";
+
+            inputs.forEach(el => el.required = false);
+
+        } else {
+            urlWrapper.style.display = "none";
+            engagementSection.style.display = "block";
+            btnSimpan.style.display = "block";
+
+            inputs.forEach(el => {
+                if (el.classList.contains("label-input")) {
+                    el.required = true;
+                }
+            });
+        }
+    }
+
+    toggleUI();
+    checkbox.addEventListener("change", toggleUI);
+
 });
+
+

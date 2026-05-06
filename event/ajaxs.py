@@ -242,7 +242,9 @@ def upload_participant(request):
         # LOOP DATA
         # =========================
         df.columns = [
-            re.sub(r"\s+", " ", str(col).replace(":", "").strip())
+            re.sub(r"^\d+\.\s*", "",  # 🔥 hapus "01. ", "2. ", dll di depan
+                re.sub(r"\s+", " ", str(col).replace(":", "").strip())
+            )
             for col in df.columns
         ]
 
@@ -286,7 +288,10 @@ def upload_participant(request):
                 "participant_name": participant.name,
                 "participant_email": participant.email,
                 "participant_phone": participant.phone,
-                "excel_data": row.to_dict() 
+                 "excel_data": {
+                    re.sub(r"^\d+\.\s*", "", key): value
+                    for key, value in row.to_dict().items()
+                }
             }
 
             form_response = FormResponse.objects.create(
