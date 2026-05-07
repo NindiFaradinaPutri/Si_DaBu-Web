@@ -1108,64 +1108,101 @@
     </div>
 
     <!-- Pagination -->
-    <div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between">
+   <div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between flex-wrap gap-3">
 
-        <span class="small text-secondary fw-medium">
-            Showing {{ participants.count }} of {{ total_participants }} participants
-        </span>
+    <span class="small text-secondary fw-medium">
+        Showing {{ participants.start_index }} - {{ participants.end_index }}
+        of {{ total_participants }} participants
+    </span>
 
-        {% if participants.has_other_pages %}
-        <nav>
+    {% if participants.has_other_pages %}
+    <nav>
+        <ul class="pagination pagination-sm mb-0">
 
-            <ul class="pagination pagination-sm mb-0">
+            <!-- PREV -->
+            {% if participants.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ participants.previous_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    Prev
+                </a>
+            </li>
+            {% endif %}
 
-                {% if participants.has_previous %}
-                <li class="page-item">
-                    <a class="page-link"
-                       href="?page={{ participants.previous_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
-                        Prev
-                    </a>
-                </li>
-                {% endif %}
+            <!-- FIRST PAGE -->
+            {% if participants.number > 3 %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page=1&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    1
+                </a>
+            </li>
 
-                {% for i in participants.paginator.page_range %}
+            {% if participants.number > 4 %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+            {% endif %}
+            {% endif %}
+
+            <!-- PAGE RANGE -->
+            {% for i in participants.paginator.page_range %}
+
+                {% if i >= participants.number|add:'-2' and i <= participants.number|add:'2' %}
 
                     {% if participants.number == i %}
-
-                        <li class="page-item active">
-                            <a class="page-link">
-                                {{ i }}
-                            </a>
-                        </li>
+                    <li class="page-item active">
+                        <span class="page-link">
+                            {{ i }}
+                        </span>
+                    </li>
 
                     {% else %}
-
-                        <li class="page-item">
-                            <a class="page-link"
-                               href="?page={{ i }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
-                                {{ i }}
-                            </a>
-                        </li>
-
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ i }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                            {{ i }}
+                        </a>
+                    </li>
                     {% endif %}
 
-                {% endfor %}
+                {% endif %}
 
-                {% if participants.has_next %}
-                <li class="page-item">
-                    <a class="page-link"
-                       href="?page={{ participants.next_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
-                        Next
-                    </a>
+            {% endfor %}
+
+            <!-- LAST PAGE -->
+            {% if participants.number < participants.paginator.num_pages|add:'-2' %}
+
+                {% if participants.number < participants.paginator.num_pages|add:'-3' %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
                 </li>
                 {% endif %}
 
-            </ul>
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ participants.paginator.num_pages }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                        {{ participants.paginator.num_pages }}
+                    </a>
+                </li>
 
-        </nav>
-        {% endif %}
+            {% endif %}
 
-    </div>
+            <!-- NEXT -->
+            {% if participants.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ participants.next_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
 
 </div>
 </main>
