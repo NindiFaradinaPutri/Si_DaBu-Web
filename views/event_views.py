@@ -303,7 +303,7 @@ def print_badge(request, id):
         ).filter(participant_id = id).first()
     if instansi_obj:
         instansi_value = getattr(instansi_obj, 'instansi', '')
-        instansi = instansi_value or ""
+        instansi = instansi_value or "Peserta"
 
     context = {
                 'event':event,
