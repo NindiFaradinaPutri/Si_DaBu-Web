@@ -88,9 +88,21 @@ def list_events(request):
             end_time = now + timedelta(hours=2)
             start_date = now - timedelta(days=2)
 
-            events = Event.objects.filter(date__gte = start_date.date())
-            on_going = events.filter(date__lte=now.date(), time__lte=now.time()).filter(date__lte = end_time.date(), time__lte = end_time.time()).first()
-            on_comming = events.filter(date__gte = now.date(), time__gte = now.time()).order_by("date", "time")
+            on_going = Event.objects.filter(
+                            (
+                                Q(date__lt=now.date()) |
+                                Q(date=now.date(), time__lte=now.time())
+                            ) &
+                            (
+                                Q(date__lt=end_time.date()) |
+                                Q(date=end_time.date(), time__lte=end_time.time())
+                            )
+                        ).first()
+
+            on_comming = Event.objects.filter(
+                            Q(date__gt=now.date()) |
+                            Q(date=now.date(), time__gt=now.time())
+                        ).order_by("date", "time")
             if on_going:
                 on_comming = on_comming.exclude(id = on_going.id)
 
@@ -102,7 +114,7 @@ def list_events(request):
                         "on_comming": on_comming_serializer.data,
                         "metadata": metadata_api(status_code,message)}
             return Response(context,status=status_code)
-        
+            
         except Exception as err:
             message = "Server Error, please contact the administration."
             logger.info("Error Login "+str(err))
