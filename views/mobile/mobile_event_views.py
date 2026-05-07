@@ -88,7 +88,7 @@ def list_events(request):
             end_time = now + timedelta(hours=2)
             start_date = now - timedelta(days=2)
 
-            events = Event.objects.filter(date__gte = start_date)
+            events = Event.objects.filter(date__gte = start_date.date())
             on_going = events.filter(date__lte=now.date(), time__lte=now.time()).filter(date__lte = end_time.date(), time__lte = end_time.time()).first()
             on_comming = events.filter(date__gte = now.date(), time__gte = now.time()).order_by("date", "time")
             if on_going:
