@@ -58,6 +58,7 @@
     <Compile Include="complaint\filters.py" />
     <Compile Include="complaint\forms.py" />
     <Compile Include="complaint\migrations\__init__.py" />
+    <Compile Include="event\ajaxs.py" />
     <Compile Include="form\forms.py" />
     <Compile Include="form\migrations\__init__.py" />
     <Compile Include="complaint\models.py" />
@@ -681,6 +682,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\js\absensi_form.js" />
+    <Content Include="app\static\frontend\js\wallpaper_v5.js" />
     <Content Include="app\static\media\event\WhatsApp_Image_2026-04-27_at_08.jpeg" />
     <Content Include="app\templates\backend\event\event_form.html" />
     <Content Include="app\templates\backend\event\event_list.html" />

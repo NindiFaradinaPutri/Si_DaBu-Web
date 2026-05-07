@@ -69,15 +69,13 @@
 
                         <a href="{% url 'event' event.id %}" 
                             class="btn btn-red px-4 py-2 me-2">
-                                Lihat Event
+                                View Event
                             </a>
 
                         {% if event.location_map %}
-                        <a href="{{ event.location_map }}" 
-                           target="_blank"
-                           class="btn btn-outline-dark px-4 py-2">
-                            View Location
-                        </a>
+                        <a href="{{ hero_maps_url }}" target="_blank" class="btn btn-outline-dark px-4 py-2">
+    View Location
+</a>
                         {% endif %}
 
                     </div>

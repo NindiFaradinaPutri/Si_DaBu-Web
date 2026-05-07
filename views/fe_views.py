@@ -47,7 +47,6 @@ from django.template import RequestContext
 
 #EMAIL VERIFICATION AND TOKEN
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
@@ -116,10 +115,12 @@ def home(request):
 
     hero_event_photo = None
     hero_event_status = None
+    hero_maps_url = ""
     hero_badge_class = "hero-badge"
 
     if hero_event:
-
+        
+        hero_maps_url = extract_maps_url(hero_event.location_map)
         hero_participant_count = Participant.objects.filter(
             id_event=hero_event
         ).count()
@@ -195,7 +196,8 @@ def home(request):
             "event": event,
             "photo": photo,
             "status": status,
-            "badge_class": badge_class
+            "badge_class": badge_class,
+            "maps_url": extract_maps_url(event.location_map)
         })
 
     context = {
@@ -213,6 +215,7 @@ def home(request):
 
         # event list section
         'event_data': event_data,
+        'hero_maps_url': hero_maps_url,  # 🔥 tambahan
     }
 
     return render(
@@ -297,7 +300,7 @@ def event_frontend(request, id):
     # =========================
     qr_code_base64 = None
 
-    if not event.is_form and event.url_form:
+    if event.is_form and event.url_form:
         qr = qrcode.QRCode(
             version=1,
             box_size=10,

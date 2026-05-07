@@ -11,6 +11,13 @@ document.getElementById("add-question-btn").addEventListener("click", function (
     clone.classList.remove("d-none");
     clone.removeAttribute("id");
 
+     let inputs = clone.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        input.id = "label_" + questionIndex;
+        input.name = "label_" + questionIndex;
+    });
+
+
     // SET RADIO NAME BIAR TIDAK TABRAKAN
     let radios = clone.querySelectorAll('input[type="radio"]');
     radios.forEach((radio, i) => {
@@ -24,6 +31,10 @@ document.getElementById("add-question-btn").addEventListener("click", function (
     });
 
     container.appendChild(clone);
+
+    clone.querySelectorAll('[name="question"]').forEach(el => {
+        el.required = true;
+    });
 
     questionIndex++;
 });
@@ -44,34 +55,6 @@ function renderConfig(selectElement) {
     const container = wrapper.querySelector(".dynamic-config");
 
     switch (type) {
-
-        case "short_text":
-        case "long_text":
-            container.innerHTML = `
-        <div class="form-group">
-          <label>Informasi</label>
-          <input type="text" id="placeholder" class="form-control"/>
-        </div>
-      `;
-            break;
-
-        case "number":
-            container.innerHTML = `
-            <div class="form-group">
-                <label>Range Nilai</label>
-                <div class="row">
-                    <div class="col-md-6 col-12">
-                        <label>Min</label>
-                        <input type="number" class="form-control min" />
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <label>Max</label>
-                        <input type="number" class="form-control max" />
-                    </div>
-                </div>
-            </div>
-      `;
-            break;
 
         case "single_choice":
         case "multiple_choice":
@@ -97,27 +80,14 @@ function renderConfig(selectElement) {
 
             break;
 
+        case "short_text":
+        case "long_text":
         case "rating":
-            container.innerHTML = `
-        <div class="form-group">
-          <label>Max Rating</label>
-          <input type="number" id="rating_max" value="5"/>
-        </div>
-      `;
-            break;
-
         case "file_upload":
         case "image_upload":
-            container.innerHTML = `
-        <div class="form-group">
-          <label>Allowed File Types</label>
-          <input type="text" id="file_types" placeholder="jpg,png,pdf"/>
-        </div>
-      `;
-            break;
-
         default:
-            container.innerHTML = "";
+            container.innerHTML = '';
+            break;
     }
 }
 
@@ -175,3 +145,47 @@ document.addEventListener("submit", function (e) {
 
     console.log("DATA:", data);
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const checkbox = document.getElementById("id_is_form");
+    const urlWrapper = document.getElementById("form-url-wrapper");
+    const engagementSection = document.getElementById("engagement-section");
+    const btnSimpan = document.getElementById("btn-simpan");
+
+    if (!checkbox) {
+        console.warn("Checkbox tidak ditemukan");
+        return;
+    }
+
+    function toggleUI() {
+
+        const inputs = engagementSection.querySelectorAll("input, select, textarea");
+
+        if (checkbox.checked) {
+            urlWrapper.style.display = "block";
+            engagementSection.style.display = "none";
+            btnSimpan.style.display = "none";
+
+            inputs.forEach(el => el.required = false);
+
+        } else {
+            urlWrapper.style.display = "none";
+            engagementSection.style.display = "block";
+            btnSimpan.style.display = "block";
+
+            inputs.forEach(el => {
+                if (el.classList.contains("label-input")) {
+                    el.required = true;
+                }
+            });
+        }
+    }
+
+    toggleUI();
+    checkbox.addEventListener("change", toggleUI);
+
+});
+
+

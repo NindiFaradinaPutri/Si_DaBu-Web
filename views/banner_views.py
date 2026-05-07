@@ -38,7 +38,6 @@ from django.template import RequestContext
 
 #EMAIL VERIFICATION AND TOKEN
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
@@ -83,7 +82,7 @@ def event_list(request, id):
         id_event=event
     ).select_related(
         "status_user_id"
-    ).order_by("-id")
+    ).order_by("-update_date")
 
     # =========================
     # STATISTICS
@@ -98,11 +97,15 @@ def event_list(request, id):
         status_user_id__status_name__iexact="Register"
     ).count()
 
-    attendance_rate = 0
-    if total_participants > 0:
-        attendance_rate = round(
-            (checked_in / total_participants) * 100
-        )
+    attendance_rate = participant_queryset.filter(
+        status_user_id__status_name__iexact="Absent"
+    ).count()
+
+    # attendance_rate = 0
+    # if total_participants > 0:
+    #     attendance_rate = round(
+    #         (checked_in / total_participants) * 100
+    #     )
 
     form_responses_qs = FormResponse.objects.select_related("participant").filter(
         participant__id_event=event
@@ -135,7 +138,21 @@ def event_list(request, id):
     # =========================
     filtered_json_headers = []
 
+    EXCLUDED_KEYWORDS = [
+        "nama", "name", "nama lengkap",
+        "email","email address","alamat email",
+        "nomor", "phone", "hp", "telp","no hp", "nohandphone",
+        "nomor hp", "nomor telepon", "telepon"
+        "alamat", "location", "lokasi", "kota","address"
+    ]
+
     for header in json_headers:
+        header_clean = str(header).strip().lower()
+
+        # 🔥 TAMBAHAN: skip jika header mengandung keyword tertentu
+        if any(keyword in header_clean for keyword in EXCLUDED_KEYWORDS):
+            continue
+
         is_all_same = True
 
         for fr in form_responses_qs:
@@ -215,91 +232,161 @@ def event_list(request, id):
 @admin_only
 def event_add(request):
     assert isinstance(request, HttpRequest)
+
     title = 'Tambah Event'
 
     if request.method == 'POST':
+
+        event_form = EventForm(
+            data=request.POST,
+            prefix='event'
+        )
+
+        photo_form = EventPhotoForm(
+            data=request.POST,
+            files=request.FILES,
+            prefix='photo'
+        )
+
         try:
-            event_form = EventForm(
-                data=request.POST
-            )
-
-            photo_form = EventPhotoForm(
-                data=request.POST,
-                files=request.FILES
-            )
-
             if event_form.is_valid() and photo_form.is_valid():
 
-                # save event terlebih dahulu
+                # ==========================
+                # SAVE EVENT
+                # ==========================
                 event = event_form.save()
 
-                # save photo jika ada upload
-                if request.FILES.get('photo'):
-                    event_photo = photo_form.save(commit=False)
-                    event_photo.id_event = event
-                    event_photo.save()
+                # ==========================
+                # SAVE PHOTO
+                # ==========================
+                if request.FILES:
+                    photo = photo_form.save(commit=False)
+                    photo.id_event = event
+                    photo.save()
 
+               
                 messages.success(
                     request,
-                    f'Event {event.name} berhasil disimpan.'
+                    f'Event "{event.name}" berhasil disimpan.'
                 )
 
-                return redirect('/event/list/')
+                return redirect('/admin/profile/')
 
-            else:
-                raise ValidationError("Data event tidak valid.")
+            raise ValidationError("Data event tidak valid.")
 
-        except ValidationError as e:
+        except ValidationError:
             messages.error(
                 request,
                 'Event gagal disimpan.'
-            )
-
-            context = {
-                'title': title,
-                'event_form': event_form,
-                'photo_form': photo_form,
-            }
-
-            return render(
-                request,
-                'backend/event/event_form.html',
-                context
             )
 
         except Exception as e:
             messages.error(
                 request,
-                'Event gagal disimpan.'
-            )
-
-            context = {
-                'title': title,
-                'event_form': event_form,
-                'photo_form': photo_form,
-            }
-
-            return render(
-                request,
-                'backend/event/event_form.html',
-                context
+                f'Error: {str(e)}'
             )
 
     else:
-        event_form = EventForm()
-        photo_form = EventPhotoForm()
+        event_form = EventForm(prefix='event')
+        photo_form = EventPhotoForm(prefix='photo')
 
-        context = {
-            'title': title,
-            'event_form': event_form,
-            'photo_form': photo_form,
-        }
+    context = {
+        'title': title,
+        'event_form': event_form,
+        'photo_form': photo_form,
+    }
 
-        return render(
-            request,
-            'backend/event/event_form.html',
-            context
-        )
+    return render(
+        request,
+        'backend/event/event_form.html',
+        context
+    )
+    
+@login_required(login_url='/admin/who-login/')
+@admin_only
+def event_edit(request, id):
+    assert isinstance(request, HttpRequest)
+
+    title = 'Edit Event'
+
+    event = Event.objects.filter(id=id).first()
+
+    if not event:
+        messages.error(request, 'Event tidak ditemukan.')
+        return redirect('/list_event/')
+
+    # ambil photo (jika ada)
+    event_photo = EventPhoto.objects.filter(
+        id_event=event
+    ).first()
+
+    if request.method == 'POST':
+        try:
+            event_form = EventForm(
+                data=request.POST,
+                instance=event,
+                prefix='event'
+            )
+
+            photo_form = EventPhotoForm(
+                data=request.POST,
+                files=request.FILES,
+                instance=event_photo,
+                prefix='photo'
+            )
+
+            if event_form.is_valid() and photo_form.is_valid():
+
+                # update event
+                event = event_form.save()
+
+                # handle photo
+                if request.FILES:
+                    photo = photo_form.save(commit=False)
+                    photo.id_event = event
+                    photo.save()
+
+                messages.success(
+                    request,
+                    f'Event {event.name} berhasil diupdate.'
+                )
+
+                return redirect('/admin/profile/')
+
+            else:
+                raise ValidationError("Data tidak valid.")
+
+        except Exception as e:
+            messages.error(request, 'Event gagal diupdate.')
+
+    else:
+        event_form = EventForm(instance=event, prefix='event')
+        photo_form = EventPhotoForm(instance=event_photo, prefix='photo')
+
+    context = {
+        'title': title,
+        'event_form': event_form,
+        'photo_form': photo_form,
+        'event': event
+    }
+
+    return render(
+        request,
+        'backend/event/event_form.html',
+        context
+    )
+
+def event_delete(request, id):
+    event = Event.objects.filter(id=id).first()
+
+    if request.method == "POST":
+        event_name = event.name
+        event.delete()
+
+        messages.success(request, f'Event "{event_name}" berhasil dihapus.')
+        return redirect('/admin/profile/')  # ganti sesuai halaman kamu
+
+    return redirect('/admin/profile/')
 
 @login_required(login_url='/admin/who-login/')
 @admin_only

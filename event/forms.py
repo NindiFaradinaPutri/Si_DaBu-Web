@@ -16,8 +16,6 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.validators import ASCIIUsernameValidator
 
-from django.utils.translation import ugettext_lazy as _
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email, validate_integer, RegexValidator, URLValidator, MaxValueValidator, MinValueValidator
@@ -42,7 +40,9 @@ class EventForm(forms.ModelForm):
             'time',
             'location',
             'location_map',
-            'information'
+            'information',
+            'is_form',
+            'url_form'
         ]
 
         labels = {
@@ -52,6 +52,8 @@ class EventForm(forms.ModelForm):
             'location': 'Lokasi',
             'location_map': 'Link Google Maps',
             'information': 'Informasi Event',
+            'is_form': 'Use Form?',
+            'url_form': 'Link Google Form',
         }
 
         widgets = {
@@ -63,6 +65,7 @@ class EventForm(forms.ModelForm):
             ),
 
             'date': forms.DateInput(
+                format='%Y-%m-%d',
                 attrs={
                     'class': 'form-control',
                     'type': 'date'
@@ -70,6 +73,7 @@ class EventForm(forms.ModelForm):
             ),
 
             'time': forms.TimeInput(
+                format='%H:%M',
                 attrs={
                     'class': 'form-control',
                     'type': 'time'
@@ -79,14 +83,14 @@ class EventForm(forms.ModelForm):
             'location': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Contoh: Masjid Raya Balikpapan'
+                    'placeholder': 'Contoh: Mall Living Plaza'
                 }
             ),
 
             'location_map': forms.URLInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'https://maps.google.com/...'
+                    'placeholder': 'https://www.google.com/maps/embed?pb=...'
                 }
             ),
 
@@ -97,6 +101,19 @@ class EventForm(forms.ModelForm):
                     'placeholder': 'Deskripsi atau informasi event'
                 }
             ),
+            'is_form': forms.CheckboxInput(
+                    attrs={
+                        'class': 'form-check-input',
+                        'id': 'id_is_form'  # 🔥 paksa ID konsisten
+                    }
+                ),
+
+                'url_form': forms.URLInput(
+                    attrs={
+                        'class': 'form-control',
+                        'placeholder': 'https://your-google-form-link.com'
+                    }
+                ),
         }
 
     field_order = [
@@ -105,7 +122,10 @@ class EventForm(forms.ModelForm):
         'time',
         'location',
         'location_map',
-        'information'
+        'information',
+        'is_form',
+        'url_form'
+
     ]
 
 

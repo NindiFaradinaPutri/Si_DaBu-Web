@@ -4,6 +4,7 @@ from uuid import uuid4
 from datetime import datetime,timedelta
 #import pandas as pda
 import shutil
+import urllib.parse
 from django.conf import settings
 from django.http import HttpResponse
 from django.core.serializers.json import DjangoJSONEncoder
@@ -210,6 +211,39 @@ def format_datetime_indo(dt_str):
         return f"{dt.day} {bulan[dt.month-1]} {dt.year}, {dt.strftime('%H:%M')} WIB"
     except:
         return dt_str
+    
+
+
+def extract_maps_url(url):
+    if not url:
+        return ""
+
+    # ambil koordinat
+    coord_match = re.search(r'!2d([-\d.]+)!3d([-\d.]+)', url)
+
+    # ambil nama tempat
+    name_match = re.search(r'!2s([^!]+)', url)
+
+    lat, lng, name = None, None, None
+
+    if coord_match:
+        lng = coord_match.group(1)
+        lat = coord_match.group(2)
+
+    if name_match:
+        name = urllib.parse.unquote(name_match.group(1))
+
+    # 🔥 PRIORITAS: nama + koordinat
+    if name and lat and lng:
+        name_clean = name.replace(" ", "+")
+        return f"https://www.google.com/maps?q={name_clean}@{lat},{lng}"
+
+    # fallback ke koordinat
+    if lat and lng:
+        return f"https://www.google.com/maps?ll={lat},{lng}&q={lat},{lng}&z=17"
+
+    # fallback terakhir
+    return url.split('"')[0]
     
 def generate_pdf(html):
     result = BytesIO()
