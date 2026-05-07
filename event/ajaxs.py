@@ -273,14 +273,44 @@ def upload_participant(request):
             phone = row[phone_col] if phone_col else ""
             location = row[location_col] if location_col else ""
 
-            participant = Participant.objects.create(
-                name=name,
-                email=email,
+            name = str(name).strip()
+            phone = str(phone).strip()
+
+            # hapus .0 dari excel
+            phone = re.sub(r"\.0$", "", phone)
+
+            # =========================
+            # CHECK EXISTING PARTICIPANT
+            # =========================
+            participant = Participant.objects.filter(
+                name__iexact=name,
                 phone=phone,
-                location=location,
-                id_event=event,
-                status_user_id=status_default
-            )
+                id_event=event
+            ).first()
+
+            # =========================
+            # UPDATE JIKA ADA
+            # =========================
+            if participant:
+
+                participant.email = email
+                participant.location = location
+                participant.status_user_id = status_default
+                participant.save()
+
+            # =========================
+            # CREATE BARU JIKA TIDAK ADA
+            # =========================
+            else:
+
+                participant = Participant.objects.create(
+                    name=name,
+                    email=email,
+                    phone=phone,
+                    location=location,
+                    id_event=event,
+                    status_user_id=status_default
+                )
 
             # 🔥 SIMPAN JSON + PARTICIPANT ID
             response_data = {
