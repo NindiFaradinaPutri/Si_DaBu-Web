@@ -799,13 +799,13 @@ def admin_profile(request):
             elif event.date == today:
                 if event.time:
                     if event.time <= current_time:
-                        status = "LIVE MANAGEMENT"
+                        status = "LIVE"
                         badge_class = "bg-danger text-white"
                     else:
                         status = "INCOMING"
                         badge_class = "bg-warning text-dark"
                 else:
-                    status = "LIVE MANAGEMENT"
+                    status = "LIVE"
                     badge_class = "bg-danger text-white"
 
             # =========================
