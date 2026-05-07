@@ -135,7 +135,7 @@ def home(request):
         if event_date == today:
             if event_time:
                 if event_time.hour == current_time.hour:
-                    hero_event_status = "LIVE MANAGEMENT"
+                    hero_event_status = "LIVE"
                     hero_badge_class = "hero-badge bg-danger text-white"
 
                 elif event_time.hour > current_time.hour:
@@ -146,7 +146,7 @@ def home(request):
                     hero_event_status = "EVENT FINISHED"
                     hero_badge_class = "hero-badge bg-secondary text-white"
             else:
-                hero_event_status = "LIVE MANAGEMENT"
+                hero_event_status = "LIVE"
                 hero_badge_class = "hero-badge bg-danger text-white"
 
         elif event_date > today:
@@ -178,7 +178,7 @@ def home(request):
         elif event.date == today:
             if event.time:
                 if event.time.hour == current_time.hour:
-                    status = "LIVE MANAGEMENT"
+                    status = "LIVE"
                     badge_class = "bg-danger text-white"
 
                 elif event.time.hour > current_time.hour:
@@ -189,7 +189,7 @@ def home(request):
                     status = "EVENT FINISHED"
                     badge_class = "bg-secondary text-white"
             else:
-                status = "LIVE MANAGEMENT"
+                status = "LIVE"
                 badge_class = "bg-danger text-white"
 
         event_data.append({
@@ -268,7 +268,7 @@ def event_frontend(request, id):
     elif event.date == today:
         if event.time:
             if event.time.hour == current_time.hour:
-                event_status = "LIVE MANAGEMENT"
+                event_status = "LIVE"
                 event_badge_class = "bg-danger text-white"
 
             elif event.time.hour > current_time.hour:
@@ -279,7 +279,7 @@ def event_frontend(request, id):
                 event_status = "EVENT FINISHED"
                 event_badge_class = "bg-secondary text-white"
         else:
-            event_status = "LIVE MANAGEMENT"
+            event_status = "LIVE"
             event_badge_class = "bg-danger text-white"
 
     # =========================

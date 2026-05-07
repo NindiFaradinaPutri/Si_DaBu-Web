@@ -109,7 +109,7 @@ def list_event(request):
         elif event.date == today:
             if event.time:
                 if event.time.hour == current_time.hour:
-                    status = "LIVE MANAGEMENT"
+                    status = "LIVE"
                     badge_class = "badge-active"
                     button_text = "Register Now"
                     button_class = "btn-primary-custom"
