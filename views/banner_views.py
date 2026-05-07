@@ -197,11 +197,33 @@ def event_list(request, id):
     # =========================
     # PAGINATION
     # =========================
+    search = request.GET.get("search", "").strip()
+
+    if search:
+        participant_queryset = participant_queryset.filter(
+            Q(name__icontains=search) |
+            Q(email__icontains=search) |
+            Q(phone__icontains=search)
+        )
+
+    # =========================
+    # PER PAGE
+    # =========================
+    per_page = request.GET.get("per_page", 5)
+
+    try:
+        per_page = int(per_page)
+    except:
+        per_page = 5
+
+    # =========================
+    # PAGINATION
+    # =========================
     page_number = request.GET.get("page", 1)
 
     paginator = Paginator(
         participant_queryset,
-        5  # tampilkan 10 participant per halaman
+        per_page
     )
 
     participants = paginator.get_page(page_number)
