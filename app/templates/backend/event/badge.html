@@ -2,66 +2,54 @@
 {% load widget_tweaks %}
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge - {{ participant.name }}</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
+        /* ─── Reset ─── */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ─── Page ─── */
         body {
             background: #e8e8e8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             padding: 20px;
             font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* ═══════════════════
-           BADGE CONTAINER
-        ═══════════════════ */
-        .badge-wrapper {
+        /* ─── Badge Card ─── */
+        .badge {
+            position: relative;
             width: 320px;
             height: 520px;
-            position: relative;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow:
-                0 25px 70px rgba(0,0,0,0.30),
-                0 6px 18px rgba(0,0,0,0.12);
             background-image: url('/static/media/background/bg_badge.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center top;
-        }
-        {% comment %} .badge-wrapper-2 {
-            width: 320px;
-            height: 520px;
-            position: relative;
-            border-radius: 18px;
-            overflow: hidden;
             box-shadow:
-                0 25px 70px rgba(0,0,0,0.30),
-                0 6px 18px rgba(0,0,0,0.12);
-            background-image: url('/static/media/background/badge_bg.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center top;
-        } {% endcomment %}
+                0 25px 70px rgba(0, 0, 0, 0.30),
+                0 6px 18px rgba(0, 0, 0, 0.12);
+        }
 
-        /* ═══════════════════════════════════════
-           EVENT NAME
-           — top: 95px → tepat di bawah logo
-             PresenGO yang ada di background PNG
-             (naikkan/turunkan nilai ini jika perlu)
-        ═══════════════════════════════════════ */
-        .badge-event {
+        /* ─── Event Name ─── */
+        .badge__event {
             position: absolute;
             top: 95px;
             left: 18px;
@@ -69,7 +57,7 @@
             text-align: center;
         }
 
-        .badge-event-name {
+        .badge__event-name {
             font-family: 'Montserrat', sans-serif;
             font-weight: 800;
             font-size: 12.5px;
@@ -77,14 +65,12 @@
             line-height: 1.4;
             letter-spacing: 0.3px;
             text-transform: uppercase;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-            padding:10px;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+            padding: 10px;
         }
 
-        /* ═══════════════════
-           DIVIDER
-        ═══════════════════ */
-        .badge-divider {
+        /* ─── Divider ─── */
+        .badge__divider {
             position: absolute;
             top: 148px;
             left: 24px;
@@ -100,37 +86,33 @@
             );
         }
 
-        /* ═══════════════════
-           QR CODE
-        ═══════════════════ */
-        .badge-qr-wrap {
+        /* ─── QR Code ─── */
+        .badge__qr-wrap {
             position: absolute;
             top: 162px;
             left: 50%;
             transform: translateX(-50%);
         }
 
-        .badge-qr-card {
+        .badge__qr-card {
+            display: inline-flex;
             background: #ffffff;
             border-radius: 14px;
             padding: 10px;
             box-shadow:
-                0 6px 24px rgba(0,0,0,0.15),
-                0 2px 6px rgba(0,0,0,0.08);
-            display: inline-flex;
+                0 6px 24px rgba(0, 0, 0, 0.15),
+                0 2px 6px rgba(0, 0, 0, 0.08);
         }
 
-        .badge-qr-card img {
+        .badge__qr-card img {
+            display: block;
             width: 135px;
             height: 135px;
-            display: block;
             border-radius: 5px;
         }
 
-        /* ═══════════════════
-           NAMA
-        ═══════════════════ */
-        .badge-name-wrap {
+        /* ─── Participant Name ─── */
+        .badge__name-wrap {
             position: absolute;
             top: 325px;
             left: 16px;
@@ -138,20 +120,18 @@
             text-align: center;
         }
 
-        .badge-name {
+        .badge__name {
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
             font-size: 28px;
             color: #1a1a1a;
             letter-spacing: -0.5px;
             line-height: 1.1;
-            text-shadow: 0 2px 6px rgba(255,255,255,0.8);
+            text-shadow: 0 2px 6px rgba(255, 255, 255, 0.8);
         }
 
-        /* ═══════════════════
-           INSTANSI
-        ═══════════════════ */
-        .badge-instansi-wrap {
+        /* ─── Institution ─── */
+        .badge__instansi-wrap {
             position: absolute;
             top: 366px;
             left: 16px;
@@ -159,24 +139,22 @@
             text-align: center;
         }
 
-        .badge-instansi {
+        .badge__instansi {
             display: inline-block;
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
             font-size: 12px;
             color: #333;
-            background: rgba(255,255,255,0.55);
+            background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,0.45);
+            border: 1px solid rgba(255, 255, 255, 0.45);
             padding: 3px 16px;
             border-radius: 30px;
         }
 
-        /* ═══════════════════
-           EMAIL
-        ═══════════════════ */
-        .badge-email-wrap {
+        /* ─── Email ─── */
+        .badge__email-wrap {
             position: absolute;
             top: 400px;
             left: 16px;
@@ -184,23 +162,20 @@
             text-align: center;
         }
 
-        .badge-email {
+        .badge__email {
             font-family: 'Poppins', sans-serif;
             font-size: 10px;
             color: #555;
         }
 
-        /* ════════════════════════════════════════
-           FOOTER BOTTOM
-           — gradient tipis, hanya ~90px dari bawah
-             agar tidak "makan" area tengah badge
-        ════════════════════════════════════════ */
-        .badge-footer {
+        /* ─── Footer ─── */
+        .badge__footer {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            /* tipis: mulai transparan, jadi solid hanya di ujung bawah */
+            padding: 18px 18px 14px;
+            text-align: center;
             background: linear-gradient(
                 to bottom,
                 transparent            0%,
@@ -208,27 +183,23 @@
                 rgba(70, 0, 0, 0.82)  75%,
                 rgba(55, 0, 0, 0.94) 100%
             );
-            /* kurangi padding atas agar area merah tidak terlalu tinggi */
-            padding: 18px 18px 14px;
-            text-align: center;
         }
 
-        .badge-location {
+        .badge__location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
             font-size: 12px;
             color: #ffffff;
             letter-spacing: 0.5px;
-            text-shadow: 0 1px 5px rgba(0,0,0,0.65);
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
 
-        /* dot merah kecil pengganti emoji */
-        .badge-location::before {
+        .badge__location::before {
             content: '';
             display: inline-block;
             width: 6px;
@@ -238,32 +209,77 @@
             flex-shrink: 0;
         }
 
-        .badge-uid-pill {
+        /* ─── UID Pill ─── */
+        .badge__uid-pill {
             display: inline-block;
-            background: rgba(0,0,0,0.38);
+            background: rgba(0, 0, 0, 0.38);
             border: 1px solid rgb(255, 255, 255);
             border-radius: 20px;
             padding: 2px 12px;
         }
 
-        .badge-uid {
+        .badge__uid {
             font-family: 'Poppins', sans-serif;
             font-size: 8.5px;
-            color: rgb(255, 255, 255);
+            color: #ffffff;
             letter-spacing: 1.4px;
             text-transform: uppercase;
         }
 
-        /* ═══════════════════
-           PRINT
-        ═══════════════════ */
+        /* ─── Contact Info ─── */
+        .badge__contact-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.20);
+            margin: 8px 4px 7px;
+        }
+
+        .badge__contact-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .badge__contact-row--centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .badge__contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge__contact-icon {
+            width: 13px;
+            height: 13px;
+            opacity: 0.85;
+            flex-shrink: 0;
+            fill: #ff9999;
+        }
+
+        .badge__contact-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 7.8px;
+            color: rgba(255, 255, 255, 0.88);
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── Print ─── */
         @media print {
             body {
                 background: white;
                 padding: 0;
                 display: block;
             }
-            .badge-wrapper {
+
+            .badge {
                 box-shadow: none;
                 border-radius: 0;
                 margin: 0 auto;
@@ -273,54 +289,74 @@
 </head>
 <body>
 
-    <div class="badge-wrapper">
+<div class="badge">
 
-        <!-- Nama Event -->
-        <div class="badge-event">
-            <div class="badge-event-name">{{ event.name }}</div>
+    <div class="badge__event">
+        <div class="badge__event-name">{{ event.name }}</div>
+    </div>
+
+    <div class="badge__divider"></div>
+
+    <div class="badge__qr-wrap">
+        <div class="badge__qr-card">
+            <img src="/static/media/{{ participant.qr_code }}" alt="QR Code {{ participant.name }}">
+        </div>
+    </div>
+
+    <div class="badge__name-wrap">
+        <div class="badge__name">{{ participant.name }}</div>
+    </div>
+
+    {% if instansi %}
+    <div class="badge__instansi-wrap">
+        <div class="badge__instansi">{{ instansi }}</div>
+    </div>
+    {% endif %}
+
+    {% if participant.email %}
+    <div class="badge__email-wrap">
+        <div class="badge__email">{{ participant.email }}</div>
+    </div>
+    {% endif %}
+
+    <div class="badge__footer">
+
+        <div class="badge__location">{{ event.location }}</div>
+
+        <div class="badge__uid-pill">
+            <span class="badge__uid">{{ participant.unique_user }}</span>
         </div>
 
-        <!-- Garis Merah -->
-        <div class="badge-divider"></div>
+        <div class="badge__contact-divider"></div>
 
-        <!-- QR Code -->
-        <div class="badge-qr-wrap">
-            <div class="badge-qr-card">
-                <img src="/static/media/{{ participant.qr_code }}" alt="QR Code">
+        <div class="badge__contact-row">
+            <div class="badge__contact-item">
+                <svg class="badge__contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                <span class="badge__contact-text">presengo.silatama.co.id</span>
+            </div>
+
+            <div class="badge__contact-item">
+                <svg class="badge__contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <span class="badge__contact-text">teknologi@silatama.co.id</span>
             </div>
         </div>
 
-        <!-- Nama Peserta -->
-        <div class="badge-name-wrap">
-            <div class="badge-name">{{ participant.name }}</div>
-        </div>
-
-        <!-- Instansi -->
-        {% if instansi %}
-        <div class="badge-instansi-wrap">
-            <div class="badge-instansi">{{ instansi }}</div>
-        </div>
-        {% endif %}
-
-        <!-- Email -->
-        {% if participant.email %}
-        <div class="badge-email-wrap">
-            <div class="badge-email">{{ participant.email }}</div>
-        </div>
-        {% endif %}
-
-        <!-- Footer -->
-        <div class="badge-footer">
-            <div class="badge-location">{{ event.location }}</div>
-            <div class="badge-uid-pill">
-                <span class="badge-uid">{{ participant.unique_user }}</span>
+        <div class="badge__contact-row--centered">
+            <div class="badge__contact-item">
+                <svg class="badge__contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+                <span class="badge__contact-text">+62 822 1180 1190</span>
             </div>
         </div>
 
     </div>
 
-    {% comment %} <div class="badge-wrapper-2"></div> {% endcomment %}
-
+</div>
 
 </body>
 </html>
