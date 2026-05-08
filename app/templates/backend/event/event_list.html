@@ -1069,36 +1069,60 @@
 
                         {% else %}
 
-                        <td>
+                       <td>
 
-                            {% if fr %}
-                                {% with value=fr.data_response.excel_data|get_item:header %}
-                                    
-                                    {% if value %}
-                                        
-                                        {% if "http://" in value or "https://" in value %}
-                                            <a href="{{ value }}"
-                                               target="_blank"
-                                               class="text-primary fw-semibold">
+    {% if fr %}
+        {% with value=fr.data_response.excel_data|get_item:header %}
 
-                                                {{ value }}
-                                            </a>
+            {% if value %}
 
-                                        {% else %}
-                                            {{ value }}
+                {% if "http://" in value or "https://" in value %}
 
-                                        {% endif %}
+                    <a href="{{ value }}"
+                       target="_blank"
+                       class="text-primary fw-semibold">
 
-                                    {% else %}
-                                        -
-                                    {% endif %}
+                        {{ value }}
+                    </a>
 
-                                {% endwith %}
-                            {% else %}
+                {% else %}
+
+                    {% with lower_value=value|lower %}
+
+                        {# ===== USIA ===== #}
+                        {% if "usia" in header|lower %}
+
+                            {{ value|cut:" Tahun"|cut:" tahun"|cut:" THN"|cut:" thn"|cut:" Thn" }}
+
+                        {# ===== INSTANSI ===== #}
+                        {% elif "instansi" in header|lower %}
+
+                            {% if lower_value == "tidak ada" %}
                                 -
+                            {% else %}
+                                {{ value }}
                             {% endif %}
 
-                        </td>
+                        {% else %}
+
+                            {{ value }}
+
+                        {% endif %}
+
+                    {% endwith %}
+
+                {% endif %}
+
+            {% else %}
+                -
+            {% endif %}
+
+        {% endwith %}
+    {% else %}
+        -
+    {% endif %}
+
+</td>
 
                         {% endif %}
 
