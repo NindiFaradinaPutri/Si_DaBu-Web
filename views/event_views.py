@@ -305,7 +305,7 @@ def print_badge(request, id):
         instansi_value = getattr(instansi_obj, 'instansi', '')
         instansi = instansi_value or "Peserta"
         
-    if not instansi or instansi.strip() in ["-", ""]:
+    if not instansi or instansi.strip().lower() in ["-", "", "tidak ada"]:
         instansi = "Peserta"
 
     context = {
