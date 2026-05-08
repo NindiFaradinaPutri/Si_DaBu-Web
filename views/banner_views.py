@@ -115,6 +115,7 @@ def event_list(request, id):
     dynamic_rows = []
 
     base_headers = [
+    "no",
     "name",
     "email",
     "phone",
@@ -139,8 +140,8 @@ def event_list(request, id):
     filtered_json_headers = []
 
     EXCLUDED_KEYWORDS = [
-        "nama", "name", "nama lengkap",
-        "email","email address","alamat email",
+        "no","nama", "name", "nama lengkap",
+        "email","Email","email address","alamat email",
         "nomor", "phone", "hp", "telp","no hp", "nohandphone",
         "nomor hp", "nomor telepon", "telepon"
         "alamat", "location", "lokasi", "kota","address"
@@ -150,7 +151,7 @@ def event_list(request, id):
         header_clean = str(header).strip().lower()
 
         # 🔥 TAMBAHAN: skip jika header mengandung keyword tertentu
-        if any(keyword in header_clean for keyword in EXCLUDED_KEYWORDS):
+        if header_clean in EXCLUDED_KEYWORDS:
             continue
 
         is_all_same = True

@@ -935,7 +935,9 @@
                 <tr>
                     {% for header in final_headers %}
                         <th>
-                            {% if header == "name" %}
+                            {% if header == "no" %}
+                                No
+                            {% elif header == "name" %}
                                 Name
                             {% elif header == "email" %}
                                 Email
@@ -966,7 +968,12 @@
 
                     {% for header in final_headers %}
 
-                        {% if header == "name" %}
+                    {% if header == "no" %}
+
+                    <td class="fw-semibold text-secondary">
+                        {{ participants.start_index|add:forloop.parentloop.counter0 }}
+                    </td>
+                        {% elif header == "name" %}
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="avatar bg-danger-subtle text-danger">
