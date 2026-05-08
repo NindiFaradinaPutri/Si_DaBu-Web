@@ -985,7 +985,7 @@
 
                         <td>
                             {% if participant.phone %}
-                                {% with phone=participant.phone|stringformat:"s" %}
+                                {% with phone=participant.phone|stringformat:"s"|cut:" "|cut:"-" %}
                                     
                                     {% if phone|slice:":3" == "+62" %}
                                         0{{ phone|slice:"3:" }}
@@ -994,7 +994,7 @@
                                         {{ phone }}
 
                                     {% else %}
-                                        0{{ phone }}
+                                        {{ phone }}
 
                                     {% endif %}
 
