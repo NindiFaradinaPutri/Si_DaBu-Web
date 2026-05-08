@@ -41,7 +41,6 @@ from django.template import RequestContext
 
 #EMAIL VERIFICATION AND TOKEN
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
@@ -752,17 +751,30 @@ def admin_profile(request):
 
         upcoming_events_count = upcoming_events.count()
 
-        registered_count = Participant.objects.filter(
-            status_user_id__status_name="Register"
-        ).count()
+        active_events = Event.objects.filter(
+            date=today,
+            time__hour=current_time.hour
+        )
+
+        # =========================
+        # REGISTERED (HANYA EVENT ACTIVE)
+        # =========================
+        registered_count = active_events.count()
+        # =========================
+        # GLOBAL PARTICIPANT (SEMUA EVENT)
+        # =========================
+        total_participants = Participant.objects.count()
 
         present_count = Participant.objects.filter(
-            status_user_id__status_name="Present"
+            status_user_id__status_name__iexact="Present"
         ).count()
 
+        # =========================
+        # CHECK-IN RATE (GLOBAL)
+        # =========================
         checkin_rate = 0
-        if registered_count > 0:
-            checkin_rate = round((present_count / registered_count) * 100, 1)
+        if total_participants > 0:
+            checkin_rate = round((present_count / total_participants) * 100)
 
         events_qs = Event.objects.prefetch_related(
             'eventphoto_set'
@@ -787,13 +799,13 @@ def admin_profile(request):
             elif event.date == today:
                 if event.time:
                     if event.time <= current_time:
-                        status = "LIVE MANAGEMENT"
+                        status = "LIVE"
                         badge_class = "bg-danger text-white"
                     else:
                         status = "INCOMING"
                         badge_class = "bg-warning text-dark"
                 else:
-                    status = "LIVE MANAGEMENT"
+                    status = "LIVE"
                     badge_class = "bg-danger text-white"
 
             # =========================

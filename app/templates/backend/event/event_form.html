@@ -667,6 +667,17 @@
             transform: translateY(-2px);
             color: white;
         }
+
+        .form-check-input {
+    width: 2.5em;
+    height: 1.3em;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #E31E24;
+    border-color: #E31E24;
+}
 </style>
 
 
@@ -686,7 +697,7 @@
         <div class="vr mx-2" style="height: 32px;"></div>
         <div class="d-flex align-items-center gap-2">
             <div class="text-end d-none d-md-block">
-                <p class="mb-0 fw-bold small">Alex Rivera</p>
+                <p class="mb-0 fw-bold small">Silatama Admin</p>
                 <p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
             </div>
             <img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40" />
@@ -758,6 +769,18 @@
                             <label class="form-label">Google Maps Link</label>
                             {{ event_form.location_map }}
                         </div>
+<div class="form-check form-switch mt-2">
+    {{ event_form.is_form }}
+    <label class="form-check-label fw-semibold ms-2" for="id_is_form">
+        Aktifkan Google Form Registrasi
+    </label>
+</div>
+
+<!-- URL Form -->
+<div class="col-12" id="form-url-wrapper">
+    <label class="form-label">Google Form URL</label>
+    {{ event_form.url_form }}
+</div>
 
                     </div>
                 </section>
@@ -809,7 +832,7 @@
                         Publish Event
                     </button>
 
-                    <a href="/event/list/" class="btn btn-cancel-custom">
+                    <a href="/admin/profile/" class="btn btn-cancel-custom">
                         <span class="material-symbols-outlined fs-6 me-2">
                             close
                         </span>
@@ -820,20 +843,23 @@
 
             </div>
 
-            <div class="section-card">
+            <div class="section-card" id="engagement-section">
 
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="d-flex align-items-center gap-3">
                         <span class="material-symbols-outlined text-danger fs-3">quiz</span>
                         <h3 class="h4 mb-0 fw-bold">Engagement Questions</h3>
                     </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <button type="button" id="add-question-btn" class="btn btn-primary-custom w-100 py-3 fw-bold mb-4">
+                            <span class="material-symbols-outlined fs-5 me-2">add</span>
+                            Add Question
+                        </button>
+                    </div>
                 </div>
 
                 <!-- BUTTON ADD -->
-                <button type="button" id="add-question-btn" class="btn btn-primary-custom w-100 py-3 fw-bold mb-4">
-                    <span class="material-symbols-outlined fs-5 me-2">add</span>
-                    Add Question
-                </button>
+                
 
                 <!-- CONTAINER -->
                 <div id="question-container"></div>
@@ -857,6 +883,10 @@
                     {% include 'template/forms/tmp_absensi_form.html' %}
                 </div>
             </div>
+
+            <button id="btn-simpan" type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold mb-4">
+    Simpan
+</button>
         </div>
     </main>
 </form>
@@ -899,6 +929,7 @@
 
 {% block query %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="{% static 'app/js/absensi_form.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/absensi_form_v2.js' %}"></script>
+
 
 {% endblock %}

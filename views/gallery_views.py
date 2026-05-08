@@ -38,7 +38,6 @@ from django.template import RequestContext
 
 #EMAIL VERIFICATION AND TOKEN
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
@@ -104,7 +103,7 @@ def list_event(request):
         elif event.date == today:
             if event.time:
                 if event.time.hour == current_time.hour:
-                    status = "LIVE MANAGEMENT"
+                    status = "LIVE"
                     badge_class = "badge-active"
                     button_text = "Register Now"
                     button_class = "btn-primary-custom"

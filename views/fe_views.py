@@ -47,7 +47,6 @@ from django.template import RequestContext
 
 #EMAIL VERIFICATION AND TOKEN
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
@@ -116,10 +115,12 @@ def home(request):
 
     hero_event_photo = None
     hero_event_status = None
+    hero_maps_url = ""
     hero_badge_class = "hero-badge"
 
     if hero_event:
-
+        
+        hero_maps_url = extract_maps_url(hero_event.location_map)
         hero_participant_count = Participant.objects.filter(
             id_event=hero_event
         ).count()
@@ -134,7 +135,7 @@ def home(request):
         if event_date == today:
             if event_time:
                 if event_time.hour == current_time.hour:
-                    hero_event_status = "LIVE MANAGEMENT"
+                    hero_event_status = "LIVE"
                     hero_badge_class = "hero-badge bg-danger text-white"
 
                 elif event_time.hour > current_time.hour:
@@ -145,7 +146,7 @@ def home(request):
                     hero_event_status = "EVENT FINISHED"
                     hero_badge_class = "hero-badge bg-secondary text-white"
             else:
-                hero_event_status = "LIVE MANAGEMENT"
+                hero_event_status = "LIVE"
                 hero_badge_class = "hero-badge bg-danger text-white"
 
         elif event_date > today:
@@ -177,7 +178,7 @@ def home(request):
         elif event.date == today:
             if event.time:
                 if event.time.hour == current_time.hour:
-                    status = "LIVE MANAGEMENT"
+                    status = "LIVE"
                     badge_class = "bg-danger text-white"
 
                 elif event.time.hour > current_time.hour:
@@ -188,14 +189,15 @@ def home(request):
                     status = "EVENT FINISHED"
                     badge_class = "bg-secondary text-white"
             else:
-                status = "LIVE MANAGEMENT"
+                status = "LIVE"
                 badge_class = "bg-danger text-white"
 
         event_data.append({
             "event": event,
             "photo": photo,
             "status": status,
-            "badge_class": badge_class
+            "badge_class": badge_class,
+            "maps_url": extract_maps_url(event.location_map)
         })
 
     context = {
@@ -213,6 +215,7 @@ def home(request):
 
         # event list section
         'event_data': event_data,
+        'hero_maps_url': hero_maps_url,  # 🔥 tambahan
     }
 
     return render(
@@ -265,7 +268,7 @@ def event_frontend(request, id):
     elif event.date == today:
         if event.time:
             if event.time.hour == current_time.hour:
-                event_status = "LIVE MANAGEMENT"
+                event_status = "LIVE"
                 event_badge_class = "bg-danger text-white"
 
             elif event.time.hour > current_time.hour:
@@ -276,7 +279,7 @@ def event_frontend(request, id):
                 event_status = "EVENT FINISHED"
                 event_badge_class = "bg-secondary text-white"
         else:
-            event_status = "LIVE MANAGEMENT"
+            event_status = "LIVE"
             event_badge_class = "bg-danger text-white"
 
     # =========================
@@ -297,7 +300,7 @@ def event_frontend(request, id):
     # =========================
     qr_code_base64 = None
 
-    if not event.is_form and event.url_form:
+    if event.is_form and event.url_form:
         qr = qrcode.QRCode(
             version=1,
             box_size=10,

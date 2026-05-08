@@ -717,7 +717,7 @@
 <div class="vr mx-2" style="height: 32px;"></div>
 <div class="d-flex align-items-center gap-2">
 <div class="text-end d-none d-md-block">
-<p class="mb-0 fw-bold small">Alex Rivera</p>
+<p class="mb-0 fw-bold small">Silatama Admin</p>
 <p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
 </div>
 <img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
@@ -733,10 +733,14 @@
 <p class="text-secondary mb-0"> {{ event.information }}</p>
 </div>
 <div class="d-flex gap-2">
-    <button class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
-        <span class="material-symbols-outlined fs-5">upload_file</span>
-        Download Excel/CSV
-    </button>
+    <button 
+    id="btnDownload"
+    data-event-id="{{ event.id }}"
+    class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
+    
+    <span class="material-symbols-outlined fs-5">download</span>
+    Download Excel/CSV
+</button>
 
     <a href="{% url 'participant_upload' event.id %}"
    class="btn btn-primary d-flex align-items-center gap-2 px-3">
@@ -780,7 +784,7 @@
     <!-- Remaining -->
     <div class="col-12 col-md-6 col-xl-3">
         <div class="stat-card h-100">
-            <div class="icon-box bg-danger-subtle text-danger">
+            <div class="icon-box bg-warning-subtle text-warning">
                 <span class="material-symbols-outlined">pending</span>
             </div>
 
@@ -794,12 +798,12 @@
     <!-- Attendance Rate -->
     <div class="col-12 col-md-6 col-xl-3">
         <div class="stat-card h-100">
-            <div class="icon-box bg-warning-subtle text-warning">
-                <span class="material-symbols-outlined">analytics</span>
+            <div class="icon-box bg-danger-subtle text-danger">
+                <span class="material-symbols-outlined">person_off</span>
             </div>
 
             <div class="stat-content">
-                <p class="stat-label">Attendance Rate</p>
+                <p class="stat-label">Absent</p>
                 <h3 class="stat-value">{{ attendance_rate }}%</h3>
             </div>
         </div>
@@ -807,207 +811,399 @@
 
 </div>
 <!-- Table Section -->
- <div class="guest-table-card">
+<div class="guest-table-card">
 
-            <!-- TABLE HEADER -->
-            <div class="p-3 border-bottom bg-light d-flex justify-content-between">
-                <div>
-                    <strong>Participants List</strong>
-                </div>
+    <!-- TABLE HEADER -->
+    <div class="p-3 border-bottom bg-light">
 
-                <div>
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+
+            <!-- LEFT -->
+            <div>
+                <strong class="fs-6">Participants List</strong>
+
+                <div class="small text-secondary">
                     Total: {{ total_participants }}
                 </div>
             </div>
 
-            <!-- TABLE -->
-            <div class="table-responsive">
-                <table class="table mb-0">
+            <!-- RIGHT -->
+            <form method="GET"
+                  class="d-flex flex-column flex-md-row align-items-md-center gap-2">
 
-                    <thead>
-<tr>
-    {% for header in final_headers %}
-        <th>
-            {% if header == "name" %}
-                Name
-            {% elif header == "email" %}
-                Email
-            {% elif header == "phone" %}
-                Phone
-            {% elif header == "status" %}
-                Status
-            {% elif header == "qr_code" %}
-                Badge
-            {% elif header == "location" %}
-                Location
-            {% elif header|lower == "timestamp" %}
-                Tanggal & Waktu Pendaftaran
-            {% else %}
-                {{ header }}
-            {% endif %}
-        </th>
-    {% endfor %}
-</tr>
-</thead>
+                <!-- SEARCH -->
+                <div class="position-relative">
 
-                   <tbody>
-{% for participant in participants %}
-<tr>
+                    <span class="material-symbols-outlined position-absolute"
+                          style="
+                            left:12px;
+                            top:50%;
+                            transform:translateY(-50%);
+                            color:#6c757d;
+                            font-size:20px;
+                          ">
+                        search
+                    </span>
 
-    {% with participant.formresponse_set.first as fr %}
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request.GET.search }}"
+                        placeholder="Search name, email, phone"
+                        class="form-control"
+                        style="
+                            min-width:260px;
+                            padding-left:42px;
+                            height:42px;
+                            border-radius:12px;
+                        ">
+                </div>
 
-    {% for header in final_headers %}
+                <!-- PER PAGE -->
+                <select
+                    name="per_page"
+                    class="form-select"
+                    style="
+                        width:130px;
+                        height:42px;
+                        border-radius:12px;
+                    "
+                    onchange="this.form.submit()">
 
-        {% if header == "name" %}
-            <td>
-        <div class="d-flex align-items-center gap-2">
-            <div class="avatar bg-danger-subtle text-danger">
-                {{ participant.name|slice:":2"|upper }}
-            </div>
-            <strong>{{ participant.name }}</strong>
-        </div>
-    </td>
-
-        {% elif header == "email" %}
-            <td>{{ participant.email|default:"-" }}</td>
-
-        {% elif header == "phone" %}
-<td>
-    {% if participant.phone %}
-        {% with phone=participant.phone|stringformat:"s" %}
-            
-            {% if phone|slice:":3" == "+62" %}
-                0{{ phone|slice:"3:" }}
-            
-            {% elif phone|slice:":1" == "0" %}
-                {{ phone }}
-            
-            {% else %}
-                0{{ phone }}
-            
-            {% endif %}
-
-        {% endwith %}
-    {% else %}
-        -
-    {% endif %}
-</td>
-
-        {% elif header == "status" %}
-<td>
-    {% with status=participant.status_user_id.status_name %}
-        
-        {% if status == "Present" %}
-            <span class="badge px-3 py-2 rounded-pill" style="background:#28a745; color:white;">
-                Present
-            </span>
-
-        {% elif status == "Register" %}
-            <span class="badge px-3 py-2 rounded-pill" style="background:#ffc107; color:black;">
-                Register
-            </span>
-
-        {% elif status == "Absent" %}
-            <span class="badge px-3 py-2 rounded-pill" style="background:#dc3545; color:white;">
-                Absent
-            </span>
-
-        {% elif status == "Cancel" %}
-            <span class="badge px-3 py-2 rounded-pill" style="background:#dc3545; color:white;">
-                Cancel
-            </span>
-
-        {% else %}
-            <span class="badge bg-secondary px-3 py-2 rounded-pill">
-                {{ status }}
-            </span>
-
-        {% endif %}
-
-    {% endwith %}
-</td>
-
-        {% elif header == "qr_code" %}
-            <td>
-    <a href="/event/print-badge/{{participant.encrypt_id}}" class="badge bg-danger d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
-        <span class="material-symbols-outlined" style="font-size:18px;">
-            badge
-        </span>
-    </a>
-</td>
-
-            {% elif header == "location" %}
-            <td>{{ participant.location|default:"-" }}</td>
-
-        {% else %}
-            <td>
-                {% if fr %}
-                    {{ fr.data_response.excel_data|get_item:header|default:"-" }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-        {% endif %}
-
-    {% endfor %}
-
-    {% endwith %}
-
-</tr>
-{% endfor %}
-</tbody>
-
-                </table>
-</div>
-<!-- Pagination -->
- <div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between">
-
-            <span class="small text-secondary fw-medium">
-                Showing {{ participants.count }} of {{ total_participants }} participants
-            </span>
-
-            {% if participants.has_other_pages %}
-            <nav>
-                <ul class="pagination pagination-sm mb-0">
-
-                    {% if participants.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ participants.previous_page_number }}">
-                            Prev
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% for i in participants.paginator.page_range %}
-                        {% if participants.number == i %}
-                            <li class="page-item active">
-                                <a class="page-link">{{ i }}</a>
-                            </li>
-                        {% else %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                   href="?page={{ i }}">
-                                    {{ i }}
-                                </a>
-                            </li>
+                    <option value="5"
+                        {% if request.GET.per_page == "5" %}
+                            selected
                         {% endif %}
+                    >
+                        5 rows
+                    </option>
+
+                    <option value="10"
+                        {% if request.GET.per_page == "10" %}
+                            selected
+                        {% endif %}
+                    >
+                        10 rows
+                    </option>
+
+                    <option value="25"
+                        {% if request.GET.per_page == "25" %}
+                            selected
+                        {% endif %}
+                    >
+                        25 rows
+                    </option>
+
+                    <option value="50"
+                        {% if request.GET.per_page == "50" %}
+                            selected
+                        {% endif %}
+                    >
+                        50 rows
+                    </option>
+
+                    <option value="100"
+                        {% if request.GET.per_page == "100" %}
+                            selected
+                        {% endif %}
+                    >
+                        100 rows
+                    </option>
+
+                </select>
+
+                <!-- BUTTON -->
+                <button class="btn btn-danger px-4"
+                        style="
+                            height:42px;
+                            border-radius:12px;
+                        ">
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+        <table class="table mb-0">
+
+            <thead>
+                <tr>
+                    {% for header in final_headers %}
+                        <th>
+                            {% if header == "name" %}
+                                Name
+                            {% elif header == "email" %}
+                                Email
+                            {% elif header == "phone" %}
+                                Phone
+                            {% elif header == "status" %}
+                                Status
+                            {% elif header == "qr_code" %}
+                                Badge
+                            {% elif header == "location" %}
+                                Location
+                            {% elif header|lower == "timestamp" %}
+                                Tanggal & Waktu Pendaftaran
+                            {% else %}
+                                {{ header }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for participant in participants %}
+                <tr>
+
+                    {% with participant.formresponse_set.first as fr %}
+
+                    {% for header in final_headers %}
+
+                        {% if header == "name" %}
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar bg-danger-subtle text-danger">
+                                    {{ participant.name|slice:":2"|upper }}
+                                </div>
+
+                                <strong>{{ participant.name }}</strong>
+                            </div>
+                        </td>
+
+                        {% elif header == "email" %}
+
+                        <td>{{ participant.email|default:"-" }}</td>
+
+                        {% elif header == "phone" %}
+
+                        <td>
+                            {% if participant.phone %}
+                                {% with phone=participant.phone|stringformat:"s" %}
+                                    
+                                    {% if phone|slice:":3" == "+62" %}
+                                        0{{ phone|slice:"3:" }}
+
+                                    {% elif phone|slice:":1" == "0" %}
+                                        {{ phone }}
+
+                                    {% else %}
+                                        0{{ phone }}
+
+                                    {% endif %}
+
+                                {% endwith %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        {% elif header == "status" %}
+
+                        <td>
+                            {% with status=participant.status_user_id.status_name %}
+                                
+                                {% if status == "Present" %}
+                                    <span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#28a745; color:white;">
+                                        Present
+                                    </span>
+
+                                {% elif status == "Register" %}
+                                    <span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#ffc107; color:black;">
+                                        Register
+                                    </span>
+
+                                {% elif status == "Absent" %}
+                                    <span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#dc3545; color:white;">
+                                        Absent
+                                    </span>
+
+                                {% elif status == "Cancel" %}
+                                    <span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#dc3545; color:white;">
+                                        Cancel
+                                    </span>
+
+                                {% else %}
+                                    <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                        {{ status }}
+                                    </span>
+
+                                {% endif %}
+
+                            {% endwith %}
+                        </td>
+
+                        {% elif header == "qr_code" %}
+
+                        <td>
+                            <a href="/event/print-badge/{{participant.encrypt_id}}"
+                               class="badge bg-danger d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
+
+                                <span class="material-symbols-outlined"
+                                      style="font-size:18px;">
+                                    badge
+                                </span>
+                            </a>
+                        </td>
+
+                        {% elif header == "location" %}
+
+                        <td>{{ participant.location|default:"-" }}</td>
+
+                        {% else %}
+
+                        <td>
+
+                            {% if fr %}
+                                {% with value=fr.data_response.excel_data|get_item:header %}
+                                    
+                                    {% if value %}
+                                        
+                                        {% if "http://" in value or "https://" in value %}
+                                            <a href="{{ value }}"
+                                               target="_blank"
+                                               class="text-primary fw-semibold">
+
+                                                {{ value }}
+                                            </a>
+
+                                        {% else %}
+                                            {{ value }}
+
+                                        {% endif %}
+
+                                    {% else %}
+                                        -
+                                    {% endif %}
+
+                                {% endwith %}
+                            {% else %}
+                                -
+                            {% endif %}
+
+                        </td>
+
+                        {% endif %}
+
                     {% endfor %}
 
-                    {% if participants.has_next %}
+                    {% endwith %}
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- Pagination -->
+   <div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+    <span class="small text-secondary fw-medium">
+        Showing {{ participants.start_index }} - {{ participants.end_index }}
+        of {{ total_participants }} participants
+    </span>
+
+    {% if participants.has_other_pages %}
+    <nav>
+        <ul class="pagination pagination-sm mb-0">
+
+            <!-- PREV -->
+            {% if participants.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ participants.previous_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    Prev
+                </a>
+            </li>
+            {% endif %}
+
+            <!-- FIRST PAGE -->
+            {% if participants.number > 3 %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page=1&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    1
+                </a>
+            </li>
+
+            {% if participants.number > 4 %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+            {% endif %}
+            {% endif %}
+
+            <!-- PAGE RANGE -->
+            {% for i in participants.paginator.page_range %}
+
+                {% if i >= participants.number|add:'-2' and i <= participants.number|add:'2' %}
+
+                    {% if participants.number == i %}
+                    <li class="page-item active">
+                        <span class="page-link">
+                            {{ i }}
+                        </span>
+                    </li>
+
+                    {% else %}
                     <li class="page-item">
                         <a class="page-link"
-                           href="?page={{ participants.next_page_number }}">
-                            Next
+                           href="?page={{ i }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                            {{ i }}
                         </a>
                     </li>
                     {% endif %}
 
-                </ul>
-            </nav>
+                {% endif %}
+
+            {% endfor %}
+
+            <!-- LAST PAGE -->
+            {% if participants.number < participants.paginator.num_pages|add:'-2' %}
+
+                {% if participants.number < participants.paginator.num_pages|add:'-3' %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+                {% endif %}
+
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ participants.paginator.num_pages }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                        {{ participants.paginator.num_pages }}
+                    </a>
+                </li>
+
             {% endif %}
 
-        </div>
+            <!-- NEXT -->
+            {% if participants.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ participants.next_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+
 </div>
 </main>
 <!-- end: page -->
@@ -1031,6 +1227,21 @@
 {% endblock %}
 
 {% block query %}
+
+<script>
+document.getElementById("btnDownload").addEventListener("click", function() {
+
+    const eventId = this.getAttribute("data-event-id");
+
+    if (!eventId) {
+        alert("Event ID tidak ditemukan");
+        return;
+    }
+
+    // 🔥 redirect ke endpoint Django
+    window.location.href = `/ajax/download_participant_bulk/?event_id=${eventId}`;
+});
+</script>
 <script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
 
 <script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>

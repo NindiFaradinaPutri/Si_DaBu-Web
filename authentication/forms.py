@@ -17,8 +17,6 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from captcha.fields import ReCaptchaField
 
-from django.utils.translation import ugettext_lazy as _
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email, validate_integer, RegexValidator, URLValidator, MaxValueValidator, MinValueValidator
