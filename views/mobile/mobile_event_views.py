@@ -85,12 +85,12 @@ def list_events(request):
         try:
             now = datetime.now()
             end_time = now + timedelta(hours=2)
-            start_date = now - timedelta(days=2)
+            start_date = now - timedelta(days=2)    
 
             on_going = Event.objects.filter(
                             (
-                                Q(date__lt=now.date()) |
-                                Q(date=now.date(), time__lte=now.time())
+                                Q(date__gte=now.date()) |
+                                Q(date=now.date(), time__gte=now.time())
                             ) &
                             (
                                 Q(date__lt=end_time.date()) |
