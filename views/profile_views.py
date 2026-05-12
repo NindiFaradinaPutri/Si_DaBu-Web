@@ -46,6 +46,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.utils.safestring import SafeString
+from django.utils.encoding import force_bytes, force_text
 
 #Test Exception
 from django.http import Http404
@@ -59,6 +60,9 @@ from app.decorators import *
 from utils.utils import *
 from profile.models import *
 from profile.forms import *
+from complaint.forms import *
+from complaint.models import *
+
 
 #Set Logg
 import logging
@@ -133,21 +137,85 @@ def profile(request):
 
 def contact_us(request):
     assert isinstance(request, HttpRequest)
-    menu = ['Home','Contact Us']
-    title = 'Contact Us'
-    recaptchaform = ReCaptcha()
-    faq = FAQ.objects.all().order_by('id')
 
-    context = {
-        'title':title,
-        'recaptchaform':recaptchaform,
-        'faq':faq,
-        }
+    menu = ['Home', 'Report']
+    title = 'Report'
+    contact = Contact.objects.filter(id=1).first()
+
+    if request.method == 'POST':
+        
+        form = ComplaintForm(request.POST, request.FILES)
+
+        try:
+            if form.is_valid():
+                data = form.save()
+
+                Complaint_name,created =ComplaintResponse.objects.get_or_create(
+                    complaint_id=data.id,
+                    status=ComplaintStatus.objects.filter(status='Open').first()
+                )
+                
+                
+                Complaint_subject=Complaint.objects.filter(id=Complaint_name.complaint_id).first()
+                
+                name_complaint = Complaint_subject.subject
+                # ambil domain
+                current_site = get_current_site(request)
+
+                mail_subject = f'category complaint {data.category}'
+
+                message = render_to_string(
+                    'template/registrations/account_activation.html',
+                    {
+                        'profile': data,
+                        'domain': current_site.domain,
+                        'uid': urlsafe_base64_encode(force_bytes(data.id)),
+                        'token': 'dummy-token',
+                        'nama':data.sender,
+                        'email': data.email,
+                        'subject': data.subject,
+                        'category': data.category,
+                        'phone': data.telphone,
+                        'message_user': data.information,
+                        'date': data.creation_date,
+                        'image': request.build_absolute_uri(data.attachment.url) if data.attachment else None,
+                        
+                    }
+                )
+
+                email = EmailMessage(
+                    mail_subject,
+                    message,
+                    to=['abidhype@gmail.com']
+                )
+
+                email.content_subtype = "html"
+
+                # kirim email (debug aktif)
+                email.send(fail_silently=False)
+
+                messages.success(request, 'Report successfully reported.')
+                return redirect('/contact/')
+
+            else:
+                messages.error(request, 'Report was not added successfully.')
+
+        except Exception as e:
+            print("EMAIL ERROR:", e)
+            logger.info("Error Service: " + str(e))
+            messages.error(request, 'Report was not added successfully.')
+
+    else:
+        form = ComplaintForm()
 
     return render(
         request,
         'frontend/contact/contact.html',
-        context
+        {
+            'title': title,
+            'form': form,
+            'contact': contact,
+        }
     )
 
 def contact_submit(request):
