@@ -19,7 +19,7 @@ class Event(models.Model):
     information = models.TextField()
     unique_name = models.UUIDField(default=uuid4, editable=False, unique=True)
     is_form = models.BooleanField(default=False)
-    url_form =  models.CharField(max_length=1000, null=False, blank=False)
+    url_form =  models.CharField(max_length=1000, null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)
     update_date = models.DateTimeField(auto_now=True, blank=False)
 

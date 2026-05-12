@@ -279,6 +279,9 @@ def upload_participant(request):
             # hapus .0 dari excel
             phone = re.sub(r"\.0$", "", phone)
 
+            if not any([name, email, phone, location]):
+                continue
+
             # =========================
             # CHECK EXISTING PARTICIPANT
             # =========================
@@ -295,7 +298,6 @@ def upload_participant(request):
 
                 participant.email = email
                 participant.location = location
-                participant.status_user_id = status_default
                 participant.save()
 
             # =========================

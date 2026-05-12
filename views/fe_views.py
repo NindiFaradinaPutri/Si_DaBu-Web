@@ -4,13 +4,18 @@ Definition of views.
 
 import base64
 from io import BytesIO
-
+from django.urls import reverse
 from django.contrib.auth import password_validation, authenticate, login as user_login, logout as auth_logout
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
 from django.contrib import messages
+from form.models import (
+    Form,
+    FormQuestion,
+    FormQuestionOption
+)
 
 
 
@@ -18,7 +23,7 @@ from django.core import validators,serializers as serial
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.files import File
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, default_storage
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseServerError
@@ -215,7 +220,7 @@ def home(request):
 
         # event list section
         'event_data': event_data,
-        'hero_maps_url': hero_maps_url,  # 🔥 tambahan
+        'hero_maps_url': hero_maps_url,  #  tambahan
     }
 
     return render(
@@ -227,7 +232,6 @@ def home(request):
 
 def event_frontend(request, id):
     menu = ['Beranda', 'Detail Event']
-
 
     profile = Profile.objects.filter(id=1).first()
     contact = Contact.objects.filter(id=1).first()
@@ -319,6 +323,259 @@ def event_frontend(request, id):
             buffer.getvalue()
         ).decode()
 
+    # =========================
+    # DYNAMIC FORM
+    # =========================
+    form_event = Form.objects.filter(
+        id_event=event,
+        status=True
+    ).first()
+
+    form_questions = []
+
+    if form_event:
+        form_questions = FormQuestion.objects.filter(
+            id_form=form_event
+        ).prefetch_related(
+            'formquestionoption_set'
+        ).order_by('order')
+
+        if request.method == "POST" and not event.is_form:
+
+            response_data = {}
+            form_json = {}
+
+            participant_name = ""
+            participant_email = ""
+            participant_phone = ""
+            participant_location = ""
+
+            # =========================
+            # VALIDASI REQUIRED
+            # =========================
+            for question in form_questions:
+
+                field_name = f"question_{question.id}"
+
+                # MULTIPLE CHOICE
+                if question.type == "multiple_choice":
+                    value = request.POST.getlist(field_name)
+
+                # FILE / IMAGE
+                elif question.type in ['file_upload', 'image_upload']:
+                    value = request.FILES.get(field_name)
+
+                else:
+                    value = request.POST.get(field_name)
+
+                # REQUIRED VALIDATION
+                if question.form_required:
+
+                    is_empty = False
+
+                    if question.type == "multiple_choice":
+                        is_empty = len(value) == 0
+
+                    elif question.type in ['file_upload', 'image_upload']:
+                        is_empty = value is None
+
+                    else:
+                        is_empty = not value
+
+                    if is_empty:
+
+                        messages.error(
+                            request,
+                            f"{question.label} wajib diisi."
+                        )
+
+                        return redirect(request.path)
+
+            # =========================
+            # BUILD RESPONSE DATA
+            # =========================
+            for question in form_questions:
+
+                field_name = f"question_{question.id}"
+
+                # MULTIPLE CHOICE
+                if question.type == "multiple_choice":
+
+                    value = request.POST.getlist(field_name)
+
+                # FILE / IMAGE
+                elif question.type in ['file_upload', 'image_upload']:
+
+                    file = request.FILES.get(field_name)
+
+                    if file:
+
+                        # simpan file
+                        upload_path = f"event/{file.name}"
+
+                        saved_path = default_storage.save(
+                            upload_path,
+                            ContentFile(file.read())
+                        )
+
+                        # format path
+                        value = f"/static/media/{saved_path}"
+
+                    else:
+                        value = ""
+
+                else:
+
+                    value = request.POST.get(field_name)
+
+                # =========================
+                # JSON FORM RESPONSE
+                # =========================
+                response_data[str(question.id)] = {
+                    "question": question.label,
+                    "type": question.type,
+                    "value": value
+                }
+
+                # format mirip excel upload
+                clean_label = re.sub(
+                    r"^\d+\.\s*",
+                    "",
+                    re.sub(
+                        r"\s+",
+                        " ",
+                        str(question.label).replace(":", "").strip()
+                    )
+                )
+
+                # format mirip excel upload
+                form_json[clean_label] = value
+
+                # =========================
+                # AUTO MAPPING PARTICIPANT
+                # =========================
+                label_lower = question.label.lower().strip()
+
+                # NAME
+                if (
+                    "name" in label_lower or
+                    "nama" in label_lower
+                ):
+                    participant_name = value
+
+                # EMAIL
+                elif (
+                    question.type == "email" or
+                    "email" in label_lower or
+                    "alamatemail" in label_lower or
+                    "emailaddress" in label_lower
+                ):
+                    participant_email = value
+
+                # PHONE
+                elif (
+                    question.type == "phone" or
+                    "phone" in label_lower or
+                    "hp" in label_lower or
+                    "telepon" in label_lower or
+                    "nomor" in label_lower
+                ):
+                    participant_phone = value
+
+                # LOCATION
+                elif (
+                    "location" in label_lower or
+                    "alamat" in label_lower or
+                    "kota" in label_lower or
+                    "address" in label_lower
+                ):
+                    participant_location = value
+
+            # fallback name
+            if not participant_name:
+                participant_name = "Guest Participant"
+
+            # =========================
+            # STATUS REGISTER
+            # =========================
+            status_register = StatusParticipant.objects.filter(
+                status_name__iexact="Register"
+            ).first()
+
+            if not status_register:
+
+                status_register = StatusParticipant.objects.create(
+                    status_name="Register",
+                    information="Participant Registered"
+                )
+
+            # =========================
+            # CHECK EXISTING PARTICIPANT
+            # =========================
+            participant = Participant.objects.filter(
+                name__iexact=participant_name,
+                phone=participant_phone,
+                id_event=event
+            ).first()
+
+            # =========================
+            # UPDATE EXISTING
+            # =========================
+            if participant:
+
+                participant.name = participant_name
+                participant.email = participant_email
+                participant.phone = participant_phone
+                participant.location = participant_location
+                participant.status_user_id = status_register
+                participant.save()
+
+            # =========================
+            # CREATE NEW PARTICIPANT
+            # =========================
+            else:
+
+                participant = Participant.objects.create(
+                    name=participant_name,
+                    email=participant_email,
+                    phone=participant_phone,
+                    location=participant_location,
+                    status_user_id=status_register,
+                    id_event=event
+                )
+
+            # =========================
+            # SAVE FORM RESPONSE
+            # =========================
+            response_json = {
+                "participant_id": participant.id,
+                "participant_name": participant.name,
+                "participant_email": participant.email,
+                "participant_phone": participant.phone,
+                "excel_data": form_json
+            }
+
+            FormResponse.objects.create(
+                form=form_event,
+                participant=participant,
+                data_response=response_json
+            )
+
+            messages.success(
+                request,
+                "Registration berhasil dikirim."
+            )
+            # =========================
+            # GENERATE QR + SEND EMAIL
+            # =========================
+            create_and_send_qremail(
+                request,
+                event.id
+            )
+
+
+            return redirect(request.path)
+
     context = {
         'title': event.name,
         'menu': menu,
@@ -343,8 +600,11 @@ def event_frontend(request, id):
 
         # qr
         'qr_code_base64': qr_code_base64,
-    }
 
+        # dynamic form
+        'form_event': form_event,
+        'form_questions': form_questions,
+    }
 
     return render(
         request,
