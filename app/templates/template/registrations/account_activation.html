@@ -1,16 +1,51 @@
-{% autoescape off %}  
-Yth {{ profile.fullname }},  
+{% load static %}
+{% autoescape off %}
 
-Agar dapat bertransaksi pada website Nganggur.co, silahkan klik tautan dibawah untuk mengaktifkan akun anda:
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}  
+<div style="font-family: Arial, sans-serif; line-height: 1.8; color: #333;">
 
-atau dapat memasukan token berikut pada awal login:
+    <!-- Logo -->
+    <!-- <div style="text-align:center; margin-bottom:20px;">
+        <img 
+            src="http://{{ domain }}{% static 'media/logo/Logo_AdDeen_Hub.png' %}" 
+            width="180"
+            alt="AdDeen Logo">
+    </div> -->
+{% comment %} 
+    <p>
+        Assalamu’alaikum Warahmatullahi Wabarakatuh,
+    </p> {% endcomment %}
 
-{{ token }}
+    <p>
+        Subject : <strong>{{ subject}}</strong><br>
+        Nama Pengirim :<strong>{{ nama }}</strong><br>
+        Email :<strong>{{ email }}</strong><br>
+        No telphone : <strong>{{ phone }}</strong>
+    </p>
 
-Jika anda merasa, email ini bukan untuk anda, mohon abaikan email ini.  
+    <p>
+        Pesan yang ingin di sampaikan<strong> {{category}}</strong>, beserta gambar nya :
+    </p>
 
-Dengan Hormat,
+    <p>
+        "<strong>{{message_user}}</strong>"
+    </p>
 
-Tim Nganggur
+    {% if image %}
+        <img src="http://{{ domain }}{{ image }}" width="300">
+    {% endif %}
+    
+
+
+    <p>
+        <strong>Waktu memberi {{category}} :</strong><br>
+        {{ date|date:"d F Y, H:i" }} WITA
+    </p>
+
+    <p>
+        <strong>Tim AdDeen</strong><br>
+        Sistem Manajemen Masjid Digital
+    </p>
+
+</div>
+
 {% endautoescape %}
