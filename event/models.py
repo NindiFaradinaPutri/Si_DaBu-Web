@@ -27,7 +27,7 @@ class Event(models.Model):
         db_table = 'event'
 
     def __str__(self):
-        return self.name + "-" + self.date
+        return self.name + "-" + str(self.date)
     
     @property
     def encrypt_id(self):

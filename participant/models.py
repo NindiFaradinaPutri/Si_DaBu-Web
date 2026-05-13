@@ -23,6 +23,10 @@ class StatusParticipant(models.Model):
 
     def __str__(self):
         return self.status_name
+    
+    @property
+    def encrypt_id(self):
+        return hashid.encode(self.pk)
 
 class Participant(models.Model):
     name = models.CharField(max_length=255)

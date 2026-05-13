@@ -31,7 +31,6 @@ from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
 from event import ajaxs as event_ajaxs
 
-
 urlpatterns = [
     path('error_400/', auth_views.handler400, name='error_400'),
     path('error_404/', auth_views.handler404, name='error_404'),
@@ -323,6 +322,8 @@ urlpatterns = [
     path('mobile/list_events/', mobile_event.list_events, name='mobile_list_events'),
     path('mobile/event_detail/', mobile_event.event_detail, name='mobile_event_detail'),
     path('mobile/check_participant/', mobile_event.check_participant, name='mobile_check_participant'),
+    path('mobile/list_status/', mobile_event.list_status, name='mobile_list_status'),
+    path('mobile/update_participant_status/', mobile_event.update_participant_status, name='mobile_update_participant_status'),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 
