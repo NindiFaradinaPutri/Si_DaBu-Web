@@ -87,29 +87,163 @@
         }
 
         .roulette-wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 14px solid #1a1a1a;
-            position: relative;
-            overflow: hidden;
-            background: conic-gradient(
-                #ba0013 0deg 30deg,
-                #93000d 30deg 60deg,
-                #ba0013 60deg 90deg,
-                #93000d 90deg 120deg,
-                #ba0013 120deg 150deg,
-                #93000d 150deg 180deg,
-                #ba0013 180deg 210deg,
-                #93000d 210deg 240deg,
-                #ba0013 240deg 270deg,
-                #93000d 270deg 300deg,
-                #ba0013 300deg 330deg,
-                #93000d 330deg 360deg
-            );
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
-            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
-        }
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 14px solid #1a1a1a;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
+    transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
+}
+
+
+
+.prize-selector-wrapper{
+
+    display:flex;
+    justify-content:center;
+
+}
+
+.prize-selector-card{
+
+    width:100%;
+    max-width:500px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #fff5f5 100%
+        );
+
+    border:2px solid rgba(186,0,19,.08);
+
+    border-radius:28px;
+
+    padding:24px;
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+    box-shadow:
+        0 10px 35px rgba(186,0,19,.08);
+
+    position:relative;
+    overflow:hidden;
+
+}
+
+.prize-selector-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-80px;
+    right:-80px;
+
+    width:180px;
+    height:180px;
+
+    background:
+        radial-gradient(
+            rgba(186,0,19,.08),
+            transparent 70%
+        );
+
+    border-radius:50%;
+
+}
+
+.prize-selector-icon{
+
+    min-width:70px;
+    width:70px;
+    height:70px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ba0013,
+            #ff3b4d
+        );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    box-shadow:
+        0 8px 25px rgba(186,0,19,.35);
+
+}
+
+.prize-selector-icon span{
+
+    font-size:34px;
+
+}
+
+.prize-label{
+
+    display:block;
+
+    font-size:20px;
+    font-weight:800;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    color:#777;
+
+    margin-bottom:10px;
+
+}
+
+.custom-prize-select{
+
+    height:60px;
+
+    border-radius:18px;
+
+    border:2px solid #f1f1f1;
+
+    font-size:18px;
+    font-weight:700;
+
+    padding-left:20px;
+
+    background-color:#fff;
+
+    transition:.3s;
+
+    box-shadow:none !important;
+
+}
+
+.custom-prize-select:focus{
+
+    border-color:#ba0013;
+
+    box-shadow:
+        0 0 0 5px rgba(186,0,19,.12) !important;
+
+}
+
+.custom-prize-select option{
+
+    font-weight:600;
+
+}
+
+
 
         /* Outer gold glowing ring */
         .roulette-container::before {
@@ -125,58 +259,67 @@
             box-shadow: 0 0 30px rgba(186, 149, 63, 0.4);
         }
 
-        .wheel-labels {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
+  .wheel-labels{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    pointer-events:none;
+}
 
-        .segment-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 50%;
-            transform-origin: 0% 50%;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-right: 55px;
-            color: #fff;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            font-weight: 800;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.segment-label{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:50%;
+    transform-origin:0 0;
+    pointer-events:none;
+}
 
-        /* Decorative lights on segments */
-        .segment-label::after {
-            content: '';
-            position: absolute;
-            right: 20px;
-            width: 6px;
-            height: 6px;
-            background: var(--gold-accent);
-            border-radius: 50%;
-            box-shadow: 0 0 12px var(--gold-accent), 0 0 4px #fff;
-        }
+.segment-label span{
+    position:absolute;
 
-        .label-0 { transform: translateY(-50%) rotate(15deg); }
-        .label-1 { transform: translateY(-50%) rotate(45deg); }
-        .label-2 { transform: translateY(-50%) rotate(75deg); }
-        .label-3 { transform: translateY(-50%) rotate(105deg); }
-        .label-4 { transform: translateY(-50%) rotate(135deg); }
-        .label-5 { transform: translateY(-50%) rotate(165deg); }
-        .label-6 { transform: translateY(-50%) rotate(195deg); }
-        .label-7 { transform: translateY(-50%) rotate(225deg); }
-        .label-8 { transform: translateY(-50%) rotate(255deg); }
-        .label-9 { transform: translateY(-50%) rotate(285deg); }
-        .label-10 { transform: translateY(-50%) rotate(315deg); }
-        .label-11 { transform: translateY(-50%) rotate(345deg); }
+    left:68%;
+    top:0;
 
+    transform-origin:center center;
+
+    color:#fff;
+
+    font-weight:800;
+
+    font-family:'Inter',sans-serif;
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,.8);
+
+    letter-spacing:.5px;
+
+    text-align:center;
+
+    line-height:1.1;
+
+    white-space:nowrap;
+
+    width:140px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+@media(max-width:991px){
+
+    .segment-label span{
+
+        min-width:90px;
+        max-width:110px;
+        font-size:11px;
+        padding:6px 10px;
+
+    }
+
+}
+    
         .wheel-center {
             position: absolute;
             top: 50%;
@@ -195,7 +338,7 @@
         }
 
         .wheel-center::after {
-            content: 'SL';
+            content: 'PG';
             color: #410002;
             font-weight: 900;
             font-size: 28px;
@@ -257,6 +400,25 @@
             border-radius: 16px;
             padding: 1.5rem;
         }
+
+        .deleteParticipantBtn,
+.deletePrizeBtn{
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    transition:all .2s ease;
+}
+
+.deleteParticipantBtn:hover,
+.deletePrizeBtn:hover{
+    background:#ba0013 !important;
+    color:#fff !important;
+    border-color:#ba0013 !important;
+    transform:scale(1.05);
+}
 
         .prize-selector-dropdown {
             max-width: 400px;
@@ -376,6 +538,93 @@
             color: var(--secondary-color);
             transition: all 0.2s;
         }
+
+        .modern-scroll{
+    max-height:460px;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.modern-scroll::-webkit-scrollbar{
+    width:8px;
+}
+
+.modern-scroll::-webkit-scrollbar-thumb{
+    background:#d1d5db;
+    border-radius:20px;
+}
+
+.modern-scroll::-webkit-scrollbar-thumb:hover{
+    background:#9ca3af;
+}
+
+.participant-item,
+.prize-item{
+    transition:all .25s ease;
+    background:#fff;
+}
+
+.participant-item:hover,
+.prize-item:hover{
+    background:#fafafa;
+    transform:translateX(4px);
+}
+
+.participant-avatar{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ba0013,#8b0000);
+    color:#fff;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    box-shadow:0 4px 10px rgba(186,0,19,.2);
+}
+
+.prize-avatar{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background:#fff5d6;
+    color:#d39b00;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#searchParticipant,
+#searchPrize{
+    height:48px;
+    border:1px solid #e5e7eb;
+    transition:all .2s ease;
+}
+
+#searchParticipant:focus,
+#searchPrize:focus{
+    border-color:#ba0013;
+    box-shadow:0 0 0 .2rem rgba(186,0,19,.1);
+}
+
+.deleteParticipantBtn,
+.deletePrizeBtn{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+}
+
+@media(max-width:768px){
+
+    .modern-scroll{
+        max-height:320px;
+    }
+
+}
     </style>
 
 
@@ -404,285 +653,810 @@
 </header>
 
 <main id="main-content">
+
 <div class="container-fluid p-4">
-<!-- Stats Row -->
+
 <div class="row g-4 mb-5">
-<div class="col-md-4">
-<div class="stat-card d-flex align-items-center gap-3 shadow-sm">
-<div class="p-3 bg-danger bg-opacity-10 rounded-3 text-danger">
-<span class="material-symbols-outlined">payments</span>
+
+    <div class="col-md-4">
+
+        <div class="stat-card d-flex align-items-center gap-3 shadow-sm">
+
+            <div class="p-3 bg-danger bg-opacity-10 rounded-3 text-danger">
+                <span class="material-symbols-outlined">event</span>
+            </div>
+
+            <div class="w-100">
+
+                <small class="text-uppercase text-muted fw-bold"
+                       style="font-size:11px;">
+                    Select Event
+                </small>
+
+                <form method="GET">
+
+                    <select
+                        name="event"
+                        class="form-select mt-2"
+                        onchange="this.form.submit()">
+
+                        <option value="">
+                            Choose Event
+                        </option>
+
+                        {% for event in events %}
+
+                            <option
+                                value="{{ event.id }}"
+                                {% if selected_event.id == event.id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ event.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="stat-card d-flex align-items-center gap-3 shadow-sm">
+
+            <div class="p-3 bg-light rounded-3 text-secondary">
+                <span class="material-symbols-outlined">group</span>
+            </div>
+
+            <div>
+                <small class="text-uppercase text-muted fw-bold"
+                       style="font-size:11px;">
+                    Current Participants
+                </small>
+
+                <h4 class="mb-0 fw-bold">
+                    {{ total_present }}
+                </h4>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="stat-card d-flex align-items-center gap-3 shadow-sm">
+
+            <div class="p-3 bg-success bg-opacity-10 rounded-3 text-success">
+                <span class="material-symbols-outlined">emoji_events</span>
+            </div>
+
+            <div>
+                <small class="text-uppercase text-muted fw-bold"
+                       style="font-size:11px;">
+                    Total Winner
+                </small>
+
+                <h4 class="mb-0 fw-bold">
+                    {{ total_winner }}
+                </h4>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
-<div>
-<small class="text-uppercase text-muted fw-bold ls-1" style="font-size: 11px;">Total Pool</small>
-<h4 class="mb-0 fw-bold">$25,000.00</h4>
-</div>
-</div>
-</div>
-<div class="col-md-4">
-<div class="stat-card d-flex align-items-center gap-3 shadow-sm">
-<div class="p-3 bg-light rounded-3 text-secondary">
-<span class="material-symbols-outlined">group</span>
-</div>
-<div>
-<small class="text-uppercase text-muted fw-bold ls-1" style="font-size: 11px;">Eligible Participants</small>
-<h4 class="mb-0 fw-bold">1,284</h4>
-</div>
-</div>
-</div>
-<div class="col-md-4">
-<div class="stat-card d-flex align-items-center gap-3 shadow-sm">
-<div class="p-3 bg-success bg-opacity-10 rounded-3 text-success">
-<span class="material-symbols-outlined">card_giftcard</span>
-</div>
-<div>
-<small class="text-uppercase text-muted fw-bold ls-1" style="font-size: 11px;">Prizes Remaining</small>
-<h4 class="mb-0 fw-bold">12 / 15</h4>
-</div>
-</div>
-</div>
-</div>
+
 <div class="row g-4">
-<!-- Roulette Wheel Area -->
+
 <div class="col-lg-8">
+
 <div class="bg-white border rounded-4 p-5 text-center position-relative overflow-hidden shadow-lg">
+
 <div class="premium-bg-decor"></div>
+
 <div class="mb-4 position-relative">
-<h1 class="display-5 fw-900 mb-2" style="letter-spacing: -1px;">Grand Prize Draw</h1>
-<!-- Prize Selection Dropdown -->
-<div class="prize-selector-dropdown my-4">
-<label class="form-label text-muted small fw-bold text-uppercase mb-2">Select Active Prize</label>
-<select class="form-select text-center fs-5">
-<option selected="">10.5" Premium Tablet</option>
-<option>MacBook Air M2</option>
-<option>Smart Watch Ultra</option>
-<option>Noise Canceling Pods</option>
-<option>Gift Voucher $500</option>
-</select>
+
+    <h1 class="display-5 fw-900 mb-2">
+        Roulette Wheel
+    </h1>
+
+    <div class="prize-selector-wrapper my-5">
+
+    <div class="prize-selector-card">
+
+        <div class="prize-selector-icon">
+
+            <span class="material-symbols-outlined">
+                workspace_premium
+            </span>
+
+        </div>
+
+        <div class="w-100">
+
+            <label class="prize-label">
+
+                Select Active Prize
+
+            </label>
+
+            <select
+                id="prizeSelect"
+                class="form-select custom-prize-select">
+
+                <option value="">
+                    🎁 Choose Prize
+                </option>
+
+                {% for prize in prizes %}
+
+                    <option value="{{ prize.id }}">
+
+                        {{ prize.prize_name }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+    </div>
+
 </div>
-<div class="d-flex justify-content-center gap-2 mt-2">
-<span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold shadow-sm">LUCKY DRAW ACTIVE</span>
+
 </div>
-</div>
-<!-- The Roulette Wheel -->
+
 <div class="roulette-container mb-5">
-<div class="wheel-pointer"></div>
-<div class="roulette-wheel">
-<div class="wheel-labels">
-<div class="segment-label label-0">Jessica Thorne</div>
-<div class="segment-label label-1">Marcus Chen</div>
-<div class="segment-label label-2">Elena Rodriguez</div>
-<div class="segment-label label-3">David Miller</div>
-<div class="segment-label label-4">Sarah Park</div>
-<div class="segment-label label-5">Alex Wong</div>
-<div class="segment-label label-6">Emma Stone</div>
-<div class="segment-label label-7">Chris Pratt</div>
-<div class="segment-label label-8">Maya Angelou</div>
-<div class="segment-label label-9">Leo Messi</div>
-<div class="segment-label label-10">Serena Williams</div>
-<div class="segment-label label-11">Tom Hanks</div>
+
+    <div class="wheel-pointer"></div>
+
+    <div class="roulette-wheel"
+         id="rouletteWheel">
+
+      <div class="wheel-labels" id="wheelLabels"></div>
+
+    </div>
+
+    <div class="wheel-center"></div>
+
 </div>
+
+<div class="mt-4">
+
+    <button
+        id="spinBtn"
+        class="btn btn-primary-silatama fs-3 d-flex align-items-center gap-3 mx-auto">
+
+        <span class="material-symbols-outlined fs-2">
+            stars
+        </span>
+
+        SPIN TO WIN
+
+    </button>
+
 </div>
-<div class="wheel-center"></div>
+
 </div>
-<div class="mt-4 position-relative">
-<button class="btn btn-primary-silatama fs-3 d-flex align-items-center gap-3 mx-auto">
-<span class="material-symbols-outlined fs-2" style="font-variation-settings: 'FILL' 1;">stars</span>
-                            SPIN TO WIN
-                        </button>
+
 </div>
-</div>
-</div>
-<!-- Winners Sidebar Area -->
+
 <div class="col-lg-4">
+
 <div class="card border-0 rounded-4 overflow-hidden mb-4 shadow-sm bg-white">
-<div class="card-header bg-light bg-opacity-50 border-bottom p-4 pb-0">
-<h5 class="mb-3 fw-bold d-flex align-items-center gap-2">
-<span class="material-symbols-outlined text-danger" style="font-variation-settings: 'FILL' 1;">database</span>
-            Manage Data
-        </h5>
-<ul class="nav nav-tabs border-bottom-0 gap-1" id="manageDataTabs" role="tablist">
-<li class="nav-item" role="presentation">
-<button class="nav-link active small fw-bold px-3 py-2 border-0" data-bs-target="#participants-pane" data-bs-toggle="tab" id="participants-tab" role="tab" style="border-radius: 8px 8px 0 0;" type="button">Participants</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link small fw-bold px-3 py-2 border-0" data-bs-target="#prizes-pane" data-bs-toggle="tab" id="prizes-tab" role="tab" style="border-radius: 8px 8px 0 0;" type="button">Prizes</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link small fw-bold px-3 py-2 border-0" data-bs-target="#history-pane" data-bs-toggle="tab" id="history-tab" role="tab" style="border-radius: 8px 8px 0 0;" type="button">History</button>
-</li>
-</ul>
+
+<div class="card-header bg-light border-bottom p-4 pb-0">
+
+    <h5 class="mb-3 fw-bold d-flex align-items-center gap-2">
+
+        <span class="material-symbols-outlined text-danger">
+            database
+        </span>
+
+        Manage Data
+
+    </h5>
+
+    <ul class="nav nav-tabs border-bottom-0 gap-1"
+        id="manageDataTabs"
+        role="tablist">
+
+        <li class="nav-item">
+
+            <button
+                class="nav-link active small fw-bold px-3 py-2 border-0"
+                data-bs-target="#participants-pane"
+                data-bs-toggle="tab"
+                type="button">
+
+                Participants
+
+            </button>
+
+        </li>
+
+        <li class="nav-item">
+
+            <button
+                class="nav-link small fw-bold px-3 py-2 border-0"
+                data-bs-target="#prizes-pane"
+                data-bs-toggle="tab"
+                type="button">
+
+                Prizes
+
+            </button>
+
+        </li>
+
+        <li class="nav-item">
+
+            <button
+                class="nav-link small fw-bold px-3 py-2 border-0"
+                data-bs-target="#history-pane"
+                data-bs-toggle="tab"
+                type="button">
+
+                History
+
+            </button>
+
+        </li>
+
+    </ul>
+
 </div>
-<div class="tab-content" id="manageDataTabsContent">
-<!-- Participants Tab -->
-<div class="tab-pane fade show active p-4" id="participants-pane" role="tabpanel">
-<div class="input-group mb-3">
-<input class="form-control border-end-0" placeholder="Enter name..." type="text"/>
-<button class="btn btn-danger px-3" type="button">
-<span class="material-symbols-outlined fs-6">add</span>
+
+<div class="tab-content">
+
+<div class="tab-pane fade show active p-4"
+     id="participants-pane">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+
+            <h6 class="fw-bold mb-1">
+                Participant List
+            </h6>
+
+            <small class="text-muted">
+                Total {{ participants|length }} participants
+            </small>
+
+        </div>
+
+        <span class="badge bg-danger rounded-pill px-3 py-2">
+            {{ participants|length }}
+        </span>
+
+    </div>
+
+    <!-- Add Participant -->
+    <div class="input-group mb-3">
+
+        <input
+            type="text"
+            id="participantName"
+            class="form-control border-end-0"
+            placeholder="Enter participant name...">
+
+        <button
+            id="addParticipantBtn"
+            class="btn btn-danger px-3"
+            type="button">
+
+            <span class="material-symbols-outlined fs-6">
+                add
+            </span>
+
+        </button>
+
+    </div>
+
+    <!-- Search -->
+    <div class="input-group mb-3">
+
+    <span class="input-group-text bg-white border-end-0">
+        <span class="material-symbols-outlined text-muted">
+            search
+        </span>
+    </span>
+
+    <input
+        type="text"
+        id="searchParticipant"
+        class="form-control border-start-0 border-end-0"
+        placeholder="Search participant...">
+
+    <button
+        class="btn btn-danger px-4"
+        id="searchParticipantBtn"
+        type="button">
+
+        Search
+
+    </button>
+
+</div>
+
+    <!-- List -->
+    <div id="participantList"
+         class="modern-scroll rounded-4 border bg-white">
+
+        {% for participant in participants %}
+
+        <div class="participant-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="participant-avatar">
+
+                    {{ participant.name|slice:":1"|upper }}
+
+                </div>
+
+                <div>
+
+                    <div class="fw-semibold participant-name">
+                        {{ participant.name }}
+                    </div>
+
+                    <small class="text-muted">
+                        Participant
+                    </small>
+
+                </div>
+
+            </div>
+
+            <button
+                class="btn btn-sm btn-light border text-danger deleteParticipantBtn"
+                data-id="{{ participant.id }}"
+                title="Delete Participant">
+
+                <span class="material-symbols-outlined fs-6">
+                    delete
+                </span>
+
+            </button>
+
+        </div>
+
+        {% empty %}
+
+        <div class="text-center py-5 text-muted">
+
+            <span class="material-symbols-outlined mb-2"
+                  style="font-size:48px;opacity:.4;">
+
+                group
+
+            </span>
+
+            <div class="fw-semibold">
+                No participant found
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<div class="tab-pane fade p-4"
+     id="prizes-pane">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+
+            <h6 class="fw-bold mb-1">
+                Prize List
+            </h6>
+
+            <small class="text-muted">
+                Total {{ prizes|length }} prizes
+            </small>
+
+        </div>
+
+        <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+            {{ prizes|length }}
+        </span>
+
+    </div>
+
+    <!-- Add Prize -->
+    <div class="input-group mb-3">
+
+        <input
+            type="text"
+            id="prizeName"
+            class="form-control border-end-0"
+            placeholder="Enter prize name...">
+
+        <button
+            id="addPrizeBtn"
+            class="btn btn-danger px-3"
+            type="button">
+
+            <span class="material-symbols-outlined fs-6">
+                add
+            </span>
+
+        </button>
+
+    </div>
+
+    <!-- Search -->
+   <div class="input-group mb-3">
+
+    <span class="input-group-text bg-white border-end-0">
+        <span class="material-symbols-outlined text-muted">
+            search
+        </span>
+    </span>
+
+    <input
+        type="text"
+        id="searchPrize"
+        class="form-control border-start-0 border-end-0"
+        placeholder="Search prize...">
+
+    <button
+        class="btn btn-danger text-white px-4 fw-semibold"
+        id="searchPrizeBtn"
+        type="button">
+
+        Search
+
+    </button>
+
+</div>
+
+    <!-- Prize List -->
+    <div id="prizeList"
+         class="modern-scroll rounded-4 border bg-white">
+
+        {% for prize in prizes %}
+
+        <div class="prize-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="prize-avatar">
+
+                    <span class="material-symbols-outlined">
+                        emoji_events
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <div class="fw-semibold prize-name">
+                        {{ prize.prize_name }}
+                    </div>
+
+                    <small class="text-muted">
+                        Prize Item
+                    </small>
+
+                </div>
+
+            </div>
+
+            <button
+                class="btn btn-sm btn-light border text-danger deletePrizeBtn"
+                data-id="{{ prize.id }}"
+                title="Delete Prize">
+
+                <span class="material-symbols-outlined fs-6">
+                    delete
+                </span>
+
+            </button>
+
+        </div>
+
+        {% empty %}
+
+        <div class="text-center py-5 text-muted">
+
+            <span class="material-symbols-outlined mb-2"
+                  style="font-size:48px;opacity:.4;">
+
+                emoji_events
+
+            </span>
+
+            <div class="fw-semibold">
+                No prize found
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<div class="tab-pane fade p-4"
+     id="history-pane">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+
+            <h6 class="fw-bold mb-1">
+                Winner History
+            </h6>
+
+            <small class="text-muted">
+                List of all roulette winners
+            </small>
+
+        </div>
+
+        {% if selected_event %}
+
+<a href="{% url 'export_winner_excel' selected_event.id %}"
+   class="btn btn-success rounded-pill px-4 d-flex align-items-center gap-2 shadow-sm">
+
+    <span class="material-symbols-outlined fs-6">
+        download
+    </span>
+
+    Export Excel
+
+</a>
+
+{% else %}
+
+<button
+    class="btn btn-secondary rounded-pill px-4 d-flex align-items-center gap-2 shadow-sm"
+    disabled>
+
+    <span class="material-symbols-outlined fs-6">
+        download
+    </span>
+
+    Select Event First
+
 </button>
+
+{% endif %}
+
+    </div>
+
+    <div class="border rounded-4 overflow-hidden">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th class="py-3 px-3">
+                            #
+                        </th>
+
+                        <th class="py-3">
+                            Participant
+                        </th>
+
+                        <th class="py-3">
+                            Prize
+                        </th>
+
+                        <th class="py-3">
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for winner in winners %}
+
+                    <tr>
+
+                        <td class="px-3 fw-semibold">
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <div
+                                    class="rounded-circle bg-danger bg-opacity-10 text-danger d-flex align-items-center justify-content-center"
+                                    style="width:40px;height:40px;">
+
+                                    <span class="material-symbols-outlined fs-6">
+                                        person
+                                    </span>
+
+                                </div>
+
+                                <div>
+
+                                    <div class="fw-semibold">
+                                        {{ winner.id_participant.name }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Winner Participant
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">
+
+                                {{ winner.id_doorprize.prize_name }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+
+                                Check In
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="text-center py-5 text-muted">
+
+                            <span class="material-symbols-outlined mb-2"
+                                  style="font-size:40px;opacity:.5;">
+
+                                emoji_events
+
+                            </span>
+
+                            <div>
+                                No winner history yet
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
 </div>
-<div class="list-group list-group-flush border rounded-3" style="max-height: 300px; overflow-y: auto;">
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">Jessica Thorne</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
+
 </div>
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">Marcus Chen</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
+
 </div>
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">Elena Rodriguez</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
+
 </div>
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">David Miller</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
-</div>
-</div>
-</div>
-<!-- Prizes Tab -->
-<div class="tab-pane fade p-4" id="prizes-pane" role="tabpanel">
-<div class="input-group mb-3">
-<input class="form-control border-end-0" placeholder="Enter prize..." type="text"/>
-<button class="btn btn-danger px-3" type="button">
-<span class="material-symbols-outlined fs-6">add</span>
-</button>
-</div>
-<div class="list-group list-group-flush border rounded-3" style="max-height: 300px; overflow-y: auto;">
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">10.5" Premium Tablet</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
-</div>
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">MacBook Air M2</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
-</div>
-<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-<span class="small fw-medium">Smart Watch Ultra</span>
-<button class="btn btn-link text-muted p-0 hover-danger"><span class="material-symbols-outlined fs-6">delete</span></button>
-</div>
-</div>
-</div>
-<!-- History Tab -->
-<div class="tab-pane fade" id="history-pane" role="tabpanel">
-<ul class="list-group list-group-flush">
-<li class="list-group-item p-3 d-flex align-items-center gap-3 border-light">
-<img alt="Jessica" class="winner-avatar border border-2 border-danger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx1C2BxPU0KEqV2sHJfIGP1GsSqOhcEvSkDLF8NHNtNHpTAqDM-ZnPXdueKy4q3QgjAJCjPt1rEsGGzdooTVIMCTp3k7fv-_0kWzJh1AB60ttrpKnf2K8xbRermbAoKYgnsbkeGqabd5JktdVjyoHSuJjvuRtbM9plVN0xZSMufcVfPKQwzZ2uQPzg56yKMRK15mGM-yljTsSiCakE22gqLxoI9GL-r-ruwAiGvHRugsOgHuu4CnOtN-IRyeS4TOZYggaS0ODhjwk" style="width: 36px; height: 36px;"/>
-<div class="flex-grow-1">
-<h6 class="mb-0 fw-bold" style="font-size: 14px;">Jessica Thorne</h6>
-<small class="text-muted" style="font-size: 11px;">MacBook Air</small>
-</div>
-<div class="text-end">
-<small class="text-muted" style="font-size: 10px;">2 mins ago</small>
-</div>
-</li>
-<li class="list-group-item p-3 d-flex align-items-center gap-3 border-light">
-<img alt="Marcus" class="winner-avatar border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0QcEK0BHRfij3SPr9cnMiJjSF7OQCea_WabEc3K4zKIT26DpyIMP9nwEHJiYGwostv_DVQCU2d0IwYsgALQ08KX_Zz436s-36wKdgIIsuHj6ICv0_wXGLn6qS1G3OyqJ5TmkmG9nhUkNpmNg-kNuW9oI3lATiFXiPUoBvfoo1yAuBX2DhjPcW7fpcdQkwrMCbkr-A2CHbdHJSU0nIAQAripxregsWxc9hWWt3GJSEpAexK8vFvncZ7Hhb6R1cUWbicYI1e_37d-Q" style="width: 36px; height: 36px;"/>
-<div class="flex-grow-1">
-<h6 class="mb-0 fw-bold" style="font-size: 14px;">Marcus Chen</h6>
-<small class="text-muted" style="font-size: 11px;">Noise Pods</small>
-</div>
-<div class="text-end">
-<small class="text-muted" style="font-size: 10px;">14 mins ago</small>
-</div>
-</li>
-<li class="list-group-item p-3 d-flex align-items-center gap-3 border-light">
-<img alt="Elena" class="winner-avatar border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH2kpC72ocWrTQtQVrZq4zN_dLTX7O4K_6eEz1eljPtCKX59V_NbYxyjx2XsYo8zEQ44MxQ9xx43MQ5culMe9M4KQOwRGnl9m9sAJuUsPC0rzUcQ2hX-LJi9WSkqft4QKg_pyr1MsMahhxs17sZUwJzG-kG2E3zHM_6MmA5mrabq3gZx-OxWVN1ndq3lFC4snFPa5__80GeH_YDGrkLWn5O7_Gf0MZPWkF3HqxMR-gefk4V23A7sU7mfIwAUcHm2A4C0VUqddL0zI" style="width: 36px; height: 36px;"/>
-<div class="flex-grow-1">
-<h6 class="mb-0 fw-bold" style="font-size: 14px;">Elena Rodriguez</h6>
-<small class="text-muted" style="font-size: 11px;">Smart Watch</small>
-</div>
-<div class="text-end">
-<small class="text-muted" style="font-size: 10px;">28 mins ago</small>
-</div>
-</li>
-</ul>
-<div class="p-4 pt-2">
-<button class="btn btn-outline-danger w-100 fw-bold d-flex align-items-center justify-content-center gap-2">
-<span class="material-symbols-outlined fs-6">download</span>
-                    Export to Excel
-                </button>
-</div>
-</div>
-</div>
-</div>
-<!-- Progress Card -->
-<!-- Activity Card -->
-<div class="card border-0 rounded-4 shadow-sm bg-white p-4">
-<h6 class="mb-4 fw-bold d-flex align-items-center gap-2">
-<span class="material-symbols-outlined text-danger">upload_file</span>
-        Upload Participants
-    </h6>
-<div class="border-2 border-dashed border-secondary border-opacity-25 rounded-4 p-4 text-center bg-light bg-opacity-50" id="dropZone">
-<span class="material-symbols-outlined fs-1 text-muted mb-3">cloud_upload</span>
-<p class="small fw-medium mb-1">Drag &amp; drop Excel or CSV file</p>
-<p class="text-muted" style="font-size: 11px;">Max file size: 10MB</p>
-<button class="btn btn-sm btn-outline-danger px-4 rounded-pill mt-2" onclick="document.getElementById('sidebarExcelUpload').click()">Choose File</button>
-<input accept=".xlsx, .csv" id="sidebarExcelUpload" style="display: none;" type="file"/>
-</div>
-<div class="mt-3">
-<small class="text-muted" style="font-size: 11px;">
-<span class="material-symbols-outlined" style="font-size: 14px;">info</span>
-            Supports .xlsx and .csv formats for bulk participant import.
-        </small>
-</div>
-</div>
-</div>
-</div>
-</div>
+
 </main>
-<!-- Management Modal -->
-<div aria-hidden="true" aria-labelledby="managementModalLabel" class="modal fade" id="managementModal" tabindex="-1">
-<div class="modal-dialog modal-dialog-centered">
-<div class="modal-content border-0 rounded-4 shadow-lg">
-<div class="modal-header border-bottom-0 p-4">
-<h5 class="modal-title fw-bold" id="managementModalLabel">Draw Management</h5>
-<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+
+<div class="modal fade"
+     id="winnerModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 rounded-4 overflow-hidden">
+
+            <div class="modal-body text-center p-5">
+
+                <div class="mb-4">
+
+                    <div class="mx-auto mb-4"
+                         style="
+                         width:100px;
+                         height:100px;
+                         background:linear-gradient(135deg,#FFD700,#FFB800);
+                         border-radius:50%;
+                         display:flex;
+                         align-items:center;
+                         justify-content:center;">
+
+                        <span class="material-symbols-outlined text-dark"
+                              style="font-size:50px;">
+
+                            emoji_events
+
+                        </span>
+
+                    </div>
+
+                    <h2 class="fw-bold mb-2">
+                        Congratulations!
+                    </h2>
+
+                    <p class="text-muted">
+                        We have a winner
+                    </p>
+
+                </div>
+
+                <h1 id="winnerName"
+                    class="display-5 fw-bold text-danger mb-3">
+                </h1>
+
+                <h5 id="winnerCompany"
+                    class="text-muted mb-4">
+                </h5>
+
+                <div class="bg-light rounded-4 p-4 mb-4">
+
+                    <small class="text-muted d-block mb-2">
+                        WINNING PRIZE
+                    </small>
+
+                    <h3 id="winnerPrize"
+                        class="fw-bold mb-0">
+                    </h3>
+
+                </div>
+
+                <button
+                    id="confirmWinnerBtn"
+                    class="btn btn-danger btn-lg px-5 rounded-pill fw-bold">
+
+                    CONFIRM WINNER
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
-<div class="modal-body p-4 pt-0">
-<ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-pill" id="mgmtTabs" role="tablist">
-<li class="nav-item" role="presentation">
-<button class="nav-link active rounded-pill fw-bold py-2" data-bs-target="#participant-form" data-bs-toggle="pill" id="participant-tab" role="tab" type="button">Add Participant</button>
-</li>
-<li class="nav-item" role="presentation">
-<button class="nav-link rounded-pill fw-bold py-2" data-bs-target="#prize-form" data-bs-toggle="pill" id="prize-tab" role="tab" type="button">Add Prize</button>
-</li>
-</ul>
-<div class="tab-content" id="mgmtTabsContent">
-<!-- Participant Form -->
-<div class="tab-pane fade show active" id="participant-form" role="tabpanel">
-<div class="mb-3">
-<label class="form-label small fw-bold">Full Name</label>
-<input class="form-control py-2" placeholder="e.g. John Doe" type="text"/>
-</div>
-<div class="mb-4">
-<label class="form-label small fw-bold">Participant ID (Optional)</label>
-<input class="form-control py-2" placeholder="e.g. SL-1234" type="text"/>
-</div>
-<button class="btn btn-danger w-100 py-3 fw-bold rounded-3">UPDATE WHEEL</button>
-</div>
-<!-- Prize Form -->
-<div class="tab-pane fade" id="prize-form" role="tabpanel">
-<div class="mb-3">
-<label class="form-label small fw-bold">Prize Description</label>
-<input class="form-control py-2" placeholder="e.g. iPhone 15 Pro Max" type="text"/>
-</div>
-<div class="mb-4">
-<label class="form-label small fw-bold">Prize Tier</label>
-<select class="form-select py-2">
-<option>Grand Prize</option>
-<option>Major Prize</option>
-<option>Consolation Prize</option>
-</select>
-</div>
-<button class="btn btn-danger w-100 py-3 fw-bold rounded-3">ADD TO POOL</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- end: page -->
+
 {% endblock %}
 
 {% block header %}
@@ -690,6 +1464,7 @@
 {% endblock %}
 
 {% block theme %}
+
 <link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
 <link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static 'datatables/css/dataTables.bootstrap4.css' %}">
@@ -697,6 +1472,799 @@
 {% endblock %}
 
 {% block query %}
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    let participants = [
+
+        {% for participant in participants %}
+
+            {
+                id:"{{ participant.id }}",
+                name:"{{ participant.name }}",
+                company:"{{ participant.company|default:'' }}"
+            },
+
+        {% endfor %}
+
+    ];
+
+    let selectedWinner = null;
+
+    const wheel = document.getElementById("rouletteWheel");
+
+    const wheelLabels = document.getElementById("wheelLabels");
+
+function buildWheel(){
+
+    const total = participants.length;
+
+    if(total === 0) return;
+
+    const segmentAngle = 360 / total;
+
+    /* =========================
+       DYNAMIC PIE COLORS
+    ========================== */
+
+    let gradients = [];
+
+    for(let i = 0; i < total; i++){
+
+        const start = i * segmentAngle;
+        const end = start + segmentAngle;
+
+        const color =
+            i % 2 === 0
+            ? "#c4001a"
+            : "#8b0000";
+
+        gradients.push(
+            `${color} ${start}deg ${end}deg`
+        );
+    }
+
+    wheel.style.background = `
+        repeating-conic-gradient(
+            rgba(255,255,255,.10) 0deg 1deg,
+            transparent 1deg ${segmentAngle}deg
+        ),
+        conic-gradient(${gradients.join(",")})
+    `;
+
+    /* =========================
+       LABELS
+    ========================== */
+
+    wheelLabels.innerHTML = "";
+
+    participants.forEach((participant,index)=>{
+
+    const angle =
+        (index * segmentAngle) +
+        (segmentAngle / 2);
+
+    const label =
+        document.createElement("div");
+
+    label.className = "segment-label";
+
+    /*
+        putar mengikuti slice
+    */
+    label.style.transform =
+        `rotate(${angle - 90}deg)`;
+
+    /*
+        auto responsive
+    */
+    let fontSize = 18;
+
+    if(total > 6) fontSize = 15;
+    if(total > 10) fontSize = 12;
+    if(total > 16) fontSize = 10;
+    if(total > 24) fontSize = 8;
+
+    /*
+        agar text tetap tegak
+    */
+    let textRotate = 0;
+
+    if(angle > 90 && angle < 270){
+        textRotate = 180;
+    }
+
+    label.innerHTML = `
+        <span
+            style="
+                font-size:${fontSize}px;
+
+                transform:
+                    translate(-50%, -50%)
+                    rotate(${textRotate}deg);
+            "
+        >
+            ${participant.name}
+        </span>
+    `;
+
+    wheelLabels.appendChild(label);
+
+});
+
+}
+
+buildWheel();
+
+    $("#spinBtn").click(function(){
+
+        let prizeId = $("#prizeSelect").val();
+
+        if(!prizeId){
+
+            alert("Select prize first");
+            return;
+        }
+
+        if(participants.length === 0){
+
+            alert("No participant");
+            return;
+        }
+
+        let randomIndex = Math.floor(
+            Math.random() * participants.length
+        );
+
+        selectedWinner = participants[randomIndex];
+
+        let segmentDegree =
+            360 / participants.length;
+
+        let degree =
+            (360 * 6) +
+            (randomIndex * segmentDegree);
+
+        wheel.style.transform =
+            `rotate(-${degree}deg)`;
+
+        setTimeout(function(){
+
+            $("#winnerName").text(
+                selectedWinner.name
+            );
+
+            $("#winnerCompany").text(
+                selectedWinner.company
+            );
+
+            $("#winnerPrize").text(
+                $("#prizeSelect option:selected").text()
+            );
+
+            $("#winnerModal").modal("show");
+
+        },5000);
+
+    });
+
+    $("#confirmWinnerBtn").click(function(){
+
+        $.ajax({
+
+            url:"/ajax/update_doorprize/",
+
+            type:"POST",
+
+            data:{
+
+                event_id:"{{ selected_event.id }}",
+
+                prize_id:$("#prizeSelect").val(),
+
+                participant_id:selectedWinner.id,
+
+                csrfmiddlewaretoken:"{{ csrf_token }}"
+
+            },
+
+            success:function(response){
+
+                if(response.status){
+
+                    
+                    location.reload();
+
+                }else{
+
+                     Swal.fire({
+
+        icon:"error",
+
+        title:"Failed",
+
+        text:response.message,
+
+        confirmButtonColor:"#ba0013",
+
+        background:"#fff",
+
+        customClass:{
+            popup:'rounded-4 shadow-lg',
+            confirmButton:'rounded-pill px-4'
+        }
+
+    });
+
+
+
+                }
+
+            },
+
+            error:function(){
+
+                alert("Server error");
+
+            }
+
+        });
+
+    });
+
+    $("#addPrizeBtn").click(function(){
+
+        $.ajax({
+
+            url:"/ajax/add_prize/",
+
+            type:"POST",
+
+            data:{
+
+                event_id:"{{ selected_event.id }}",
+
+                prize_name:$("#prizeName").val(),
+
+                csrfmiddlewaretoken:"{{ csrf_token }}"
+
+            },
+
+            success:function(response){
+
+                if(response.status === "success"){
+
+                    $("#prizeSelect").append(
+
+                        `<option value="${response.id}">
+                            ${response.prize_name}
+                        </option>`
+
+                    );
+
+                    $("#prizeName").val("");
+
+                    location.reload();
+
+                }else{
+
+                     Swal.fire({
+
+        icon:"error",
+
+        title:"Failed",
+
+        text:response.message,
+
+        confirmButtonColor:"#ba0013",
+
+        background:"#fff",
+
+        customClass:{
+            popup:'rounded-4 shadow-lg',
+            confirmButton:'rounded-pill px-4'
+        }
+
+    });
+
+
+
+                }
+
+            }
+
+        });
+
+    });
+
+    $("#addParticipantBtn").click(function(){
+
+        $.ajax({
+
+            url:"/ajax/add_participant_wheel/",
+
+            type:"POST",
+
+            data:{
+
+                event_id:"{{ selected_event.id }}",
+
+                participant_name:$("#participantName").val(),
+
+                csrfmiddlewaretoken:"{{ csrf_token }}"
+
+            },
+
+            success:function(response){
+
+                if(response.status === "success"){
+
+                    participants.push({
+
+                        id:response.participant.id,
+                        name:response.participant.name,
+                        company:""
+
+                    });
+
+                    $("#participantList").append(
+
+                        `<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
+                            <span class="small fw-medium">
+                                ${response.participant.name}
+                            </span>
+                        </div>`
+
+                    );
+
+                    $("#participantName").val("");
+
+                    location.reload();
+
+                }else{
+
+                     Swal.fire({
+
+        icon:"error",
+
+        title:"Failed",
+
+        text:response.message,
+
+        confirmButtonColor:"#ba0013",
+
+        background:"#fff",
+
+        customClass:{
+            popup:'rounded-4 shadow-lg',
+            confirmButton:'rounded-pill px-4'
+        }
+
+    });
+
+
+
+                }
+
+            }
+
+        });
+
+    });
+
+
+$(document).on(
+    "click",
+    ".deleteParticipantBtn",
+    function(){
+
+        const participantId = $(this).data("id");
+
+        Swal.fire({
+
+            title: "Remove Participant?",
+            text: "Participant will be removed from roulette wheel.",
+            icon: "warning",
+
+            showCancelButton: true,
+
+            confirmButtonColor: "#ba0013",
+            cancelButtonColor: "#6c757d",
+
+            confirmButtonText: "Yes, Remove",
+            cancelButtonText: "Cancel",
+
+            reverseButtons: true,
+
+            background: "#ffffff",
+
+            customClass: {
+                popup: 'rounded-4 shadow-lg',
+                confirmButton: 'rounded-pill px-4',
+                cancelButton: 'rounded-pill px-4'
+            }
+
+        }).then((result)=>{
+
+            if(result.isConfirmed){
+
+                $.ajax({
+
+                    url:"/ajax/delete_participant_wheel/",
+
+                    type:"POST",
+
+                    data:{
+
+                        participant_id:participantId,
+
+                        csrfmiddlewaretoken:"{{ csrf_token }}"
+
+                    },
+
+                    success:function(response){
+
+                        if(response.status){
+
+                            Swal.fire({
+
+                                icon:"success",
+
+                                title:"Participant Removed",
+
+                                text:response.message,
+
+                                timer:1500,
+
+                                showConfirmButton:false,
+
+                                background:"#fff",
+
+                                customClass:{
+                                    popup:'rounded-4 shadow-lg'
+                                }
+
+                            });
+
+                            setTimeout(()=>{
+
+                                location.reload();
+
+                            },1500);
+
+                        }else{
+
+                            Swal.fire({
+
+                                icon:"error",
+
+                                title:"Failed",
+
+                                text:response.message
+
+                            });
+
+                        }
+
+                    },
+
+                    error:function(){
+
+                        Swal.fire({
+
+                            icon:"error",
+
+                            title:"Server Error",
+
+                            text:"Something went wrong."
+
+                        });
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    }
+);
+
+
+
+$(document).on(
+    "click",
+    ".deletePrizeBtn",
+    function(){
+
+        const prizeId = $(this).data("id");
+
+        Swal.fire({
+
+            title: "Delete Prize?",
+            text: "This prize will be permanently deleted.",
+            icon: "warning",
+
+            showCancelButton: true,
+
+            confirmButtonColor: "#ba0013",
+            cancelButtonColor: "#6c757d",
+
+            confirmButtonText: "Yes, Delete",
+            cancelButtonText: "Cancel",
+
+            reverseButtons: true,
+
+            background: "#ffffff",
+
+            customClass: {
+                popup: 'rounded-4 shadow-lg',
+                confirmButton: 'rounded-pill px-4',
+                cancelButton: 'rounded-pill px-4'
+            }
+
+        }).then((result)=>{
+
+            if(result.isConfirmed){
+
+                $.ajax({
+
+                    url:"/ajax/delete_prize/",
+
+                    type:"POST",
+
+                    data:{
+
+                        prize_id:prizeId,
+
+                        csrfmiddlewaretoken:"{{ csrf_token }}"
+
+                    },
+
+                    success:function(response){
+
+                        if(response.status){
+
+                            Swal.fire({
+
+                                icon:"success",
+
+                                title:"Prize Deleted",
+
+                                text:response.message,
+
+                                timer:1500,
+
+                                showConfirmButton:false,
+
+                                background:"#fff",
+
+                                customClass:{
+                                    popup:'rounded-4 shadow-lg'
+                                }
+
+                            });
+
+                            setTimeout(()=>{
+
+                                location.reload();
+
+                            },1500);
+
+                        }else{
+
+                            Swal.fire({
+
+                                icon:"error",
+
+                                title:"Failed",
+
+                                text:response.message
+
+                            });
+
+                        }
+
+                    },
+
+                    error:function(){
+
+                        Swal.fire({
+
+                            icon:"error",
+
+                            title:"Server Error",
+
+                            text:"Something went wrong."
+
+                        });
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    }
+);
+
+
+
+$(document).on("keyup", "#searchParticipant", function(){
+
+    let keyword = $(this).val();
+
+    $.ajax({
+
+        url: "/ajax/search_participant/",
+
+        type: "GET",
+
+        data: {
+
+            keyword: keyword,
+            event_id: "{{ selected_event.id }}"
+
+        },
+
+        success: function(response){
+
+            let html = "";
+
+            if(response.participants.length > 0){
+
+                response.participants.forEach(function(item){
+
+                    html += `
+
+                    <div class="participant-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="participant-avatar">
+
+                                ${item.name.charAt(0).toUpperCase()}
+
+                            </div>
+
+                            <div>
+
+                                <div class="fw-semibold participant-name">
+
+                                    ${item.name}
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Participant
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    `;
+
+                });
+
+            }else{
+
+                html = `
+
+                <div class="text-center py-5 text-muted">
+
+                    No participant found
+
+                </div>
+
+                `;
+
+            }
+
+            $("#participantList").html(html);
+
+        }
+
+    });
+
+});
+
+
+$(document).on("keyup", "#searchPrize", function(){
+
+    let keyword = $(this).val();
+
+    $.ajax({
+
+        url: "/ajax/search_prize/",
+
+        type: "GET",
+
+        data: {
+
+            keyword: keyword,
+            event_id: "{{ selected_event.id }}"
+
+        },
+
+        success: function(response){
+
+            let html = "";
+
+            if(response.prizes.length > 0){
+
+                response.prizes.forEach(function(item){
+
+                    html += `
+
+                    <div class="prize-item d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="prize-avatar">
+
+                                <span class="material-symbols-outlined">
+                                    emoji_events
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <div class="fw-semibold prize-name">
+
+                                    ${item.prize_name}
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Prize Item
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    `;
+
+                });
+
+            }else{
+
+                html = `
+
+                <div class="text-center py-5 text-muted">
+
+                    No prize found
+
+                </div>
+
+                `;
+
+            }
+
+            $("#prizeList").html(html);
+
+        }
+
+    });
+
+});
+
+
+</script>
 
 {% endblock %}
