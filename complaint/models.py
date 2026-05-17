@@ -5,6 +5,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,Permiss
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
 from utils.functions import *
 from utils.utils import *
+from profile.models import FAQ
 
 from authentication.models import *
 
@@ -111,3 +112,28 @@ class ComplaintResponse(models.Model):
     @property
     def encrypt_id(self):
         return hashid.encode(self.pk)
+    
+
+def contact_us(request):
+
+    menu = ['Home', 'Report']
+    title = 'Report'
+
+    contact = Contact.objects.filter(id=1).first()
+
+    faq_items = FAQ.objects.filter(
+        is_active=True
+    ).order_by('order', 'id')
+
+    form = ComplaintForm()
+
+    return render(
+        request,
+        'frontend/contact/contact.html',
+        {
+            'title': title,
+            'form': form,
+            'contact': contact,
+            'faq_items': faq_items,
+        }
+    )
