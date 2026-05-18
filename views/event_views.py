@@ -173,16 +173,148 @@ def participant_upload(request, id):
 @login_required(login_url='/admin/who-login/')
 @admin_only
 def doorprize(request):
-    assert isinstance(request, HttpRequest)
-    title = 'Pengurus'
 
-    team = Team.objects.all().order_by('order','id')
+    assert isinstance(request, HttpRequest)
+
+    title = 'Doorprize'
+
+    # =========================================
+    # GET EVENT
+    # =========================================
+
+    events = Event.objects.all().order_by(
+        '-date',
+        '-creation_date'
+    )
+
+    selected_event_id = request.GET.get('event')
+
+    selected_event = None
+
+    participants = Participant.objects.none()
+
+    prizes = Doorprize.objects.none()
+
+    winners = DoorprizeWinner.objects.none()
+
+    total_present = 0
+
+    total_winner = 0
+
+    angle_per_segment = 30
+
+    # =========================================
+    # IF EVENT SELECTED
+    # =========================================
+
+    if selected_event_id:
+
+        selected_event = Event.objects.filter(
+            id=selected_event_id
+        ).first()
+
+        # =====================================
+        # GET WINNER IDS
+        # =====================================
+
+
+        # =====================================
+        # PARTICIPANTS PRESENT
+        # EXCLUDE WINNERS
+        # =====================================
+
+        participants = Participant.objects.select_related(
+            'status_user_id',
+            'id_event'
+        ).filter(
+            id_event=selected_event,
+            status_user_id__status_name__iexact='Present',
+            is_winner = False
+        ).order_by(
+            'name'
+        )
+
+        # =====================================
+        # ACTIVE PRIZES
+        # =====================================
+
+        prizes = Doorprize.objects.filter(
+            id_event=selected_event,
+            status='ACTIVE'
+        ).order_by(
+            'id'
+        )
+
+        # =====================================
+        # WINNER HISTORY
+        # =====================================
+
+        winners = DoorprizeWinner.objects.select_related(
+            'id_participant',
+            'id_doorprize'
+        ).filter(
+            id_event=selected_event
+        ).order_by(
+            '-creation_date'
+        )
+
+        # =====================================
+        # TOTAL PRESENT
+        # =====================================
+
+        total_present = Participant.objects.filter(
+            id_event=selected_event,
+            status_user_id__status_name__iexact='Present',
+            is_winner=False
+        ).count()
+
+        # =====================================
+        # TOTAL WINNER
+        # =====================================
+
+        total_winner = winners.count()
+
+        participant_count = participants.count()
+
+        angle_per_segment = (
+            360 / participant_count
+            if participant_count > 0
+            else 30
+        )
+
+    # =========================================
+    # CONTEXT
+    # =========================================
 
     context = {
-                'title':title,
-                'team':team,
-                }
-    return render(request, 'backend/event/doorprize.html',context)
+
+        'title': title,
+
+        'events': events,
+
+        'selected_event': selected_event,
+
+        'participants': participants,
+
+        'prizes': prizes,
+
+        'winners': winners,
+
+        'total_present': total_present,
+
+        'total_winner': total_winner,
+
+        'total_remaining': participants.count(),
+
+        'angle_per_segment': angle_per_segment,
+
+    }
+
+    return render(
+        request,
+        'backend/event/doorprize.html',
+        context
+    )
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
@@ -305,7 +437,7 @@ def print_badge(request, id):
         instansi_value = getattr(instansi_obj, 'instansi', '')
         instansi = instansi_value or "Peserta"
         
-    if not instansi or instansi.strip() in ["-", ""]:
+    if not instansi or instansi.strip().lower() in ["-", "", "tidak ada"]:
         instansi = "Peserta"
 
     context = {

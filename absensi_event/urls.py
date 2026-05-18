@@ -31,7 +31,6 @@ from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
 from event import ajaxs as event_ajaxs
 
-
 urlpatterns = [
     path('error_400/', auth_views.handler400, name='error_400'),
     path('error_404/', auth_views.handler404, name='error_404'),
@@ -92,11 +91,26 @@ urlpatterns = [
     re_path(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
     re_path(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
     path('doorprize/', even.doorprize, name='doorprize'),
-
+    path('ajax/delete_participant_wheel/',even_ajaxs.delete_participant_wheel,name='delete_participant_wheel'),
+    path('ajax/delete_prize/',even_ajaxs.delete_prize,name='delete_prize'),
+    path("export-winner-excel/<int:event_id>/",even_ajaxs.export_winner_excel,name="export_winner_excel"),
+    re_path(r'^ajax/update_doorprize/$', even_ajaxs.update_doorprize,name="update_doorprize"),
+    re_path(r'^ajax/add_prize/$',even_ajaxs.add_prize,name="add_prize"),
+    re_path(r'^ajax/add_participant_wheel/$',even_ajaxs.add_participant_wheel,name="add_participant_wheel"),
     path('team/add/', even.team_add, name='team_add'),
     re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', even.team_update, name='team_update'),
     path('team/', fe_views.ourteam, name='ourteam'),
+    path(
+        'ajax/search_participant/',
+        event_ajaxs.search_participant,
+        name='search_participant'
+    ),
 
+    path(
+        'ajax/search_prize/',
+        event_ajaxs.search_prize,
+        name='search_prize'
+    ),
     path('banner/list/', banner_views.banner_list, name='banner_list'),
     path('banner/add/', banner_views.banner_add, name='banner_add'),  
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
@@ -280,49 +294,19 @@ urlpatterns = [
 
     path('naration/', team_views.naration_update, name='naration_update'),
 
-    # Show kegiatan zakat   
-    # path('kegiatan_akuntasi/', keg.show_kegiatan_transaksi, name='kegiatan_akuntasi'),
-    # url(r'^ajax/filter_gl_by_date_zakat/$', keg_ajaxs.filter_gl_by_date,name="filter_gl_by_date_zakat"),
-    # url(r'^ajax/filter_gl_by_month_zakat/$', keg_ajaxs.filter_gl_by_month,name="filter_gl_by_month_zakat"),
-
-    # New Kegiatan Zakat
-    # path('transaction/zakat/', keg.kegiatan_transaksi_list, name='transaction_zakat_list'),
-    # path('transaction/zakat/update/', keg.kegiatan_transaksi_update, name='transaction_zakat_update'),
-    # url(r'^ajax/addform_kg/$', keg_ajaxs.addform_gl,name="addform_kg"),
-    # url(r'^ajax/delete_kg/$', keg_ajaxs.delete_gl,name="delete_kg"),
-#     re_path(r'^print/khotbah/jumats/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
-#             keg_prints.print_khotbah_jumat, name="print_khotbah_jumats"),
-    # re_path(r'^print/kegiatan/(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
-    #        keg_prints.print_ringkasan_zakat, name="print_ringkasan"),
-    # re_path(r'^print/keuangan/kegiatan(?P<start_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<end_date>[0-9]{2}-?[0-9]{2}-?[0-9]{4})/(?P<pass_code>\w+)/$', 
-    #        keg_prints.print_keuangan_zakat, name="print_keuangan_kegiatan"),
-    
-    # coa zakat
-    # path('coa/group/zakat/', keg.coa_group_list, name='coa_group_list'),
-    # path('coa/group/zakat/add/', keg.coa_group_add, name='coa_group_add'),
-    # re_path(r'^coa/group/zakat/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', keg.coa_group_update, name='coa_group_update'),
-
-    # path('coa/zakat/', keg.coa_list, name='coa_list'),
-    # path('coa/zakat/add/', keg.coa_add, name='coa_add'),
-    # re_path(r'^coa/zakat/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', keg.coa_update, name='coa_update'),
-    
-    # #qurban
-    # path('qurban/', qurban.qurban_list, name='qurban_list'),
-    # re_path(r'^qurban/update/$', qurban.qurban_update, name='qurban_update'),
-    
-    # path('qurban/type/', qurban.qurban_type_list, name='qurban_type_list'),
-    # path('qurban/type/add/', qurban.qurban_type_add, name='qurban_type_add'),
-    # re_path(r'^qurban/type/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', qurban.qurban_type_update, name='qurban_type_update'),
-    # url(r'^ajax/addform_qurban/$', qurban_ajaxs.addform_qurban,name="addform_qurban"),
-    # url(r'^ajax/delete_qurban/$', qurban_ajaxs.delete_qurban,name="delete_qurban"),
-
-
-    # ===== Mobile =====
-
     path('mobile/login/', mobile_auth.login_user, name='mobile_login_user'),
     path('mobile/list_events/', mobile_event.list_events, name='mobile_list_events'),
     path('mobile/event_detail/', mobile_event.event_detail, name='mobile_event_detail'),
     path('mobile/check_participant/', mobile_event.check_participant, name='mobile_check_participant'),
+    path('mobile/list_status/', mobile_event.list_status, name='mobile_list_status'),
+    path('mobile/update_participant_status/', mobile_event.update_participant_status, name='mobile_update_participant_status'),
+
+    #INVITATION
+    path(
+        'invitation/',
+        TemplateView.as_view(template_name='frontend/invitation/invitation-layout.html'),
+        name='invitation'
+    ),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 

@@ -9,3 +9,9 @@ class ListofParticipantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participant
         exclude = ['id', 'id_event', 'status_user_id']
+
+class StatusListSerializer(serializers.ModelSerializer):
+    encrypt_id = serializers.ReadOnlyField()
+    class Meta:
+        model = StatusParticipant
+        exclude = ['id']

@@ -84,28 +84,21 @@ def list_events(request):
     if request.method == 'GET':
         try:
             now = datetime.now()
-            end_time = now + timedelta(hours=2)
-            start_date = now - timedelta(days=2)
+            end_time = now - timedelta(hours=5)
+            start_date = now - timedelta(days=2)    
 
-            on_going = Event.objects.filter(
-                            (
-                                Q(date__lt=now.date()) |
-                                Q(date=now.date(), time__lte=now.time())
-                            ) &
-                            (
-                                Q(date__lt=end_time.date()) |
-                                Q(date=end_time.date(), time__lte=end_time.time())
-                            )
-                        ).first()
+            on_going = Event.objects.filter(date__lte=now.date(), time__lte=now.time()
+                                    ).filter(date__gte=end_time.date(), time__gte=end_time.time()).order_by("-time")
 
             on_comming = Event.objects.filter(
                             Q(date__gt=now.date()) |
                             Q(date=now.date(), time__gt=now.time())
                         ).order_by("date", "time")
+            
             if on_going:
-                on_comming = on_comming.exclude(id = on_going.id)
+                on_comming = on_comming.exclude(id__in = on_going.values_list("id",flat=True))
 
-            on_going_serializer = ListofEventSerializer(on_going, many=False)
+            on_going_serializer = ListofEventSerializer(on_going, many=True)
             on_comming_serializer = ListofEventSerializer(on_comming, many=True)
             status_code = status.HTTP_200_OK
             message = "Ok"
@@ -129,20 +122,38 @@ def list_events(request):
 def event_detail(request):
     if request.method == 'GET':
         uuid = request.headers.get("x-eventuuid")
-        # uuid = 'cde2f177-275d-4c40-a0b3-8b9839551046'
         try:
+            page = int(request.GET.get("page", 1))
+            limit = int(request.GET.get("limit", 15))
+
             event = Event.objects.filter(unique_name = uuid).first()
-            participants = Participant.objects.filter(id_event = event)
             
+            participants_query = Participant.objects.filter(id_event=event).order_by("status_user_id", "name")
+            paginator = Paginator(participants_query, limit)
+            participants_page = paginator.get_page(page)
             event = ListofEventSerializer(event, many=False)
-            participants = ListofParticipantsSerializer(participants, many=True)
+            participants_serializer = ListofParticipantsSerializer(participants_page.object_list, many=True)
 
             status_code = status.HTTP_200_OK
             message = "Ok"
-            context = { "event": event.data,
-                        "participants": participants.data,
-                        "metadata": metadata_api(status_code,message)}
-            return Response(context,status=status_code)
+
+            context = {
+                "event": event.data,
+                "participants": participants_serializer.data,
+                "present": participants_query.filter(status_user_id__status_name = "Present").count(),
+                "pending": participants_query.exclude(status_user_id__status_name = "Present").count(),
+                "pagination": {
+                    "current_page": page,
+                    "total_pages": paginator.num_pages,
+                    "total_data": paginator.count,
+                    "has_next": participants_page.has_next(),
+                    "has_previous": participants_page.has_previous(),
+                },
+
+                "metadata": metadata_api(status_code, message)
+            }
+
+            return Response(context, status=status_code)
         except Exception as err:
             message = "Server Error, please contact the administration."
             logger.info("Error Login "+str(err))
@@ -172,9 +183,12 @@ def check_participant(request):
                             status_participant = StatusParticipant.objects.filter(status_name = "Present").first()
                             participant.status_user_id = status_participant
                             participant.save()
+                        participants_serializer = ListofParticipantsSerializer(participant, many=False)
                         message = "Ok"
                         status_code = status.HTTP_200_OK
-                        context = {"message":message}
+                        context = {
+                            "participants": participants_serializer.data,
+                            "message":message}
                     else:
                         message = "The participant is not found in this event."
                         status_code = status.HTTP_201_CREATED
@@ -192,7 +206,64 @@ def check_participant(request):
 
         except Exception as err:
             message = "Server Error, please contact the administration."
+            logger.info("Error "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = {metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+
+@api_view(['GET'])
+def list_status(request):
+    if request.method == 'GET':
+        try:
+            q_status = StatusParticipant.objects.all().order_by("status_name")
+
+            d_status = StatusListSerializer(q_status, many=True)
+            status_code = status.HTTP_200_OK
+            message = "Ok"
+            context = { "status": d_status.data,
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+        except Exception as err:
+            message = "Server Error, please contact the administration."
+            logger.info("Error Login "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = { "status": "",
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+
+    else:
+        error_method()
+
+@api_view(['POST'])
+def update_participant_status(request):
+    if request.method == 'POST':
+        try:
+            data = request.data
+            participant_uuid = data['participantUuid']
+            new_status = data['newStatus']
+
+            participant = Participant.objects.filter(unique_user = participant_uuid).first()
+            if participant:
+                q_status = StatusParticipant.objects.filter(status_name = new_status).first()
+                participant.status_user_id = q_status
+                participant.save()
+
+                message = "Ok"
+                status_code = status.HTTP_200_OK
+            else:
+                message = "Participant not found"
+                status_code = status.HTTP_201_CREATED
+                
+            context = {
+                "message":message}
+                
+            return Response(context,status=status_code)
+
+        except Exception as err:
+            message = "Server Error, please contact the administration."
             logger.info("Error Login "+str(err))
             status_code = status.HTTP_201_CREATED
             context = {metadata_api(status_code,message)}
             return Response(context,status=status_code)
+    else:
+        error_method()

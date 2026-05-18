@@ -935,7 +935,9 @@
                 <tr>
                     {% for header in final_headers %}
                         <th>
-                            {% if header == "name" %}
+                            {% if header == "no" %}
+                                No
+                            {% elif header == "name" %}
                                 Name
                             {% elif header == "email" %}
                                 Email
@@ -966,7 +968,12 @@
 
                     {% for header in final_headers %}
 
-                        {% if header == "name" %}
+                    {% if header == "no" %}
+
+                    <td class="fw-semibold text-secondary">
+                        {{ participants.start_index|add:forloop.parentloop.counter0 }}
+                    </td>
+                        {% elif header == "name" %}
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="avatar bg-danger-subtle text-danger">
@@ -985,7 +992,7 @@
 
                         <td>
                             {% if participant.phone %}
-                                {% with phone=participant.phone|stringformat:"s" %}
+                                {% with phone=participant.phone|stringformat:"s"|cut:" "|cut:"-" %}
                                     
                                     {% if phone|slice:":3" == "+62" %}
                                         0{{ phone|slice:"3:" }}
@@ -994,7 +1001,7 @@
                                         {{ phone }}
 
                                     {% else %}
-                                        0{{ phone }}
+                                        {{ phone }}
 
                                     {% endif %}
 
@@ -1062,36 +1069,61 @@
 
                         {% else %}
 
-                        <td>
+                       <td>
 
-                            {% if fr %}
-                                {% with value=fr.data_response.excel_data|get_item:header %}
-                                    
-                                    {% if value %}
-                                        
-                                        {% if "http://" in value or "https://" in value %}
-                                            <a href="{{ value }}"
-                                               target="_blank"
-                                               class="text-primary fw-semibold">
+    {% if fr %}
+        {% with value=fr.data_response.excel_data|get_item:header %}
 
-                                                {{ value }}
-                                            </a>
+            {% if value %}
 
-                                        {% else %}
-                                            {{ value }}
+                 {% if "http://" in value or "https://" in value or "/static/media/" in value or "/media/" in value %}
 
-                                        {% endif %}
+        <a href="{{ value }}"
+           target="_blank"
+           class="text-primary fw-semibold">
 
-                                    {% else %}
-                                        -
-                                    {% endif %}
+            {{ value }}
 
-                                {% endwith %}
-                            {% else %}
+        </a>
+
+                {% else %}
+
+                    {% with lower_value=value|lower %}
+
+                        {# ===== USIA ===== #}
+                        {% if "usia" in header|lower %}
+
+                            {{ value|cut:" Tahun"|cut:" tahun"|cut:" THN"|cut:" thn"|cut:" Thn" }}
+
+                        {# ===== INSTANSI ===== #}
+                        {% elif "instansi" in header|lower %}
+
+                            {% if lower_value == "tidak ada" %}
                                 -
+                            {% else %}
+                                {{ value }}
                             {% endif %}
 
-                        </td>
+                        {% else %}
+
+                            {{ value }}
+
+                        {% endif %}
+
+                    {% endwith %}
+
+                {% endif %}
+
+            {% else %}
+                -
+            {% endif %}
+
+        {% endwith %}
+    {% else %}
+        -
+    {% endif %}
+
+</td>
 
                         {% endif %}
 
