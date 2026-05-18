@@ -370,7 +370,8 @@ def create_and_send_qremail(request, event_id):
 
             buffer = BytesIO()
             img.save(buffer, format='PNG')
-            file_name = f"{event.unique_name}_{p.unique_user}.png"
+            now = datetime.now()
+            file_name = f"{str(now)}_{p.unique_user}.png"
 
             p.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
             p.save()

@@ -65,6 +65,7 @@ class EventForm(forms.ModelForm):
             ),
 
             'date': forms.DateInput(
+                format='%Y-%m-%d',
                 attrs={
                     'class': 'form-control',
                     'type': 'date'
@@ -72,6 +73,7 @@ class EventForm(forms.ModelForm):
             ),
 
             'time': forms.TimeInput(
+                format='%H:%M',
                 attrs={
                     'class': 'form-control',
                     'type': 'time'
@@ -101,7 +103,8 @@ class EventForm(forms.ModelForm):
             ),
             'is_form': forms.CheckboxInput(
                     attrs={
-                        'class': 'form-check-input'
+                        'class': 'form-check-input',
+                        'id': 'id_is_form'  # 🔥 paksa ID konsisten
                     }
                 ),
 

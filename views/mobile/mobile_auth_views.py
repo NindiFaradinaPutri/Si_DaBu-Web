@@ -95,13 +95,14 @@ def login_user(request):
                                 status_code = status.HTTP_201_CREATED
                             else:
                                 if user_cache.is_admin:
-                                    status_code = status.HTTP_201_CREATED
-                                    message = "Anda tidak dapat login melalui halaman ini"
-                                else:
                                     username = username_exist.username
                                     token = Token.objects.get_or_create(user=username_exist)[0].key
                                     message = "Berhasil login"
                                     status_code = status.HTTP_200_OK
+                                    
+                                else:
+                                    status_code = status.HTTP_201_CREATED
+                                    message = "Anda tidak dapat login"
                         else:
                             status_code = status.HTTP_201_CREATED
                             message = "Akun anda tidak aktif"
