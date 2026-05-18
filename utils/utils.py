@@ -2,6 +2,7 @@ import os
 import json
 from uuid import uuid4
 from datetime import datetime,timedelta
+from email.mime.image import MIMEImage
 #import pandas as pda
 import shutil
 import urllib.parse
@@ -250,6 +251,65 @@ def generate_pdf(html):
     pisa.CreatePDF(html, dest=result)
     return result.getvalue()
 
+# def create_and_send_qremail(request, event_id):
+#     event = Event.objects.filter(id = event_id).first()
+#     participant = Participant.objects.filter(id_event = event)
+
+#     current_site = get_current_site(request)
+#     mail_subject = '[PrensenGO] Your ticket for ' + event.name
+
+#     for p in participant:
+#         if not p.qr_code:
+#             qr_data = f"{event.unique_name},{p.unique_user}"
+
+#             img = make(qr_data)
+
+#             buffer = BytesIO()
+#             img.save(buffer, format='PNG')
+#             now = datetime.now()
+#             file_name = f"{str(now)}_{p.unique_user}.png"
+
+#             p.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
+#             p.save()
+        
+#         if p.email:
+#             url = request.build_absolute_uri(participant.first().qr_code.url)
+
+#             instansi_obj = FormResponse.objects.annotate(
+#                 instansi=F("data_response__excel_data__Instansi (Jika ada)")
+#                 ).filter(participant=p).first()
+
+#             instansi_value = getattr(instansi_obj, 'instansi', '')
+            
+#             current_site = get_current_site(request)
+
+#             message = render_to_string('template/registrations/attende_qrcode.html', {
+#                 'event': event,
+#                 'domain': current_site.domain,
+#                 'qr_code': url,
+#                 'instansi': instansi_value or '-',
+#                 'participant':participant.first(),
+#             })
+#             plain_message = strip_tags(message)
+#             to_email = p.email
+#             email = EmailMultiAlternatives(
+#                 subject=mail_subject,
+#                 body=plain_message,
+#                 from_email=None,
+#                 to=[to_email]
+#             )
+#             message_pdf = render_to_string('template/registrations/attende_qrcode_pdf.html', {
+#                 'event': event,
+#                 'domain': current_site.domain,
+#                 'qr_code': url,
+#                 'instansi': instansi_value or '-',
+#                 'participant':participant.first(),
+#             })
+#             pdf = generate_pdf(message_pdf)
+#             email.attach_alternative(message, "text/html")
+#             email.attach(event.name+" ticket.pdf", pdf, "application/pdf")
+#             email.send()
+
 def create_and_send_qremail(request, event_id):
     event = Event.objects.filter(id = event_id).first()
     participant = Participant.objects.filter(id_event = event)
@@ -257,7 +317,52 @@ def create_and_send_qremail(request, event_id):
     current_site = get_current_site(request)
     mail_subject = '[PrensenGO] Your ticket for ' + event.name
 
+    bg_path = os.path.join(settings.BASE_DIR, "app/static/media/background/registration_card2.png")
+
+    email_icon = os.path.join(settings.BASE_DIR, "app/static/media/logo/icons/envelope-at.png")
+    website_icon = os.path.join(settings.BASE_DIR, "app/static/media/logo/icons/globe2.png")
+    telephone_icon = os.path.join(settings.BASE_DIR, "app/static/media/logo/icons/telephone.png")
+    person_icon = os.path.join(settings.BASE_DIR, "app/static/media/logo/icons/person-fill.png")
+    institution_icon = os.path.join(settings.BASE_DIR, "app/static/media/logo/icons/buildings-fill.png")
+    card_icon = os.path.join(settings.BASE_DIR, "app/static/media/logo/icons/person-vcard-fill.png")
+
     for p in participant:
+        with open(bg_path, "rb") as f:
+            bg = MIMEImage(f.read())
+            bg.add_header("Content-ID", "<card_bg>")
+            bg.add_header("Content-Disposition", "inline", filename="card-bg.png")
+
+
+        with open(email_icon, "rb") as f:
+            email_img = MIMEImage(f.read())
+            email_img.add_header('Content-ID','<email_icon>')
+            email_img.add_header('Content-Disposition', 'inline', filename='email_icon.png')
+
+        with open(website_icon, "rb") as f:
+            website_img = MIMEImage(f.read())
+            website_img.add_header('Content-ID','<website_icon>')
+            website_img.add_header('Content-Disposition', 'inline', filename='website_icon.png')
+        
+        with open(telephone_icon, "rb") as f:
+            telephone_img = MIMEImage(f.read())
+            telephone_img.add_header('Content-ID','<telephone_icon>')
+            telephone_img.add_header('Content-Disposition', 'inline', filename='telephone_icon.png')
+
+        with open(institution_icon, "rb") as f:
+            institution_img = MIMEImage(f.read())
+            institution_img.add_header('Content-ID','<institution_icon>')
+            institution_img.add_header('Content-Disposition', 'inline', filename='institution_icon.png')
+
+        with open(person_icon, "rb") as f:
+            person_img = MIMEImage(f.read())
+            person_img.add_header('Content-ID','<person_icon>')
+            person_img.add_header('Content-Disposition', 'inline', filename='person_icon.png')
+
+        with open(card_icon, "rb") as f:
+            card_img = MIMEImage(f.read())
+            card_img.add_header('Content-ID','<card_icon>')
+            card_img.add_header('Content-Disposition', 'inline', filename='card_icon.png')
+
         if not p.qr_code:
             qr_data = f"{event.unique_name},{p.unique_user}"
 
@@ -270,41 +375,54 @@ def create_and_send_qremail(request, event_id):
 
             p.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
             p.save()
-        
         if p.email:
-            url = request.build_absolute_uri(participant.first().qr_code.url)
+            url = request.build_absolute_uri(p.qr_code.url)
 
-            instansi_obj = FormResponse.objects.annotate(
-                instansi=F("data_response__excel_data__Instansi (Jika ada)")
-                ).filter(participant=p).first()
+        instansi_obj = FormResponse.objects.annotate(
+            instansi=F("data_response__excel_data__Instansi (Jika ada)")
+            ).filter(participant=p).first()
 
-            instansi_value = getattr(instansi_obj, 'instansi', '')
-            
-            current_site = get_current_site(request)
+        instansi_value = getattr(instansi_obj, 'instansi', '')
+                
+        current_site = get_current_site(request)
 
-            message = render_to_string('template/registrations/attende_qrcode.html', {
-                'event': event,
-                'domain': current_site.domain,
-                'qr_code': url,
-                'instansi': instansi_value or '-',
-                'participant':participant.first(),
+        message = render_to_string('template/registrations/registration_card.html', {
+            'event': event,
+            'domain': current_site.domain,
+            'qr_code': url,
+            'instansi': instansi_value or '-',
+            'participant': p,
             })
-            plain_message = strip_tags(message)
-            to_email = p.email
-            email = EmailMultiAlternatives(
-                subject=mail_subject,
-                body=plain_message,
-                from_email=None,
-                to=[to_email]
+        plain_message = strip_tags(message)
+        to_email = p.email
+        email = EmailMultiAlternatives(
+            subject=mail_subject,
+            body=plain_message,
+            from_email=None,
+            to=[to_email]
             )
-            message_pdf = render_to_string('template/registrations/attende_qrcode_pdf.html', {
-                'event': event,
-                'domain': current_site.domain,
-                'qr_code': url,
-                'instansi': instansi_value or '-',
-                'participant':participant.first(),
+        message_pdf = render_to_string('template/registrations/attende_qrcode_pdf.html', {
+            'event': event,
+            'domain': current_site.domain,
+            'qr_code': url,
+            'instansi': instansi_value or '-',
+            'participant': p,
             })
-            pdf = generate_pdf(message_pdf)
-            email.attach_alternative(message, "text/html")
-            email.attach(event.name+" ticket.pdf", pdf, "application/pdf")
-            email.send()
+        pdf = generate_pdf(message_pdf)
+
+        p.qr_code.open()
+        qr_image = MIMEImage(p.qr_code.read())
+        qr_image.add_header('Content-ID','<qr_code>')
+        qr_image.add_header('Content-Disposition', 'inline', filename='qr.png')
+
+        email.attach_alternative(message, "text/html")
+        email.attach(bg)
+        email.attach(qr_image)
+        email.attach(email_img)
+        email.attach(website_img)
+        email.attach(telephone_img)
+        email.attach(person_img)
+        email.attach(card_img)
+        email.attach(institution_img)
+        email.attach(event.name+" ticket.pdf", pdf, "application/pdf")
+        email.send()
