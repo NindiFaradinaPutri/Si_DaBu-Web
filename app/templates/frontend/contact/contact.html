@@ -1,217 +1,781 @@
 {% extends "layout/consulting_2.html" %}
-
+{% load widget_tweaks %}
 {% load static %}
 {% load custom_tags %}
 
-{% block content %}
-<div class="container" style="position: relative; margin-top: 5em;">
-	<div id="message">
-		<div class="title text-dark">Send a message</div>
-		<div class="subtitle">
-			Ada yang ingin Anda tanyakan atau sampaikan? Tuliskan pesan dan tim kami akan dengan senang hati
-			membantu.
-		</div>
-		<form class="" action="{%url 'contact_submit'%}" method="POST">
-			{% csrf_token %}
-			{% if data and data == 'success' %}
-			<div class="contact-form-success alert alert-success mt-4">
-				<strong>Success!</strong> Your message has been sent to us. Please wait for our reply.
-			</div>
-			{% elif data and data == 'success' %}
-			<div class="contact-form-error alert alert-danger mt-4">
-				<strong>Error!</strong> There was an error sending your message.
-				<span class="mail-error-message text-1 d-block"></span>
-			</div>
-			{% endif %}
+{% block theme %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+  integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"
+  integrity="sha512-giQeaPns4lQTBMRpOOHsYnGw1tGVzbAIHUyHRgn7+6FmiEgGGjaG0T2LZJmAPMzRCl+Cug0ItQ2xDZpTmEc+CQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-			<div class="row">
-				<div class="form-group col">
-					<label class="form-label mb-1 text-3">Nama Lengkap</label>
-					<input type="text" value="" data-msg-required="Please enter your name." maxlength="100"
-						class="form-control text-3 h-auto py-2" name="name" required>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col">
-					<label class="form-label mb-1 text-3">Alamat</label>
-					<input type="email" value="" data-msg-required="Please enter your email address."
-						data-msg-email="Please enter a valid email address." maxlength="100"
-						class="form-control text-3 h-auto py-2" name="email" required>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col">
-					<label class="form-label mb-1 text-3">Perihal</label>
-					<input type="text" value="" data-msg-required="Please enter the subject." maxlength="100"
-						class="form-control text-3 h-auto py-2" name="subject" required>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col">
-					<label class="form-label mb-1 text-3">Pesan</label>
-					<textarea maxlength="5000" data-msg-required="Please enter your message." rows="8"
-						class="form-control text-3 h-auto py-2" name="message" required></textarea>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col m-0">
-					{% include 'template/forms/tmp_form.html' with form=recaptchaform %}
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col">
-					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="" name="agree" id="tabContent9Checkbox"
-							data-msg-required="You must agree before submiting." required>
-						<label class="form-check-label" for="tabContent9Checkbox">
-							Agree to terms and conditions
-						</label>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col m-0">
-					<input type="submit" value="Send E-mail" class="btn btn-primary">
-				</div>
-			</div>
-		</form>
-	</div>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
 
-	<div id="contact">
-		<div class="title">Get in touch</div>
-		<div class="subtitle">
-			Kami dengan senang hati menerima pertanyaan, saran, maupun masukan dari Anda. Silakan hubungi kami dan kami
-			akan segera merespons.
-		</div>
-		<div class="contact-body">
-			<div class="row m-0">
-				<div class="col-1 p-0">
-					<i class="fa fa-location-dot contact-icon"></i>
-				</div>
-				<div class="col pl-2">
-					<div class="contact-title">Location</div>
-					<div class="contact-subtitle">{{'address'|contact_silatama}}</div>
-				</div>
-			</div>
-			<div class="row my-3 m-0">
-				<div class="col-1 p-0">
-					<i class="fa fa-envelope contact-icon"></i>
-				</div>
-				<div class="col pl-2">
-					<div class="contact-title">Email Us</div>
-					<div class="contact-subtitle">{{'email'|contact_silatama}}</div>
-				</div>
-			</div>
-			<div class="row m-0">
-				<div class="col-1 p-0">
-					<i class="fa fa-phone contact-icon"></i>
-				</div>
-				<div class="col pl-2">
-					<div class="contact-title">Call Us</div>
-					<div class="contact-subtitle">{{'phone'|contact_silatama}}</div>
-				</div>
-			</div>
-		</div>
-		<div class="contact-title">Follow our social media</div>
-		<a target="_blank" href="https://wa.me/{{'whatsapp'|contact_silatama}}">
-			<span class="badge badge-success badge-md rounded-pill"
-				style="padding: .8em !important; margin-top: .7rem;">
-				<i class="fa-brands fa-whatsapp" style="font-size:20px"></i>
-		</a>
-	</div>
-</div>
+<style>
+  /* ─── Brand Tokens ────────────────────────────────────── */
+  :root {
+    --primary:                  #ba0013;
+    --primary-dark:             #93000d;
+    --primary-fixed:            #ffdad6;
+    --primary-xlight:           #fff5f4;
+    --secondary:                #5e5e5e;
+    --tertiary:                 #545b69;
+    --surface:                  #f8f9fb;
+    --surface-container-low:    #f3f4f6;
+    --surface-container-lowest: #ffffff;
+    --on-surface:               #191c1e;
+    --on-surface-variant:       #6b3f3c;
+    --outline-variant:          #e4b9b5;
+    --outline-soft:             #ede8e8;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md:  0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
+    --shadow-red: 0 8px 28px rgba(186,0,19,.28);
+  }
 
-<div class="w-85 h_iframe" style="margin-top: 10em;">
-	<iframe
-		src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8348679405867!2d116.85852897424932!3d-1.2721744356093603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df146c22f667ea9%3A0x78b076ca8d34f997!2sMasjid%20Ar%20Raudhah!5e0!3m2!1sen!2sid!4v1776393012418!5m2!1sen!2sid"
-		width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-		referrerpolicy="no-referrer-when-downgrade"></iframe>
-</div>
-{% endblock %}
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
-{% block page_header %}
-{% include "frontend/header/header-page.html" %}
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  /* ─── Typography ──────────────────────────────────────── */
+  .text-headline-xl { font-size: 36px; line-height: 44px; letter-spacing: -0.03em; font-weight: 800; }
+  .text-headline-lg { font-size: 22px; line-height: 32px; letter-spacing: -0.02em; font-weight: 800; }
+  .text-headline-md { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .text-body-lg     { font-size: 18px; line-height: 28px; font-weight: 400; }
+  .text-body-md     { font-size: 16px; line-height: 24px; font-weight: 400; }
+  .text-body-sm     { font-size: 14px; line-height: 20px; font-weight: 400; }
+  .text-label-md    { font-size: 11px; line-height: 16px; letter-spacing: 0.07em; font-weight: 700; text-transform: uppercase; }
+
+  /* ─── Colour helpers ─────────────────────────────────── */
+  .text-primary            { color: var(--primary) !important; }
+  .text-secondary-color    { color: var(--secondary) !important; }
+  .text-tertiary-color     { color: var(--tertiary) !important; }
+  .text-on-surface         { color: var(--on-surface) !important; }
+  .text-on-surface-variant { color: var(--on-surface-variant) !important; }
+
+  /* ─── Hero Eyebrow ───────────────────────────────────── */
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary-xlight);
+    border: 1px solid var(--primary-fixed);
+    color: var(--primary);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+  .hero-title span { color: var(--primary); }
+
+  /* ─── Contact Info Cards ─────────────────────────────── */
+  .contact-card {
+    background: var(--surface-container-lowest);
+    border: 1px solid var(--outline-soft);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+  .contact-card:hover {
+    border-color: var(--outline-variant);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .contact-icon-wrap {
+    background-color: var(--primary-xlight);
+    color: var(--primary);
+    padding: 0.65rem;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .contact-card-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--tertiary); margin-bottom: 2px;
+  }
+
+  /* ─── Social Buttons ─────────────────────────────────── */
+  .social-btn {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+    border: 1px solid var(--outline-soft);
+    text-decoration: none;
+    color: var(--on-surface-variant);
+    background: var(--surface-container-lowest);
+    transition: background .2s, border-color .2s, color .2s, transform .15s;
+  }
+  .social-btn:hover {
+    background: var(--primary-xlight);
+    border-color: var(--primary-fixed);
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  /* ─── Form Card ──────────────────────────────────────── */
+  .form-card {
+    background: var(--surface-container-lowest);
+    border: 1px solid var(--outline-soft);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Animated top bar */
+  .form-card-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), #ff4d5e, var(--primary));
+    background-size: 200% 100%;
+    animation: shimmer-bar 3s ease-in-out infinite;
+  }
+  @keyframes shimmer-bar {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .form-card-inner { padding: 1.75rem 2rem 2rem; }
+
+  .form-card-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--outline-soft);
+  }
+  .form-card-header-icon {
+    width: 48px; height: 48px;
+    background: var(--primary-xlight);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary); flex-shrink: 0;
+  }
+  .form-card-header-icon .material-symbols-outlined { font-size: 24px; }
+  .form-card-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; color: var(--on-surface); line-height: 1.2; }
+  .form-card-subtitle { font-size: 13px; color: var(--tertiary); margin-top: 3px; }
+
+  /* ─── Field Labels ───────────────────────────────────── */
+  .form-label-custom {
+    display: block;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--tertiary);
+    margin-bottom: 6px;
+  }
+
+  /* ─── Input Wrapper + Icon ───────────────────────────── */
+  .input-wrap { position: relative; }
+  .input-icon {
+    position: absolute;
+    left: 13px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+    opacity: .38;
+    pointer-events: none;
+    transition: opacity .2s;
+    display: flex;
+  }
+  .input-icon .material-symbols-outlined { font-size: 17px; }
+  .input-wrap:focus-within .input-icon { opacity: 1; }
+
+  /* ─── Inputs ─────────────────────────────────────────── */
+  .custom-input,
+  .custom-select,
+  .custom-textarea {
+    width: 100%;
+    border: 1.5px solid var(--outline-soft);
+    border-radius: 10px;
+    padding: 11px 14px 11px 40px;
+    font-size: 14px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--surface-container-low);
+    color: var(--on-surface);
+    outline: none;
+    transition: border-color .2s, background .2s, box-shadow .2s;
+    -webkit-appearance: none;
+  }
+  .custom-input::placeholder,
+  .custom-textarea::placeholder { color: var(--tertiary); }
+  .custom-input:focus,
+  .custom-select:focus,
+  .custom-textarea:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(186,0,19,.09);
+  }
+  .custom-select  { padding-left: 14px; padding-right: 36px; cursor: pointer; }
+  .custom-textarea { padding-left: 14px; resize: vertical; min-height: 110px; }
+
+  /* Select arrow */
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--primary);
+    opacity: .55;
+    pointer-events: none;
+  }
+
+  /* ─── Attachment Area ────────────────────────────────── */
+  .attach-area {
+    display: flex; align-items: center; gap: 12px;
+    border: 1.5px dashed var(--outline-variant);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    background: var(--surface-container-low);
+    transition: border-color .2s, background .2s;
+  }
+  .attach-area:hover { border-color: var(--primary); background: var(--primary-xlight); }
+  .attach-icon-box {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: var(--primary-fixed);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary);
+  }
+  .attach-icon-box .material-symbols-outlined { font-size: 20px; }
+  .attach-text-main { font-size: 13px; font-weight: 600; color: var(--on-surface); }
+  .attach-text-sub  { font-size: 12px; color: var(--tertiary); margin-top: 2px; }
+
+  /* ─── Form Divider ───────────────────────────────────── */
+  .form-divider { height: 1px; background: var(--outline-soft); margin: 1.5rem 0; }
+
+  /* ─── Form Footer ────────────────────────────────────── */
+  .form-footer {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .form-privacy { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--tertiary); }
+  .privacy-badge {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--primary-xlight);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary); flex-shrink: 0;
+  }
+  .privacy-badge .material-symbols-outlined { font-size: 15px; }
+
+  /* ═══════════════════════════════════════════════════════
+     SUBMIT BUTTON
+  ═══════════════════════════════════════════════════════ */
+  .btn-submit {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 13px 24px 13px 28px;
+    background: var(--primary);
+    color: #fff;
+    border: none; border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px; font-weight: 800;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+  }
+  .btn-submit::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background .2s;
+  }
+  .btn-submit:hover::before { background: rgba(255,255,255,.1); }
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-red);
+  }
+  .btn-submit:active { transform: scale(0.96); box-shadow: none; }
+
+  .btn-submit-text { position: relative; z-index: 1; }
+
+  .btn-submit-icon {
+    position: relative; z-index: 1;
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,.18);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s, transform .25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .btn-submit:hover .btn-submit-icon {
+    background: rgba(255,255,255,.28);
+    transform: translateX(3px) rotate(-8deg);
+  }
+  .btn-submit-icon .material-symbols-outlined { font-size: 17px; }
+
+  /* Loading state */
+  .btn-submit.loading { pointer-events: none; background: var(--secondary); }
+  .btn-submit.loading .btn-submit-icon { animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Success state */
+  .btn-submit.success { pointer-events: none; background: #16a34a; }
+
+  /* ─── Map ────────────────────────────────────────────── */
+  .map-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--outline-soft);
+    background: #fff;
+    box-shadow: var(--shadow-md);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .map-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(186,0,19,.12);
+  }
+  .map-iframe {
+    width: 100%; height: 100%;
+    border: 0; display: block;
+    transition: transform .4s ease;
+  }
+  .map-wrapper:hover .map-iframe { transform: scale(1.02); }
+  .map-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(186,0,19,.3), rgba(186,0,19,.06), transparent);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .map-wrapper:hover .map-overlay { opacity: 1; }
+  .map-overlay-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; color: var(--primary);
+    text-decoration: none; font-size: 13px; font-weight: 700;
+    padding: 10px 20px; border-radius: 9999px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.18);
+    transform: scale(.9);
+    transition: transform .25s ease, background .2s, color .2s;
+  }
+  .map-wrapper:hover .map-overlay-btn { transform: scale(1); }
+  .map-overlay-btn:hover { background: var(--primary); color: #fff; }
+  .map-overlay-btn .material-symbols-outlined { font-size: 16px; }
+
+  /* ─── FAQ Accordion ──────────────────────────────────── */
+  .faq-item {
+    border: 1px solid var(--outline-soft);
+    border-radius: 12px;
+    background: var(--surface-container-lowest);
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .faq-item.open { border-color: var(--outline-variant); box-shadow: var(--shadow-sm); }
+  .faq-btn {
+    width: 100%; background: transparent; border: none;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-size: 14px; font-weight: 600;
+    color: var(--on-surface);
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    gap: 12px;
+    transition: background .15s, color .2s;
+  }
+  .faq-btn:hover { background: var(--primary-xlight); }
+  .faq-item.open .faq-btn { color: var(--primary); }
+  .faq-icon {
+    color: var(--tertiary); flex-shrink: 0;
+    font-size: 20px;
+    transition: transform .3s ease, color .2s;
+  }
+  .faq-item.open .faq-icon { transform: rotate(180deg); color: var(--primary); }
+  .faq-body {
+    font-size: 14px; line-height: 1.65;
+    color: var(--secondary);
+    padding: 0 1.25rem;
+    max-height: 0; overflow: hidden;
+    transition: max-height .35s ease, padding .35s ease;
+  }
+  .faq-item.open .faq-body { max-height: 200px; padding: 0 1.25rem 1.25rem; }
+</style>
 {% endblock %}
 
 {% block header %}
 {% include "frontend/header/header.html" %}
 {% endblock %}
 
-{% block footer %}
-{% include "frontend/footer/footer.html" %}
+{% block content %}
+
+<main class="container px-4 py-4">
+
+  <!-- Hero -->
+  <section class="mb-4">
+
+    <h1 class="text-headline-xl text-on-surface mb-2">Hubungi <span style="color:var(--primary)">Kami</span></h1>
+    <p class="text-body-lg text-secondary-color" style="max-width:42rem">
+      Tim dukungan kami siap membantu Anda mengelola acara dengan sempurna.
+      Hubungi kami untuk pertanyaan teknis, kemitraan, atau bantuan operasional.
+    </p>
+  </section>
+
+  <!-- Contact Info + Form -->
+  <div class="row g-4">
+
+    <!-- ── Left: Contact Info ── -->
+    <div class="col-12 col-lg-5 d-flex flex-column gap-3">
+
+      <div class="contact-card">
+        <div class="contact-icon-wrap">
+          <span class="material-symbols-outlined">location_on</span>
+        </div>
+        <div>
+          <div class="contact-card-label">Alamat</div>
+          <h3 class="text-headline-md mb-1">Alamat Kantor</h3>
+          <p class="text-body-md text-secondary-color mb-0">
+            Balikpapan Baru Pesona Mediterania Blok S1/25, Gunung Samarinda, Balikpapan Utara, Balikpapan
+          </p>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon-wrap">
+          <span class="material-symbols-outlined">call</span>
+        </div>
+        <div>
+          <div class="contact-card-label">Telepon</div>
+          <h3 class="text-headline-md mb-1">+62 822 1180 1190</h3>
+          
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon-wrap">
+          <span class="material-symbols-outlined">mail</span>
+        </div>
+        <div>
+          <div class="contact-card-label">Email</div>
+          <h3 class="text-headline-md mb-1">sila.teknologi.88@silatama.co.id </h3>
+          
+        </div>
+      </div>
+
+ 
+
+    </div>
+
+    <!-- ── Right: Form ── -->
+    <div class="col-12 col-lg-7">
+      <div class="form-card">
+
+        <!-- Animated top bar -->
+        <div class="form-card-bar"></div>
+
+        <div class="form-card-inner">
+
+          <!-- Form Header -->
+          <div class="form-card-header">
+            <div class="form-card-header-icon">
+              <span class="material-symbols-outlined">mark_email_unread</span>
+            </div>
+            <div>
+              <div class="form-card-title">Kirim Pesan</div>
+              <div class="form-card-subtitle">Kami akan membalas dalam 1×24 jam kerja</div>
+            </div>
+          </div>
+
+          <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="alert alert-danger mb-4">
+              {{ form.errors }}
+            </div>
+            {% endif %}
+
+            <!-- Row 1: Nama + Email -->
+            <div class="row mb-3 g-3">
+              <div class="col-12 col-md-6">
+                <label class="form-label-custom">Nama Lengkap</label>
+                <div class="input-wrap">
+                  
+                  {{ form.sender|add_class:"custom-input"|attr:"placeholder:John Doe" }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label-custom">Alamat Email</label>
+                <div class="input-wrap">
+                 
+                  {{ form.email|add_class:"custom-input"|attr:"placeholder:john@example.com" }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Subjek -->
+            <div class="mb-3">
+              <label class="form-label-custom">Subjek</label>
+              <div class="input-wrap">
+                
+                {{ form.subject|add_class:"custom-input"|attr:"placeholder:Masukkan subjek pesan" }}
+              </div>
+            </div>
+
+            <!-- Row 2: Kategori + Nomor -->
+            <div class="row mb-3 g-3">
+              <div class="col-12 col-md-6">
+                <label class="form-label-custom">Kategori</label>
+                <div class="select-wrap">
+                  {{ form.category|add_class:"custom-select" }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label-custom">Nomor Telepon</label>
+                <div class="input-wrap">
+                  
+                  {{ form.telphone|add_class:"custom-input"|attr:"placeholder:+62 8xx xxxx xxxx" }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Pesan -->
+            <div class="mb-3">
+              <label class="form-label-custom">Pesan</label>
+              {{ form.information|add_class:"custom-textarea"|attr:"placeholder:Tuliskan pesan Anda secara detail..." }}
+            </div>
+
+		<!-- Lampiran -->
+		<div class="mb-3">
+		<label class="form-label-custom">Lampiran</label>
+		<label class="attach-area" id="attachLabel" for="{{ form.attachment.id_for_label }}">
+			<div class="attach-icon-box">
+			<span class="material-symbols-outlined">attach_file</span>
+			</div>
+			<div>
+			<div class="attach-text-main">Klik untuk upload file</div>
+			<div class="attach-text-sub">PDF, JPG, PNG hingga 10 MB</div>
+			</div>
+		</label>
+		<div style="display:none">{{ form.attachment|add_class:"custom-input" }}</div>
+
+		<!-- Preview container (tersembunyi sampai ada file) -->
+		<div id="previewContainer" style="display:none; margin-top:12px; border:1.5px solid var(--outline-soft); border-radius:12px; padding:12px; background:#fff;">
+			<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+			<div style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--primary);">
+				<span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
+				File berhasil dilampirkan
+				<span id="fileCount" style="background:var(--primary-xlight); border:1px solid var(--primary-fixed); color:var(--primary); font-size:11px; font-weight:700; border-radius:999px; padding:2px 10px;">0 file</span>
+			</div>
+			<span style="display:inline-flex; align-items:center; gap:5px; background:#f0fdf4; border:1px solid #bbf7d0; color:#16a34a; font-size:11px; font-weight:700; padding:4px 12px; border-radius:999px;">
+				<span class="material-symbols-outlined" style="font-size:13px;">check</span>Siap dikirim
+			</span>
+			</div>
+			<div id="previewGrid" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+		</div>
+		</div>
+            <!-- Captcha -->
+            <div class="mb-3">
+              {{ form.captcha }}
+            </div>
+
+            <div class="form-divider"></div>
+
+            <!-- Footer: privacy + submit -->
+            <div class="form-footer">
+              <div class="form-privacy">
+
+
+              <button type="submit" class="btn-submit" id="btnSubmit">
+                <span class="btn-submit-text">Kirim Pesan</span>
+                <div class="btn-submit-icon">
+                  <span class="material-symbols-outlined" id="btnIcon">send</span>
+                </div>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row -->
+
+  <!-- ── Map + FAQ ── -->
+  <section class="mt-5">
+    <div class="row g-4 align-items-start">
+
+      <!-- Map -->
+      <div class="col-12 col-lg-6">
+        <h2 class="text-headline-lg mb-3">Lokasi Kami</h2>
+        <div class="map-wrapper">
+          <iframe
+            class="map-iframe"
+            src="https://www.google.com/maps?q=Balikpapan+Baru+Pesona+Mediterania+Blok+S1/25&output=embed"
+            loading="lazy"
+            title="Lokasi Kantor">
+          </iframe>
+          <div class="map-overlay">
+            <a href="https://maps.app.goo.gl/tDBDSKttaUhZbBhM9"
+               target="_blank" class="map-overlay-btn">
+              <span class="material-symbols-outlined">explore</span>
+              Buka Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="col-12 col-lg-6">
+        <h2 class="text-headline-lg mb-3">Pertanyaan Populer</h2>
+        <div class="d-flex flex-column gap-3">
+
+          <div class="faq-item">
+            <button class="faq-btn" type="button">
+              Bagaimana cara mendaftarkan event baru?
+              <span class="material-symbols-outlined faq-icon">expand_more</span>
+            </button>
+            <div class="faq-body">
+              Anda dapat mendaftarkan event baru melalui Dashboard Silatama setelah masuk ke akun Anda.
+              Pilih menu "Create Event" dan ikuti panduan langkah demi langkah kami.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-btn" type="button">
+              Apakah sistem ini mendukung tracking real-time?
+              <span class="material-symbols-outlined faq-icon">expand_more</span>
+            </button>
+            <div class="faq-body">
+              Ya, Silatama menyediakan dashboard analitik real-time yang memantau kehadiran peserta
+              dan pergerakan logistik secara langsung selama acara berlangsung.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-btn" type="button">
+              Bagaimana sistem keamanan data Silatama?
+              <span class="material-symbols-outlined faq-icon">expand_more</span>
+            </button>
+            <div class="faq-body">
+              Kami menggunakan enkripsi end-to-end berstandar industri dan infrastruktur cloud yang aman
+              untuk memastikan data peserta dan logistik Anda tetap terlindungi 24/7.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-btn" type="button">
+              Berapa lama waktu respons dukungan?
+              <span class="material-symbols-outlined faq-icon">expand_more</span>
+            </button>
+            <div class="faq-body">
+              Tim kami merespons pertanyaan dalam 1×24 jam pada hari kerja. Untuk pertanyaan mendesak,
+              hubungi melalui WhatsApp atau telepon langsung.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  /* ── FAQ Accordion ───────────────────────────────────── */
+  document.querySelectorAll('.faq-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item   = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function (i) {
+        i.classList.remove('open');
+      });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  /* ── Submit Button Loading State ─────────────────────── */
+  (function () {
+    var form = document.querySelector('form[method="POST"]');
+    var btn  = document.getElementById('btnSubmit');
+    var icon = document.getElementById('btnIcon');
+    var text = btn ? btn.querySelector('.btn-submit-text') : null;
+    if (!form || !btn) return;
+
+    form.addEventListener('submit', function () {
+      btn.classList.add('loading');
+      icon.textContent = 'hourglass_top';
+      text.textContent = 'Mengirim...';
+    });
+  })();
+
+	/* ── File Attachment Preview ─────────────────────── */
+(function () {
+	var attachInput = document.getElementById('{{ form.attachment.id_for_label }}');
+	if (!attachInput) return;
+	attachInput.setAttribute('multiple', 'multiple');
+
+	var container = document.getElementById('previewContainer');
+	var grid      = document.getElementById('previewGrid');
+	var countEl   = document.getElementById('fileCount');
+	var files     = [];
+
+	function isImage(name) { return /\.(jpg|jpeg|png|webp|gif)$/i.test(name); }
+
+	function renderAll() {
+		grid.innerHTML = '';
+		files.forEach(function (f, i) {
+		var item = document.createElement('div');
+		item.style.cssText = 'position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;border:1.5px solid var(--outline-soft);background:var(--surface-container-low);animation:popIn .25s cubic-bezier(.34,1.56,.64,1)';
+
+		if (isImage(f.name)) {
+			var img = document.createElement('img');
+			img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+			img.alt = f.name;
+			var rd = new FileReader();
+			rd.onload = function (e) { img.src = e.target.result; };
+			rd.readAsDataURL(f);
+			item.appendChild(img);
+		} else {
+			var ext = f.name.split('.').pop().toUpperCase();
+			item.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--primary)"><span class="material-symbols-outlined" style="font-size:24px">description</span><span style="font-size:10px;font-weight:700;letter-spacing:0.05em;color:var(--primary)">' + ext + '</span></div>';
+		}
+
+		var tip = document.createElement('div');
+		tip.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:3px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+		tip.textContent = f.name;
+		item.appendChild(tip);
+
+		var rm = document.createElement('button');
+		rm.type = 'button';
+		rm.innerHTML = '&times;';
+		rm.style.cssText = 'position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(186,0,19,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center';
+		rm.title = 'Hapus';
+		rm.onclick = function () { files.splice(i, 1); renderAll(); };
+		item.appendChild(rm);
+		grid.appendChild(item);
+		});
+
+		countEl.textContent = files.length + ' file';
+		container.style.display = files.length > 0 ? 'block' : 'none';
+	}
+
+	attachInput.addEventListener('change', function () {
+		Array.from(this.files).forEach(function (f) {
+		if (f.size <= 10 * 1024 * 1024) files.push(f);
+		else alert('File "' + f.name + '" melebihi batas 10 MB.');
+		});
+		attachInput.value = '';
+		renderAll();
+	});
+
+	/* animasi pop */
+	var style = document.createElement('style');
+	style.textContent = '@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}';
+	document.head.appendChild(style);
+	})();
+</script>
 {% endblock %}
 
-{% block theme %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-	integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"
-	integrity="sha512-giQeaPns4lQTBMRpOOHsYnGw1tGVzbAIHUyHRgn7+6FmiEgGGjaG0T2LZJmAPMzRCl+Cug0ItQ2xDZpTmEc+CQ=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<style>
-	.contact-body {
-		padding: 1.5rem 0;
-		border-top: 1px solid white;
-		border-bottom: 1px solid white;
-		margin: 2rem 0;
-	}
-
-	.contact-icon {
-		font-size: 1.2rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.contact-title {
-		font-size: 1.3em;
-		font-weight: 700;
-		line-height: 1;
-	}
-
-	.contact-subtitle {
-		line-height: 1.2;
-		margin-top: 5px;
-	}
-
-	#contact {
-		background: linear-gradient(45deg, rgba(1, 76, 61, 1) 0%, rgba(0, 163, 131, 1) 100%);
-		width: 40%;
-		border-radius: 15px;
-		padding: 2rem;
-		color: white !important;
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		right: 0;
-	}
-
-	textarea {
-		line-height: 1 !important;
-	}
-
-	.form-group {
-		margin-bottom: .5rem !important;
-	}
-
-	.title {
-		font-size: 2em;
-		font-weight: 700;
-	}
-
-	.subtitle {
-		line-height: 1.3;
-		margin: .5rem 0 1rem 0;
-	}
-
-	#message {
-		padding: 2rem 25rem 2rem 2rem;
-		border-radius: 15px;
-		background-color: white;
-		width: 90%;
-		-webkit-box-shadow: 0px 0px 7px 0px #d6d6d6;
-		box-shadow: 0px 0px 7px 0px #d6d6d6;
-	}
-</style>
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
 {% endblock %}

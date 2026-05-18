@@ -265,44 +265,46 @@ def create_and_send_qremail(request, event_id):
 
             buffer = BytesIO()
             img.save(buffer, format='PNG')
-            file_name = f"{event.unique_name}_{p.unique_user}.png"
+            now = datetime.now()
+            file_name = f"{str(now)}_{p.unique_user}.png"
 
             p.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
             p.save()
-
-        url = request.build_absolute_uri(participant.first().qr_code.url)
-
-        instansi_obj = FormResponse.objects.annotate(
-            instansi=F("data_response__excel_data__Instansi (Jika ada)")
-            ).filter(participant=p).first()
-
-        instansi_value = getattr(instansi_obj, 'instansi', '')
         
-        current_site = get_current_site(request)
+        if p.email:
+            url = request.build_absolute_uri(participant.first().qr_code.url)
 
-        message = render_to_string('template/registrations/attende_qrcode.html', {
-            'event': event,
-            'domain': current_site.domain,
-            'qr_code': url,
-            'instansi': instansi_value or '-',
-            'participant':participant.first(),
-        })
-        plain_message = strip_tags(message)
-        to_email = p.email
-        email = EmailMultiAlternatives(
-            subject=mail_subject,
-            body=plain_message,
-            from_email=None,
-            to=[to_email]
-        )
-        message_pdf = render_to_string('template/registrations/attende_qrcode_pdf.html', {
-            'event': event,
-            'domain': current_site.domain,
-            'qr_code': url,
-            'instansi': instansi_value or '-',
-            'participant':participant.first(),
-        })
-        pdf = generate_pdf(message_pdf)
-        email.attach_alternative(message, "text/html")
-        email.attach(event.name+" ticket.pdf", pdf, "application/pdf")
-        email.send()
+            instansi_obj = FormResponse.objects.annotate(
+                instansi=F("data_response__excel_data__Instansi (Jika ada)")
+                ).filter(participant=p).first()
+
+            instansi_value = getattr(instansi_obj, 'instansi', '')
+            
+            current_site = get_current_site(request)
+
+            message = render_to_string('template/registrations/attende_qrcode.html', {
+                'event': event,
+                'domain': current_site.domain,
+                'qr_code': url,
+                'instansi': instansi_value or '-',
+                'participant':participant.first(),
+            })
+            plain_message = strip_tags(message)
+            to_email = p.email
+            email = EmailMultiAlternatives(
+                subject=mail_subject,
+                body=plain_message,
+                from_email=None,
+                to=[to_email]
+            )
+            message_pdf = render_to_string('template/registrations/attende_qrcode_pdf.html', {
+                'event': event,
+                'domain': current_site.domain,
+                'qr_code': url,
+                'instansi': instansi_value or '-',
+                'participant':participant.first(),
+            })
+            pdf = generate_pdf(message_pdf)
+            email.attach_alternative(message, "text/html")
+            email.attach(event.name+" ticket.pdf", pdf, "application/pdf")
+            email.send()

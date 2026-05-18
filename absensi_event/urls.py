@@ -31,7 +31,6 @@ from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
 from event import ajaxs as event_ajaxs
 
-
 urlpatterns = [
     path('error_400/', auth_views.handler400, name='error_400'),
     path('error_404/', auth_views.handler404, name='error_404'),
@@ -83,18 +82,35 @@ urlpatterns = [
     path('list_event/', even.list_event, name='list_event'),
     # path('event/list/', banner_views.event_list, name='event_list'),
     path('event/list/<int:id>/', banner_views.event_list, name='event_list'),
-    path('event/add/', banner_views.event_add, name='event_add'), 
+    path('event/add/', banner_views.event_add, name='event_add'),
+    path('event/edit/<int:id>/', banner_views.event_edit, name='event_edit'), 
+    path('event/delete/<int:id>/', banner_views.event_delete, name='event_delete'),
     re_path(r'^event/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.event_update, name='event_update'), 
     # path('participant/upload/', banner_views.participant_upload, name='participant_upload'),
     path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
     re_path(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
     re_path(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
     path('doorprize/', even.doorprize, name='doorprize'),
-
+    path('ajax/delete_participant_wheel/',even_ajaxs.delete_participant_wheel,name='delete_participant_wheel'),
+    path('ajax/delete_prize/',even_ajaxs.delete_prize,name='delete_prize'),
+    path("export-winner-excel/<int:event_id>/",even_ajaxs.export_winner_excel,name="export_winner_excel"),
+    re_path(r'^ajax/update_doorprize/$', even_ajaxs.update_doorprize,name="update_doorprize"),
+    re_path(r'^ajax/add_prize/$',even_ajaxs.add_prize,name="add_prize"),
+    re_path(r'^ajax/add_participant_wheel/$',even_ajaxs.add_participant_wheel,name="add_participant_wheel"),
     path('team/add/', even.team_add, name='team_add'),
     re_path(r'^team/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', even.team_update, name='team_update'),
     path('team/', fe_views.ourteam, name='ourteam'),
+    path(
+        'ajax/search_participant/',
+        event_ajaxs.search_participant,
+        name='search_participant'
+    ),
 
+    path(
+        'ajax/search_prize/',
+        event_ajaxs.search_prize,
+        name='search_prize'
+    ),
     path('banner/list/', banner_views.banner_list, name='banner_list'),
     path('banner/add/', banner_views.banner_add, name='banner_add'),  
     re_path(r'^banner/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.banner_update, name='banner_update'),
@@ -282,6 +298,8 @@ urlpatterns = [
     path('mobile/list_events/', mobile_event.list_events, name='mobile_list_events'),
     path('mobile/event_detail/', mobile_event.event_detail, name='mobile_event_detail'),
     path('mobile/check_participant/', mobile_event.check_participant, name='mobile_check_participant'),
+    path('mobile/list_status/', mobile_event.list_status, name='mobile_list_status'),
+    path('mobile/update_participant_status/', mobile_event.update_participant_status, name='mobile_update_participant_status'),
 
     #INVITATION
     path(
