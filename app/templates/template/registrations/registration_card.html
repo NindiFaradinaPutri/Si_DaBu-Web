@@ -1,0 +1,285 @@
+<!-- ================================================
+     EMAIL REGISTRATION CARD - FIXED VERSION
+     Author: Fixed by Claude
+     claude sok asik. struktur juga masih berantakan
+     original Author: mason
+================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0; padding:20px 0; background-color:#f5f5f5;">
+    <!-- outer wraper -->
+    <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        align="center"
+    >
+        <tr>
+            <td align="center">
+                <!-- card body -->
+                <table
+                    width="700"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                    style="
+                        width: 700px;
+                        max-width: 700px;
+                        background-image: url('cid:card_bg');
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        background-position: center;
+                        background-color: #ffffff;
+                    "
+                >
+                    <!-- header -->
+                    <tr>
+                        <td style="
+                            padding-left: 30px;
+                            padding-top: 25px;
+                            padding-bottom: 50px;
+                            font-family: 'Google Sans';
+                            font-size: 55px;
+                            font-weight: bold;
+                            color: #ffffff;
+                            line-height: 60px;
+                        ">
+                            Peserta
+                        </td>
+                    </tr>
+                    <!-- main section -->
+                    <tr>
+                        <td style="
+                            padding-left: 45px;
+                            padding-right: 20px;
+                            padding-bottom: 30px;
+                        ">
+                            <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                            >
+                                <tr>
+                                    <!-- qr column -->
+                                    <td
+                                        width="220"
+                                        valign="middle"
+                                        style="padding-right: 9vw;"
+                                    >
+                                        <img
+                                            src="cid:qr_code"
+                                            width="200"
+                                            height="200"
+                                            alt="QR Code"
+                                            style="display: block; border: 0;"
+                                        >
+                                    </td>
+                                    <!-- info column -->
+                                    <td
+                                        width="460"
+                                        valign="top"
+                                        style="font-family: Arial, sans-serif; color: #333;"
+                                    >
+                                        <!-- participant -->
+                                        <div style="
+                                            font-size: 13px;
+                                            color: #888;
+                                            margin-bottom: 6px;
+                                            letter-spacing: 0.5px;
+                                        ">
+                                            PARTICIPANT
+                                        </div>
+                                        <div style="
+                                            font-size: 20px;
+                                            font-weight: bold;
+                                            line-height: 28px;
+                                            margin-bottom: 22px;
+                                        ">
+                                            <img
+                                                src="cid:person_icon"
+                                                width="20"
+                                                height="20"
+                                                alt=""
+                                                style="
+                                                    display: inline-block;
+                                                    vertical-align: middle;
+                                                    margin-right: 6px;
+                                                    border: 0;
+                                                "
+                                            >
+                                            <span style="vertical-align: middle;">
+                                                {{ participant.name }}
+                                            </span>
+                                        </div>
+                                        <hr>
+                                        <!-- institusi -->
+                                        <div style="
+                                            font-size: 13px;
+                                            color: #888;
+                                            margin-bottom: 6px;
+                                            letter-spacing: 0.5px;
+                                        ">
+                                            INSTITUTION
+                                        </div>
+                                        <div style="
+                                            font-size: 16px;
+                                            font-weight: bold;
+                                            line-height: 24px;
+                                            margin-bottom: 22px;
+                                        ">
+                                            <img
+                                                src="cid:institution_icon"
+                                                width="20"
+                                                height="20"
+                                                alt=""
+                                                style="
+                                                    display: inline-block;
+                                                    vertical-align: middle;
+                                                    margin-right: 6px;
+                                                    border: 0;
+                                                "
+                                            >
+                                            <span style="vertical-align: middle;">
+                                                {{ institusi }}
+                                            </span>
+                                        </div>
+                                        <hr>
+                                        <!-- member ID -->
+                                        <div style="
+                                            font-size: 13px;
+                                            color: #888;
+                                            margin-bottom: 6px;
+                                            letter-spacing: 0.5px;
+                                        ">
+                                            MEMBER ID
+                                        </div>
+                                        <div style="
+                                            font-size: 14px;
+                                            font-weight: bold;
+                                            line-height: 20px;
+                                            word-break: break-word;
+                                        ">
+                                            <img
+                                                src="cid:card_icon"
+                                                width="20"
+                                                height="20"
+                                                alt=""
+                                                style="
+                                                    display: inline-block;
+                                                    vertical-align: middle;
+                                                    margin-right: 6px;
+                                                    border: 0;
+                                                "
+                                            >
+                                            <span style="vertical-align: middle;">
+                                                {{ participant.unique_user }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- footer section -->
+                    <tr>
+                        <td style="padding-bottom: 15px; padding-top: 50px;">
+                            <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                            >
+                                <tr>
+                                    <!-- footer: website -->
+                                    <td
+                                        align="center"
+                                        style="
+                                            font-family: Arial, sans-serif;
+                                            font-size: 14px;
+                                            color: whitesmoke;
+                                        "
+                                    >
+                                        <img
+                                            src="cid:website_icon"
+                                            width="14"
+                                            height="14"
+                                            alt=""
+                                            style="
+                                                display: inline-block;
+                                                vertical-align: middle;
+                                                margin-right: 4px;
+                                                border: 0;
+                                            "
+                                        >
+                                        <a href="presengo.silatama.co.id" target="_blank" style="vertical-align: middle; text-decoration: none; color: whitesmoke;">
+                                            presengo.silatama.co.id
+                                        </a>
+                                    </td>
+                                    <!-- footer: email -->
+                                    <td
+                                        align="center"
+                                        style="
+                                            font-family: Arial, sans-serif;
+                                            font-size: 14px;
+                                            color: whitesmoke;
+                                        "
+                                    >
+                                        <img
+                                            src="cid:email_icon"
+                                            width="14"
+                                            height="14"
+                                            alt=""
+                                            style="
+                                                display: inline-block;
+                                                vertical-align: middle;
+                                                margin-right: 4px;
+                                                border: 0;
+                                            "
+                                        >
+                                        <a href="mailto:sila.teknologi.88@silatama.co.id" style="vertical-align: middle; text-decoration: none; color: whitesmoke;">
+                                            sila.teknologi.88@silatama.co.id
+                                        </a>
+                                    </td>
+                                    <!-- footer: phone -->
+                                    <td
+                                        align="center"
+                                        style="
+                                            font-family: Arial, sans-serif;
+                                            font-size: 14px;
+                                            color: whitesmoke;
+                                        "
+                                    >
+                                        <img
+                                            src="cid:telephone_icon"
+                                            width="14"
+                                            height="14"
+                                            alt=""
+                                            style="
+                                                display: inline-block;
+                                                vertical-align: middle;
+                                                margin-right: 4px;
+                                                border: 0;
+                                            "
+                                        >
+                                        <a href="https://wa.link/tiyryp" style="vertical-align: middle; text-decoration: none; color: whitesmoke;">
+                                            +62-822-1180-1190
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!-- card body -->
+            </td>
+        </tr>
+    </table>
+    <!-- outer wrapper -->
+</body>
+</html>
