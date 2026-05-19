@@ -6,9 +6,15 @@
     <!-- Poster Background -->
     <div class="cover-poster-wrapper">
 
-        <img src="{% static 'media/poster/default_poster.jpeg' %}"
-             alt="Event Poster"
-             class="cover-poster-img">
+        {% if event_photo and event_photo.photo %}
+                <img src="{{ event_photo.photo.url }}"
+                     class="cover-poster-img"
+                     alt="{{ event.name }}">
+                {% else %}
+                <img src="{% static 'images/default-event.jpg' %}"
+                     class="cover-poster-img"
+                     alt="Default Event">
+                {% endif %}
 
     </div>
 

@@ -166,7 +166,93 @@ body {
     z-index: 0;
     opacity: 0.4;
 }
+#rsvp .form-control,
+#rsvp .form-select,
+#rsvp textarea,
+#rsvp input[type="date"],
+#rsvp input[type="number"],
+#rsvp input[type="email"],
+#rsvp input[type="text"],
+#rsvp input[type="file"] {
 
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+
+    color: #222 !important;
+
+    border-radius: 16px !important;
+
+    padding: 14px 18px !important;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.05);
+
+    transition: all 0.25s ease;
+}
+
+/* focus */
+#rsvp .form-control:focus,
+#rsvp .form-select:focus,
+#rsvp textarea:focus {
+
+    border-color: var(--theme-primary) !important;
+
+    box-shadow:
+        0 0 0 4px rgba(183,155,108,0.15);
+
+    background: #fff !important;
+}
+
+/* placeholder */
+#rsvp .form-control::placeholder,
+#rsvp textarea::placeholder {
+
+    color: rgba(0,0,0,0.4);
+}
+
+/* select */
+#rsvp .form-select {
+
+    cursor: pointer;
+}
+
+/* upload button */
+#rsvp input[type="file"]::file-selector-button {
+
+    background: var(--theme-primary);
+
+    border: none;
+
+    color: white;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    margin-right: 14px;
+
+    cursor: pointer;
+}
+
+/* radio & checkbox card */
+#rsvp .glass-card {
+
+    background: rgba(255,255,255,0.95);
+
+    border: 1px solid rgba(0,0,0,0.05);
+
+    border-radius: 16px;
+}
+
+/* radio checkbox */
+#rsvp input[type="radio"],
+#rsvp input[type="checkbox"] {
+
+    accent-color: var(--theme-primary);
+
+    width: 18px;
+    height: 18px;
+}
     .hero-bg img {
         width: 100%;
         height: 100%;
@@ -450,7 +536,7 @@ body {
 /* BUTTON */
 .btn-cover-readmore {
     position: absolute;
-    bottom: 4em;
+    bottom: -1em;
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
