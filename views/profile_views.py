@@ -63,6 +63,9 @@ from profile.forms import *
 from complaint.forms import *
 from complaint.models import *
 
+from django.core.mail import EmailMultiAlternatives
+from email.mime.image import MIMEImage
+
 
 #Set Logg
 import logging
@@ -133,8 +136,6 @@ def profile(request):
 
         return render(request,'backend/about/about_view.html',context,)
 
-#CONTACT
-
 def contact_us(request):
     assert isinstance(request, HttpRequest)
 
@@ -142,24 +143,26 @@ def contact_us(request):
     title = 'Report'
     contact = Contact.objects.filter(id=1).first()
 
+    faq_items = FAQ.objects.all().order_by('id')
+
     if request.method == 'POST':
-        
+
         form = ComplaintForm(request.POST, request.FILES)
 
         try:
             if form.is_valid():
                 data = form.save()
 
-                Complaint_name,created =ComplaintResponse.objects.get_or_create(
+
+                Complaint_name, created = ComplaintResponse.objects.get_or_create(
                     complaint_id=data.id,
                     status=ComplaintStatus.objects.filter(status='Open').first()
                 )
-                
-                
-                Complaint_subject=Complaint.objects.filter(id=Complaint_name.complaint_id).first()
-                
-                name_complaint = Complaint_subject.subject
-                # ambil domain
+
+                Complaint_subject = Complaint.objects.filter(
+                    id=Complaint_name.complaint_id
+                ).first()
+
                 current_site = get_current_site(request)
 
                 mail_subject = f'category complaint {data.category}'
@@ -171,27 +174,48 @@ def contact_us(request):
                         'domain': current_site.domain,
                         'uid': urlsafe_base64_encode(force_bytes(data.id)),
                         'token': 'dummy-token',
-                        'nama':data.sender,
+                        'nama': data.sender,
                         'email': data.email,
                         'subject': data.subject,
                         'category': data.category,
                         'phone': data.telphone,
                         'message_user': data.information,
                         'date': data.creation_date,
-                        'image': request.build_absolute_uri(data.attachment.url) if data.attachment else None,
-                        
+                        # Jika ada attachment, pakai CID, kalau tidak None
+                        'image': 'cid:complaint_image' if data.attachment else None,
                     }
                 )
 
-                email = EmailMessage(
-                    mail_subject,
-                    message,
+                # Ganti EmailMessage → EmailMultiAlternatives agar bisa attach inline image
+                email = EmailMultiAlternatives(
+                    subject=mail_subject,
+                    body='',
                     to=['abidhype@gmail.com']
                 )
+                email.attach_alternative(message, "text/html")
 
-                email.content_subtype = "html"
+                # Attach gambar sebagai inline jika ada lampiran
+                if data.attachment:
+                    try:
+                        attachment_path = data.attachment.path
+                        with open(attachment_path, 'rb') as f:
+                            img_data = f.read()
 
-                # kirim email (debug aktif)
+                        # Deteksi ekstensi file
+                        ext = os.path.splitext(attachment_path)[1].lower().strip('.')
+                        if ext == 'jpg':
+                            ext = 'jpeg'
+
+                        mime_image = MIMEImage(img_data, _subtype=ext)
+                        mime_image.add_header('Content-ID', '<complaint_image>')
+                        mime_image.add_header(
+                            'Content-Disposition', 'inline',
+                            filename=os.path.basename(attachment_path)
+                        )
+                        email.attach(mime_image)
+                    except Exception as img_err:
+                        logger.info("Image attach error: " + str(img_err))
+
                 email.send(fail_silently=False)
 
                 messages.success(request, 'Report successfully reported.')
@@ -215,6 +239,7 @@ def contact_us(request):
             'title': title,
             'form': form,
             'contact': contact,
+            'faq_items': faq_items,
         }
     )
 

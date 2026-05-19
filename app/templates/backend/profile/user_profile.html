@@ -7,137 +7,94 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
 <style>
-    :root {
-        --bs-primary: #ba0013;
-        --bs-primary-rgb: 186, 0, 19;
-        --silatama-red: #E31E24;
-        --surface-bg: #f8f9fb;
-    }
+/* =========================================================
+   HANYA CSS SPESIFIK HALAMAN INI
+   Sidebar, top-app-bar, main-content, nav-link, dll
+   sudah diurus sepenuhnya oleh header.html
+========================================================= */
 
-    html {
-        overflow-x: auto;
-    }
+html { overflow-x: auto; }
 
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--surface-bg);
-        color: #191c1e;
-
-        /* tambahan scroll horizontal */
-        overflow-x: auto;
-    }
-
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24;
-        vertical-align: middle;
-    }
-
-    /* Sidebar Styles */
-    .sidebar {
-        width: 256px;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        background: white;
-        border-right: 1px solid #dee2e6;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem 0;
-    }
-
-    .nav-link {
-        padding: 0.75rem 1.5rem;
-        color: #5e5e5e;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        border-right: 4px solid transparent;
-        transition: all 0.2s;
-    }
-
-    .nav-link:hover {
-        background-color: #f8f9fa;
-        color: #212529;
-    }
-
-    .nav-link.active {
-        color: var(--silatama-red);
-        background-color: #fff5f5;
-        border-right-color: var(--silatama-red);
-    }
-
-    /* Main Content Adjustments */
-    .main-content {
-        margin-left: 256px;
-        padding-top: 5rem;
-        padding-bottom: 3rem;
-
-        /* tambahan agar bisa scroll horizontal */
-        overflow-x: auto;
-        width: calc(100% - 256px);
-    }
-
-    /* tambahan agar seluruh section bisa scroll */
-    main {
-        overflow-x: auto;
-    }
-
-    .top-app-bar {
-        height: 64px;
-        position: fixed;
-        top: 0;
-        right: 0;
-        left: 256px;
-        background: white;
-        border-bottom: 1px solid #dee2e6;
-        z-index: 999;
-        display: flex;
-        align-items: center;
-        padding: 0 2rem;
-        justify-content: space-between;
-    }
-
-    /* Component Specifics */
-    .search-bar {
-        background-color: #f3f4f6;
-        border-radius: 0.5rem;
-        width: 384px;
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-    }
-
-    .search-bar input {
-        background: transparent;
-        border: none;
-        outline: none;
-        width: 100%;
-        font-size: 0.875rem;
-        margin-left: 0.5rem;
-    }
-
-    .btn-primary {
-        background-color: var(--silatama-red);
-        border-color: var(--silatama-red);
-        font-weight: 600;
-    }
-
-    .btn-primary:hover {
-        background-color: #ba0013;
-        border-color: #ba0013;
-    }
-
-    .stats-wrapper {
-    width: 100%;
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--surface-bg);
+    color: #191c1e;
+    overflow-x: auto;
 }
 
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+/* =========================================================
+   TOP APP BAR
+========================================================= */
+.top-app-bar {
+    height: 64px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    justify-content: space-between;
+    /* left diatur oleh header.html via var(--sidebar-width) */
+}
+
+/* =========================================================
+   MAIN CONTENT
+   margin-left & width diatur oleh header.html
+========================================================= */
+.main-content {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    overflow-x: auto;
+}
+
+main { overflow-x: auto; }
+
+/* =========================================================
+   SEARCH BAR
+========================================================= */
+.search-bar {
+    background-color: #f3f4f6;
+    border-radius: .5rem;
+    width: 384px;
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+}
+.search-bar input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: .875rem;
+    margin-left: .5rem;
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+.btn-primary {
+    background-color: var(--silatama-red);
+    border-color: var(--silatama-red);
+    font-weight: 600;
+}
+.btn-primary:hover {
+    background-color: #ba0013;
+    border-color: #ba0013;
+}
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
 .stat-card {
     background: white;
     border: 1px solid #e9ecef;
@@ -148,589 +105,380 @@
     gap: 16px;
     min-height: 110px;
     width: 100%;
-    transition: all 0.3s ease;
+    transition: all .3s ease;
 }
-
 .stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    box-shadow: 0 10px 25px rgba(0,0,0,.06);
 }
-
-.stat-content {
-    flex: 1;
-}
-
+.stat-content { flex: 1; }
 .stat-label {
     font-size: 13px;
     font-weight: 600;
     color: #6c757d;
     margin-bottom: 6px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em;
 }
-
 .stat-value {
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 0;
     color: #191c1e;
 }
-
 .icon-box {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
+    width: 52px;
+    height: 52px;
+    border-radius: .75rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
+.icon-box span { font-size: 26px; }
 
-.icon-box span {
-    font-size: 28px;
+/* =========================================================
+   EVENT CARD
+========================================================= */
+.event-card {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: .75rem;
+    overflow: hidden;
+    transition: box-shadow .3s;
 }
-    .icon-box {
-        width: 48px;
-        height: 48px;
-        border-radius: 0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.event-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,.1);
+}
+.event-card img {
+    height: 192px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform .5s;
+}
+.event-card:hover img { transform: scale(1.05); }
 
-    .event-card {
-        background: white;
-        border: 1px solid #dee2e6;
-        border-radius: 0.75rem;
-        overflow: hidden;
-        transition: box-shadow 0.3s;
-    }
+.badge-floating {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-weight: 700;
+    padding: .25rem .75rem;
+}
 
-    .event-card:hover {
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-    }
+/* =========================================================
+   CREATE EVENT PLACEHOLDER
+========================================================= */
+.create-event-placeholder {
+    border: 2px dashed #dee2e6;
+    border-radius: .75rem;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all .2s;
+    background: white;
+}
+.create-event-placeholder:hover {
+    border-color: var(--silatama-red);
+    background-color: #fff5f5;
+}
+.create-event-placeholder .icon-circle {
+    width: 64px;
+    height: 64px;
+    background: #f3f4f6;
+    color: #9ca3af;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.create-event-placeholder:hover .icon-circle {
+    background: #ffebeb;
+    color: var(--silatama-red);
+}
 
-    .event-card img {
-        height: 192px;
-        width: 100%;
-        object-fit: cover;
-        transition: transform 0.5s;
-    }
-
-    .event-card:hover img {
-        transform: scale(1.05);
-    }
-
-    .badge-floating {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        font-weight: 700;
-        padding: 0.25rem 0.75rem;
-    }
-
-    .progress {
-        height: 8px;
-        border-radius: 9999px;
-    }
-
-    .avatar-group {
-        display: flex;
-        align-items: center;
-    }
-
-    .avatar-group img,
-    .avatar-group .avatar-more {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: 2px solid white;
-        margin-left: -8px;
-    }
-
-    .avatar-group img:first-child {
-        margin-left: 0;
-    }
-
-    .avatar-more {
-        background: #f3f4f6;
-        font-size: 10px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .fab-qr {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background-color: var(--silatama-red);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 25px rgba(227, 30, 36, 0.3);
-        border: none;
-        z-index: 1050;
-        transition: transform 0.2s;
-    }
-
-    .fab-qr:hover {
-        transform: scale(1.1);
-    }
-
-    .custom-table th {
-        background-color: #f8f9fa;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #6c757d;
-        padding: 1rem 1.5rem;
-    }
-
-    .custom-table td {
-        padding: 1rem 1.5rem;
-        vertical-align: middle;
-    }
-
-    /* table scroll horizontal */
-    .table-responsive {
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .create-event-placeholder {
-        border: 2px dashed #dee2e6;
-        border-radius: 0.75rem;
-        min-height: 400px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 2rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .create-event-placeholder:hover {
-        border-color: var(--silatama-red);
-        background-color: #fff5f5;
-    }
-
-    .create-event-placeholder .icon-circle {
-        width: 64px;
-        height: 64px;
-        background: #f3f4f6;
-        color: #9ca3af;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-    }
-
-    .create-event-placeholder:hover .icon-circle {
-        background: #ffebeb;
-        color: var(--silatama-red);
-    }
+/* =========================================================
+   TABLE
+========================================================= */
+.custom-table th {
+    background-color: #f8f9fa;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #6c757d;
+    padding: 1rem 1.5rem;
+}
+.custom-table td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+}
+.table-responsive {
+    overflow-x: auto;
+    white-space: nowrap;
+}
 </style>
 
-<!-- start: page -->
-
-<!-- Top App Bar -->
+<!-- =========================================================
+   TOP APP BAR
+========================================================= -->
 <header class="top-app-bar">
-<div class="search-bar">
-<span class="material-symbols-outlined text-muted">search</span>
-<input placeholder="Search events or guests..." type="text"/>
-</div>
-<div class="d-flex align-items-center gap-3">
-<button class="btn btn-link text-muted p-2 position-relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
-</button>
-<button class="btn btn-link text-muted p-2">
-<span class="material-symbols-outlined">settings</span>
-</button>
-<div class="vr mx-2" style="height: 32px;"></div>
-<div class="d-flex align-items-center gap-2">
-<div class="text-end d-none d-md-block">
-<p class="mb-0 fw-bold small">Silatama Admin</p>
-<p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
-</div>
-<img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
-</div>
-</div>
-</header>
-<!-- Main Content -->
-<main class="main-content container-fluid px-lg-5">
-<!-- Header -->
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
-<div>
-<h2 class="fw-bold mb-1">Event Dashboard</h2>
-<p class="text-muted mb-0">Manage your active and upcoming event.</p>
-</div>
-<a href="{% url 'event_add' %}" class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2">
-    <span class="material-symbols-outlined">add</span>
-    New Event
-</a>
-</div>
-<!-- Stats Overview -->
-<div class="row g-3 mb-5 stats-wrapper">
 
-    <!-- Total Events -->
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="stat-card h-100">
-            <div class="icon-box bg-danger-subtle text-danger">
-                <span class="material-symbols-outlined">event_note</span>
-            </div>
-
-            <div class="stat-content">
-                <p class="stat-label">Total Events</p>
-                <h3 class="stat-value">{{ total_events }}</h3>
-            </div>
-        </div>
+    <div class="search-bar">
+        <span class="material-symbols-outlined text-muted">search</span>
+        <input placeholder="Search events or guests..." type="text"/>
     </div>
 
-    <!-- Upcoming -->
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="stat-card h-100">
-            <div class="icon-box bg-warning-subtle text-warning">
-                <span class="material-symbols-outlined">upcoming</span>
-            </div>
+    <div class="d-flex align-items-center gap-3">
 
-            <div class="stat-content">
-                <p class="stat-label">Upcoming</p>
-                <h3 class="stat-value">{{ upcoming_events_count }}</h3>
-            </div>
-        </div>
-    </div>
-
-    <!-- Registered -->
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="stat-card h-100">
-            <div class="icon-box bg-success-subtle text-success">
-                <span class="material-symbols-outlined">check_circle</span>
-            </div>
-
-            <div class="stat-content">
-                <p class="stat-label">active</p>
-                <h3 class="stat-value">{{ registered_count }}</h3>
-            </div>
-        </div>
-    </div>
-
-    <!-- Check In Rate -->
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="stat-card h-100">
-            <div class="icon-box bg-primary-subtle text-primary">
-                <span class="material-symbols-outlined">analytics</span>
-            </div>
-
-            <div class="stat-content">
-                <p class="stat-label">Check-in Rate</p>
-                <h3 class="stat-value">{{ checkin_rate }}%</h3>
-            </div>
-        </div>
-    </div>
-
-</div>
-<!-- Event Grid -->
-<div class="row g-4">
-
-{% for event in events %}
-
-<div class="col-12 col-md-6 col-xl-4">
-    <div class="event-card">
-
-        <!-- IMAGE -->
-        <div class="position-relative">
-
-            {% with event.eventphoto_set.first as photo %}
-                {% if photo and photo.photo %}
-                    <img src="{{ photo.photo.url }}" alt="{{ event.name }}">
-                {% else %}
-                    <img src="/media/news/photo/PhotoBootstrap.png" alt="Default Event">
-                {% endif %}
-            {% endwith %}
-
-            <!-- STATUS (simple logic) -->
-            <span class="badge badge-floating {{ event.badge_class }} rounded-pill">
-                {{ event.status }}
-            </span>
-
-        </div>
-
-        <!-- CONTENT -->
-        <div class="p-4">
-
-            <div class="d-flex justify-content-between align-items-start mb-1">
-    <h5 class="fw-bold mb-0">{{ event.name }}</h5>
-
-   <div class="dropdown">
-        <button 
-            class="btn btn-link text-muted p-0"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-        >
-            <span class="material-symbols-outlined">more_vert</span>
+        <button class="btn btn-link text-muted p-2 position-relative">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                  style="margin-top:10px;margin-left:-15px;"></span>
         </button>
 
-        <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-                <a 
-                    class="dropdown-item"
-                    href="{% url 'event_edit' event.id %}"
-                >
-                    Edit
-                </a>
-            </li>
+        <button class="btn btn-link text-muted p-2">
+            <span class="material-symbols-outlined">settings</span>
+        </button>
 
-             <li>
-            <button 
-                class="dropdown-item text-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal"
-                data-event-id="{{ event.id }}"
-                data-event-name="{{ event.name }}"
-            >
-                Delete
-            </button>
-        </li>
-        </ul>
-    </div>
-</div>
+        <div class="vr mx-2" style="height:32px;"></div>
 
-           <div class="text-muted small mb-4">
-
-    <!-- LOCATION -->
-    <div class="d-flex align-items-center gap-2 mb-1">
-        <span class="material-symbols-outlined small">location_on</span>
-        <span>{{ event.location }}</span>
-    </div>
-
-    <!-- DATE & TIME -->
-    <div class="d-flex align-items-center gap-2">
-        <span class="material-symbols-outlined small">calendar_month</span>
-        <span>
-            {{ event.date }}
-            {% if event.time %}
-                • {{ event.time }}
-            {% endif %}
-        </span>
-    </div>
-
-</div>
-
-            <!-- PROGRESS -->
-            
-
-            <!-- FOOTER -->
-            <div class="d-flex justify-content-between align-items-center">
-
-
-                <a class="text-danger fw-bold text-decoration-none small" href="{% url 'event_list' event.id %}">
-                    Manage Event
-                    <span class="material-symbols-outlined small">arrow_forward</span>
-                </a>
-
+        <div class="d-flex align-items-center gap-2">
+            <div class="text-end d-none d-md-block">
+                <p class="mb-0 fw-bold small">Silatama Admin</p>
+                <p class="mb-0 text-muted" style="font-size:12px;">Event Admin</p>
             </div>
-
-        </div>
-    </div>
-</div>
-
-{% endfor %}
-
-<!-- CREATE EVENT CARD (tetap static di bawah) -->
-<a href="{% url 'event_add' %}" class="col-12 col-md-6 col-xl-4 text-decoration-none">
-    <div class="create-event-placeholder">
-
-        <div class="icon-circle">
-            <span class="material-symbols-outlined fs-2">add_circle</span>
+            <img alt="Profile" class="rounded-circle border" height="40" width="40"
+                 src="https://ui-avatars.com/api/?name=AD&background=E31E24&color=fff"/>
         </div>
 
-        <h5 class="fw-bold text-secondary">Create New Event</h5>
+    </div>
+</header>
 
-        <p class="text-muted small px-4">
-            Launch a new registration and logistics dashboard
-        </p>
+<!-- =========================================================
+   MAIN CONTENT
+========================================================= -->
+<main class="main-content container-fluid px-lg-5">
+
+    <!-- PAGE HEADER -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
+        <div>
+            <h2 class="fw-bold mb-1">Event Dashboard</h2>
+            <p class="text-muted mb-0">Manage your active and upcoming event.</p>
+        </div>
+        <a href="{% url 'event_add' %}" class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">add</span>
+            New Event
+        </a>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="row g-3 mb-5">
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="stat-card h-100">
+                <div class="icon-box bg-danger-subtle text-danger">
+                    <span class="material-symbols-outlined">event_note</span>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Total Events</p>
+                    <h3 class="stat-value">{{ total_events }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="stat-card h-100">
+                <div class="icon-box bg-warning-subtle text-warning">
+                    <span class="material-symbols-outlined">upcoming</span>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Upcoming</p>
+                    <h3 class="stat-value">{{ upcoming_events_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="stat-card h-100">
+                <div class="icon-box bg-success-subtle text-success">
+                    <span class="material-symbols-outlined">check_circle</span>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Active</p>
+                    <h3 class="stat-value">{{ registered_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="stat-card h-100">
+                <div class="icon-box bg-primary-subtle text-primary">
+                    <span class="material-symbols-outlined">analytics</span>
+                </div>
+                <div class="stat-content">
+                    <p class="stat-label">Check-in Rate</p>
+                    <h3 class="stat-value">{{ checkin_rate }}%</h3>
+                </div>
+            </div>
+        </div>
 
     </div>
-</a>
 
-</div>
-<!-- Placeholder Card -->
+    <!-- EVENT GRID -->
+    <div class="row g-4">
 
-<!-- Recent Activity Table -->
-<!-- <section class="mt-5">
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-<div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
-<h5 class="fw-bold mb-0">Recent Check-in Activity</h5>
-<button class="btn btn-link text-danger fw-bold text-decoration-none p-0">View All Logs</button>
-</div>
-<div class="table-responsive">
-<table class="table custom-table mb-0">
-<thead>
-<tr>
-<th>Guest Name</th>
-<th>Event</th>
-<th>Time</th>
-<th>Status</th>
-<th class="text-end">Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">JD</div>
-<span class="fw-semibold">Jane Doe</span>
-</div>
-</td>
-<td class="text-muted small">Tech Conference 2024</td>
-<td class="text-muted small">10:24 AM</td>
-<td><span class="badge bg-success-subtle text-success fw-bold px-2 py-1" style="font-size: 10px;">SUCCESS</span></td>
-<td class="text-end"><button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">visibility</span></button></td>
-</tr>
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">MS</div>
-<span class="fw-semibold">Michael Smith</span>
-</div>
-</td>
-<td class="text-muted small">Tech Conference 2024</td>
-<td class="text-muted small">10:21 AM</td>
-<td><span class="badge bg-success-subtle text-success fw-bold px-2 py-1" style="font-size: 10px;">SUCCESS</span></td>
-<td class="text-end"><button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">visibility</span></button></td>
-</tr>
-<tr>
-<td>
-<div class="d-flex align-items-center gap-3">
-<div class="bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">RH</div>
-<span class="fw-semibold">Robert H.</span>
-</div>
-</td>
-<td class="text-muted small">Tech Conference 2024</td>
-<td class="text-muted small">10:18 AM</td>
-<td><span class="badge bg-warning-subtle text-warning fw-bold px-2 py-1" style="font-size: 10px;">MANUAL</span></td>
-<td class="text-end"><button class="btn btn-link text-muted p-0"><span class="material-symbols-outlined">visibility</span></button></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section> -->
+        {% for event in events %}
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="event-card">
 
+                <div class="position-relative">
+                    {% with event.eventphoto_set.first as photo %}
+                        {% if photo and photo.photo %}
+                            <img src="{{ photo.photo.url }}" alt="{{ event.name }}">
+                        {% else %}
+                            <img src="/media/news/photo/PhotoBootstrap.png" alt="Default Event">
+                        {% endif %}
+                    {% endwith %}
+                    <span class="badge badge-floating {{ event.badge_class }} rounded-pill">
+                        {{ event.status }}
+                    </span>
+                </div>
 
+                <div class="p-4">
+
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <h5 class="fw-bold mb-0">{{ event.name }}</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-muted p-0"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'event_edit' event.id %}">Edit</a>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item text-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-event-id="{{ event.id }}"
+                                            data-event-name="{{ event.name }}">
+                                        Delete
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="text-muted small mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined small">location_on</span>
+                            <span>{{ event.location }}</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="material-symbols-outlined small">calendar_month</span>
+                            <span>{{ event.date }}{% if event.time %} • {{ event.time }}{% endif %}</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a class="text-danger fw-bold text-decoration-none small"
+                           href="{% url 'event_list' event.id %}">
+                            Manage Event
+                            <span class="material-symbols-outlined small">arrow_forward</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- CREATE EVENT CARD -->
+        <a href="{% url 'event_add' %}" class="col-12 col-md-6 col-xl-4 text-decoration-none">
+            <div class="create-event-placeholder">
+                <div class="icon-circle">
+                    <span class="material-symbols-outlined fs-2">add_circle</span>
+                </div>
+                <h5 class="fw-bold text-secondary">Create New Event</h5>
+                <p class="text-muted small px-4">
+                    Launch a new registration and logistics dashboard
+                </p>
+            </div>
+        </a>
+
+    </div>
 
 </main>
 
+<!-- =========================================================
+   DELETE MODAL
+========================================================= -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius:16px; overflow:hidden;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:16px;overflow:hidden;">
 
-      <div class="modal-header border-0">
-        <h5 class="modal-title fw-bold text-danger">
-            Hapus Event
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold text-danger">Hapus Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-      <div class="modal-body text-center">
-        <span class="material-symbols-outlined text-danger" style="font-size:48px;">
-            delete
-        </span>
+            <div class="modal-body text-center">
+                <span class="material-symbols-outlined text-danger" style="font-size:48px;">delete</span>
+                <p class="mt-3 mb-1 fw-semibold">Apakah Anda yakin?</p>
+                <p class="text-muted small">
+                    Event <strong id="eventName"></strong> akan dihapus permanen.
+                </p>
+            </div>
 
-        <p class="mt-3 mb-1 fw-semibold">
-            Apakah Anda yakin?
-        </p>
+            <div class="modal-footer border-0 d-flex justify-content-center gap-2">
+                <button class="btn btn-light px-4" data-bs-dismiss="modal">Batal</button>
+                <form method="POST" id="deleteForm">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger px-4">Ya, Hapus</button>
+                </form>
+            </div>
 
-        <p class="text-muted small">
-            Event <strong id="eventName"></strong> akan dihapus permanen.
-        </p>
-      </div>
-
-      <div class="modal-footer border-0 d-flex justify-content-center gap-2">
-        <button class="btn btn-light px-4" data-bs-dismiss="modal">
-            Batal
-        </button>
-
-        <form method="POST" id="deleteForm">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger px-4">
-                Ya, Hapus
-            </button>
-        </form>
-      </div>
-
+        </div>
     </div>
-  </div>
 </div>
+
 <script>
+    /* Greeting */
     $(document).ready(function () {
-        var thehours = new Date().getHours();
-        var themessage;
-        var morning = ('Selamat Pagi, {{user_profile.fullname}}!');
-        var afternoon = ('Selamat Siang, {{user_profile.fullname}}!');
-        var evening = ('Selamat Malam, {{user_profile.fullname}}!');
-
-        if (thehours >= 0 && thehours < 12) {
-            themessage = morning;
-
-        } else if (thehours >= 12 && thehours < 17) {
-            themessage = afternoon;
-
-        } else if (thehours >= 17 && thehours < 24) {
-            themessage = evening;
-        }
-
-        $('#greetings').empty();
-        $('#greetings').append(themessage);
+        const h = new Date().getHours();
+        const name = '{{ user_profile.fullname }}';
+        const msg = h < 12 ? `Selamat Pagi, ${name}!`
+                  : h < 17 ? `Selamat Siang, ${name}!`
+                  :           `Selamat Malam, ${name}!`;
+        $('#greetings').text(msg);
     });
 
+    /* Delete modal */
     document.addEventListener("DOMContentLoaded", function () {
-
-    const deleteModal = document.getElementById('deleteModal');
-
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-
-        const button = event.relatedTarget;
-
-        const eventId = button.getAttribute('data-event-id');
-        const eventName = button.getAttribute('data-event-name');
-
-        // set nama ke modal
-        document.getElementById("eventName").textContent = eventName;
-
-        // set action form
-        const form = document.getElementById("deleteForm");
-        form.action = `/event/delete/${eventId}/`;  // 🔥 endpoint Django
-
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (e) {
+            const btn = e.relatedTarget;
+            document.getElementById("eventName").textContent = btn.getAttribute('data-event-name');
+            document.getElementById("deleteForm").action = `/event/delete/${btn.getAttribute('data-event-id')}/`;
+        });
     });
-
-});
 </script>
-<!-- end: page -->
-<!-- end: page -->
+
 {% endblock %}
 
 {% block header %}
 {% include "backend/header/header.html" %}
 {% endblock %}
 
-{% block theme %}
-
-{% endblock %}
+{% block theme %}{% endblock %}
 
 {% block query %}
-<!-- Specific Page Vendor -->
-<script type="text/javascript" src="{%static 'autosize/autosize.js' %}"></script>
+<script type="text/javascript" src="{% static 'autosize/autosize.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 {% endblock %}

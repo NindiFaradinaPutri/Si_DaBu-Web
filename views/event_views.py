@@ -75,12 +75,57 @@ hashid = Hashids(salt='silatama systems.', min_length=16)
 def list_event(request):
     title = "Event List"
 
+    # =========================================
+    # AMBIL PARAMETER FILTER DARI GET
+    # =========================================
+    q           = request.GET.get('q', '').strip()
+    status_filter = request.GET.get('status', '').strip()
+    date_range  = request.GET.get('date_range', '').strip()
+
+    # =========================================
+    # BASE QUERYSET
+    # =========================================
     events = Event.objects.all().order_by('date', 'time')
 
-    now = timezone.localtime()
-    today = now.date()
+    # =========================================
+    # FILTER KEYWORD (nama event / lokasi)
+    # =========================================
+    if q:
+        events = events.filter(
+            Q(name__icontains=q) |
+            Q(location__icontains=q)
+        )
+
+    # =========================================
+    # FILTER DATE RANGE
+    # =========================================
+    now          = timezone.localtime()
+    today        = now.date()
     current_time = now.time()
 
+    if date_range == 'this_month':
+        events = events.filter(
+            date__year=today.year,
+            date__month=today.month
+        )
+    elif date_range == 'next_month':
+        if today.month == 12:
+            next_month = 1
+            next_year  = today.year + 1
+        else:
+            next_month = today.month + 1
+            next_year  = today.year
+
+        events = events.filter(
+            date__year=next_year,
+            date__month=next_month
+        )
+    elif date_range == 'this_year':
+        events = events.filter(date__year=today.year)
+
+    # =========================================
+    # BUILD EVENT DATA (dengan status logic)
+    # =========================================
     event_data = []
 
     for event in events:
@@ -93,48 +138,58 @@ def list_event(request):
         ).count()
 
         # default
-        status = "EVENT FINISHED"
+        status      = "EVENT FINISHED"
         badge_class = "badge-completed"
         button_text = "Registration Closed"
         button_class = "btn-secondary"
         can_register = False
 
         if event.date > today:
-            status = "INCOMING"
-            badge_class = "badge-upcoming"
-            button_text = "Register Now"
+            status       = "INCOMING"
+            badge_class  = "badge-upcoming"
+            button_text  = "Register Now"
             button_class = "btn-primary-custom"
             can_register = True
 
         elif event.date == today:
             if event.time:
                 if event.time.hour == current_time.hour:
-                    status = "LIVE"
-                    badge_class = "badge-active"
-                    button_text = "Register Now"
+                    status       = "LIVE"
+                    badge_class  = "badge-active"
+                    button_text  = "Register Now"
                     button_class = "btn-primary-custom"
                     can_register = True
 
                 elif event.time.hour > current_time.hour:
-                    status = "INCOMING"
-                    badge_class = "badge-upcoming"
-                    button_text = "Register Now"
+                    status       = "INCOMING"
+                    badge_class  = "badge-upcoming"
+                    button_text  = "Register Now"
                     button_class = "btn-primary-custom"
                     can_register = True
 
+        # =========================================
+        # FILTER STATUS (dilakukan setelah kalkulasi)
+        # =========================================
+        if status_filter:
+            if status_filter.upper() != status.upper():
+                continue   # skip event yang tidak cocok
+
         event_data.append({
-            "event": event,
-            "photo": photo,
-            "status": status,
-            "badge_class": badge_class,
-            "button_text": button_text,
-            "button_class": button_class,
-            "can_register": can_register,
+            "event"            : event,
+            "photo"            : photo,
+            "status"           : status,
+            "badge_class"      : badge_class,
+            "button_text"      : button_text,
+            "button_class"     : button_class,
+            "can_register"     : can_register,
             "participant_count": participant_count
         })
 
+    # =========================================
+    # PAGINATION
+    # =========================================
     paginator = Paginator(event_data, 9)
-    page = request.GET.get('page', 1)
+    page      = request.GET.get('page', 1)
 
     try:
         paginated_events = paginator.page(page)
@@ -143,9 +198,17 @@ def list_event(request):
     except EmptyPage:
         paginated_events = paginator.page(paginator.num_pages)
 
+    # =========================================
+    # CONTEXT
+    # =========================================
     context = {
-        "title": title,
+        "title" : title,
         "events": paginated_events,
+
+        # kembalikan nilai filter agar tetap tampil di form
+        "filter_q"          : q,
+        "filter_status"     : status_filter,
+        "filter_date_range" : date_range,
     }
 
     return render(

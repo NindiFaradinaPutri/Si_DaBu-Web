@@ -1,69 +1,82 @@
 {% load static %}
 
-<!-- SIDEBAR -->
+<!-- =========================================================
+   SIDEBAR
+========================================================= -->
 <aside class="sidebar" id="sidebar">
 
     <!-- Logo -->
-   <div class="px-4 mb-4 d-flex align-items-center gap-3 sidebar-logo">
-
-    <!-- LOGO IMAGE -->
-    <div class="logo-img-wrapper">
-        <img src="/media/logo/logo-full.png" alt="Logo">
+    <div class="px-4 mb-4 d-flex align-items-center gap-3 sidebar-logo">
+        <div class="logo-img-wrapper">
+            <img src="/media/logo/logo-full.png" alt="Logo">
+        </div>
+        <div class="logo-text">
+            <h1 class="h6 mb-0 fw-bold">
+                <span class="text-dark">Presen</span>
+                <span style="color:#E31E24;">GO</span>
+            </h1>
+            <p class="text-uppercase mb-0 fw-bold"
+               style="font-size:10px;letter-spacing:.1em;color:#9ca3af;">
+                Manage Event
+            </p>
+        </div>
     </div>
 
-    <!-- TEXT -->
-    <div class="logo-text">
-        <h1 class="h6 mb-0 fw-bold">
-            <span class="text-dark">Presen</span>
-            <span style="color: var(--silatama-red);">GO</span>
-        </h1>
-        <p class="text-uppercase mb-0 text-muted fw-bold"
-           style="font-size: 10px; letter-spacing: 0.1em;">
-            Manage Event
-        </p>
-    </div>
-
-</div>
-
-    <!-- Menu -->
+    <!-- Nav Menu -->
     <nav class="nav flex-column flex-grow-1">
 
-        <a class="nav-link active" href="/admin/profile/">
+        <a class="nav-link sidebar-link" href="/admin/profile/" data-path="/admin/profile/">
             <span class="material-symbols-outlined">calendar_today</span>
             <span class="nav-text">Events</span>
         </a>
 
-        <!-- <a class="nav-link" href="#">
-            <span class="material-symbols-outlined">group</span>
-            <span class="nav-text">Guests</span>
-        </a> -->
-
-        <!-- <a class="nav-link" href="#">
-            <span class="material-symbols-outlined">qr_code_scanner</span>
-            <span class="nav-text">Check-in</span>
-        </a> -->
-
-        <a class="nav-link" href="https://www.spinluck.art/wheelspin.html">
+        <a class="nav-link sidebar-link" href="/doorprize/" data-path="/doorprize/">
             <span class="material-symbols-outlined">confirmation_number</span>
             <span class="nav-text">Lucky Draw</span>
         </a>
 
-        <!-- <a class="nav-link" href="#">
-            <span class="material-symbols-outlined">bar_chart</span>
-            <span class="nav-text">Reports</span>
-        </a> -->
+        <!-- DROPDOWN: Master Data -->
+        <div class="sidebar-dropdown">
+
+            <button class="nav-link dropdown-btn" type="button">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">tabs</span>
+                    <span class="nav-text">Manage Admin</span>
+                </div>
+                <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+            </button>
+
+            <div class="dropdown-container">
+
+                <a class="nav-link sub-link sidebar-link" href="/complaint/category/" data-path="/complaint/category/">
+                    <span class="material-symbols-outlined">feedback</span>
+                    <span class="nav-text">Category</span>
+                </a>
+
+                <a class="nav-link sub-link sidebar-link" href="/faq/list/" data-path="/faq/list/">
+                    <span class="material-symbols-outlined">quiz</span>
+                    <span class="nav-text">FAQ</span>
+                </a>
+
+                <a class="nav-link sub-link sidebar-link" href="/admin/participants/" data-path="/admin/participants/">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span class="nav-text">Participants</span>
+                </a>
+
+            </div>
+        </div>
 
     </nav>
 
     <!-- Bottom Menu -->
-    <div class="mt-auto px-2 border-top pt-4">
+    <div class="mt-auto px-2 pt-4" style="border-top:1px solid #f1f3f5;">
 
-        <a class="nav-link" href="#">
+        <a class="nav-link sidebar-link" href="#" data-path="__none__">
             <span class="material-symbols-outlined">help</span>
             <span class="nav-text">Help Center</span>
         </a>
 
-        <a class="nav-link" href="/logout/">
+        <a class="nav-link sidebar-link" href="/logout/" data-path="__none__">
             <span class="material-symbols-outlined">logout</span>
             <span class="nav-text">Logout</span>
         </a>
@@ -72,33 +85,52 @@
 
 </aside>
 
-<!-- TOGGLE BUTTON -->
+<!-- Toggle Button -->
 <button class="sidebar-arrow-toggle" id="toggleSidebar">
-    <span class="material-symbols-outlined" id="toggleIcon">
-        chevron_left
-    </span>
+    <span class="material-symbols-outlined" id="toggleIcon">chevron_left</span>
 </button>
 
 
 <style>
-/* Sidebar default */
+/* =========================================================
+   CSS VARIABLES — didefinisikan di sini agar tidak
+   bergantung pada halaman yang menginclude header ini
+========================================================= */
+:root {
+    --silatama-red:     #E31E24;
+    --sidebar-width:    256px;
+    --sidebar-collapsed:80px;
+    --surface-bg:       #f8f9fb;
+}
+
+/* =========================================================
+   SIDEBAR BASE
+========================================================= */
 .sidebar {
-    width: 256px;
+    width: var(--sidebar-width);
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
     background: white;
-    transition: all 0.3s ease;
-    overflow-x: hidden;
+    border-right: 1px solid #e9ecef;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    transition: width .3s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-/* Collapse state */
+/* Collapsed */
 .sidebar.collapsed {
-    width: 80px;
+    width: var(--sidebar-collapsed);
 }
 
+/* =========================================================
+   LOGO
+========================================================= */
 .logo-img-wrapper {
     width: 36px;
     height: 36px;
@@ -108,39 +140,99 @@
     align-items: center;
     justify-content: center;
     background: #fff;
+    flex-shrink: 0;
 }
-
 .logo-img-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
+.sidebar.collapsed .logo-text { display: none; }
+.sidebar.collapsed .sidebar-logo { justify-content: center; }
 
-/* Hide text */
-.sidebar.collapsed .nav-text,
-.sidebar.collapsed .logo-text {
-    display: none;
+/* =========================================================
+   NAV LINKS
+========================================================= */
+.sidebar .nav-link {
+    padding: .75rem 1.5rem;
+    color: #5e5e5e;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    border-right: 3px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+    text-decoration: none;
 }
 
-/* Center icon */
+.sidebar .nav-link:hover {
+    background: #f8f9fa;
+    color: #191c1e;
+}
+
+/* Active — selalu merah, tidak berubah */
+.sidebar .nav-link.active {
+    color: var(--silatama-red) !important;
+    background: #fff5f5 !important;
+    border-right-color: var(--silatama-red) !important;
+}
+
+/* Hilangkan outline biru browser */
+.sidebar .nav-link:focus,
+.sidebar .nav-link:active,
+.sidebar .dropdown-btn:focus,
+.sidebar .dropdown-btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Collapsed — center icon */
 .sidebar.collapsed .nav-link {
     justify-content: center;
     padding-left: 0;
     padding-right: 0;
 }
+.sidebar.collapsed .nav-text { display: none; }
 
-/* Logo center */
-.sidebar.collapsed .sidebar-logo {
-    justify-content: center;
+/* =========================================================
+   DROPDOWN
+========================================================= */
+.dropdown-btn {
+    width: 100%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: #5e5e5e;
+    font-weight: 500;
 }
 
-/* =========================
-   Arrow Toggle Button
-========================= */
+.dropdown-container {
+    display: none;
+    flex-direction: column;
+    padding-left: 18px;
+}
+.dropdown-container.show { display: flex; }
+
+.sidebar .sub-link { font-size: 14px; opacity: .9; }
+
+.dropdown-icon { transition: .3s ease; font-size: 20px !important; }
+.sidebar-dropdown.open .dropdown-icon { transform: rotate(180deg); }
+
+/* Sembunyikan dropdown saat collapsed */
+.sidebar.collapsed .dropdown-icon,
+.sidebar.collapsed .dropdown-container { display: none !important; }
+
+/* =========================================================
+   TOGGLE BUTTON
+========================================================= */
 .sidebar-arrow-toggle {
     position: fixed;
     top: 50%;
-    left: 240px;
+    left: calc(var(--sidebar-width) - 18px);
     transform: translateY(-50%);
     width: 36px;
     height: 36px;
@@ -152,58 +244,145 @@
     align-items: center;
     justify-content: center;
     z-index: 1100;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(227,30,36,.25);
+    transition: left .3s ease, transform .2s ease;
+    cursor: pointer;
 }
-
-/* posisi saat sidebar collapse */
-.sidebar.collapsed ~ .sidebar-arrow-toggle {
-    left: 64px;
-}
-
-/* hover */
 .sidebar-arrow-toggle:hover {
     transform: translateY(-50%) scale(1.1);
 }
+.sidebar.collapsed ~ .sidebar-arrow-toggle {
+    left: calc(var(--sidebar-collapsed) - 18px);
+}
 
-/* Mobile */
+/* =========================================================
+   MAIN CONTENT — diset di sini agar konsisten di semua page
+========================================================= */
+.main-content {
+    margin-left: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+    transition: margin-left .3s ease, width .3s ease;
+}
+.sidebar.collapsed ~ * .main-content,
+body.sidebar-collapsed .main-content {
+    margin-left: var(--sidebar-collapsed) !important;
+    width: calc(100% - var(--sidebar-collapsed)) !important;
+}
+
+.top-app-bar {
+    left: var(--sidebar-width) !important;
+    transition: left .3s ease;
+}
+.sidebar.collapsed ~ .top-app-bar,
+body.sidebar-collapsed .top-app-bar {
+    left: var(--sidebar-collapsed) !important;
+}
+
+
+/* Hilangkan warna biru saat diklik */
+.nav-link:focus,
+.nav-link:active,
+.dropdown-btn:focus,
+.dropdown-btn:active {
+    background: transparent !important;
+    color: inherit !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Optional: tetap merah saat aktif */
+.nav-link.active {
+    background: rgba(255, 0, 0, 0.06);
+    color: var(--silatama-red) !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 @media (max-width: 992px) {
     .sidebar {
+        left: -var(--sidebar-width);
         left: -256px;
     }
-
-    .sidebar.show {
-        left: 0;
-    }
+    .sidebar.show { left: 0; }
 
     .sidebar-arrow-toggle {
         left: 20px;
         top: 20px;
         transform: none;
     }
+    .sidebar-arrow-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    .top-app-bar {
+        left: 0 !important;
+    }
 }
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("toggleSidebar");
+
+    const sidebar    = document.getElementById("sidebar");
+    const toggleBtn  = document.getElementById("toggleSidebar");
     const toggleIcon = document.getElementById("toggleIcon");
 
-    toggleBtn.addEventListener("click", function () {
+    /* --------------------------------------------------
+       AUTO ACTIVE LINK — cocokkan path URL saat ini
+    -------------------------------------------------- */
+    const currentPath = window.location.pathname;
 
+    document.querySelectorAll(".sidebar-link").forEach(link => {
+        const linkPath = link.getAttribute("data-path");
+
+        // skip external / placeholder
+        if (!linkPath || linkPath === "__external__" || linkPath === "__none__") return;
+
+        // exact match atau starts-with (untuk nested routes)
+        if (currentPath === linkPath || currentPath.startsWith(linkPath)) {
+            link.classList.add("active");
+
+            // kalau ini sub-link, buka parent dropdown-nya
+            const parentDropdown = link.closest(".sidebar-dropdown");
+            if (parentDropdown) {
+                parentDropdown.classList.add("open");
+                const container = parentDropdown.querySelector(".dropdown-container");
+                if (container) container.classList.add("show");
+            }
+        }
+    });
+
+    /* --------------------------------------------------
+       TOGGLE SIDEBAR
+    -------------------------------------------------- */
+    toggleBtn.addEventListener("click", function () {
         if (window.innerWidth <= 992) {
             sidebar.classList.toggle("show");
         } else {
             sidebar.classList.toggle("collapsed");
-
-            // ubah arah icon
-            if (sidebar.classList.contains("collapsed")) {
-                toggleIcon.innerHTML = "chevron_right";
-            } else {
-                toggleIcon.innerHTML = "chevron_left";
-            }
+            document.body.classList.toggle("sidebar-collapsed");
+            toggleIcon.innerHTML = sidebar.classList.contains("collapsed")
+                ? "chevron_right"
+                : "chevron_left";
         }
     });
+
+    /* --------------------------------------------------
+       DROPDOWN TOGGLE
+    -------------------------------------------------- */
+    document.querySelectorAll(".dropdown-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const parent    = this.parentElement;
+            const container = parent.querySelector(".dropdown-container");
+            parent.classList.toggle("open");
+            container.classList.toggle("show");
+        });
+    });
+
 });
 </script>
