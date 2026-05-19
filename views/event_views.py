@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage, default_storage
 
 from django.core import validators,serializers as serial
 from django.core.exceptions import ValidationError
@@ -446,6 +447,307 @@ def print_badge(request, id):
                 'participant':participant,
                 }
     return render(request, 'backend/event/badge.html',context)
+
+
+def invitation_view(request, event_id):
+
+    event = Event.objects.filter(
+        id=event_id
+    ).first()
+
+    form = Form.objects.filter(
+        id_event=event_id,
+        status=True
+    ).first()
+
+    event_photo = EventPhoto.objects.filter(
+        id_event=event
+    ).first()
+
+    questions = []
+
+    if form:
+
+        questions = FormQuestion.objects.filter(
+            id_form=form
+        ).prefetch_related(
+            'formquestionoption_set'
+        ).order_by('order')
+
+        # =====================================
+        # SUBMIT RSVP FORM
+        # =====================================
+        if request.method == "POST":
+
+            response_data = {}
+            form_json = {}
+
+            participant_name = ""
+            participant_email = ""
+            participant_phone = ""
+            participant_location = ""
+
+            # =========================
+            # VALIDASI REQUIRED
+            # =========================
+            for question in questions:
+
+                field_name = f"question_{question.id}"
+
+                # MULTIPLE CHOICE
+                if question.type == "multiple_choice":
+
+                    value = request.POST.getlist(field_name)
+
+                # FILE / IMAGE
+                elif question.type in ['file_upload', 'image_upload']:
+
+                    value = request.FILES.get(field_name)
+
+                else:
+
+                    value = request.POST.get(field_name)
+
+                # REQUIRED VALIDATION
+                if question.form_required:
+
+                    is_empty = False
+
+                    if question.type == "multiple_choice":
+
+                        is_empty = len(value) == 0
+
+                    elif question.type in ['file_upload', 'image_upload']:
+
+                        is_empty = value is None
+
+                    else:
+
+                        is_empty = not value
+
+                    if is_empty:
+
+                        messages.error(
+                            request,
+                            f"{question.label} wajib diisi."
+                        )
+
+                        return redirect(request.path)
+
+            # =========================
+            # BUILD RESPONSE DATA
+            # =========================
+            for question in questions:
+
+                field_name = f"question_{question.id}"
+
+                # MULTIPLE CHOICE
+                if question.type == "multiple_choice":
+
+                    value = request.POST.getlist(field_name)
+
+                # FILE / IMAGE
+                elif question.type in ['file_upload', 'image_upload']:
+
+                    file = request.FILES.get(field_name)
+
+                    if file:
+
+                        upload_path = f"event/{file.name}"
+
+                        saved_path = default_storage.save(
+                            upload_path,
+                            ContentFile(file.read())
+                        )
+
+                        value = f"/static/media/{saved_path}"
+
+                    else:
+
+                        value = ""
+
+                else:
+
+                    value = request.POST.get(field_name)
+
+                # =========================
+                # JSON RESPONSE
+                # =========================
+                response_data[str(question.id)] = {
+                    "question": question.label,
+                    "type": question.type,
+                    "value": value
+                }
+
+                clean_label = re.sub(
+                    r"^\d+\.\s*",
+                    "",
+                    re.sub(
+                        r"\s+",
+                        " ",
+                        str(question.label)
+                        .replace(":", "")
+                        .strip()
+                    )
+                )
+
+                form_json[clean_label] = value
+
+                # =========================
+                # AUTO MAPPING
+                # =========================
+                label_lower = question.label.lower().strip()
+
+                # NAME
+                if (
+                    "name" in label_lower or
+                    "nama" in label_lower
+                ):
+
+                    participant_name = value
+
+                # EMAIL
+                elif (
+                    question.type == "email" or
+                    "email" in label_lower or
+                    "alamatemail" in label_lower or
+                    "emailaddress" in label_lower
+                ):
+
+                    participant_email = value
+
+                # PHONE
+                elif (
+                    question.type == "phone" or
+                    "phone" in label_lower or
+                    "hp" in label_lower or
+                    "telepon" in label_lower or
+                    "nomor" in label_lower
+                ):
+
+                    participant_phone = value
+
+                # LOCATION
+                elif (
+                    "location" in label_lower or
+                    "alamat" in label_lower or
+                    "kota" in label_lower or
+                    "address" in label_lower
+                ):
+
+                    participant_location = value
+
+            # fallback name
+            if not participant_name:
+
+                participant_name = "Guest Participant"
+
+            # =========================
+            # STATUS REGISTER
+            # =========================
+            status_register = StatusParticipant.objects.filter(
+                status_name__iexact="Register"
+            ).first()
+
+            if not status_register:
+
+                status_register = StatusParticipant.objects.create(
+                    status_name="Register",
+                    information="Participant Registered"
+                )
+
+            # =========================
+            # CHECK EXISTING PARTICIPANT
+            # =========================
+            participant = Participant.objects.filter(
+                name__iexact=participant_name,
+                phone=participant_phone,
+                id_event=event
+            ).first()
+
+            # =========================
+            # UPDATE EXISTING
+            # =========================
+            if participant:
+
+                participant.name = participant_name
+                participant.email = participant_email
+                participant.phone = participant_phone
+                participant.location = participant_location
+                participant.status_user_id = status_register
+                participant.save()
+
+            # =========================
+            # CREATE NEW PARTICIPANT
+            # =========================
+            else:
+
+                participant = Participant.objects.create(
+                    name=participant_name,
+                    email=participant_email,
+                    phone=participant_phone,
+                    location=participant_location,
+                    status_user_id=status_register,
+                    id_event=event
+                )
+
+            # =========================
+            # SAVE FORM RESPONSE
+            # =========================
+            response_json = {
+                "participant_id": participant.id,
+                "participant_name": participant.name,
+                "participant_email": participant.email,
+                "participant_phone": participant.phone,
+                "excel_data": form_json
+            }
+
+            FormResponse.objects.create(
+                form=form,
+                participant=participant,
+                data_response=response_json
+            )
+
+            # =========================
+            # SEND EMAIL QR
+            # =========================
+            create_and_send_qremail(
+                request,
+                event.id
+            )
+
+            messages.success(
+                request,
+                "Registration berhasil dikirim."
+            )
+
+            return redirect(request.path)
+
+    total_confirmed = Participant.objects.filter(
+        id_event=event,
+        status_user_id__status_name__iexact='Present'
+    ).count()
+
+    total_guest = Participant.objects.filter(
+        id_event=event,
+        status_user_id__status_name__iexact='Register'
+    ).count()
+
+    context = {
+        'event': event,
+        'event_photo': event_photo,
+        'form': form,
+        'questions': questions,
+        'total_confirmed': total_confirmed,
+        'remaining_seat': total_guest,
+        'total_guest': total_guest,
+    }
+
+    return render(
+        request,
+        'frontend/invitation/invitation-layout.html',
+        context
+    )
         
 # # @login_required(login_url='/admin/who-login/')
 # # @admin_only

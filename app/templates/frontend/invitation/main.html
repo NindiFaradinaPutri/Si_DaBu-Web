@@ -7,61 +7,68 @@
     </div>
     <div class="position-relative z-1 mt-4">
         <span class="font-label text-primary-container d-block mb-3" style="letter-spacing: 0.3em;">EXCLUSIVE INVITATION</span>
-        <h1 class="font-headline display-5 text-white fw-bold mb-4">The Grand Celebration</h1>
+        <h1 class="font-headline display-5 text-white fw-bold mb-4"> {{ event.name }} </h1>
         <div class="mx-auto" style="width: 64px; height: 1px; background: rgba(201, 198, 197, 0.3);"></div>
         <!-- Countdown -->
         <!-- COUNTDOWN -->
-        <div class="countdown-container">
+       <div class="countdown-container"
+     id="countdown"
+     data-event-date="{{ event.date|date:'Y-m-d' }}"
+     data-event-time="{{ event.time|time:'H:i:s' }}">
 
-            <div class="countdown-item">
+    <div class="countdown-item">
 
-                <span class="countdown-number">
-                    24
-                </span>
+        <span class="countdown-number"
+              id="countdown-days">
+            00
+        </span>
 
-                <span class="countdown-label">
-                    DAYS
-                </span>
+        <span class="countdown-label">
+            DAYS
+        </span>
 
-            </div>
+    </div>
 
-            <div class="countdown-item">
+    <div class="countdown-item">
 
-                <span class="countdown-number">
-                    12
-                </span>
+        <span class="countdown-number"
+              id="countdown-hours">
+            00
+        </span>
 
-                <span class="countdown-label">
-                    HRS
-                </span>
+        <span class="countdown-label">
+            HRS
+        </span>
 
-            </div>
+    </div>
 
-            <div class="countdown-item">
+    <div class="countdown-item">
 
-                <span class="countdown-number">
-                    45
-                </span>
+        <span class="countdown-number"
+              id="countdown-minutes">
+            00
+        </span>
 
-                <span class="countdown-label">
-                    MINS
-                </span>
+        <span class="countdown-label">
+            MINS
+        </span>
 
-            </div>
+    </div>
 
-            <div class="countdown-item">
+    <div class="countdown-item">
 
-                <span class="countdown-number">
-                    08
-                </span>
+        <span class="countdown-number"
+              id="countdown-seconds">
+            00
+        </span>
 
-                <span class="countdown-label">
-                    SECS
-                </span>
+        <span class="countdown-label">
+            SECS
+        </span>
 
-            </div>
+    </div>
 
-        </div>
+</div>
         <div class="attendance-info glass-card">
 
             <div class="attendance-icon">
@@ -75,26 +82,26 @@
                 <div class="attendance-row">
 
                     <div class="attendance-item">
-                        <span class="attendance-number">136</span>
+                        <span class="attendance-number">{{ remaining_seat }}</span>
                         <span class="attendance-label">
-                            Guests Confirmed
+                            Current Participation
                         </span>
                     </div>
 
                     <div class="attendance-divider"></div>
 
                     <div class="attendance-item">
-                        <span class="attendance-number">64</span>
+                        <span class="attendance-number">{{ total_confirmed }}</span>
                         <span class="attendance-label">
-                            Seats Remaining
+                            Participation Check In
                         </span>
                     </div>
 
                 </div>
 
-                <div class="attendance-note">
+                <!-- <div class="attendance-note">
                     Limited availability for selected guests
-                </div>
+                </div> -->
 
             </div>
 
@@ -118,17 +125,33 @@
         <div class="d-flex flex-column gap-4">
             <div>
                 <span class="font-label text-primary-container d-block mb-1">WHEN</span>
-                <p class="h5 theme-text mb-1">Wednesday, Dec 25, 2024</p>
-                <p class="text-on-surface-variant small">19:00 WIB - Midnight</p>
+                <p class="h5 theme-text mb-1">
+                    {{ event.date|date:"l, d F Y" }}
+                    </p>
+                <p class="text-on-surface-variant small">
+                     {{ event.time|time:"H:i" }} WITA
+                    </p>
             </div>
             <hr class="border-secondary opacity-25" />
             <div>
                 <span class="font-label text-primary-container d-block mb-1">WHERE</span>
-                <p class="h5 theme-text mb-1">Grand Ballroom Silatama</p>
-                <p class="text-on-surface-variant small">Level 5, Executive Plaza, Jakarta</p>
+                <p class="h5 theme-text mb-1">
+                        {{ event.location }}
+                    </p>
+
+                    <!-- <p class="text-on-surface-variant small">
+                        {{ event.location }}
+                    </p> -->
             </div>
         </div>
-        <button class="btn btn-primary-custom w-100 mt-4">Add to Calendar</button>
+        <a id="add-to-calendar"
+   href="#"
+   class="btn btn-primary-custom w-100 mt-4"
+   target="_blank">
+
+    Add to Calendar
+
+</a>
     </div>
 </section>
 <!-- Experience -->
@@ -162,58 +185,357 @@
 </section>
 <!-- Location -->
 <section class="page-section map-section px-4" id="map">
+
     <div class="mb-4">
-        <span class="font-label text-primary-container d-block mb-1">GETTING THERE</span>
-        <h2 class="font-headline h2 theme-text">Location</h2>
+
+        <span class="font-label text-primary-container d-block mb-1">
+            GETTING THERE
+        </span>
+
+        <h2 class="font-headline h2 theme-text">
+            Location
+        </h2>
+
     </div>
-    <div class="rounded-4 overflow-hidden position-relative mb-4" style="height: 200px; border: 1px solid var(--outline-variant);">
-        <img alt="Map" class="w-100 h-100 object-fit-cover opacity-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcbNO3lZ_MNHD7QmJO4H_GMK3gp22mVE7BHp6XZHm23nNdZ9zek2SIT6tIV2E0_i7xwvYGwqHLplB17gJvBmCXGdkZj91aPMFy4HFdL56FTVQ3KIhG7YBIU5hnh8BKjqzdl9IOoHHRJbntLkSIDTbHdwX7nsQpFXViMjE29-FhI3pOWpehyhxLlREhBjwESFqnZX1fL1CH0_QtpP2Cxd8KZAGMl2uzXt1ZT_sDR8ArxR0yg-VGpnSWJ56ZFOvl9ZTeSQ8Uvh6RXkE" style="filter: grayscale(1) brightness(0.4);" />
-        <div class="position-absolute inset-0 d-flex align-items-center justify-content-center">
-            <div class="bg-primary-container p-3 rounded-circle shadow-lg theme-text">
-                <span class="material-symbols-outlined">location_on</span>
-            </div>
-        </div>
+
+    <!-- GOOGLE MAPS EMBED -->
+    <div class="rounded-4 overflow-hidden position-relative mb-4"
+         style="height: 300px; border: 1px solid var(--outline-variant);">
+
+        <iframe
+            src="{{ event.location_map }}"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
     </div>
+
+    <!-- LOCATION INFO -->
     <div class="d-flex align-items-start gap-3 mt-4 mb-4">
-        <span class="material-symbols-outlined text-primary-container">navigation</span>
+
+        <span class="material-symbols-outlined text-primary-container">
+            navigation
+        </span>
+
         <div>
-            <p class="theme-text fw-medium mb-0">Grand Ballroom Silatama</p>
-            <p class="text-on-surface-variant small mb-0">Jl. Jend. Sudirman No.Kav 1, Jakarta 10220</p>
+
+            <!-- NAMA LOKASI -->
+            <p class="theme-text fw-medium mb-0">
+                {{ event.location }}
+            </p>
+
         </div>
+
     </div>
-    <button class="btn btn-outline-custom w-100 d-flex align-items-center justify-content-center gap-2">
-        <span class="material-symbols-outlined" style="font-size: 20px;">directions</span>
-        Open in Google Maps
-    </button>
+
+    <!-- OPEN GOOGLE MAPS -->
+   <a id="google-maps-button"
+   href="#"
+   target="_blank"
+   class="btn btn-outline-custom w-100 d-flex align-items-center justify-content-center gap-2">
+
+    <span class="material-symbols-outlined"
+          style="font-size: 20px;">
+        directions
+    </span>
+
+    Open in Google Maps
+
+</a>
+
 </section>
 <!-- RSVP Section -->
 <section class="page-section px-4" id="rsvp">
     <div class="glass-card p-5">
         <div class="text-center mb-5">
             <h2 class="font-headline h3 theme-text mb-2">Will you attend?</h2>
-            <p class="text-on-surface-variant small">Please confirm your presence by Dec 15.</p>
+            <p class="text-on-surface-variant small">Please complete your registration by {{ event.date|date:"d F " }}</p>
         </div>
-        <form class="d-flex flex-column gap-4">
-            <div>
-                <label class="font-label text-on-surface-variant mb-2">FULL NAME</label>
-                <input class="form-control form-control-lg border-0 bg-opacity-10 py-3" placeholder="Your name as it appears on ID" type="text" />
-            </div>
-            <div>
-                <label class="font-label text-on-surface-variant mb-2">ATTENDANCE STATUS</label>
-                <select class="form-select form-select-lg border-0 bg-opacity-10 py-3">
-                    <option>Yes, I will attend</option>
-                    <option>Regretfully decline</option>
-                </select>
-            </div>
-            <div>
-                <label class="font-label text-on-surface-variant mb-2">NUMBER OF GUESTS</label>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-outline-custom" style="width: 54px; height: 54px;" type="button">-</button>
-                    <div class="flex-grow-1 border border-secondary border-opacity-25 rounded d-flex align-items-center justify-content-center theme-text">1</div>
-                    <button class="btn btn-outline-custom" style="width: 54px; height: 54px;" type="button">+</button>
+
+      
+        <form method="POST"
+      enctype="multipart/form-data"
+      class="d-flex flex-column gap-4">
+
+    {% csrf_token %}
+
+    {% for question in questions %}
+
+        <div>
+
+            <label class="font-label text-on-surface-variant mb-2">
+
+                {{ question.label }}
+
+                {% if question.form_required %}
+                    <span class="text-danger">*</span>
+                {% endif %}
+
+            </label>
+
+            {% if question.help_text %}
+                <div class="small text-muted mb-2">
+                    {{ question.help_text }}
                 </div>
-            </div>
-            <button class="btn btn-primary-custom btn-lg w-100 py-3 text-uppercase fw-bold mt-3" style="letter-spacing: 0.1em;" type="submit">Submit RSVP</button>
-        </form>
+            {% endif %}
+
+            <!-- SHORT TEXT -->
+            {% if question.type == 'short_text' %}
+
+                <input type="text"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- LONG TEXT -->
+            {% elif question.type == 'long_text' %}
+
+                <textarea name="question_{{ question.id }}"
+                          class="form-control border-0 bg-opacity-10 py-3"
+                          rows="4"
+                          {% if question.form_required %}required{% endif %}></textarea>
+
+            <!-- EMAIL -->
+            {% elif question.type == 'email' %}
+
+                <input type="email"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- PHONE -->
+            {% elif question.type == 'phone' %}
+
+                <input type="text"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- NUMBER -->
+            {% elif question.type == 'number' %}
+
+                <input type="number"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- DATE -->
+            {% elif question.type == 'date' %}
+
+                <input type="date"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- DROPDOWN -->
+            {% elif question.type == 'dropdown' %}
+
+                <select name="question_{{ question.id }}"
+                        class="form-select form-select-lg border-0 bg-opacity-10 py-3"
+                        {% if question.form_required %}required{% endif %}>
+
+                    <option value="">
+                        Pilih
+                    </option>
+
+                    {% for option in question.formquestionoption_set.all %}
+
+                        <option value="{{ option.value }}">
+                            {{ option.label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            <!-- SINGLE CHOICE -->
+            {% elif question.type == 'single_choice' %}
+
+                <div class="d-flex flex-column gap-2">
+
+                    {% for option in question.formquestionoption_set.all %}
+
+                        <label class="glass-card p-3 d-flex align-items-center gap-2">
+
+                            <input type="radio"
+                                   name="question_{{ question.id }}"
+                                   value="{{ option.value }}"
+                                   {% if question.form_required %}required{% endif %}>
+
+                            <span>
+                                {{ option.label }}
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+            <!-- MULTIPLE CHOICE -->
+            {% elif question.type == 'multiple_choice' %}
+
+                <div class="d-flex flex-column gap-2">
+
+                    {% for option in question.formquestionoption_set.all %}
+
+                        <label class="glass-card p-3 d-flex align-items-center gap-2">
+
+                            <input type="checkbox"
+                                   name="question_{{ question.id }}"
+                                   value="{{ option.value }}">
+
+                            <span>
+                                {{ option.label }}
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+            <!-- FILE -->
+            {% elif question.type == 'file_upload' or question.type == 'image_upload' %}
+
+    <div class="glass-card p-4 text-center">
+
+        <span class="material-symbols-outlined d-block mb-2"
+              style="font-size: 42px; color: var(--theme-primary);">
+            upload
+        </span>
+
+        <div class="fw-semibold mb-2 theme-text">
+            Upload File
+        </div>
+
+        <div class="small text-muted mb-3">
+            Pilih gambar atau dokumen
+        </div>
+
+        <input type="file"
+               name="question_{{ question.id }}"
+               class="form-control"
+               style="
+                    background: #fff;
+                    border: 2px dashed rgba(183,155,108,0.4);
+                    border-radius: 16px;
+                    padding: 14px;
+                    cursor: pointer;
+               "
+               {% if question.form_required %}required{% endif %}>
+
+    </div>
+
+{% endif %}
+
+        </div>
+
+    {% endfor %}
+
+    <button class="btn btn-primary-custom btn-lg w-100 py-3 text-uppercase fw-bold mt-3"
+            style="letter-spacing: 0.1em;"
+            type="submit">
+
+        Submit
+
+    </button>
+
+</form>
     </div>
 </section>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const embedUrl = `{{ event.location_map|escapejs }}`;
+
+    const mapsButton = document.getElementById('google-maps-button');
+
+    // Ambil nama lokasi dari event.location
+    const locationName = `{{ event.location|escapejs }}`;
+
+    // Buat URL Google Maps normal
+    const googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=' +
+        encodeURIComponent(locationName);
+
+    mapsButton.href = googleMapsUrl;
+
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const calendarButton =
+        document.getElementById('add-to-calendar');
+
+    const eventName =
+        `{{ event.name|escapejs }}`;
+
+    const eventLocation =
+        `{{ event.location|escapejs }}`;
+
+    const eventDescription =
+        `{{ event.information|striptags|escapejs }}`;
+
+    const eventDate =
+        `{{ event.date|date:'Y-m-d' }}`;
+
+    const eventTime =
+        `{{ event.time|time:'H:i:s' }}`;
+
+    // Format datetime local
+    const startDate =
+        new Date(eventDate + 'T' + eventTime);
+
+    // Default durasi 2 jam
+    const endDate =
+        new Date(startDate.getTime() + (2 * 60 * 60 * 1000));
+
+    // Format ICS UTC
+    function formatICSDate(date) {
+
+        return date
+            .toISOString()
+            .replace(/[-:]/g, '')
+            .split('.')[0] + 'Z';
+    }
+
+    const startICS = formatICSDate(startDate);
+    const endICS = formatICSDate(endDate);
+
+    const icsContent =
+`BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:${startICS}
+DTEND:${endICS}
+SUMMARY:${eventName}
+DESCRIPTION:${eventDescription}
+LOCATION:${eventLocation}
+END:VEVENT
+END:VCALENDAR`;
+
+    const blob = new Blob(
+        [icsContent],
+        { type: 'text/calendar;charset=utf-8' }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    calendarButton.href = url;
+
+    calendarButton.setAttribute(
+        'download',
+        `${eventName}.ics`
+    );
+
+});
+
+</script>

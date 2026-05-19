@@ -1,3 +1,4 @@
+
 {%load static%}
 <!DOCTYPE html>
 
@@ -7,6 +8,12 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'frontend/css/invitation.css' %}">
@@ -54,6 +61,130 @@
     {%block navigation%}
     {% include "frontend/invitation/navigation.html" %}
     {%endblock%}
+<script>
 
+window.addEventListener('load', function () {
+
+    const countdownElement = document.getElementById('countdown');
+
+    if (!countdownElement) {
+        console.log('Countdown element tidak ditemukan');
+        return;
+    }
+
+    const eventDate = countdownElement.getAttribute('data-event-date');
+    const eventTime = countdownElement.getAttribute('data-event-time');
+
+    console.log(eventDate);
+    console.log(eventTime);
+
+    // Gabungkan manual
+    const targetDate = new Date(eventDate + ' ' + eventTime);
+
+    console.log(targetDate);
+
+    const daysElement = document.getElementById('countdown-days');
+    const hoursElement = document.getElementById('countdown-hours');
+    const minutesElement = document.getElementById('countdown-minutes');
+    const secondsElement = document.getElementById('countdown-seconds');
+
+    function updateCountdown() {
+
+        const now = new Date();
+
+        const distance = targetDate.getTime() - now.getTime();
+
+        if (distance <= 0) {
+
+            daysElement.innerHTML = '00';
+            hoursElement.innerHTML = '00';
+            minutesElement.innerHTML = '00';
+            secondsElement.innerHTML = '00';
+
+            return;
+        }
+
+        const days = Math.floor(
+            distance / (1000 * 60 * 60 * 24)
+        );
+
+        const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) /
+            (1000 * 60 * 60)
+        );
+
+        const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) /
+            (1000 * 60)
+        );
+
+        const seconds = Math.floor(
+            (distance % (1000 * 60)) / 1000
+        );
+
+        daysElement.innerHTML = String(days).padStart(2, '0');
+        hoursElement.innerHTML = String(hours).padStart(2, '0');
+        minutesElement.innerHTML = String(minutes).padStart(2, '0');
+        secondsElement.innerHTML = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+
+    setInterval(updateCountdown, 1000);
+
+});
+
+
+
+</script>
+<!-- JQUERY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- PNOTIFY -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.buttons.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.2.1/pnotify.buttons.js"></script>
+
+<script>
+
+$(document).ready(function () {
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            new PNotify({
+
+                title: 'Informasi',
+                text: '{{ message|escapejs }}',
+
+                {% if message.tags == 'success' %}
+                    type: 'success',
+                {% elif message.tags == 'error' %}
+                    type: 'error',
+                {% elif message.tags == 'warning' %}
+                    type: 'notice',
+                {% else %}
+                    type: 'info',
+                {% endif %}
+
+                delay: 3000,
+                styling: 'bootstrap3'
+
+            });
+
+        {% endfor %}
+
+    {% endif %}
+
+});
+
+</script>
 </body>
 </html>

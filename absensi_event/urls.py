@@ -302,10 +302,16 @@ urlpatterns = [
     path('mobile/update_participant_status/', mobile_event.update_participant_status, name='mobile_update_participant_status'),
 
     #INVITATION
+    # path(
+    #     'invitation/',
+    #     TemplateView.as_view(template_name='frontend/invitation/invitation-layout.html'),
+    #     name='invitation'
+    # ),
+
     path(
-        'invitation/',
-        TemplateView.as_view(template_name='frontend/invitation/invitation-layout.html'),
-        name='invitation'
+    'invitation/<str:event_id>/',
+    even.invitation_view,
+    name='invitation'
     ),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
