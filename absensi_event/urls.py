@@ -61,6 +61,9 @@ urlpatterns = [
 
     path('admin/profile/', auth_views.admin_profile, name='admin_profile'),
     path('admin/profile/update/', auth_views.admin_profile_update, name='admin_profile_update'),
+    # notifikasi 
+    path('notifications/', auth_views.get_notifications, name='get_notifications'),
+    path('notifications/<int:notif_id>/read/', auth_views.mark_notification_read, name='mark_notification_read'),
 
     path('admin/list/', auth_views.admin_list, name='admin_list'),
     path('admin/delete/', auth_views.admin_delete, name='admin_delete'),

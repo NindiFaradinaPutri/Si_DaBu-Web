@@ -185,3 +185,11 @@ class DoorprizeWinner(models.Model):
             f"- "
             f"{self.id_doorprize.prize_name}"
         )
+
+class Notifications(models.Model):
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE,null=False, blank=False)
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE,null=False, blank=False)
+    updated_date = models.DateTimeField(auto_now=True, blank=False)
+    is_read = models.BooleanField(default=False)
+    class Meta:
+        db_table = 'notification'
