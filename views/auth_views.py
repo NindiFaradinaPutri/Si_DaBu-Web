@@ -19,7 +19,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseServerError
 from django.forms import modelformset_factory, formset_factory
 
-from django.db.models import Q, CharField, Value, Sum, F, Case, When, Exists, Prefetch
+from django.db.models import Q, CharField, IntegerField, Value, Sum, F, Case, When, Exists, Prefetch
 from django.db.models.functions import Coalesce, Concat
 from django.db import IntegrityError, transaction, connection
 
@@ -722,31 +722,169 @@ def login(request):
 #         }
 #         return render(request, 'frontend/auth/login.html', context)
 
+# @login_required(login_url='/admin/who-login/')
+# @admin_only
+# def admin_profile(request):
+#     assert isinstance(request, HttpRequest)
+#     title = 'Profil Admin'
+#     menu = ['Profil Admin','Profil']
+
+#     if request.user.is_authenticated:
+#         user_profile = UserProfile.objects.filter(user=request.user).first()
+#         user_photo = UserPhoto.objects.get_by_user(user_id=request.user.id)
+#         user_address = UserAddress.objects.get_by_user(user_id=request.user.id)
+#         user_description = UserDescription.objects.filter(user_id=request.user.id).first()
+
+#         # =========================
+#         # EVENT STATS (TIDAK DIUBAH LOGICNYA)
+#         # =========================
+#         now = timezone.now()
+#         today = now.date()
+#         current_time = now.time()
+
+#         total_events = Event.objects.count()
+
+#         upcoming_events = Event.objects.filter(
+#             Q(date__gt=today) |
+#             Q(date=today, time__gte=current_time)
+#         )
+
+#         upcoming_events_count = upcoming_events.count()
+
+#         active_events = Event.objects.filter(
+#             date=today,
+#             time__hour=current_time.hour
+#         )
+
+#         # =========================
+#         # REGISTERED (HANYA EVENT ACTIVE)
+#         # =========================
+#         registered_count = active_events.count()
+#         # =========================
+#         # GLOBAL PARTICIPANT (SEMUA EVENT)
+#         # =========================
+#         total_participants = Participant.objects.count()
+
+#         present_count = Participant.objects.filter(
+#             status_user_id__status_name__iexact="Present"
+#         ).count()
+
+#         # =========================
+#         # CHECK-IN RATE (GLOBAL)
+#         # =========================
+#         checkin_rate = 0
+#         if total_participants > 0:
+#             checkin_rate = round((present_count / total_participants) * 100)
+
+#         events_qs = Event.objects.prefetch_related(
+#             'eventphoto_set'
+#         ).all()
+#         # =========================
+#         # EVENT LIST (TAMBAHAN SAJA, NON-INTRUSIVE)
+#         # =========================
+#         events = []
+
+#         for event in events_qs:
+
+#             # =========================
+#             # STATUS LOGIC INLINE
+#             # =========================
+#             status = "EVENT FINISHED"
+#             badge_class = "bg-secondary text-white"
+
+#             if event.date > today:
+#                 status = "INCOMING"
+#                 badge_class = "bg-warning text-dark"
+
+#             elif event.date == today:
+#                 if event.time:
+#                     if event.time <= current_time:
+#                         status = "LIVE"
+#                         badge_class = "bg-danger text-white"
+#                     else:
+#                         status = "INCOMING"
+#                         badge_class = "bg-warning text-dark"
+#                 else:
+#                     status = "LIVE"
+#                     badge_class = "bg-danger text-white"
+
+#             # =========================
+#             # ATTACH ATTRIBUTE KE OBJECT
+#             # (tanpa append dict baru)
+#             # =========================
+#             event.status = status
+#             event.badge_class = badge_class
+
+#             events.append(event)
+
+#         context = {
+#             'title': title,
+#             'menu': menu,
+#             'user': request.user,
+#             'user_profile': user_profile,
+#             'user_photo': user_photo,
+#             'user_address': user_address,
+#             'user_description': user_description,
+#             'time': datetime.now().time(),
+
+#             # STATS (UNCHANGED)
+#             'total_events': total_events,
+#             'upcoming_events_count': upcoming_events_count,
+#             'registered_count': registered_count,
+#             'checkin_rate': checkin_rate,
+
+#             # EVENTS (BARU TAMBAHAN)
+#             'events': events,
+#         }
+
+#         return render(request, 'backend/profile/user_profile.html', context)
+
 @login_required(login_url='/admin/who-login/')
 @admin_only
 def admin_profile(request):
+
     assert isinstance(request, HttpRequest)
+
     title = 'Profil Admin'
-    menu = ['Profil Admin','Profil']
+    menu = ['Profil Admin', 'Profil']
 
     if request.user.is_authenticated:
-        user_profile = UserProfile.objects.filter(user=request.user).first()
-        user_photo = UserPhoto.objects.get_by_user(user_id=request.user.id)
-        user_address = UserAddress.objects.get_by_user(user_id=request.user.id)
-        user_description = UserDescription.objects.filter(user_id=request.user.id).first()
+
+        user_profile = UserProfile.objects.filter(
+            user=request.user
+        ).first()
+
+        user_photo = UserPhoto.objects.get_by_user(
+            user_id=request.user.id
+        )
+
+        user_address = UserAddress.objects.get_by_user(
+            user_id=request.user.id
+        )
+
+        user_description = UserDescription.objects.filter(
+            user_id=request.user.id
+        ).first()
 
         # =========================
-        # EVENT STATS (TIDAK DIUBAH LOGICNYA)
+        # EVENT STATS
         # =========================
         now = timezone.now()
+
         today = now.date()
         current_time = now.time()
 
         total_events = Event.objects.count()
 
         upcoming_events = Event.objects.filter(
+
             Q(date__gt=today) |
-            Q(date=today, time__gte=current_time)
+
+            Q(
+                date=today,
+                time__gte=current_time
+            )
+
         )
 
         upcoming_events_count = upcoming_events.count()
@@ -757,11 +895,12 @@ def admin_profile(request):
         )
 
         # =========================
-        # REGISTERED (HANYA EVENT ACTIVE)
+        # REGISTERED
         # =========================
         registered_count = active_events.count()
+
         # =========================
-        # GLOBAL PARTICIPANT (SEMUA EVENT)
+        # GLOBAL PARTICIPANT
         # =========================
         total_participants = Participant.objects.count()
 
@@ -770,47 +909,113 @@ def admin_profile(request):
         ).count()
 
         # =========================
-        # CHECK-IN RATE (GLOBAL)
+        # CHECK-IN RATE
         # =========================
         checkin_rate = 0
-        if total_participants > 0:
-            checkin_rate = round((present_count / total_participants) * 100)
 
+        if total_participants > 0:
+
+            checkin_rate = round(
+                (present_count / total_participants) * 100
+            )
+
+        # =========================
+        # EVENT ORDER PRIORITY
+        # =========================
         events_qs = Event.objects.prefetch_related(
             'eventphoto_set'
-        ).all()
+        ).annotate(
+
+            event_priority=Case(
+
+                # upcoming event
+                When(
+                    date__gt=today,
+                    then=Value(0)
+                ),
+
+                # live event (hari ini & jam sekarang)
+                When(
+                    date=today,
+                    time__hour=current_time.hour,
+                    then=Value(0)
+                ),
+
+                # incoming hari ini
+                When(
+                    date=today,
+                    time__gte=current_time,
+                    then=Value(0)
+                ),
+
+                # finished
+                default=Value(1),
+
+                output_field=IntegerField()
+            )
+
+        ).order_by(
+
+            # upcoming/live dulu
+            'event_priority',
+
+            # upcoming urut terdekat
+            'date',
+            'time'
+        )
+
         # =========================
-        # EVENT LIST (TAMBAHAN SAJA, NON-INTRUSIVE)
+        # EVENT LIST
         # =========================
         events = []
 
         for event in events_qs:
 
             # =========================
-            # STATUS LOGIC INLINE
+            # STATUS LOGIC
             # =========================
             status = "EVENT FINISHED"
             badge_class = "bg-secondary text-white"
 
             if event.date > today:
+
                 status = "INCOMING"
                 badge_class = "bg-warning text-dark"
 
             elif event.date == today:
+
                 if event.time:
-                    if event.time <= current_time:
+
+                    # LIVE jika jam sama
+                    if event.time.hour == current_time.hour:
+
                         status = "LIVE"
                         badge_class = "bg-danger text-white"
-                    else:
+
+                    # UPCOMING jika belum mulai
+                    elif event.time > current_time:
+
                         status = "INCOMING"
                         badge_class = "bg-warning text-dark"
+
+                    # FINISHED jika lewat
+                    else:
+
+                        status = "EVENT FINISHED"
+                        badge_class = "bg-secondary text-white"
+
                 else:
+
                     status = "LIVE"
                     badge_class = "bg-danger text-white"
 
+            else:
+
+                status = "EVENT FINISHED"
+                badge_class = "bg-secondary text-white"
+
             # =========================
-            # ATTACH ATTRIBUTE KE OBJECT
-            # (tanpa append dict baru)
+            # ATTACH ATTRIBUTE
             # =========================
             event.status = status
             event.badge_class = badge_class
@@ -818,26 +1023,33 @@ def admin_profile(request):
             events.append(event)
 
         context = {
+
             'title': title,
             'menu': menu,
+
             'user': request.user,
             'user_profile': user_profile,
             'user_photo': user_photo,
             'user_address': user_address,
             'user_description': user_description,
+
             'time': datetime.now().time(),
 
-            # STATS (UNCHANGED)
+            # stats
             'total_events': total_events,
             'upcoming_events_count': upcoming_events_count,
             'registered_count': registered_count,
             'checkin_rate': checkin_rate,
 
-            # EVENTS (BARU TAMBAHAN)
+            # events
             'events': events,
         }
 
-        return render(request, 'backend/profile/user_profile.html', context)
+        return render(
+            request,
+            'backend/profile/user_profile.html',
+            context
+        )
 
 @login_required(login_url='/admin/who-login/')
 @admin_only

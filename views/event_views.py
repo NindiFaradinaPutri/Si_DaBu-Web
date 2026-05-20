@@ -16,7 +16,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseServerError
 from django.forms import modelformset_factory, formset_factory
 
-from django.db.models import Q, CharField, Value, Sum, F, Case, When, Exists, Prefetch
+from django.db.models import Q, CharField, IntegerField, Value, Sum, F, Case, When, Exists, Prefetch
 from django.db.models.functions import Coalesce, Concat
 from django.db import IntegrityError, transaction, connection
 
@@ -86,7 +86,39 @@ def list_event(request):
     # =========================================
     # BASE QUERYSET
     # =========================================
-    events = Event.objects.all().order_by('date', 'time')
+    now = timezone.localtime()
+
+    today = now.date()
+    current_time = now.time()
+    events = Event.objects.all().annotate(
+
+    event_priority=Case(
+
+        # upcoming event
+        When(date__gt=today, then=Value(0)),
+
+        # hari ini tapi belum lewat
+        When(
+            date=today,
+            time__gte=current_time,
+            then=Value(0)
+        ),
+
+        # event lama
+        default=Value(1),
+
+        output_field=IntegerField()
+    )
+
+    ).order_by(
+
+        # upcoming dulu
+        'event_priority',
+
+        # urut terdekat
+        'date',
+        'time'
+    )
 
     # =========================================
     # FILTER KEYWORD (nama event / lokasi)
@@ -221,6 +253,7 @@ def list_event(request):
 @login_required(login_url='/admin/who-login/')
 @admin_only
 def participant_upload(request, id):
+    id = decoding_id(id)
     event = Event.objects.filter(id=id).first()
 
     context = {
@@ -514,6 +547,11 @@ def print_badge(request, id):
 
 def invitation_view(request, event_id):
 
+    event_id = decoding_id(event_id)
+
+    if not event_id:
+        raise Http404("Invitation tidak ditemukan")
+
     event = Event.objects.filter(
         id=event_id
     ).first()
@@ -796,6 +834,11 @@ def invitation_view(request, event_id):
         status_user_id__status_name__iexact='Register'
     ).count()
 
+    event_benefits = EventBenefit.objects.filter(
+        id_event=event,
+        status=True
+    ).order_by('id')
+
     context = {
         'event': event,
         'event_photo': event_photo,
@@ -804,6 +847,7 @@ def invitation_view(request, event_id):
         'total_confirmed': total_confirmed,
         'remaining_seat': total_guest,
         'total_guest': total_guest,
+        'event_benefits': event_benefits,
     }
 
     return render(

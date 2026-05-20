@@ -364,19 +364,36 @@ def create_and_send_qremail(request, event_id):
             card_img.add_header('Content-Disposition', 'inline', filename='card_icon.png')
 
         if not p.qr_code:
+
             qr_data = f"{event.unique_name},{p.unique_user}"
 
             img = make(qr_data)
 
             buffer = BytesIO()
             img.save(buffer, format='PNG')
+
             now = datetime.now()
+
             file_name = f"{str(now)}_{p.unique_user}.png"
 
-            p.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
+            p.qr_code.save(
+                file_name,
+                ContentFile(buffer.getvalue()),
+                save=False
+            )
+
             p.save()
-        if p.email:
-            url = request.build_absolute_uri(p.qr_code.url)
+
+    # =========================
+    # QR URL
+    # =========================
+    url = ""
+
+    if p.qr_code:
+
+        url = request.build_absolute_uri(
+            p.qr_code.url
+        )
 
         instansi_obj = FormResponse.objects.annotate(
             instansi=F("data_response__excel_data__Instansi (Jika ada)")

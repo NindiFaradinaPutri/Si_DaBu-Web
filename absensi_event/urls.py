@@ -78,16 +78,37 @@ urlpatterns = [
 
     #Event
     # path('event/', fe_views.event_frontend, name='event'),
-    path('event/<int:id>/',fe_views.event_frontend,name='event'),
+    path('event/add/', banner_views.event_add, name='event_add'),
+    re_path(
+    r'^event/(?P<id>[0-9a-zA-Z-_]+)/$',
+    fe_views.event_frontend,name='event'
+    ),
+    # path('event/<int:id>/',fe_views.event_frontend,name='event'),
     path('list_event/', even.list_event, name='list_event'),
     # path('event/list/', banner_views.event_list, name='event_list'),
-    path('event/list/<int:id>/', banner_views.event_list, name='event_list'),
-    path('event/add/', banner_views.event_add, name='event_add'),
-    path('event/edit/<int:id>/', banner_views.event_edit, name='event_edit'), 
-    path('event/delete/<int:id>/', banner_views.event_delete, name='event_delete'),
+    re_path(
+    r'^event/list/(?P<id>[0-9a-zA-Z-_]+)/$',
+    banner_views.event_list, name='event_list'
+    ),
+    # path('event/list/<int:id>/', banner_views.event_list, name='event_list'),
+    re_path(
+    r'^event/edit/(?P<id>[0-9a-zA-Z-_]+)/$',
+    banner_views.event_edit, name='event_edit'
+    ),
+
+    re_path(
+    r'^event/delete/(?P<id>[0-9a-zA-Z-_]+)/$',
+    banner_views.event_delete, name='event_delete'
+    ),
+    # path('event/edit/<int:id>/', banner_views.event_edit, name='event_edit'), 
+    # path('event/delete/<int:id>/', banner_views.event_delete, name='event_delete'),
     re_path(r'^event/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', banner_views.event_update, name='event_update'), 
     # path('participant/upload/', banner_views.participant_upload, name='participant_upload'),
-    path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
+    re_path(
+    r'^participant/upload/(?P<id>[0-9a-zA-Z-_]+)/$',
+    even.participant_upload, name='participant_upload'
+    ),
+    # path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
     re_path(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
     re_path(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
     path('doorprize/', even.doorprize, name='doorprize'),
@@ -308,11 +329,17 @@ urlpatterns = [
     #     name='invitation'
     # ),
 
-    path(
-    'invitation/<str:event_id>/',
+    # path(
+    # 'invitation/<str:event_id>/',
+    # even.invitation_view,
+    # name='invitation'
+    # ),
+
+    re_path(
+    r'^invitation/(?P<event_id>[0-9a-zA-Z-_]+)/$',
     even.invitation_view,
     name='invitation'
-    ),
+),
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 
