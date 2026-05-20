@@ -91,9 +91,9 @@
                     <div class="attendance-divider"></div>
 
                     <div class="attendance-item">
-                        <span class="attendance-number">{{ total_confirmed }}</span>
+                        <span class="attendance-number">{{ event.capacity}}</span>
                         <span class="attendance-label">
-                            Participation Check In
+                            Participation Capacity
                         </span>
                     </div>
 
@@ -156,32 +156,103 @@
 </section>
 <!-- Experience -->
 <section class="page-section px-4">
-    <h2 class="font-headline h2 text-center mb-4">The Experience</h2>
-    <div class="row g-3">
-        <div class="col-12">
-            <div class="glass-card p-4">
-                <div class="d-flex align-items-center gap-3 mb-3">
-                    <span class="material-symbols-outlined text-primary-container">restaurant</span>
-                    <span class="font-label theme-text">FINE DINING</span>
-                </div>
-                <p class="text-on-surface-variant mb-0 small">A curated five-course culinary journey designed by Michelin-star guest chefs, featuring international delicacies and silver-service excellence.</p>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="glass-card p-4 h-100">
-                <span class="material-symbols-outlined text-primary-container h1 d-block mb-2">piano</span>
-                <span class="font-label theme-text d-block mb-2">ORCHESTRA</span>
-                <p class="text-on-surface-variant small mb-0">Live performances by the Metropolitan Philharmonic.</p>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="glass-card p-4 h-100">
-                <span class="material-symbols-outlined text-primary-container h1 d-block mb-2">wine_bar</span>
-                <span class="font-label theme-text d-block mb-2">LOUNGE</span>
-                <p class="text-on-surface-variant small mb-0">Premium spirits and artisanal cocktail pairings.</p>
-            </div>
-        </div>
+
+    <div class="text-center mb-5">
+
+        <span
+            class="badge rounded-pill px-4 py-2 mb-3"
+            style="
+                background: var(--theme-primary);
+                color: black;
+                font-weight:600;
+                letter-spacing:.5px;
+            ">
+            EVENT BENEFITS
+        </span>
+
+        <h2 class="font-headline display-6 fw-bold mb-3">
+            What You’ll Get
+        </h2>
+
+        <p
+            class="text-on-surface-variant mx-auto"
+            style="
+                max-width:700px;
+                opacity:.8;
+            ">
+            Nikmati berbagai keuntungan eksklusif yang telah disiapkan
+            untuk seluruh peserta event.
+        </p>
+
     </div>
+
+    <div class="row g-3">
+
+        {% for item in event_benefits %}
+
+        <div class="col-12 col-md-6">
+
+            <div class="glass-card p-4 h-100">
+
+                <div class="d-flex align-items-start gap-3">
+
+                    <div
+                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        style="
+                            width:52px;
+                            height:52px;
+                            background:rgba(220,53,69,.12);
+                            flex-shrink:0;
+                        ">
+
+                        <span
+                            class="material-symbols-outlined feature-icon text-danger">
+                            redeem
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-2 theme-text">
+                           {{ item.benefit }}
+                        </h5>
+
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="glass-card p-4 text-center">
+
+                <span
+                    class="material-symbols-outlined feature-icon text-danger"
+                    style="
+                        font-size:48px;
+                    ">
+                    redeem
+                </span>
+
+                <p class="mb-0 text-on-surface-variant">
+                    Benefit event belum tersedia.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
 </section>
 <!-- Location -->
 <section class="page-section map-section px-4" id="map">

@@ -432,6 +432,108 @@ function createQuestionItem(data = {}) {
     questionIndex++;
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    const benefitInput = document.getElementById("benefit-input");
+    const benefitTags = document.getElementById("benefit-tags");
+    const hiddenInput = document.getElementById("benefits-hidden");
+
+    let benefits = [];
+
+    // =========================
+    // LOAD EXISTING
+    // =========================
+    const benefitElement = document.getElementById("benefits-data");
+
+    if (benefitElement) {
+
+        try {
+
+            const parsedBenefits = JSON.parse(
+                benefitElement.textContent
+            );
+
+            if (Array.isArray(parsedBenefits)) {
+
+                benefits = parsedBenefits;
+
+            } else {
+
+                benefits = [];
+            }
+
+        } catch (error) {
+
+            benefits = [];
+        }
+    }
+
+    function renderBenefits() {
+
+        benefitTags.innerHTML = "";
+
+        benefits.forEach((benefit, index) => {
+
+            const tag = document.createElement("div");
+
+            tag.className = "benefit-tag";
+
+            tag.innerHTML = `
+                <span>${benefit}</span>
+                <button type="button" data-index="${index}">
+                    ×
+                </button>
+            `;
+
+            benefitTags.appendChild(tag);
+        });
+
+        hiddenInput.value = JSON.stringify(benefits);
+
+        bindRemove();
+    }
+
+    function bindRemove() {
+
+        document.querySelectorAll(".benefit-tag button")
+            .forEach(btn => {
+
+                btn.addEventListener("click", function () {
+
+                    const index = this.dataset.index;
+
+                    benefits.splice(index, 1);
+
+                    renderBenefits();
+                });
+            });
+    }
+
+    benefitInput.addEventListener("keydown", function (e) {
+
+        if (e.key === "Enter") {
+
+            e.preventDefault();
+
+            const value = this.value.trim();
+
+            if (!value) return;
+
+            benefits.push(value);
+
+            this.value = "";
+
+            renderBenefits();
+        }
+    });
+
+    // =========================
+    // INITIAL RENDER
+    // =========================
+    renderBenefits();
+
+});
+
 // =========================
 // HANDLE SUBMIT
 // =========================

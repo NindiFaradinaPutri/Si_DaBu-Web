@@ -75,6 +75,8 @@ hashid = Hashids(salt='silatama systems.', min_length=16)
 def event_list(request, id):
     assert isinstance(request, HttpRequest)
 
+    id = decoding_id(id)
+
     # ambil event
     event = Event.objects.filter(id=id).first()
 
@@ -283,6 +285,27 @@ def event_add(request):
                 # =========================
                 event = event_form.save()
 
+                benefits_json = request.POST.get(
+                    "benefits",
+                    "[]"
+                )
+
+                benefits = json.loads(benefits_json)
+
+                EventBenefit.objects.filter(
+                    id_event=event
+                ).delete()
+
+                for item in benefits:
+
+                    if str(item).strip():
+
+                        EventBenefit.objects.create(
+                            id_event=event,
+                            benefit=item,
+                            status=True
+                        )
+
                 # =========================
                 # SAVE PHOTO
                 # =========================
@@ -411,6 +434,8 @@ def event_edit(request, id):
 
     title = 'Edit Event'
 
+    id = decoding_id(id)
+
     event = Event.objects.filter(id=id).first()
 
     if not event:
@@ -441,6 +466,30 @@ def event_edit(request, id):
 
                 # update event
                 event = event_form.save()
+
+                benefits_json = request.POST.get(
+                    "benefits",
+                    "[]"
+                )
+
+                benefits = json.loads(
+                    benefits_json
+                )
+
+                EventBenefit.objects.filter(
+                    id_event=event
+                ).delete()
+
+                for item in benefits:
+
+                    if str(item).strip():
+
+                        EventBenefit.objects.create(
+                            id_event=event,
+                            benefit=item,
+                            status=True
+                        )
+
 
                 # handle photo
                 if request.FILES:
@@ -633,6 +682,18 @@ def event_edit(request, id):
         # =========================
         questions_data = []
 
+        benefits_data = []
+
+        event_benefits = EventBenefit.objects.filter(
+            id_event=event
+        )
+
+        for item in event_benefits:
+
+            benefits_data.append(
+                item.benefit
+            )
+
         form_obj = EventFormModel.objects.filter(
             id_event=event
         ).first()
@@ -672,7 +733,8 @@ def event_edit(request, id):
         'event': event,
 
         # TAMBAHAN
-        'questions_json': json.dumps(questions_data)
+        'questions_json': json.dumps(questions_data),
+        'benefits_json': benefits_data
     }
 
     return render(
@@ -682,6 +744,8 @@ def event_edit(request, id):
     )
 
 def event_delete(request, id):
+
+    id = decoding_id(id)
     event = Event.objects.filter(id=id).first()
 
     if request.method == "POST":

@@ -361,13 +361,13 @@ main { overflow-x: auto; }
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'event_edit' event.id %}">Edit</a>
+                                    <a class="dropdown-item" href="{% url 'event_edit' event.encrypt_id %}">Edit</a>
                                 </li>
                                 <li>
                                     <button class="dropdown-item text-danger"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteModal"
-                                            data-event-id="{{ event.id }}"
+                                            data-event-id="{{ event.encrypt_id }}"
                                             data-event-name="{{ event.name }}">
                                         Delete
                                     </button>
@@ -389,7 +389,7 @@ main { overflow-x: auto; }
 
                     <div class="d-flex justify-content-between align-items-center">
                         <a class="text-danger fw-bold text-decoration-none small"
-                           href="{% url 'event_list' event.id %}">
+                           href="{% url 'event_list' event.encrypt_id %}">
                             Manage Event
                             <span class="material-symbols-outlined small">arrow_forward</span>
                         </a>

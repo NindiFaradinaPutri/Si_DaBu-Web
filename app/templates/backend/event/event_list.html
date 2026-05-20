@@ -728,26 +728,61 @@
 <main class="container-fluid p-4" style="max-width: 1280px; margin: 0 auto;">
 <!-- Header Section -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
-<div>
-<h2 class="fw-bold mb-1"> {{ event.name }}</h2>
-<p class="text-secondary mb-0"> {{ event.information }}</p>
-</div>
-<div class="d-flex gap-2">
-    <button 
-    id="btnDownload"
-    data-event-id="{{ event.id }}"
-    class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
     
-    <span class="material-symbols-outlined fs-5">download</span>
-    Download Excel/CSV
+    <div class="d-flex align-items-center gap-3">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                {{ event.name }}
+            </h2>
+
+            <p class="text-secondary mb-0">
+                {{ event.information }}
+            </p>
+        </div>
+
+        <!-- SHARE BUTTON -->
+        <button
+    type="button"
+    class="btn d-flex align-items-center justify-content-center rounded-circle border-0"
+    style="
+        width:48px;
+        height:48px;
+        background:#dc3545;
+        color:white;
+        box-shadow:0 6px 18px rgba(220,53,69,.25);
+    "
+    data-bs-toggle="modal"
+    data-bs-target="#shareInvitationModal">
+
+    <span class="material-symbols-outlined">
+        share
+    </span>
+
 </button>
 
-    <a href="{% url 'participant_upload' event.id %}"
-   class="btn btn-primary d-flex align-items-center gap-2 px-3">
-    <span class="material-symbols-outlined fs-5">cloud_upload</span>
-    Upload Google Form
-</a>
-</div>
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <button 
+            id="btnDownload"
+            data-event-id="{{ event.id }}"
+            class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
+
+            <span class="material-symbols-outlined fs-5">download</span>
+            Download Excel/CSV
+        </button>
+
+        <a href="{% url 'participant_upload' event.encrypt_id %}"
+           class="btn btn-primary d-flex align-items-center gap-2 px-3">
+
+            <span class="material-symbols-outlined fs-5">cloud_upload</span>
+            Upload Google Form
+        </a>
+
+    </div>
+
 </div>
 <!-- Stats Grid -->
 <!-- Stats Section -->
@@ -1238,6 +1273,133 @@
 
 </div>
 </main>
+
+
+<!-- SHARE MODAL -->
+<div class="modal fade"
+     id="shareInvitationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg"
+             style="border-radius:20px;">
+
+            <div class="modal-header border-0 pb-0">
+
+                <h5 class="modal-title fw-bold">
+                    Share Invitation
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="text-secondary small mb-3">
+                    Bagikan link invitation event ke peserta.
+                </p>
+
+                <!-- URL -->
+                <div class="input-group mb-4">
+
+                    <input type="text"
+                           id="invitationLink"
+                           class="form-control"
+                           value="{{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                           readonly>
+
+                    <button class="btn btn-danger"
+                            type="button"
+                            id="copyInvitationBtn">
+
+                        Salin
+                    </button>
+
+                </div>
+
+                <!-- SHARE APPS -->
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+
+                    <!-- WhatsApp -->
+                   <a href="https://wa.me/?text={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#25D366;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(37,211,102,.25);
+                        ">
+
+                            <i class="fab fa-whatsapp"
+                            style="font-size:20px;"></i>
+
+                            WhatsApp
+                        </a>
+
+                        <!-- Instagram -->
+                        <button type="button"
+                                onclick="shareToInstagram()"
+                                class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                                style="
+                                    background:linear-gradient(
+                                        45deg,
+                                        #f09433,
+                                        #e6683c,
+                                        #dc2743,
+                                        #cc2366,
+                                        #bc1888
+                                    );
+                                    font-weight:600;
+                                    box-shadow:0 6px 18px rgba(220,39,67,.25);
+                                ">
+
+                            <i class="fab fa-instagram"
+                            style="font-size:20px;"></i>
+
+                            Instagram
+                        </button>
+
+                                            <!-- Telegram -->
+                                            <a href="https://t.me/share/url?url={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#229ED9;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(34,158,217,.25);
+                        ">
+
+                            <i class="fab fa-telegram-plane"
+                            style="font-size:20px;"></i>
+
+                            Telegram
+                        </a>
+
+                    <!-- Email -->
+                    <a href="mailto:?subject={{ event.name }}&body={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                       class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
+
+                        <span class="material-symbols-outlined">
+                            mail
+                        </span>
+
+                        Email
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <!-- end: page -->
 {% endblock %}
 
@@ -1286,9 +1448,97 @@ document.getElementById("btnDownload").addEventListener("click", function() {
 <script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
 <script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
 <script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
 <script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>
 <script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>
 <script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+document
+    .getElementById('copyInvitationBtn')
+    .addEventListener('click', function () {
+
+        const input =
+            document.getElementById('invitationLink');
+
+        input.select();
+        input.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(input.value);
+
+        this.innerText = 'Tersalin!';
+
+        setTimeout(() => {
+
+            this.innerText = 'Salin';
+
+        }, 2000);
+
+    });
+
+</script>
+
+
+
+<script>
+
+function shareToInstagram() {
+
+    const input =
+        document.getElementById(
+            'invitationLink'
+        );
+
+    input.removeAttribute('readonly');
+
+    input.select();
+
+    input.setSelectionRange(
+        0,
+        99999
+    );
+
+    const copied =
+        document.execCommand('copy');
+
+    input.setAttribute(
+        'readonly',
+        true
+    );
+
+    if (copied) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Link berhasil disalin',
+            text: 'Paste di Instagram Story / DM',
+            confirmButtonText: 'Buka Instagram'
+        }).then(() => {
+
+            window.location.href =
+                'instagram://app';
+
+            setTimeout(function () {
+
+                window.open(
+                    'https://instagram.com/',
+                    '_blank'
+                );
+
+            }, 1500);
+
+        });
+
+    } else {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal menyalin link'
+        });
+    }
+}
+
+</script>
 {% endblock %}

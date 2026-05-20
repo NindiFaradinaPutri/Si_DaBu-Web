@@ -4,272 +4,477 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-    .event-section {
-        padding: 80px 0;
-        background: #ffffff;
+
+    .event-section{
+        padding:80px 0;
+        background:#ffffff;
     }
 
-    .event-card {
-        border: 1px solid #e9ecef;
-        border-radius: 20px;
-        overflow: hidden;
-        background: white;
-        height: 100%;
-        transition: all 0.3s ease;
+    .event-card{
+        border:1px solid #e9ecef;
+        border-radius:20px;
+        overflow:hidden;
+        background:white;
+        height:100%;
+        transition:all .3s ease;
     }
 
-    .event-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    .event-card:hover{
+        transform:translateY(-6px);
+        box-shadow:0 15px 35px rgba(0,0,0,.08);
     }
 
-    .event-image-wrapper {
-        position: relative;
-        height: 240px;
-        overflow: hidden;
+    .event-image-wrapper{
+        position:relative;
+        height:240px;
+        overflow:hidden;
     }
 
-    .event-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .event-image{
+        width:100%;
+        height:100%;
+        object-fit:cover;
     }
 
-    .status-badge {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        z-index: 2;
+    .status-badge{
+        position:absolute;
+        top:20px;
+        left:20px;
+        z-index:2;
     }
 
-    .status-badge span {
-        padding: 6px 14px;
-        border-radius: 30px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
+    .status-badge span{
+        padding:6px 14px;
+        border-radius:30px;
+        font-size:12px;
+        font-weight:600;
+        text-transform:uppercase;
     }
 
-    /* LIVE */
-    .badge-active {
-        background: #d1fae5;
-        color: #065f46;
+    .badge-active{
+        background:#d1fae5;
+        color:#065f46;
     }
 
-    /* INCOMING */
-    .badge-scheduled {
-        background: #fff3cd;
-        color: #856404;
+    .badge-scheduled{
+        background:#fff3cd;
+        color:#856404;
     }
 
-    /* FINISHED */
-    .badge-draft {
-        background: #f1f3f5;
-        color: #495057;
+    .badge-draft{
+        background:#f1f3f5;
+        color:#495057;
     }
 
-    .event-date {
-        color: #ba0013;
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: uppercase;
+    .event-date{
+        color:#ba0013;
+        font-size:14px;
+        font-weight:600;
+        text-transform:uppercase;
     }
 
-    .event-location {
-        color: #6c757d;
-        font-size: 14px;
+    .event-location{
+        color:#6c757d;
+        font-size:14px;
     }
 
-    .btn-event {
-        background: #ba0013;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
+    .btn-event{
+        background:#ba0013;
+        color:white;
+        border:none;
+        border-radius:10px;
+        padding:10px 20px;
+        font-weight:600;
+        text-decoration:none;
+        display:inline-block;
+        text-align:center;
     }
 
-    .btn-event:hover {
-        background: #93000d;
-        color: white;
+    .btn-event:hover{
+        background:#93000d;
+        color:white;
     }
 
-    .section-title {
-        font-size: 32px;
-        font-weight: 700;
+    .section-title{
+        font-size:32px;
+        font-weight:700;
     }
 
-    .section-subtitle {
-        color: #6c757d;
+    .section-subtitle{
+        color:#6c757d;
     }
 
-    .icon-btn {
-        width: 45px;
-        height: 45px;
-        border: 1px solid #dee2e6;
-        border-radius: 12px;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .icon-btn{
+        width:45px;
+        height:45px;
+        border:1px solid #dee2e6;
+        border-radius:12px;
+        background:white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
 
-    .icon-btn:hover {
-        background: #f8f9fa;
+    .icon-btn:hover{
+        background:#f8f9fa;
     }
 
-    .btn-outline-custom {
-        border: 2px solid #ba0013;
-        color: #ba0013;
-        background: white;
-        padding: 12px 28px;
-        border-radius: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        transition: all 0.3s ease;
-        text-decoration: none;
+    .btn-outline-custom{
+        border:2px solid #ba0013;
+        color:#ba0013;
+        background:white;
+        padding:12px 28px;
+        border-radius:10px;
+        font-weight:600;
+        text-transform:uppercase;
+        transition:all .3s ease;
+        text-decoration:none;
     }
 
-    .btn-outline-custom:hover {
-        background: #ba0013;
-        color: white;
+    .btn-outline-custom:hover{
+        background:#ba0013;
+        color:white;
     }
 
-    .material-symbols-outlined {
-        font-size: 20px;
-        vertical-align: middle;
+    .material-symbols-outlined{
+        font-size:20px;
+        vertical-align:middle;
     }
+
 </style>
 
+<!-- ====================================== -->
+<!-- UPCOMING EVENTS -->
+<!-- ====================================== -->
 
 <section class="event-section">
+
     <div class="container">
 
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-5">
+
             <div>
-                <h2 class="section-title">Upcoming Events</h2>
+
+                <h2 class="section-title">
+                    Upcoming Events
+                </h2>
+
                 <p class="section-subtitle mb-0">
                     Select an event to manage attendance and personnel.
                 </p>
+
             </div>
 
             <div class="d-flex gap-2">
+
                 <button class="icon-btn">
+
                     <span class="material-symbols-outlined">
-                        filter_list
+                        event
                     </span>
+
                 </button>
 
                 <button class="icon-btn">
+
                     <span class="material-symbols-outlined">
                         grid_view
                     </span>
+
                 </button>
+
             </div>
+
         </div>
 
-
-        <!-- Dynamic Event Cards -->
+        <!-- Cards -->
         <div class="row g-4">
 
-            {% for item in event_data %}
+            {% for item in upcoming_event_data %}
+
             <div class="col-md-6 col-lg-4">
+
                 <div class="event-card">
 
                     <!-- Image -->
                     <div class="event-image-wrapper">
 
                         {% if item.photo and item.photo.photo %}
-                            <img 
+
+                            <img
                                 src="{{ item.photo.photo.url }}"
                                 class="event-image"
                                 alt="{{ item.event.name }}"
                             >
+
                         {% else %}
-                            <img 
+
+                            <img
                                 src="{% static 'images/default-event.jpg' %}"
                                 class="event-image"
                                 alt="Default Event"
                             >
+
                         {% endif %}
 
-                        <!-- Status Badge -->
+                        <!-- Status -->
                         <div class="status-badge">
+
                             <span class="{{ item.badge_class }}">
                                 {{ item.status }}
                             </span>
+
                         </div>
+
                     </div>
 
                     <!-- Content -->
                     <div class="p-4">
 
-                        <!-- Date -->
                         <div class="event-date mb-2">
+
                             <i class="fa-solid fa-calendar-days me-1 text-danger"></i>
+
                             {{ item.event.date|date:"j F Y" }}
+
                         </div>
 
-                        <!-- Event Name -->
                         <h5 class="fw-bold mb-3">
                             {{ item.event.name }}
                         </h5>
 
-                        <!-- Location -->
                         <div class="event-location mb-3">
+
                             <i class="fa-solid fa-location-dot me-1 text-primary"></i>
+
                             {{ item.event.location }}
+
                         </div>
 
-                        <!-- Time -->
                         {% if item.event.time %}
+
                         <div class="event-location mb-4">
+
                             <i class="fa-solid fa-clock me-1 text-warning"></i>
+
                             {{ item.event.time|time:"H:i" }} WITA
+
                         </div>
+
                         {% endif %}
 
-                        <!-- Button -->
-                        <a href="{% url 'event' item.event.id %}" class="btn btn-event w-100">
+                        <a
+                            href="{% url 'event' item.event.encrypt_id %}"
+                            class="btn btn-event w-100">
+
                             View Detail
+
                         </a>
 
                     </div>
+
                 </div>
+
             </div>
+
             {% empty %}
 
-            <!-- Jika tidak ada event -->
             <div class="col-12 text-center">
+
                 <div class="py-5">
-                    <h4 class="fw-bold">Belum Ada Event</h4>
-                    <p class="text-muted">
-                        Event akan muncul di sini setelah ditambahkan.
+
+                    <h4 class="fw-bold">
+                        Belum Ada Upcoming Event
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Event mendatang akan muncul di sini.
                     </p>
+
                 </div>
+
             </div>
 
             {% endfor %}
 
         </div>
 
-
-        <!-- View More -->
+        <!-- Button -->
         <div class="text-center mt-5">
-            <a href="/list_event/" 
-               class="btn btn-outline-custom d-inline-flex align-items-center gap-2">
-                
+
+            <a
+                href="/list_event/"
+                class="btn btn-outline-custom d-inline-flex align-items-center gap-2">
+
                 Lihat Selengkapnya
-                
+
                 <span class="material-symbols-outlined">
                     arrow_forward
                 </span>
+
             </a>
+
         </div>
 
     </div>
+
+</section>
+
+<!-- ====================================== -->
+<!-- FINISHED EVENTS -->
+<!-- ====================================== -->
+
+<section class="event-section pt-0">
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-5">
+
+            <div>
+
+                <h2 class="section-title">
+                    Finished Events
+                </h2>
+
+                <p class="section-subtitle mb-0">
+                    Explore previously completed events and activities.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Cards -->
+        <div class="row g-4">
+
+            {% for item in finished_event_data %}
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="event-card">
+
+                    <!-- Image -->
+                    <div class="event-image-wrapper">
+
+                        {% if item.photo and item.photo.photo %}
+
+                            <img
+                                src="{{ item.photo.photo.url }}"
+                                class="event-image"
+                                alt="{{ item.event.name }}"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="{% static 'images/default-event.jpg' %}"
+                                class="event-image"
+                                alt="Default Event"
+                            >
+
+                        {% endif %}
+
+                        <!-- Status -->
+                        <div class="status-badge">
+
+                            <span class="{{ item.badge_class }}">
+                                {{ item.status }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-4">
+
+                        <div class="event-date mb-2">
+
+                            <i class="fa-solid fa-calendar-days me-1 text-danger"></i>
+
+                            {{ item.event.date|date:"j F Y" }}
+
+                        </div>
+
+                        <h5 class="fw-bold mb-3">
+                            {{ item.event.name }}
+                        </h5>
+
+                        <div class="event-location mb-3">
+
+                            <i class="fa-solid fa-location-dot me-1 text-primary"></i>
+
+                            {{ item.event.location }}
+
+                        </div>
+
+                        {% if item.event.time %}
+
+                        <div class="event-location mb-4">
+
+                            <i class="fa-solid fa-clock me-1 text-warning"></i>
+
+                            {{ item.event.time|time:"H:i" }} WITA
+
+                        </div>
+
+                        {% endif %}
+
+                        <a
+                            href="{% url 'event' item.event.encrypt_id %}"
+                            class="btn btn-event w-100">
+
+                            View Detail
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="col-12 text-center">
+
+                <div class="py-5">
+
+                    <h4 class="fw-bold">
+                        Belum Ada Event Selesai
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Event selesai akan muncul di sini.
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- Button -->
+        <div class="text-center mt-5">
+
+            <a
+                href="/list_event/"
+                class="btn btn-outline-custom d-inline-flex align-items-center gap-2">
+
+                Lihat Selengkapnya
+
+                <span class="material-symbols-outlined">
+                    arrow_forward
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
 </section>

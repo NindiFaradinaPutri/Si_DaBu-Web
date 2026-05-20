@@ -954,7 +954,7 @@ uploadBtn.addEventListener("click", function(){
         text: data.message,
         confirmButtonColor: '#E31E24'
     }).then(() => {
-        window.location.href = "/event/list/{{ event.id }}/";
+        window.location.href = "{% url 'event_list' event.encrypt_id %}";
     });
 
         }else{

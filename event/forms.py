@@ -42,7 +42,8 @@ class EventForm(forms.ModelForm):
             'location_map',
             'information',
             'is_form',
-            'url_form'
+            'url_form',
+            'capacity'
         ]
 
         labels = {
@@ -54,6 +55,7 @@ class EventForm(forms.ModelForm):
             'information': 'Informasi Event',
             'is_form': 'Use Form?',
             'url_form': 'Link Google Form',
+            'capacity': 'Capacity',
         }
 
         widgets = {
@@ -114,6 +116,14 @@ class EventForm(forms.ModelForm):
                         'placeholder': 'https://your-google-form-link.com'
                     }
                 ),
+
+                 'capacity': forms.NumberInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Contoh: 100',
+            'min': '1'
+        }
+    ),
         }
 
     field_order = [
@@ -124,7 +134,8 @@ class EventForm(forms.ModelForm):
         'location_map',
         'information',
         'is_form',
-        'url_form'
+        'url_form',
+        'capacity'
 
     ]
 

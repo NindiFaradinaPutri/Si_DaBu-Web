@@ -369,14 +369,15 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 <div class="d-flex gap-2 mt-4">
 
                     {% if item.can_register %}
-                        <a href="{% url 'event' item.event.id %}"
+                        <a href="{% url 'event' item.event.encrypt_id %}"
                            class="btn {{ item.button_class }} flex-fill">
                             {{ item.button_text }}
                         </a>
                     {% else %}
-                        <button class="btn btn-secondary flex-fill" disabled>
-                            Registration Closed
-                        </button>
+                        <a href="{% url 'event' item.event.encrypt_id %}"
+                           class="btn btn-primary-custom flex-fill">
+                            View Detail
+                        </a>
                     {% endif %}
 
             </div>
