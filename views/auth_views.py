@@ -54,6 +54,10 @@ from participant.models import Participant
 from rest_framework.authtoken.models import Token
 from django.db.models.functions import Replace
 from django.db.models import Value
+#Notifications
+from django.views.decorators.http import require_POST
+from participant.models import Notifications
+
 
 #Set Loggin
 import logging
@@ -1263,4 +1267,40 @@ def admin_list(request):
                'profil_filter': profil_filter
                }
     return render(request,'backend-admin/user/user_list.html',context)
+
+
+@login_required
+def get_notifications(request):
+    """Ambil semua notifikasi unread"""
+    notifs = Notifications.objects.filter(
+        is_read=False  # tidak perlu filter by user karena event tidak punya owner
+    ).select_related('participant_id', 'event_id').order_by('-updated_date')[:20]
+
+    data = []
+    for n in notifs:
+        data.append({
+            'id': n.id,
+            'participant_name': n.participant_id.name,
+            'event_name': n.event_id.name,
+            'event_id': n.event_id.encrypt_id,
+            'updated_date': n.updated_date.strftime('%d %b %Y, %H:%M'),
+            'is_read': n.is_read,
+        })
+
+    unread_count = Notifications.objects.filter(is_read=False).count()
+
+    return JsonResponse({'notifications': data, 'unread_count': unread_count})
+
+
+@login_required
+@require_POST
+def mark_notification_read(request, notif_id):
+    """Mark notifikasi sebagai sudah dibaca"""
+    try:
+        notif = Notifications.objects.get(id=notif_id)
+        notif.is_read = True
+        notif.save()
+        return JsonResponse({'success': True})
+    except Notifications.DoesNotExist:
+        return JsonResponse({'success': False}, status=404)
 
