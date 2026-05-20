@@ -1271,10 +1271,10 @@ def admin_list(request):
 
 @login_required
 def get_notifications(request):
-    """Ambil semua notifikasi unread"""
-    notifs = Notifications.objects.filter(
-        is_read=False  # tidak perlu filter by user karena event tidak punya owner
-    ).select_related('participant_id', 'event_id').order_by('-updated_date')[:20]
+    # Ambil semua notif (read & unread), max 20 terbaru
+    notifs = Notifications.objects.select_related(
+        'participant_id', 'event_id'
+    ).order_by('-updated_date')[:20]
 
     data = []
     for n in notifs:
@@ -1287,10 +1287,10 @@ def get_notifications(request):
             'is_read': n.is_read,
         })
 
+    # Badge hanya hitung yang belum dibaca
     unread_count = Notifications.objects.filter(is_read=False).count()
 
     return JsonResponse({'notifications': data, 'unread_count': unread_count})
-
 
 @login_required
 @require_POST

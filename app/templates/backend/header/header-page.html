@@ -178,18 +178,18 @@ function renderNotifications(notifications) {
         `;
 
         // Klik card → mark read dulu, lalu redirect ke event
-        card.addEventListener('click', function () {
-            const notifId = this.dataset.notifId;
-            const eventId = this.dataset.eventId;
-            const isRead  = this.dataset.isRead === 'true';
+		card.addEventListener('click', function () {
+			const notifId = this.dataset.notifId;
+			const eventId = this.dataset.eventId;
+			const isRead  = this.dataset.isRead === 'true';
 
-            if (!isRead) {
-                markAsRead(notifId, this, eventId);
-            } else {
-                // Sudah pernah dibaca, langsung redirect
-                window.location.href = `/event/list/${eventId}/`;
-            }
-        });
+			if (!isRead) {
+				markAsRead(notifId, this, eventId);
+			} else {
+				// Sudah dibaca, langsung ke event
+				window.location.href = `/event/list/${eventId}/`;
+			}
+		});
 
         list.appendChild(card);
     });
@@ -207,20 +207,19 @@ function markAsRead(notifId, cardEl, eventId) {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            // Ubah card → putih, hapus dot biru
-            cardEl.style.background       = '#fff';
-            cardEl.dataset.isRead         = 'true';
+            // Ubah card jadi putih, hapus dot biru
+            cardEl.style.background   = '#fff';
+            cardEl.dataset.isRead     = 'true';
             document.getElementById(`dot-${notifId}`).style.background = 'transparent';
 
             // Kurangi badge
             decreaseBadge();
 
-            // Redirect ke event
+            // Redirect ke event di tab yang sama
             window.location.href = `/event/list/${eventId}/`;
         }
     })
     .catch(() => {
-        // Tetap redirect meski request gagal
         window.location.href = `/event/list/${eventId}/`;
     });
 }
