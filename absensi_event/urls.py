@@ -29,6 +29,7 @@ from views.mobile import mobile_auth_views as mobile_auth, mobile_event_views as
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
+from participant import ajaxs as participant_ajaxs
 from event import ajaxs as event_ajaxs
 
 urlpatterns = [
@@ -113,6 +114,7 @@ urlpatterns = [
     ),
     # path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
     re_path(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
+    re_path(r'^ajax/update_participant_status/$', participant_ajaxs.ajax_update_participant_status,name="ajax_update_participant_status"),
     re_path(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
     path('doorprize/', even.doorprize, name='doorprize'),
     path('ajax/delete_participant_wheel/',even_ajaxs.delete_participant_wheel,name='delete_participant_wheel'),

@@ -37,6 +37,7 @@ class Participant(models.Model):
     unique_user = models.UUIDField(default=uuid4, editable=False, unique=True)
     id_event = models.ForeignKey(Event,on_delete=models.CASCADE, null=False, blank=False)
     qr_code = models.ImageField(upload_to=path_qr_code, null=True, blank=True)
+    badge_is_printed = models.BooleanField(default=False)
     is_winner = models.BooleanField(default=False)
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)
     update_date = models.DateTimeField(auto_now=True, blank=False)

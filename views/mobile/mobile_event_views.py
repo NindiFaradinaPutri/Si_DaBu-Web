@@ -121,14 +121,18 @@ def list_events(request):
 @api_view(['GET'])
 def event_detail(request):
     if request.method == 'GET':
-        uuid = request.headers.get("x-eventuuid")
+        uuid = request.headers.get("x-eventuuid", "cde2f177-275d-4c40-a0b3-8b9839551046")
+        search_participant = str(request.headers.get("x-search", ""))
         try:
             page = int(request.GET.get("page", 1))
             limit = int(request.GET.get("limit", 15))
 
             event = Event.objects.filter(unique_name = uuid).first()
             
-            participants_query = Participant.objects.filter(id_event=event).order_by("status_user_id", "name")
+            if search_participant != "":
+                participants_query = Participant.objects.filter(id_event=event, name__icontains=search_participant).order_by("status_user_id", "name")
+            else:
+                participants_query = Participant.objects.filter(id_event=event).order_by("status_user_id", "name")
             paginator = Paginator(participants_query, limit)
             participants_page = paginator.get_page(page)
             event = ListofEventSerializer(event, many=False)

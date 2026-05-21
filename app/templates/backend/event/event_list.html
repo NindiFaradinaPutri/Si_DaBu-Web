@@ -680,6 +680,120 @@
             font-size: 0.75rem;
             color: #94a3b8;
         }
+
+        /* Modal */
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .preview-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .participant-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .participant-name {
+            text-align: start;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 0;
+            color: var(--text-dark);
+        }
+
+        .current-status-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .current-status-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #198754;
+        }
+        
+        .current-status-value-alt {
+            font-size: 13px;
+            font-weight: 700;
+            color: #871919; 
+        }
+
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            background-color: #FCE8E9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 16px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            text-align: start;
+        }
+
+        .status-option {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+            text-align: start;
+        }
+
+        .status-option:hover {
+            background-color: #fcfcfc;
+        }
+
+        .status-option.selected {
+            border: 2px solid var(--primary-color);
+            background-color: #fff;
+        }
+
+        .status-option .info {
+            flex-grow: 1;
+        }
+
+        .status-option .title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .status-option.selected .title {
+            color: var(--primary-color);
+        }
+
+        .status-option .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-option .radio-icon {
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .status-option.selected .radio-icon {
+            color: var(--primary-color);
+        }
+
 </style>
 <!-- start: page -->
 <div id="main-content">
@@ -748,7 +862,7 @@
 <!-- Stats Grid -->
 <!-- Stats Section -->
 <div class="row g-3 mb-5 stats-wrapper">
-
+    {{ q_status|json_script:"status-data" }}
     <!-- Total Guests -->
     <div class="col-12 col-md-6 col-xl-3">
         <div class="stat-card h-100">
@@ -1013,33 +1127,33 @@
                             {% with status=participant.status_user_id.status_name %}
                                 
                                 {% if status == "Present" %}
-                                    <span class="badge px-3 py-2 rounded-pill"
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Present')"><span class="badge px-3 py-2 rounded-pill"
                                           style="background:#28a745; color:white;">
                                         Present
-                                    </span>
+                                    </span></a>
 
                                 {% elif status == "Register" %}
-                                    <span class="badge px-3 py-2 rounded-pill"
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Register')"><span class="badge px-3 py-2 rounded-pill"
                                           style="background:#ffc107; color:black;">
                                         Register
-                                    </span>
+                                    </span></a>
 
                                 {% elif status == "Absent" %}
-                                    <span class="badge px-3 py-2 rounded-pill"
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Absent')"><span class="badge px-3 py-2 rounded-pill"
                                           style="background:#dc3545; color:white;">
                                         Absent
-                                    </span>
+                                    </span></a>
 
                                 {% elif status == "Cancel" %}
-                                    <span class="badge px-3 py-2 rounded-pill"
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Cancel')"><span class="badge px-3 py-2 rounded-pill"
                                           style="background:#dc3545; color:white;">
                                         Cancel
-                                    </span>
+                                    </span></a>
 
                                 {% else %}
-                                    <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','{{ status }}')"><span class="badge bg-secondary px-3 py-2 rounded-pill">
                                         {{ status }}
-                                    </span>
+                                    </span></a>
 
                                 {% endif %}
 
@@ -1050,7 +1164,7 @@
 
                         <td>
                             <a href="/event/print-badge/{{participant.encrypt_id}}"
-                               class="badge bg-danger d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
+                               class="badge {% if participant.badge_is_printed %}bg-success{% else %}bg-danger{% endif %} d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
 
                                 <span class="material-symbols-outlined"
                                       style="font-size:18px;">
@@ -1383,6 +1497,102 @@
 {% endblock %}
 
 {% block query %}
+
+<script>
+    async function openUpdateStatusForm(id ,name, current_status) {
+        const statuses = JSON.parse(
+        document.getElementById('status-data').textContent
+        );
+
+        console.log(statuses);
+        var initial = name.slice(0, 2).toUpperCase()
+
+        const statusHtml = statuses.map((status, index) => `
+        <option value="${status}" ${status == current_status ? 'selected' : ''}>${status}</option>
+        `).join('');
+
+        const result = await Swal.fire({
+            title: 'Update Attendance Status',
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            showLoaderOnConfirm: true,
+            html: `
+            <div class="preview-container">
+                    <div class="modal-body">
+                        <div class="participant-info">
+                            <div class="avatar avatar-circle bg-danger-subtle text-danger">
+                                ${initial}
+                            </div>
+                            <div>
+                                <p class="participant-name">${name}</p>
+                                <span class="current-status-label">Current status: </span>
+                                <span class="${current_status ==  'Present'? 'current-status-value' : 'current-status-value-alt'}">${current_status}</span>
+                            </div>
+                        </div>
+            
+                        <p class="section-label">Select new status:</p>
+            
+                        <div class="form-group">
+                            <select class="form-control" id="new-status">
+                                ${statusHtml}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `,
+        
+            preConfirm: () => {
+                var new_status = document.getElementById('new-status').value;
+                return {
+                    new_status: new_status
+                }
+            }
+        });
+        
+        var new_status = result.value.new_status
+        if(new_status != current_status){
+            Swal.fire({
+                title: 'Updating...',
+                text: 'Please wait',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            $.ajax({
+                url: "/ajax/update_participant_status/",
+                type: 'POST',
+                data: { id: id, new_status: new_status},
+                dataType: "json",
+                success: function(data) {
+                    if(data.status === "Ok"){
+                        Swal.fire({
+                            title: "Success",
+                            text: "Status updated. Reloading the page now",
+                            icon: "success"
+                        });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }else{
+                        Swal.fire({
+                            title: "Failed",
+                            text: "An error occurred. please try again.",
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Failed",
+                        text: "An error occurred. please try again.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    }
+</script>
 
 <script>
 document.getElementById("btnDownload").addEventListener("click", function() {

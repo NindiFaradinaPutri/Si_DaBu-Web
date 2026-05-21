@@ -232,6 +232,13 @@ def event_list(request, id):
 
     participants = paginator.get_page(page_number)
 
+    q_status = list(
+        StatusParticipant.objects
+        .all()
+        .order_by("status_name")
+        .values_list("status_name", flat=True)
+    )
+
     context = {
         "event": event,
         "participants": participants,
@@ -239,6 +246,7 @@ def event_list(request, id):
         "checked_in": checked_in,
         "remaining": remaining,
         "attendance_rate": attendance_rate,
+        "q_status": q_status,
 
         # 🔥 tambahan
         "dynamic_headers": dynamic_headers,
