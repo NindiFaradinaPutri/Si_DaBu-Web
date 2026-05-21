@@ -46,7 +46,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.utils.safestring import SafeString
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes
 
 #Test Exception
 from django.http import Http404
