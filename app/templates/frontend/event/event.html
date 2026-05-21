@@ -44,6 +44,40 @@
         line-height: 1.2;
     }
 
+    .form-control,
+    .form-select {
+        border: 2px solid #000 !important;
+        border-radius: 8px;
+        box-shadow: none !important;
+    }
+
+    /* Saat focus */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #000 !important;
+        box-shadow: 0 0 0 0.12rem rgba(0,0,0,0.2) !important;
+    }
+
+    /* Radio & checkbox */
+    .form-check-input {
+        border: 2px solid #000 !important;
+    }
+
+    /* File upload button */
+    input[type="file"]::file-selector-button {
+       
+        background: #fff;
+        color: #000;
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin-right: 10px;
+    }
+
+    /* Label lebih jelas */
+    .form-label {
+        color: #000;
+    }
+
     .event-meta-box {
         background: #f1f3f5;
         border-radius: 16px;
