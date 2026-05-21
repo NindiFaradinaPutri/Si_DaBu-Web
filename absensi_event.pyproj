@@ -147,9 +147,11 @@
   <ItemGroup>
     <Folder Include="absensi_event\migrations\" />
     <Folder Include="app\static\media\event\" />
+    <Folder Include="app\static\media\poster\" />
     <Folder Include="app\templates\backend\event\" />
     <Folder Include="app\templates\frontend\event\" />
     <Folder Include="app\templates\frontend\kegiatan\" />
+    <Folder Include="app\templates\frontend\invitation\" />
     <Folder Include="banner\migrations\" />
     <Folder Include="banner\migrations\__pycache__\" />
     <Folder Include="app\" />
@@ -682,12 +684,22 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\app\js\absensi_form.js" />
+    <Content Include="app\static\frontend\css\invitation.css" />
+    <Content Include="app\static\frontend\css\wallpaper_6.css" />
+    <Content Include="app\static\frontend\js\kegiatan_akuntasi_show_v5.js" />
     <Content Include="app\static\frontend\js\wallpaper_v5.js" />
     <Content Include="app\static\media\event\WhatsApp_Image_2026-04-27_at_08.jpeg" />
+    <Content Include="app\static\media\poster\default_poster.jpeg" />
     <Content Include="app\templates\backend\event\event_form.html" />
     <Content Include="app\templates\backend\event\event_list.html" />
     <Content Include="app\templates\frontend\event\event.html" />
     <Content Include="app\templates\frontend\event\list_event.html" />
+    <Content Include="app\templates\frontend\invitation\header.html" />
+    <Content Include="app\templates\frontend\invitation\cover.html" />
+    <Content Include="app\templates\frontend\invitation\invitation-layout.html" />
+    <Content Include="app\templates\frontend\invitation\footer.html" />
+    <Content Include="app\templates\frontend\invitation\navigation.html" />
+    <Content Include="app\templates\frontend\invitation\main.html" />
     <Content Include="app\templates\frontend\kegiatan\kegiatan_akuntasi_show.html" />
     <Content Include="app\templates\template\forms\tmp_absensi_form.html" />
     <Content Include="banner\migrations\__pycache__\0001_initial.cpython-39.pyc" />
@@ -1604,8 +1616,6 @@
     <Content Include="app\static\font\icomoon\icomoon.ttf" />
     <Content Include="app\static\font\icomoon\icomoon.woff" />
     <Content Include="app\static\font\icomoon\style.css" />
-    <Content Include="app\static\frontend\css\wallpaper_5.css" />
-    <Content Include="app\static\frontend\js\wallpaper_v3.js" />
     <Content Include="app\static\frontend\js\general_ledger_show_v5.js" />
     <Content Include="app\static\fuelux\css\spinner.css" />
     <Content Include="app\static\fuelux\js\spinner.js" />

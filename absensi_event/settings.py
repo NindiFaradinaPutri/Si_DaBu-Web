@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'portfolio',
     'profile',
     'team',
-    'participant',
+    'participant.apps.ParticipantConfig',
 
     'django_tables2',
     'django_filters',

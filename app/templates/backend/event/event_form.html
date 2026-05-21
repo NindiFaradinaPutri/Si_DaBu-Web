@@ -19,6 +19,25 @@
         overflow-x: auto;
     }
 
+    .benefit-tag {
+    background: #E31E24;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.benefit-tag button {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
 
 
     body {
@@ -101,24 +120,6 @@
         justify-content: space-between;
     }
 
-    /* Component Specifics */
-    .search-bar {
-        background-color: #f3f4f6;
-        border-radius: 0.5rem;
-        width: 384px;
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-    }
-
-        .search-bar input {
-            background: transparent;
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 0.875rem;
-            margin-left: 0.5rem;
-        }
 
     .btn-primary {
         background-color: var(--silatama-red);
@@ -681,29 +682,6 @@
 </style>
 
 
-<header class="top-app-bar">
-    <div class="search-bar">
-        <span class="material-symbols-outlined text-muted">search</span>
-        <input placeholder="Search events or guests..." type="text" />
-    </div>
-    <div class="d-flex align-items-center gap-3">
-        <button class="btn btn-link text-muted p-2 position-relative">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
-        </button>
-        <button class="btn btn-link text-muted p-2">
-            <span class="material-symbols-outlined">settings</span>
-        </button>
-        <div class="vr mx-2" style="height: 32px;"></div>
-        <div class="d-flex align-items-center gap-2">
-            <div class="text-end d-none d-md-block">
-                <p class="mb-0 fw-bold small">Silatama Admin</p>
-                <p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
-            </div>
-            <img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40" />
-        </div>
-    </div>
-</header>
 
 
 <form method="POST" enctype="multipart/form-data"id="event-form">
@@ -755,6 +733,11 @@
                             {{ event_form.location }}
                         </div>
 
+                        <div class="col-12">
+                            <label class="form-label">Capacity</label>
+                            {{ event_form.capacity }}
+                        </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Event Date</label>
                             {{ event_form.date }}
@@ -769,6 +752,26 @@
                             <label class="form-label">Google Maps Link</label>
                             {{ event_form.location_map }}
                         </div>
+                        <div class="col-12 mt-3">
+    <label class="form-label">Event Benefits</label>
+
+    <input
+        type="text"
+        id="benefit-input"
+        class="form-control"
+        placeholder="Ketik benefit lalu tekan Enter">
+
+    <small class="text-muted">
+        Tekan Enter untuk menambahkan benefit
+    </small>
+
+    <div id="benefit-tags" class="d-flex flex-wrap gap-2 mt-3"></div>
+
+    <input
+        type="hidden"
+        name="benefits"
+        id="benefits-hidden">
+</div>
 <div class="form-check form-switch mt-2">
     {{ event_form.is_form }}
     <label class="form-check-label fw-semibold ms-2" for="id_is_form">
@@ -922,6 +925,7 @@
 
 {% block header %}
 {% include "backend/header/header.html" %}
+{% include "backend/header/header-page.html" %}
 {% endblock %}
 
 {% block theme %}
@@ -956,6 +960,7 @@
 {% block query %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 {{ questions_json|json_script:"questions-data" }}
+{{ benefits_json|json_script:"benefits-data" }}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript" src="{% static 'app/js/absensi_form_v3.js' %}"></script>

@@ -38,6 +38,7 @@ class Participant(models.Model):
     id_event = models.ForeignKey(Event,on_delete=models.CASCADE, null=False, blank=False)
     qr_code = models.ImageField(upload_to=path_qr_code, null=True, blank=True)
     badge_is_printed = models.BooleanField(default=False)
+    is_winner = models.BooleanField(default=False)
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)
     update_date = models.DateTimeField(auto_now=True, blank=False)
 
@@ -100,3 +101,96 @@ class Participant(models.Model):
         super(Participant, self).delete(*args, **kwargs)
 
 #END OF PARTICIPANT MODEL
+
+
+# =========================================================
+# DOORPRIZE
+# =========================================================
+
+class Doorprize(models.Model):
+
+    STATUS_CHOICES = (
+        ("ACTIVE", "ACTIVE"),
+        ("DONE", "DONE"),
+    )
+
+    id_event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="doorprizes"
+    )
+
+    prize_name = models.CharField(max_length=255)
+
+    qty = models.PositiveIntegerField(default=1)
+
+    winner = models.ForeignKey(
+        Participant,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="won_prizes"
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="ACTIVE"
+    )
+
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    update_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "doorprize"
+        ordering = ["-creation_date"]
+
+    def __str__(self):
+        return f"{self.prize_name} - {self.id_event.name}"
+
+
+# =========================================================
+# HISTORY WINNER
+# =========================================================
+
+class DoorprizeWinner(models.Model):
+
+    id_event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="winner_histories"
+    )
+
+    id_doorprize = models.ForeignKey(
+        Doorprize,
+        on_delete=models.CASCADE,
+        related_name="winner_histories"
+    )
+
+    id_participant = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name="winner_histories"
+    )
+
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "doorprize_winner"
+        ordering = ["-creation_date"]
+
+    def __str__(self):
+        return (
+            f"{self.id_participant.name} "
+            f"- "
+            f"{self.id_doorprize.prize_name}"
+        )
+
+class Notifications(models.Model):
+    participant_id = models.ForeignKey(Participant, on_delete=models.CASCADE,null=False, blank=False)
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE,null=False, blank=False)
+    updated_date = models.DateTimeField(auto_now=True, blank=False)
+    is_read = models.BooleanField(default=False)
+    class Meta:
+        db_table = 'notification'

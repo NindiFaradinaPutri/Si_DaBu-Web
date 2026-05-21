@@ -555,7 +555,9 @@
 			<div class="attach-text-sub">PDF, JPG, PNG hingga 10 MB</div>
 			</div>
 		</label>
-		<div style="display:none">{{ form.attachment|add_class:"custom-input" }}</div>
+		<div style="position:absolute; width:0; height:0; overflow:hidden; opacity:0;">
+    {{ form.attachment|add_class:"custom-input" }}
+</div>
 
 		<!-- Preview container (tersembunyi sampai ada file) -->
 		<div id="previewContainer" style="display:none; margin-top:12px; border:1.5px solid var(--outline-soft); border-radius:12px; padding:12px; background:#fff;">
@@ -626,51 +628,42 @@
       <!-- FAQ -->
       <div class="col-12 col-lg-6">
         <h2 class="text-headline-lg mb-3">Pertanyaan Populer</h2>
+
         <div class="d-flex flex-column gap-3">
 
+          {% for faq in faq_items %}
           <div class="faq-item">
+
             <button class="faq-btn" type="button">
-              Bagaimana cara mendaftarkan event baru?
-              <span class="material-symbols-outlined faq-icon">expand_more</span>
+              {{ faq.question }}
+
+              <span class="material-symbols-outlined faq-icon">
+                expand_more
+              </span>
             </button>
+
             <div class="faq-body">
-              Anda dapat mendaftarkan event baru melalui Dashboard Silatama setelah masuk ke akun Anda.
-              Pilih menu "Create Event" dan ikuti panduan langkah demi langkah kami.
+              {{ faq.answer|safe }}
+            </div>
+
+          </div>
+          {% empty %}
+
+          <div class="faq-item open">
+            <button class="faq-btn" type="button">
+              FAQ belum tersedia
+
+              <span class="material-symbols-outlined faq-icon">
+                info
+              </span>
+            </button>
+
+            <div class="faq-body">
+              Saat ini belum ada pertanyaan yang tersedia.
             </div>
           </div>
 
-          <div class="faq-item">
-            <button class="faq-btn" type="button">
-              Apakah sistem ini mendukung tracking real-time?
-              <span class="material-symbols-outlined faq-icon">expand_more</span>
-            </button>
-            <div class="faq-body">
-              Ya, Silatama menyediakan dashboard analitik real-time yang memantau kehadiran peserta
-              dan pergerakan logistik secara langsung selama acara berlangsung.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-btn" type="button">
-              Bagaimana sistem keamanan data Silatama?
-              <span class="material-symbols-outlined faq-icon">expand_more</span>
-            </button>
-            <div class="faq-body">
-              Kami menggunakan enkripsi end-to-end berstandar industri dan infrastruktur cloud yang aman
-              untuk memastikan data peserta dan logistik Anda tetap terlindungi 24/7.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-btn" type="button">
-              Berapa lama waktu respons dukungan?
-              <span class="material-symbols-outlined faq-icon">expand_more</span>
-            </button>
-            <div class="faq-body">
-              Tim kami merespons pertanyaan dalam 1×24 jam pada hari kerja. Untuk pertanyaan mendesak,
-              hubungi melalui WhatsApp atau telepon langsung.
-            </div>
-          </div>
+          {% endfor %}
 
         </div>
       </div>
@@ -693,86 +686,94 @@
     });
   });
 
-  /* ── Submit Button Loading State ─────────────────────── */
+  /* ── File Attachment + Submit (digabung satu scope) ─── */
   (function () {
+    var attachInput = document.getElementById('{{ form.attachment.id_for_label }}');
+    var container   = document.getElementById('previewContainer');
+    var grid        = document.getElementById('previewGrid');
+    var countEl     = document.getElementById('fileCount');
+    var files       = []; // ← satu scope, bisa diakses submit
+
+    /* --- Preview helpers --- */
+    function isImage(name) { return /\.(jpg|jpeg|png|webp|gif)$/i.test(name); }
+
+    function renderAll() {
+      grid.innerHTML = '';
+      files.forEach(function (f, i) {
+        var item = document.createElement('div');
+        item.style.cssText = 'position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;border:1.5px solid var(--outline-soft);background:var(--surface-container-low);animation:popIn .25s cubic-bezier(.34,1.56,.64,1)';
+
+        if (isImage(f.name)) {
+          var img = document.createElement('img');
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+          img.alt = f.name;
+          var rd = new FileReader();
+          rd.onload = function (e) { img.src = e.target.result; };
+          rd.readAsDataURL(f);
+          item.appendChild(img);
+        } else {
+          var ext = f.name.split('.').pop().toUpperCase();
+          item.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--primary)"><span class="material-symbols-outlined" style="font-size:24px">description</span><span style="font-size:10px;font-weight:700;letter-spacing:0.05em;color:var(--primary)">' + ext + '</span></div>';
+        }
+
+        var tip = document.createElement('div');
+        tip.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:3px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+        tip.textContent = f.name;
+        item.appendChild(tip);
+
+        var rm = document.createElement('button');
+        rm.type = 'button';
+        rm.innerHTML = '&times;';
+        rm.style.cssText = 'position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(186,0,19,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center';
+        rm.title = 'Hapus';
+        rm.onclick = function () { files.splice(i, 1); renderAll(); };
+        item.appendChild(rm);
+        grid.appendChild(item);
+      });
+
+      countEl.textContent = files.length + ' file';
+      container.style.display = files.length > 0 ? 'block' : 'none';
+    }
+
+    if (attachInput) {
+      attachInput.addEventListener('change', function () {
+        Array.from(this.files).forEach(function (f) {
+          if (f.size <= 10 * 1024 * 1024) files.push(f);
+          else alert('File "' + f.name + '" melebihi batas 10 MB.');
+        });
+        attachInput.value = '';
+        renderAll();
+      });
+    }
+
+    /* --- Submit: kembalikan files ke input --- */
     var form = document.querySelector('form[method="POST"]');
     var btn  = document.getElementById('btnSubmit');
     var icon = document.getElementById('btnIcon');
     var text = btn ? btn.querySelector('.btn-submit-text') : null;
-    if (!form || !btn) return;
 
-    form.addEventListener('submit', function () {
-      btn.classList.add('loading');
-      icon.textContent = 'hourglass_top';
-      text.textContent = 'Mengirim...';
-    });
+    if (form && btn) {
+      form.addEventListener('submit', function () {
+
+        // ← Transfer files array ke input sebelum submit
+        if (attachInput && files.length > 0) {
+          var dt = new DataTransfer();
+          files.forEach(function (f) { dt.items.add(f); });
+          attachInput.files = dt.files;
+          console.log('>>> FILES TRANSFERRED:', attachInput.files.length);
+        }
+
+        btn.classList.add('loading');
+        icon.textContent = 'hourglass_top';
+        text.textContent = 'Mengirim...';
+      });
+    }
+
+    /* animasi pop */
+    var style = document.createElement('style');
+    style.textContent = '@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}';
+    document.head.appendChild(style);
   })();
-
-	/* ── File Attachment Preview ─────────────────────── */
-(function () {
-	var attachInput = document.getElementById('{{ form.attachment.id_for_label }}');
-	if (!attachInput) return;
-	attachInput.setAttribute('multiple', 'multiple');
-
-	var container = document.getElementById('previewContainer');
-	var grid      = document.getElementById('previewGrid');
-	var countEl   = document.getElementById('fileCount');
-	var files     = [];
-
-	function isImage(name) { return /\.(jpg|jpeg|png|webp|gif)$/i.test(name); }
-
-	function renderAll() {
-		grid.innerHTML = '';
-		files.forEach(function (f, i) {
-		var item = document.createElement('div');
-		item.style.cssText = 'position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;border:1.5px solid var(--outline-soft);background:var(--surface-container-low);animation:popIn .25s cubic-bezier(.34,1.56,.64,1)';
-
-		if (isImage(f.name)) {
-			var img = document.createElement('img');
-			img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-			img.alt = f.name;
-			var rd = new FileReader();
-			rd.onload = function (e) { img.src = e.target.result; };
-			rd.readAsDataURL(f);
-			item.appendChild(img);
-		} else {
-			var ext = f.name.split('.').pop().toUpperCase();
-			item.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--primary)"><span class="material-symbols-outlined" style="font-size:24px">description</span><span style="font-size:10px;font-weight:700;letter-spacing:0.05em;color:var(--primary)">' + ext + '</span></div>';
-		}
-
-		var tip = document.createElement('div');
-		tip.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:3px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
-		tip.textContent = f.name;
-		item.appendChild(tip);
-
-		var rm = document.createElement('button');
-		rm.type = 'button';
-		rm.innerHTML = '&times;';
-		rm.style.cssText = 'position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(186,0,19,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center';
-		rm.title = 'Hapus';
-		rm.onclick = function () { files.splice(i, 1); renderAll(); };
-		item.appendChild(rm);
-		grid.appendChild(item);
-		});
-
-		countEl.textContent = files.length + ' file';
-		container.style.display = files.length > 0 ? 'block' : 'none';
-	}
-
-	attachInput.addEventListener('change', function () {
-		Array.from(this.files).forEach(function (f) {
-		if (f.size <= 10 * 1024 * 1024) files.push(f);
-		else alert('File "' + f.name + '" melebihi batas 10 MB.');
-		});
-		attachInput.value = '';
-		renderAll();
-	});
-
-	/* animasi pop */
-	var style = document.createElement('style');
-	style.textContent = '@keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}';
-	document.head.appendChild(style);
-	})();
 </script>
 {% endblock %}
 

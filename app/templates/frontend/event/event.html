@@ -44,6 +44,40 @@
         line-height: 1.2;
     }
 
+    .form-control,
+    .form-select {
+        border: 2px solid #000 !important;
+        border-radius: 8px;
+        box-shadow: none !important;
+    }
+
+    /* Saat focus */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #000 !important;
+        box-shadow: 0 0 0 0.12rem rgba(0,0,0,0.2) !important;
+    }
+
+    /* Radio & checkbox */
+    .form-check-input {
+        border: 2px solid #000 !important;
+    }
+
+    /* File upload button */
+    input[type="file"]::file-selector-button {
+       
+        background: #fff;
+        color: #000;
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin-right: 10px;
+    }
+
+    /* Label lebih jelas */
+    .form-label {
+        color: #000;
+    }
+
     .event-meta-box {
         background: #f1f3f5;
         border-radius: 16px;
@@ -288,15 +322,39 @@
                 Seminar
             </div>
 
-            <!-- Title -->
-            <h1 class="hero-title mb-3">
-                {{ event.name }}
-            </h1>
+         <div class="d-flex align-items-start gap-3 mb-3">
 
-            <!-- Description -->
-            <p class="text-muted mb-4">
-                {{ event.information }}
-            </p>
+    <h1 class="hero-title mb-0 flex-grow-1">
+        {{ event.name }}
+    </h1>
+
+    <button
+        type="button"
+        class="btn d-flex align-items-center justify-content-center rounded-circle border-0 flex-shrink-0"
+        style="
+            width:52px;
+            height:52px;
+            background:#dc3545;
+            color:white;
+            margin-top:50px;
+            box-shadow:0 6px 18px rgba(220,53,69,.25);
+        "
+        data-bs-toggle="modal"
+        data-bs-target="#shareInvitationModal">
+
+        <span class="material-symbols-outlined">
+            share
+        </span>
+
+    </button>
+
+</div>
+
+<!-- Description -->
+<p class="text-muted mb-4">
+    {{ event.information }}
+</p>
+
 
             <!-- META BOX -->
             <div class="event-meta-box">
@@ -422,39 +480,43 @@
                     </span>
 
                     <span>
-                        {{ participant_count }} / {{ max_capacity }}
+                        {{ participant_count }} / {{ event.capacity}}
                     </span>
                 </div>
             </div>
 
             <!-- Event Info -->
             <div class="custom-card">
-                <h4 class="mb-4">Event Highlights</h4>
+                <h4 class="mb-4">Benefits Event</h4>
 
                 <ul class="list-unstyled">
 
-                    <li class="d-flex gap-2 mb-3">
-                        <span class="material-symbols-outlined feature-icon">
-                            check_circle
-                        </span>
-                        <span>Professional networking opportunities</span>
-                    </li>
+        {% for benefit in event_benefits %}
 
-                    <li class="d-flex gap-2 mb-3">
-                        <span class="material-symbols-outlined feature-icon">
-                            check_circle
-                        </span>
-                        <span>Exclusive event sessions</span>
-                    </li>
+            <li class="d-flex gap-2 mb-3 align-items-start">
 
-                    <li class="d-flex gap-2">
-                        <span class="material-symbols-outlined feature-icon">
-                            check_circle
-                        </span>
-                        <span>Access to digital event materials</span>
-                    </li>
+                <span
+                    class="material-symbols-outlined feature-icon text-danger">
 
-                </ul>
+                    redeem
+
+                </span>
+
+                <span>
+                    {{ benefit.benefit }}
+                </span>
+
+            </li>
+
+        {% empty %}
+
+            <li class="text-muted">
+                No event benefits available
+            </li>
+
+        {% endfor %}
+
+    </ul>
             </div>
         </div>
 
@@ -766,15 +828,25 @@
 
         {% endfor %}
 
-        <button class="btn btn-primary-custom w-100 py-3">
+        {% if event_status == "EVENT FINISHED" %}
 
-            Register Now
+<button
+    class="btn btn-secondary w-100 py-3"
+    disabled>
 
-            <span class="material-symbols-outlined ms-2">
-                arrow_forward
-            </span>
+    Registration Closed
 
-        </button>
+</button>
+
+{% else %}
+
+<button class="btn btn-primary-custom w-100 py-3">
+
+    Register Now
+
+</button>
+
+{% endif %}
 
     </form>
 
@@ -813,6 +885,131 @@
 
 </main>
 
+
+<div class="modal fade"
+     id="shareInvitationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg"
+             style="border-radius:20px;">
+
+            <div class="modal-header border-0 pb-0">
+
+                <h5 class="modal-title fw-bold">
+                    Share Invitation
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="text-secondary small mb-3">
+                    Bagikan link invitation event ke peserta.
+                </p>
+
+                <!-- URL -->
+                <div class="input-group mb-4">
+
+                    <input type="text"
+                           id="invitationLink"
+                           class="form-control"
+                           value="{{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                           readonly>
+
+                    <button class="btn btn-danger"
+                            type="button"
+                            id="copyInvitationBtn">
+
+                        Salin
+                    </button>
+
+                </div>
+
+                <!-- SHARE APPS -->
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+
+                    <!-- WhatsApp -->
+                   <a href="https://wa.me/?text={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#25D366;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(37,211,102,.25);
+                        ">
+
+                            <i class="fab fa-whatsapp"
+                            style="font-size:20px;"></i>
+
+                            WhatsApp
+                        </a>
+
+                        <!-- Instagram -->
+                        <button type="button"
+                                onclick="shareToInstagram()"
+                                class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                                style="
+                                    background:linear-gradient(
+                                        45deg,
+                                        #f09433,
+                                        #e6683c,
+                                        #dc2743,
+                                        #cc2366,
+                                        #bc1888
+                                    );
+                                    font-weight:600;
+                                    box-shadow:0 6px 18px rgba(220,39,67,.25);
+                                ">
+
+                            <i class="fab fa-instagram"
+                            style="font-size:20px;"></i>
+
+                            Instagram
+                        </button>
+
+                                            <!-- Telegram -->
+                                            <a href="https://t.me/share/url?url={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#229ED9;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(34,158,217,.25);
+                        ">
+
+                            <i class="fab fa-telegram-plane"
+                            style="font-size:20px;"></i>
+
+                            Telegram
+                        </a>
+
+                    <!-- Email -->
+                    <a href="mailto:?subject={{ event.name }}&body={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                       class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
+
+                        <span class="material-symbols-outlined">
+                            mail
+                        </span>
+
+                        Email
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}
 
 
@@ -821,6 +1018,95 @@
 
 {% block query %}
 <script type="text/javascript" src="{%static 'app/js/absensi_form.js'%}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+document
+    .getElementById('copyInvitationBtn')
+    .addEventListener('click', function () {
+
+        const input =
+            document.getElementById('invitationLink');
+
+        input.select();
+        input.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(input.value);
+
+        this.innerText = 'Tersalin!';
+
+        setTimeout(() => {
+
+            this.innerText = 'Salin';
+
+        }, 2000);
+
+    });
+
+</script>
+
+
+
+<script>
+
+function shareToInstagram() {
+
+    const input =
+        document.getElementById(
+            'invitationLink'
+        );
+
+    input.removeAttribute('readonly');
+
+    input.select();
+
+    input.setSelectionRange(
+        0,
+        99999
+    );
+
+    const copied =
+        document.execCommand('copy');
+
+    input.setAttribute(
+        'readonly',
+        true
+    );
+
+    if (copied) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Link berhasil disalin',
+            text: 'Paste di Instagram Story / DM',
+            confirmButtonText: 'Buka Instagram'
+        }).then(() => {
+
+            window.location.href =
+                'instagram://app';
+
+            setTimeout(function () {
+
+                window.open(
+                    'https://instagram.com/',
+                    '_blank'
+                );
+
+            }, 1500);
+
+        });
+
+    } else {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal menyalin link'
+        });
+    }
+}
+
+</script>
 {% endblock %}
 
 {% block header %}

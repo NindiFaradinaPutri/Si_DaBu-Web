@@ -4,6 +4,11 @@ from app.decorators import *
 import numpy as np
 
 import json
+import openpyxl
+
+from django.http import HttpResponse
+
+from openpyxl.styles import Font
 
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
@@ -417,92 +422,521 @@ def download_participant(request):
             "message": str(e)
         })
 
-# def filter_video(request):
-#     if request.method == 'POST':
-#         queryset = PhotoVideoAdsPost.objects.filter(video__isnull = False).order_by('-id')
-#         video_filter = PhotoVideoAdsFilter(request.POST, queryset=queryset)
+@csrf_exempt
+def update_doorprize(request):
 
-#         page = request.POST.get('page')
-#         per_page = request.POST.get('per_page')
-#         sort_by = request.POST.get('sort_by')
+    if request.method != "POST":
+        return JsonResponse({
+            "status": "failed",
+            "message": "Invalid request"
+        })
 
-#         if not sort_by:
-#             sort_by = '-id'
+    try:
 
-#         if not per_page:
-#             per_page = 20
+        # =========================================
+        # GET PARAMETER
+        # =========================================
 
-#         queryset = video_filter.qs.order_by(sort_by)
+        event_id = request.POST.get('event_id')
 
-#         paginator = Paginator(queryset,per_page=per_page)
+        prize_id = request.POST.get('prize_id')
 
-#         try:
-#             list_video = paginator.page(page)
-#         except PageNotAnInteger:
-#             list_video = paginator.page(1)
-#         except EmptyPage:
-#             list_video = paginator.page(paginator.num_pages)
+        participant_id = request.POST.get('participant_id')
 
-#         context = {'list_video':list_video,}
+        # =========================================
+        # VALIDATION
+        # =========================================
 
-#         template = 'template/views/view_video_list.html'
-#         html = render_to_string(template_name=template, context=context, request = request, using=None)
-#         return HttpResponse(html)
+        if not event_id:
 
-# def current_video(request):
-#     if request.method == 'POST':
-#         user = request.user
-#         id_video = request.POST.get('id_video')
+            return JsonResponse({
+                'status': False,
+                'message': 'Event required'
+            })
 
-#         selected_video = PhotoVideoAdsPost.objects.filter(id = id_video).first()
+        if not prize_id:
 
-#         html = mark_safe(''' 
-#                         <video width="350" height="auto" controls autoplay>
-#                             <source src="%s" type="audio/mp4" id="current_video" />
-#                         </video>
-#                         '''% (selected_video.video.url))
+            return JsonResponse({
+                'status': False,
+                'message': 'Prize required'
+            })
+
+        if not participant_id:
+
+            return JsonResponse({
+                'status': False,
+                'message': 'Participant required'
+            })
+
+        # =========================================
+        # GET OBJECT
+        # =========================================
+
+        event = Event.objects.filter(
+            id=event_id
+        ).first()
+
+        if not event:
+
+            return JsonResponse({
+                'status': False,
+                'message': 'Event not found'
+            })
+
+        prize = Doorprize.objects.filter(
+            id=prize_id,
+            id_event=event,
+            status='ACTIVE'
+        ).first()
+
+        if not prize:
+
+            return JsonResponse({
+                'status': False,
+                'message': 'Prize already used or not found'
+            })
+
+        participant = Participant.objects.select_related(
+            'status_user_id'
+        ).filter(
+            id=participant_id,
+            id_event=event,
+            status_user_id__status_name__iexact='Present'
+        ).first()
+
+        if not participant:
+
+            return JsonResponse({
+                'status': False,
+                'message': 'Participant not eligible'
+            })
+
+        # =========================================
+        # CHECK ALREADY WINNER
+        # =========================================
+
+        already_winner = DoorprizeWinner.objects.filter(
+            id_event=event,
+            id_participant=participant
+        ).exists()
+
+        if already_winner:
+
+            return JsonResponse({
+                'status': False,
+                'message': 'Participant already won'
+            })
+
+        # =========================================
+        # SAVE WINNER HISTORY
+        # =========================================
+
+        DoorprizeWinner.objects.create(
+
+            id_event=event,
+
+            id_doorprize=prize,
+
+            id_participant=participant
+
+        )
         
-#         return HttpResponse(html)
+        participant.is_winner = True
+        participant.save(update_fields=['is_winner'])
+        # =========================================
+        # UPDATE PRIZE
+        # =========================================
 
-# def filter_photo(request):
-#     if request.method == 'POST':
-#         queryset = PhotoVideoAdsPost.objects.filter(photo__isnull = False).order_by('-id')
-#         photo_filter = PhotoVideoAdsFilter(request.POST, queryset=queryset)
+        prize.winner = participant
 
-#         page = request.POST.get('page')
-#         per_page = request.POST.get('per_page')
-#         sort_by = request.POST.get('sort_by')
+        prize.status = 'DONE'
 
-#         if not sort_by:
-#             sort_by = '-id'
+        prize.save()
 
-#         if not per_page:
-#             per_page = 20
+        # =========================================
+        # SUCCESS RESPONSE
+        # =========================================
 
-#         queryset = photo_filter.qs.order_by(sort_by)
+        return JsonResponse({
 
-#         paginator = Paginator(queryset,per_page=per_page)
+            'status': True,
 
-#         try:
-#             list_photo = paginator.page(page)
-#         except PageNotAnInteger:
-#             list_photo = paginator.page(1)
-#         except EmptyPage:
-#             list_photo = paginator.page(paginator.num_pages)
+            'message': 'Winner updated successfully',
 
-#         context = {'list_photo':list_photo,}
+            'winner_name': participant.name,
 
-#         template = 'template/views/view_photo_list.html'
-#         html = render_to_string(template_name=template, context=context, request = request, using=None)
-#         return HttpResponse(html)
+            'winner_id': participant.id,
 
-# def current_photo(request):
-#     if request.method == 'POST':
-#         id_photo = request.POST.get('id_photo')
+            'prize_name': prize.prize_name,
 
-#         selected_photo = PhotoVideoAdsPost.objects.filter(id = id_photo).first()
+            'event_name': event.name,
 
-#         html = mark_safe(''' <img src="%s" alt="" id="current_photo" style="max-width:500px; height:auto;">
-#                         '''% (selected_photo.photo.url))
-        
-#         return HttpResponse(html)
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+
+            'status': False,
+
+            'message': str(e)
+
+        })
+    
+
+@csrf_exempt
+def add_prize(request):
+    if request.method != "POST":
+        return JsonResponse({
+            "status": "failed",
+            "message": "Invalid request"
+        })
+
+    try:
+
+        event_id = request.POST.get("event_id")
+        prize_name = request.POST.get("prize_name")
+        qty = request.POST.get("qty", 1)
+
+        if not prize_name:
+
+            return JsonResponse({
+                "status": "failed",
+                "message": "Prize name required"
+            })
+
+        event = Event.objects.get(id=event_id)
+
+        doorprize = Doorprize.objects.create(
+            id_event=event,
+            prize_name=prize_name,
+            qty=qty,
+            status="ACTIVE"
+        )
+
+        return JsonResponse({
+            "status": "success",
+            "id": doorprize.id,
+            "prize_name": doorprize.prize_name
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+            "status": "failed",
+            "message": str(e)
+        })
+    
+
+
+@csrf_exempt
+def add_participant_wheel(request):
+
+    if request.method != "POST":
+
+        return JsonResponse({
+            "status": "failed",
+            "message": "Invalid request"
+        })
+
+    try:
+
+        participant_name = request.POST.get("participant_name")
+        event_id = request.POST.get("event_id")
+
+        # =========================================
+        # VALIDASI
+        # =========================================
+
+        if not participant_name or not event_id:
+
+            return JsonResponse({
+                "status": "failed",
+                "message": "Participant name dan Event wajib diisi"
+            })
+
+        # =========================================
+        # GET EVENT
+        # =========================================
+
+        event = Event.objects.get(
+            id=event_id
+        )
+
+        # =========================================
+        # GET STATUS PRESENT
+        # =========================================
+
+        present_status = StatusParticipant.objects.get(
+            status_name__iexact="Present"
+        )
+
+        # =========================================
+        # CEK PARTICIPANT SUDAH ADA ATAU BELUM
+        # =========================================
+
+        participant = Participant.objects.filter(
+            name__iexact=participant_name.strip(),
+            id_event=event
+        ).first()
+
+        # =========================================
+        # CREATE PARTICIPANT BARU
+        # =========================================
+
+        if not participant:
+
+            participant = Participant.objects.create(
+                id_event=event,
+                name=participant_name.strip(),
+                status_user_id=present_status,
+                is_winner=False
+            )
+
+        # =========================================
+        # VALIDASI STATUS PRESENT
+        # =========================================
+
+        if not participant.status_user_id:
+
+            return JsonResponse({
+                "status": "failed",
+                "message": "Participant belum memiliki status"
+            })
+
+        if participant.status_user_id.status_name.lower() != "present":
+
+            return JsonResponse({
+                "status": "failed",
+                "message": f"{participant.name} belum PRESENT"
+            })
+
+        # =========================================
+        # VALIDASI SUDAH MENANG
+        # CEK DARI is_winner
+        # =========================================
+
+        if participant.is_winner:
+
+            return JsonResponse({
+                "status": "failed",
+                "message": f"{participant.name} sudah pernah menang"
+            })
+
+        # =========================================
+        # VALIDASI DOUBLE DI WHEEL
+        # =========================================
+
+        # =========================================
+        # SUCCESS
+        # =========================================
+
+        return JsonResponse({
+
+            "status": "success",
+
+            "participant": {
+                "id": participant.id,
+                "name": participant.name,
+            }
+
+        })
+
+    except StatusParticipant.DoesNotExist:
+
+        return JsonResponse({
+            "status": "failed",
+            "message": "Status PRESENT tidak ditemukan"
+        })
+
+    except Event.DoesNotExist:
+
+        return JsonResponse({
+            "status": "failed",
+            "message": "Event tidak ditemukan"
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+            "status": "failed",
+            "message": str(e)
+        })
+    
+@csrf_exempt
+def delete_participant_wheel(request):
+
+    if request.method == "POST":
+
+        participant_id = request.POST.get("participant_id")
+
+        participant = Participant.objects.filter(
+            id=participant_id
+        ).first()
+
+        if not participant:
+
+            return JsonResponse({
+                "status": False,
+                "message": "Participant not found"
+            })
+
+        participant.is_winner = True
+        participant.save()
+
+        return JsonResponse({
+            "status": True,
+            "message": "Participant deleted"
+        })
+
+    return JsonResponse({
+        "status": False,
+        "message": "Invalid request"
+    })
+
+@csrf_exempt
+def delete_prize(request):
+
+    if request.method == "POST":
+
+        prize_id = request.POST.get("prize_id")
+
+        prize = Doorprize.objects.filter(
+            id=prize_id
+        ).first()
+
+        if not prize:
+
+            return JsonResponse({
+                "status": False,
+                "message": "Prize not found"
+            })
+
+        prize.delete()
+
+        return JsonResponse({
+            "status": True,
+            "message": "Prize deleted"
+        })
+
+    return JsonResponse({
+        "status": False,
+        "message": "Invalid request"
+    })
+
+
+
+
+@csrf_exempt
+def export_winner_excel(request, event_id):
+
+    winners = DoorprizeWinner.objects.filter(
+        id_event_id=event_id
+    )
+
+    workbook = openpyxl.Workbook()
+
+    worksheet = workbook.active
+
+    worksheet.title = "Winner History"
+
+    headers = [
+        "No",
+        "Participant",
+        "Prize"
+    ]
+
+    for col_num, header in enumerate(headers, 1):
+
+        cell = worksheet.cell(
+            row=1,
+            column=col_num
+        )
+
+        cell.value = header
+
+        cell.font = Font(bold=True)
+
+    for index, winner in enumerate(winners, start=2):
+
+        worksheet.cell(
+            row=index,
+            column=1
+        ).value = index - 1
+
+        worksheet.cell(
+            row=index,
+            column=2
+        ).value = winner.id_participant.name
+
+        worksheet.cell(
+            row=index,
+            column=3
+        ).value = winner.id_doorprize.prize_name
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+    response[
+        "Content-Disposition"
+    ] = 'attachment; filename="winner_history.xlsx"'
+
+    workbook.save(response)
+
+    return response
+
+
+@csrf_exempt
+def search_participant(request):
+
+    keyword = request.GET.get('keyword', '')
+    event_id = request.GET.get('event_id')
+
+    participants = Participant.objects.filter(
+        id_event_id=event_id,
+        status_user_id__status_name__iexact='Present',
+        is_winner=False,
+        name__icontains=keyword
+    ).order_by('name')
+
+    data = []
+
+    for participant in participants:
+
+        data.append({
+            'id': participant.id,
+            'name': participant.name,
+        })
+
+    return JsonResponse({
+        'status': True,
+        'participants': data
+    })
+
+
+@csrf_exempt
+def search_prize(request):
+
+    keyword = request.GET.get('keyword', '')
+    event_id = request.GET.get('event_id')
+
+    prizes = Doorprize.objects.filter(
+        id_event_id=event_id,
+        status='ACTIVE',
+        prize_name__icontains=keyword
+    ).order_by('id')
+
+    data = []
+
+    for prize in prizes:
+
+        data.append({
+            'id': prize.id,
+            'prize_name': prize.prize_name,
+        })
+
+    return JsonResponse({
+        'status': True,
+        'prizes': data
+    })

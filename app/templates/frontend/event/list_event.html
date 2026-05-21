@@ -69,7 +69,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         background:white;
         border-bottom:1px solid var(--border);
         position:sticky;
-        top:80px;
+        top:70px;
         z-index:100;
     }
 
@@ -222,65 +222,72 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     </section>
 
 
-    <!-- FILTER -->
-    <section class="filter-bar py-4">
-    <div class="container">
+<!-- FILTER -->
+<section class="filter-bar py-4">
+<div class="container">
+    <form method="GET" action="#filter">
         <div class="row g-3 align-items-end">
 
             <!-- KEYWORD -->
             <div class="col-lg-5">
                 <label class="filter-label">Keywords</label>
-                
                 <div class="input-group">
                     <span class="input-group-text bg-white">
                         <i class="bi bi-search"></i>
                     </span>
                     <input 
-                        type="text" 
+                        type="text"
+                        name="q"
+                        value="{{ filter_q }}"
                         class="form-control"
                         placeholder="Search event name, speaker or venue..."
                     >
                 </div>
             </div>
 
-            <!-- CATEGORY -->
+            <!-- STATUS -->
             <div class="col-lg-3">
-                <label class="filter-label">Category</label>
-                <select class="form-select">
-                    <option>All Categories</option>
-                    <option>Tech Expo</option>
-                    <option>Corporate</option>
-                    <option>Workshop</option>
+                <label class="filter-label">Status</label>
+                <select class="form-select" name="status">
+                    <option value="">All Status</option>
+                    <option value="INCOMING" {% if filter_status == "INCOMING" %}selected{% endif %}>Upcoming</option>
+                    <option value="LIVE" {% if filter_status == "LIVE" %}selected{% endif %}>Live Now</option>
+                    <option value="EVENT FINISHED" {% if filter_status == "EVENT FINISHED" %}selected{% endif %}>Completed</option>
                 </select>
             </div>
 
             <!-- DATE RANGE -->
             <div class="col-lg-2">
                 <label class="filter-label">Date Range</label>
-
                 <div class="input-group">
                     <span class="input-group-text bg-white">
                         <i class="bi bi-calendar-event"></i>
                     </span>
-
-                    <select class="form-select">
-                        <option>This Month</option>
-                        <option>Next Month</option>
-                        <option>Custom Range</option>
+                    <select class="form-select" name="date_range">
+                        <option value="">All Time</option>
+                        <option value="this_month" {% if filter_date_range == "this_month" %}selected{% endif %}>This Month</option>
+                        <option value="next_month" {% if filter_date_range == "next_month" %}selected{% endif %}>Next Month</option>
+                        <option value="this_year" {% if filter_date_range == "this_year" %}selected{% endif %}>This Year</option>
                     </select>
                 </div>
             </div>
 
             <!-- BUTTON -->
-            <div class="col-lg-2">
-                <button class="btn btn-primary-custom w-100 py-2">
+            <div class="col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary-custom flex-fill py-2">
                     <i class="bi bi-funnel-fill me-2"></i>
                     Apply Filters
                 </button>
+                {% if filter_q or filter_status or filter_date_range %}
+                {% comment %} <a href="?" class="btn btn-outline-secondary py-2" title="Reset">
+                    <i class="bi bi-x-lg"></i>
+                </a> {% endcomment %}
+                {% endif %}
             </div>
 
         </div>
-    </div>
+    </form>
+</div>
 </section>
 
 
@@ -362,14 +369,15 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 <div class="d-flex gap-2 mt-4">
 
                     {% if item.can_register %}
-                        <a href="{% url 'event' item.event.id %}"
+                        <a href="{% url 'event' item.event.encrypt_id %}"
                            class="btn {{ item.button_class }} flex-fill">
                             {{ item.button_text }}
                         </a>
                     {% else %}
-                        <button class="btn btn-secondary flex-fill" disabled>
-                            Registration Closed
-                        </button>
+                        <a href="{% url 'event' item.event.encrypt_id %}"
+                           class="btn btn-primary-custom flex-fill">
+                            View Detail
+                        </a>
                     {% endif %}
 
             </div>

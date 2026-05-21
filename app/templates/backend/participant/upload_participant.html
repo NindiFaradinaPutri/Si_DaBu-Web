@@ -161,24 +161,7 @@
     margin-top: 20px;
 }
 
-    /* Component Specifics */
-    .search-bar {
-        background-color: #f3f4f6;
-        border-radius: 0.5rem;
-        width: 384px;
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-    }
 
-    .search-bar input {
-        background: transparent;
-        border: none;
-        outline: none;
-        width: 100%;
-        font-size: 0.875rem;
-        margin-left: 0.5rem;
-    }
 
     .btn-primary {
         background-color: var(--silatama-red);
@@ -730,29 +713,7 @@
 </style>
 
 
-<header class="top-app-bar">
-<div class="search-bar">
-<span class="material-symbols-outlined text-muted">search</span>
-<input placeholder="Search events or guests..." type="text"/>
-</div>
-<div class="d-flex align-items-center gap-3">
-<button class="btn btn-link text-muted p-2 position-relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -15px;"></span>
-</button>
-<button class="btn btn-link text-muted p-2">
-<span class="material-symbols-outlined">settings</span>
-</button>
-<div class="vr mx-2" style="height: 32px;"></div>
-<div class="d-flex align-items-center gap-2">
-<div class="text-end d-none d-md-block">
-<p class="mb-0 fw-bold small">Silatama Admin</p>
-<p class="mb-0 text-muted" style="font-size: 12px;">Event Admin</p>
-</div>
-<img alt="Profile" class="rounded-circle border" height="40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XEIojzT70NRTjjtQhMqMHuV03ynkDG0V8HDZtRZoQTttP42VQ_RMZmow2Yaz41IECLFJljAkAG04C5RKvdbe-xpWo2nAn0vtnb4Iz0jOfKd0vkIArJXHxkHIXBh6jO9Wq06ULPOVatxfWHwS1LH9oF6uy6b0ilPUzSHNELpJx77GD562RbSwfO9ajSBTJWsFsa9QWXezcirXc9j_4S4LG0y5UdvuFCi9URwXfznHf1Ddj83VemfDVGOidkKdfJEntiRTBtdc05I" width="40"/>
-</div>
-</div>
-</header>
+
 
 
 <!-- GOOGLE FORM EXCEL UPLOAD -->
@@ -850,6 +811,7 @@
 
 {% block header %}
 {% include "backend/header/header.html" %}
+{% include "backend/header/header-page.html" %}
 {% endblock %}
 
 {% block theme %}
@@ -954,7 +916,7 @@ uploadBtn.addEventListener("click", function(){
         text: data.message,
         confirmButtonColor: '#E31E24'
     }).then(() => {
-        window.location.href = "/event/list/{{ event.id }}/";
+        window.location.href = "{% url 'event_list' event.encrypt_id %}";
     });
 
         }else{
