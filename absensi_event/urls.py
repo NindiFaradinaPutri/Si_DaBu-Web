@@ -29,6 +29,7 @@ from views.mobile import mobile_auth_views as mobile_auth, mobile_event_views as
 from authentication import ajaxs as auth_ajaxs
 from finance import ajaxs as fin_ajaxs, prints as fin_prints
 from information import ajaxs as info_ajaxs
+from participant import ajaxs as participant_ajaxs
 from event import ajaxs as event_ajaxs
 
 urlpatterns = [
@@ -61,6 +62,9 @@ urlpatterns = [
 
     path('admin/profile/', auth_views.admin_profile, name='admin_profile'),
     path('admin/profile/update/', auth_views.admin_profile_update, name='admin_profile_update'),
+    # notifikasi 
+    path('notifications/', auth_views.get_notifications, name='get_notifications'),
+    path('notifications/<int:notif_id>/read/', auth_views.mark_notification_read, name='mark_notification_read'),
 
     path('admin/list/', auth_views.admin_list, name='admin_list'),
     path('admin/delete/', auth_views.admin_delete, name='admin_delete'),
@@ -110,6 +114,7 @@ urlpatterns = [
     ),
     # path('participant/upload/<int:id>/', even.participant_upload, name='participant_upload'),
     re_path(r'^ajax/upload_participant_bulk/$', even_ajaxs.upload_participant,name="upload_participant"),
+    re_path(r'^ajax/update_participant_status/$', participant_ajaxs.ajax_update_participant_status,name="ajax_update_participant_status"),
     re_path(r'^ajax/download_participant_bulk/$', even_ajaxs.download_participant,name="download_participant"),
     path('doorprize/', even.doorprize, name='doorprize'),
     path('ajax/delete_participant_wheel/',even_ajaxs.delete_participant_wheel,name='delete_participant_wheel'),
@@ -178,13 +183,16 @@ urlpatterns = [
     re_path(r'^ajax/filter_service/$', prf_ajaxs.filter_service,name='filter_service'),
     re_path(r'^ajax/view_service/$', prf_ajaxs.view_service,name="view_service"),
 
-    #Gallery
-    path('gallery/list/', gallery_views.gallery_list, name='gallery_list'),
+    #Gallery (AdDeen)
+    # path('gallery/list/', gallery_views.gallery_list, name='gallery_list'),
     path('gallery/add/', gallery_views.gallery_add, name='gallery_add'),
     re_path(r'^gallery/update/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', gallery_views.gallery_update, name='gallery_update'),
     re_path(r'^ajax/filter_gallery/$', gal_ajaxs.filter_gallery,name='filter_gallery'),
     re_path(r'^ajax/view_gallery/$', gal_ajaxs.view_gallery,name="view_gallery"),
     re_path(r'^gallery/category/(?P<category>\w+)/$', gallery_views.gallery_category, name='gallery_category'),
+    # presengo gallery
+    path('gallery/', gallery_views.presengo_gallery, name='presengo_gallery'),
+    path('admin/gallery/', gallery_views.gallery_list, name='gallery_list'),
 
     #Contact Us
     path('contact/', profile_views.contact_us, name='contact_us'),
@@ -306,12 +314,12 @@ urlpatterns = [
     re_path(r'^ajax/add_khutbah_detail/$', info_ajaxs.add_khutbah_detail,name="add_khutbah_detail"),
 
     #KEGIATAN MASJID
-    path('kegiatan/', info.show_kegiatan, name='show_kegiatan'),
-    path('kegiatan/list/', info.kegiatan_list, name='kegiatan_list'),
-    path('kegiatan/add/', info.kegiatan_add, name='kegiatan_add'),
-    re_path(r'^kegiatan/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', info.kegiatan_update, name='kegiatan_update'),
-    re_path(r'^ajax/add_kegiatan_detail/$', info_ajaxs.add_kegiatan_detail,name="add_kegiatan_detail"),
-    re_path(r'^ajax/view_kegiatan/$', info_ajaxs.view_kegiatan,name="view_kegiatan"),
+    # path('kegiatan/', info.show_kegiatan, name='show_kegiatan'),
+    # path('kegiatan/list/', info.kegiatan_list, name='kegiatan_list'),
+    # path('kegiatan/add/', info.kegiatan_add, name='kegiatan_add'),
+    # re_path(r'^kegiatan/(?P<status>\w+):(?P<id>[0-9a-zA-Z-_]+)/$', info.kegiatan_update, name='kegiatan_update'),
+    # re_path(r'^ajax/add_kegiatan_detail/$', info_ajaxs.add_kegiatan_detail,name="add_kegiatan_detail"),
+    # re_path(r'^ajax/view_kegiatan/$', info_ajaxs.view_kegiatan,name="view_kegiatan"),
 
     path('naration/', team_views.naration_update, name='naration_update'),
 

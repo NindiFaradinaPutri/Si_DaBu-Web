@@ -188,6 +188,98 @@ def gallery_category(request,category):
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
+def gallery_update(request, status, id):
+    assert isinstance(request, HttpRequest)
+    menu = ['Home','Edit Galeri']
+    title = 'Edit Galeri'
+    id = decoding_id(id)
+    gallery = Gallery.objects.filter(id=id).first()
+
+    if request.method == 'POST':
+        with transaction.atomic():
+            galleryForm = GalleryForm(data = request.POST, files = request.FILES, instance=gallery)
+            video = request.FILES.get('video',None)
+            photo = request.FILES.get('foto',None)
+            link = request.POST.get('link',None)
+            try:
+                if (gallery.video and photo) or (gallery.video and link) or (gallery.foto and video) or (gallery.foto and link) or (gallery.link and video) or (gallery.link and photo):
+                    messages.add_message(request,messages.ERROR,'Can not upload videos / photos / links at the same time.')
+                    galleryForm = GalleryForm(request.POST,instance=gallery)
+
+                    context = {
+                        'title':title,
+                        'galleryForm':galleryForm,
+                    }
+    
+                    return render(request,'backend/gallery/gallery_form.html',context)
+                else:
+                    if galleryForm.is_valid():
+                        item = galleryForm.save()
+                        messages.add_message(request,messages.SUCCESS,'Item successfully added to gallery.')
+
+                        return redirect('/gallery/update/edit:'+str(encoding_id(item.id))+'/')
+                    else:
+                        raise forms.ValidationError("Item is invalid.")
+
+            except ValidationError as e:
+                messages.add_message(request,messages.ERROR,'Error editing the item.')
+                logger.error('Error editing the item '+str(e))
+                galleryForm = GalleryForm(request.POST,instance=gallery)
+
+                context = {
+                    'title':title,
+                    'galleryForm':galleryForm,
+                }
+    
+                return render(request,'backend/gallery/gallery_form.html',context)
+            except Exception as e:
+                messages.add_message(request,messages.ERROR,'Error editing the item.')
+                logger.error('Error editing the item '+str(e))
+                galleryForm = GalleryForm(request.POST,instance=gallery)
+
+                context = {
+                    'title':title,
+                    'galleryForm':galleryForm,
+                }
+    
+                return render(request,'backend/gallery/gallery_form.html',context)
+
+    elif request.method == 'GET':
+        if status == 'edit':
+            galleryForm = GalleryForm(instance=gallery)
+
+            context = {
+                'title':title,
+                'galleryForm':galleryForm,
+                }
+
+            return render(request,'backend/gallery/gallery_form.html',context)
+        elif status == 'delete':
+            messages.add_message(request,messages.WARNING,'Item successfully deleted.')
+            gallery.delete()
+            return redirect('/gallery/list/')
+        
+def presengo_gallery(request):
+    title = "Presengo Gallery"
+    client = Client.objects.first()
+    gallery = Gallery.objects.filter(id_client=client)
+    events = Event.objects.all().annotate()
+    participants = Participant.objects.all().annotate()
+
+    context = {
+        'title':title,
+        'gallery':gallery,
+        'client':client,
+        }
+
+    return render(
+        request,
+        'frontend/gallery/gallery_insight.html',
+        context,
+    )
+
+@login_required(login_url='/admin/who-login/')
+@admin_only
 def gallery_list(request):
     menu = ['Home','Daftar Galeri']
     title = 'Galeri'
@@ -265,76 +357,3 @@ def gallery_add(request):
         }
 
         return render(request,'backend/gallery/gallery_form.html',context)
-
-@login_required(login_url='/admin/who-login/')
-@admin_only
-def gallery_update(request, status, id):
-    assert isinstance(request, HttpRequest)
-    menu = ['Home','Edit Galeri']
-    title = 'Edit Galeri'
-    id = decoding_id(id)
-    gallery = Gallery.objects.filter(id=id).first()
-
-    if request.method == 'POST':
-        with transaction.atomic():
-            galleryForm = GalleryForm(data = request.POST, files = request.FILES, instance=gallery)
-            video = request.FILES.get('video',None)
-            photo = request.FILES.get('foto',None)
-            link = request.POST.get('link',None)
-            try:
-                if (gallery.video and photo) or (gallery.video and link) or (gallery.foto and video) or (gallery.foto and link) or (gallery.link and video) or (gallery.link and photo):
-                    messages.add_message(request,messages.ERROR,'Can not upload videos / photos / links at the same time.')
-                    galleryForm = GalleryForm(request.POST,instance=gallery)
-
-                    context = {
-                        'title':title,
-                        'galleryForm':galleryForm,
-                    }
-    
-                    return render(request,'backend/gallery/gallery_form.html',context)
-                else:
-                    if galleryForm.is_valid():
-                        item = galleryForm.save()
-                        messages.add_message(request,messages.SUCCESS,'Item successfully added to gallery.')
-
-                        return redirect('/gallery/update/edit:'+str(encoding_id(item.id))+'/')
-                    else:
-                        raise forms.ValidationError("Item is invalid.")
-
-            except ValidationError as e:
-                messages.add_message(request,messages.ERROR,'Error editing the item.')
-                logger.error('Error editing the item '+str(e))
-                galleryForm = GalleryForm(request.POST,instance=gallery)
-
-                context = {
-                    'title':title,
-                    'galleryForm':galleryForm,
-                }
-    
-                return render(request,'backend/gallery/gallery_form.html',context)
-            except Exception as e:
-                messages.add_message(request,messages.ERROR,'Error editing the item.')
-                logger.error('Error editing the item '+str(e))
-                galleryForm = GalleryForm(request.POST,instance=gallery)
-
-                context = {
-                    'title':title,
-                    'galleryForm':galleryForm,
-                }
-    
-                return render(request,'backend/gallery/gallery_form.html',context)
-
-    elif request.method == 'GET':
-        if status == 'edit':
-            galleryForm = GalleryForm(instance=gallery)
-
-            context = {
-                'title':title,
-                'galleryForm':galleryForm,
-                }
-
-            return render(request,'backend/gallery/gallery_form.html',context)
-        elif status == 'delete':
-            messages.add_message(request,messages.WARNING,'Item successfully deleted.')
-            gallery.delete()
-            return redirect('/gallery/list/')

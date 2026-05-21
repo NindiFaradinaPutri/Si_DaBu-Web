@@ -525,6 +525,9 @@ def print_badge(request, id):
     participant = Participant.objects.filter(id = id).first()
     event = Event.objects.filter(id = participant.id_event.id).first()
 
+    participant.badge_is_printed = True
+    participant.save()
+
     instansi = ""
 
     instansi_obj = FormResponse.objects.annotate(

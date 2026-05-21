@@ -43,25 +43,7 @@ body {
     justify-content: space-between;
 }
 
-/* =========================================================
-   SEARCH BAR
-========================================================= */
-.search-bar {
-    background-color: #f3f4f6;
-    border-radius: .5rem;
-    width: 340px;
-    display: flex;
-    align-items: center;
-    padding: .5rem 1rem;
-}
-.search-bar input {
-    background: transparent;
-    border: none;
-    outline: none;
-    width: 100%;
-    font-size: .875rem;
-    margin-left: .5rem;
-}
+
 
 /* =========================================================
    MAIN CONTENT
@@ -244,42 +226,8 @@ main { overflow-x: auto; }
 }
 </style>
 
-<!-- =========================================================
-   TOP APP BAR
-========================================================= -->
-<header class="top-app-bar">
 
-    <div class="search-bar">
-        <span class="material-symbols-outlined text-muted">search</span>
-        <input type="text" placeholder="Search...">
-    </div>
 
-    <div class="d-flex align-items-center gap-3">
-
-        <button class="btn btn-link text-muted p-2 position-relative">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
-                  style="margin-top:10px;margin-left:-15px;"></span>
-        </button>
-
-        <button class="btn btn-link text-muted p-2">
-            <span class="material-symbols-outlined">settings</span>
-        </button>
-
-        <div class="vr mx-2" style="height:32px;"></div>
-
-        <div class="d-flex align-items-center gap-2">
-            <div class="text-end d-none d-md-block">
-                <p class="mb-0 fw-bold small">Silatama Admin</p>
-                <p class="mb-0 text-muted" style="font-size:12px;">Admin</p>
-            </div>
-            <img class="rounded-circle border" width="40" height="40"
-                 src="https://ui-avatars.com/api/?name=AD&background=E31E24&color=fff"
-                 alt="Admin">
-        </div>
-
-    </div>
-</header>
 
 <!-- =========================================================
    MAIN CONTENT
@@ -352,6 +300,7 @@ main { overflow-x: auto; }
 
 {% block header %}
 {% include "backend/header/header.html" %}
+{% include "backend/header/header-page.html" %}
 {% endblock %}
 
 {% block theme %}
