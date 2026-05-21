@@ -29,7 +29,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseServerError
 from django.forms import modelformset_factory, formset_factory
 
-from django.db.models import Q, CharField, Value, Sum, F, Case, When, Exists, Prefetch
+from django.db.models import Q, CharField, IntegerField, Value, Sum, F, Case, When, Exists, Prefetch
 from django.db.models.functions import Coalesce, Concat
 from django.db import IntegrityError, transaction, connection
 
@@ -101,31 +101,228 @@ def csrf_failure(request, reason=""):
     return render(request,'error_handler/403_csrf.html', status=403)
 
 
+# def home(request):
+#     kegiatans = KegiatanMasjid.objects.all().order_by('id')
+#     client = Client.objects.all()
+#     profile = Profile.objects.filter(id=1).first()
+
+#     # semua event
+#     now = timezone.localtime()
+
+#     today = now.date()
+#     current_time = now.time()
+
+#     events = Event.objects.all().annotate(
+
+#         event_priority=Case(
+
+#             # upcoming event
+#             When(date__gt=today, then=Value(0)),
+
+#             # hari ini tapi belum lewat
+#             When(
+#                 date=today,
+#                 time__gte=current_time,
+#                 then=Value(0)
+#             ),
+
+#             # event lama
+#             default=Value(1),
+
+#             output_field=IntegerField()
+#         )
+
+#     ).order_by(
+
+#         # upcoming dulu
+#         'event_priority',
+
+#         # urut terdekat
+#         'date',
+#         'time'
+#     )
+
+#     now = timezone.localtime()
+#     today = now.date()
+#     current_time = now.time()
+
+#     # ======================================
+#     # HERO SECTION (ambil event terdekat)
+#     # ======================================
+#     hero_event = events.first()
+
+#     hero_event_photo = None
+#     hero_event_status = None
+#     hero_maps_url = ""
+#     hero_badge_class = "hero-badge"
+
+#     if hero_event:
+        
+#         hero_maps_url = extract_maps_url(hero_event.location_map)
+#         hero_participant_count = Participant.objects.filter(
+#             id_event=hero_event
+#         ).count()
+
+#         hero_event_photo = EventPhoto.objects.filter(
+#             id_event=hero_event
+#         ).first()
+
+#         event_date = hero_event.date
+#         event_time = hero_event.time
+
+#         if event_date == today:
+#             if event_time:
+#                 if event_time.hour == current_time.hour:
+#                     hero_event_status = "LIVE"
+#                     hero_badge_class = "hero-badge bg-danger text-white"
+
+#                 elif event_time.hour > current_time.hour:
+#                     hero_event_status = "INCOMING"
+#                     hero_badge_class = "hero-badge bg-warning text-dark"
+
+#                 else:
+#                     hero_event_status = "EVENT FINISHED"
+#                     hero_badge_class = "hero-badge bg-secondary text-white"
+#             else:
+#                 hero_event_status = "LIVE"
+#                 hero_badge_class = "hero-badge bg-danger text-white"
+
+#         elif event_date > today:
+#             hero_event_status = "INCOMING"
+#             hero_badge_class = "hero-badge bg-warning text-dark"
+
+#         else:
+#             hero_event_status = "EVENT FINISHED"
+#             hero_badge_class = "hero-badge bg-secondary text-white"
+
+#     # ======================================
+#     # EVENT CARD LIST
+#     # ======================================
+#     event_data = []
+
+#     for event in events:
+#         photo = EventPhoto.objects.filter(
+#             id_event=event
+#         ).first()
+
+#         # default
+#         status = "EVENT FINISHED"
+#         badge_class = "bg-secondary text-white"
+
+#         if event.date > today:
+#             status = "INCOMING"
+#             badge_class = "bg-warning text-dark"
+
+#         elif event.date == today:
+#             if event.time:
+#                 if event.time.hour == current_time.hour:
+#                     status = "LIVE"
+#                     badge_class = "bg-danger text-white"
+
+#                 elif event.time.hour > current_time.hour:
+#                     status = "INCOMING"
+#                     badge_class = "bg-warning text-dark"
+
+#                 else:
+#                     status = "EVENT FINISHED"
+#                     badge_class = "bg-secondary text-white"
+#             else:
+#                 status = "LIVE"
+#                 badge_class = "bg-danger text-white"
+
+#         event_data.append({
+#             "event": event,
+#             "photo": photo,
+#             "status": status,
+#             "badge_class": badge_class,
+#             "maps_url": extract_maps_url(event.location_map)
+#         })
+
+#     context = {
+#         'title': 'Halaman Beranda',
+#         'kegiatans': kegiatans,
+#         'client': client,
+#         'profile': profile,
+
+#         # hero section
+#         'event': hero_event,
+#         'event_photo': hero_event_photo,
+#         'event_status': hero_event_status,
+#         'badge_class': hero_badge_class,
+#         'hero_participant_count': hero_participant_count,
+
+#         # event list section
+#         'event_data': event_data,
+#         'hero_maps_url': hero_maps_url,  #  tambahan
+#     }
+
+#     return render(
+#         request,
+#         'frontend/home/index.html',
+#         context
+#     )
+
 def home(request):
+
     kegiatans = KegiatanMasjid.objects.all().order_by('id')
     client = Client.objects.all()
     profile = Profile.objects.filter(id=1).first()
 
-    # semua event
-    events = Event.objects.all().order_by('date', 'time')
-
     now = timezone.localtime()
+
     today = now.date()
     current_time = now.time()
 
     # ======================================
-    # HERO SECTION (ambil event terdekat)
+    # HERO EVENT PRIORITY
     # ======================================
-    hero_event = events.first()
+    all_events = Event.objects.all().annotate(
+
+        event_priority=Case(
+
+            # upcoming event
+            When(
+                date__gt=today,
+                then=Value(0)
+            ),
+
+            # today but not finished
+            When(
+                date=today,
+                time__gte=current_time,
+                then=Value(0)
+            ),
+
+            # finished event
+            default=Value(1),
+
+            output_field=IntegerField()
+        )
+
+    ).order_by(
+        'event_priority',
+        'date',
+        'time'
+    )
+
+    # ======================================
+    # HERO EVENT
+    # ======================================
+    hero_event = all_events.first()
 
     hero_event_photo = None
     hero_event_status = None
     hero_maps_url = ""
     hero_badge_class = "hero-badge"
 
+    hero_participant_count = 0
+
     if hero_event:
-        
-        hero_maps_url = extract_maps_url(hero_event.location_map)
+
+        hero_maps_url = extract_maps_url(
+            hero_event.location_map
+        )
+
         hero_participant_count = Participant.objects.filter(
             id_event=hero_event
         ).count()
@@ -137,90 +334,164 @@ def home(request):
         event_date = hero_event.date
         event_time = hero_event.time
 
-        if event_date == today:
+        if event_date > today:
+
+            hero_event_status = "INCOMING"
+            hero_badge_class = "hero-badge bg-warning text-dark"
+
+        elif event_date == today:
+
             if event_time:
+
                 if event_time.hour == current_time.hour:
+
                     hero_event_status = "LIVE"
                     hero_badge_class = "hero-badge bg-danger text-white"
 
                 elif event_time.hour > current_time.hour:
+
                     hero_event_status = "INCOMING"
                     hero_badge_class = "hero-badge bg-warning text-dark"
 
                 else:
+
                     hero_event_status = "EVENT FINISHED"
                     hero_badge_class = "hero-badge bg-secondary text-white"
+
             else:
+
                 hero_event_status = "LIVE"
                 hero_badge_class = "hero-badge bg-danger text-white"
 
-        elif event_date > today:
-            hero_event_status = "INCOMING"
-            hero_badge_class = "hero-badge bg-warning text-dark"
-
         else:
+
             hero_event_status = "EVENT FINISHED"
             hero_badge_class = "hero-badge bg-secondary text-white"
 
     # ======================================
-    # EVENT CARD LIST
+    # UPCOMING EVENTS
     # ======================================
-    event_data = []
+    upcoming_events = Event.objects.filter(
 
-    for event in events:
-        photo = EventPhoto.objects.filter(
-            id_event=event
-        ).first()
+        Q(date__gt=today) |
 
-        # default
-        status = "EVENT FINISHED"
-        badge_class = "bg-secondary text-white"
+        Q(
+            date=today,
+            time__gte=current_time
+        )
 
-        if event.date > today:
-            status = "INCOMING"
-            badge_class = "bg-warning text-dark"
+    ).order_by(
+        'date',
+        'time'
+    )[:6]
 
-        elif event.date == today:
-            if event.time:
-                if event.time.hour == current_time.hour:
+    # ======================================
+    # FINISHED EVENTS
+    # ======================================
+    finished_events = Event.objects.filter(
+
+        Q(date__lt=today) |
+
+        Q(
+            date=today,
+            time__lt=current_time
+        )
+
+    ).order_by(
+        '-date',
+        '-time'
+    )[:6]
+
+    # ======================================
+    # BUILD EVENT DATA
+    # ======================================
+    def build_event_data(events_queryset):
+
+        data = []
+
+        for event in events_queryset:
+
+            photo = EventPhoto.objects.filter(
+                id_event=event
+            ).first()
+
+            # default
+            status = "EVENT FINISHED"
+            badge_class = "bg-secondary text-white"
+
+            if event.date > today:
+
+                status = "INCOMING"
+                badge_class = "bg-warning text-dark"
+
+            elif event.date == today:
+
+                if event.time:
+
+                    if event.time.hour == current_time.hour:
+
+                        status = "LIVE"
+                        badge_class = "bg-danger text-white"
+
+                    elif event.time.hour > current_time.hour:
+
+                        status = "INCOMING"
+                        badge_class = "bg-warning text-dark"
+
+                    else:
+
+                        status = "EVENT FINISHED"
+                        badge_class = "bg-secondary text-white"
+
+                else:
+
                     status = "LIVE"
                     badge_class = "bg-danger text-white"
 
-                elif event.time.hour > current_time.hour:
-                    status = "INCOMING"
-                    badge_class = "bg-warning text-dark"
+            data.append({
 
-                else:
-                    status = "EVENT FINISHED"
-                    badge_class = "bg-secondary text-white"
-            else:
-                status = "LIVE"
-                badge_class = "bg-danger text-white"
+                "event": event,
+                "photo": photo,
+                "status": status,
+                "badge_class": badge_class,
+                "maps_url": extract_maps_url(
+                    event.location_map
+                )
 
-        event_data.append({
-            "event": event,
-            "photo": photo,
-            "status": status,
-            "badge_class": badge_class,
-            "maps_url": extract_maps_url(event.location_map)
-        })
+            })
+
+        return data
+
+    # ======================================
+    # FINAL DATA
+    # ======================================
+    upcoming_event_data = build_event_data(
+        upcoming_events
+    )
+
+    finished_event_data = build_event_data(
+        finished_events
+    )
 
     context = {
+
         'title': 'Halaman Beranda',
+
         'kegiatans': kegiatans,
         'client': client,
         'profile': profile,
 
-        # hero section
+        # hero
         'event': hero_event,
         'event_photo': hero_event_photo,
         'event_status': hero_event_status,
         'badge_class': hero_badge_class,
         'hero_participant_count': hero_participant_count,
+        'hero_maps_url': hero_maps_url,
 
-        # event list section
-        'event_data': event_data,
-        'hero_maps_url': hero_maps_url,  #  tambahan
+        # sections
+        'upcoming_event_data': upcoming_event_data,
+        'finished_event_data': finished_event_data,
     }
 
     return render(
@@ -239,16 +510,22 @@ def event_frontend(request, id):
     tech = Technology.objects.all()
     naration = TeamNaration.objects.filter(id=1).first()
 
+    id = decoding_id(id)
+
     # ambil event
     event = Event.objects.filter(id=id).first()
 
-    if not event:
-        return render(request, '404.html')
+
 
     # ambil photo event
     event_photo = EventPhoto.objects.filter(
         id_event=event
     ).first()
+
+    event_benefits = EventBenefit.objects.filter(
+    id_event=event,
+    status=True
+    ).order_by('id')
 
     # participant count
     participant_count = Participant.objects.filter(
@@ -588,6 +865,7 @@ def event_frontend(request, id):
         # event
         'event': event,
         'event_photo': event_photo,
+        'event_benefits': event_benefits,
 
         # participant
         'participant_count': participant_count,

@@ -20,6 +20,7 @@ class Event(models.Model):
     unique_name = models.UUIDField(default=uuid4, editable=False, unique=True)
     is_form = models.BooleanField(default=False)
     url_form =  models.CharField(max_length=1000, null=True, blank=True)
+    capacity = models.IntegerField(null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True, blank=False)
     update_date = models.DateTimeField(auto_now=True, blank=False)
 
@@ -91,4 +92,17 @@ class EventPhoto(models.Model):
         except Exception as e:
             pass
         super(EventPhoto, self).delete(*args, **kwargs)
+
+class EventBenefit(models.Model):
+    id_event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False, blank=False)
+    benefit = models.CharField(max_length=1000, null=False, blank=False)
+    status = models.BooleanField(default=False)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=False)
+    update_date = models.DateTimeField(auto_now=True, blank=False)
+
+    class Meta:
+        db_table = 'event_benefit'
+
+    def __str__(self):
+        return self.benefit
 #END OF USER MODEL
