@@ -188,24 +188,6 @@ def gallery_category(request,category):
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
-def gallery_list(request):
-    menu = ['Home','Daftar Galeri']
-    title = 'Galeri'
-    gallery = Gallery.objects.all().order_by('-id')
-    context = {
-            'title':title,
-            'menu':menu,
-            'gallery':gallery
-        }
-
-    return render(
-        request,
-        'backend/gallery/gallery_list.html',
-        context,
-    )
-
-@login_required(login_url='/admin/who-login/')
-@admin_only
 def gallery_add(request):
     assert isinstance(request, HttpRequest)
     menu = ['Home','Tambah Galeri']
@@ -338,3 +320,38 @@ def gallery_update(request, status, id):
             messages.add_message(request,messages.WARNING,'Item successfully deleted.')
             gallery.delete()
             return redirect('/gallery/list/')
+        
+def presengo_gallery(request):
+    title = "Presengo Gallery"
+    client = Client.objects.first()
+    gallery = Gallery.objects.filter(id_client=client)
+
+    context = {
+        'title':title,
+        'gallery':gallery,
+        'client':client,
+        }
+
+    return render(
+        request,
+        'frontend/gallery/gallery_insight.html',
+        context,
+    )
+
+@login_required(login_url='/admin/who-login/')
+@admin_only
+def gallery_list(request):
+    menu = ['Home','Daftar Galeri']
+    title = 'Galeri'
+    gallery = Gallery.objects.all().order_by('-id')
+    context = {
+            'title':title,
+            'menu':menu,
+            'gallery':gallery
+        }
+
+    return render(
+        request,
+        'backend/gallery/gallery_list.html',
+        context,
+    )
