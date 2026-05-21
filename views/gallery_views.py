@@ -188,68 +188,6 @@ def gallery_category(request,category):
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
-def gallery_add(request):
-    assert isinstance(request, HttpRequest)
-    menu = ['Home','Tambah Galeri']
-    title = 'Tambah Galeri'
-
-    if request.method == 'POST':
-        try:
-            galleryForm = GalleryForm(request.POST,request.FILES)
-            video = request.FILES.get('video',None)
-            photo = request.FILES.get('foto',None)
-            link = request.POST.get('link',None)
-
-            if (video and photo) or (video and link) or (photo and link):
-                messages.add_message(request,messages.ERROR,'Can not upload videos / photos / links at the same time.')
-                galleryForm = GalleryForm(request.POST,request.FILES)
-
-                context = {
-                    'title':title,
-                    'galleryForm':galleryForm
-                }
-    
-                return render(request,'backend/gallery/gallery_form.html',context)
-            else:
-                if galleryForm.is_valid():
-                    item = galleryForm.save()
-                    messages.add_message(request,messages.SUCCESS,'Item successfully added to gallery.')
-
-                    return redirect('/gallery/update/edit:'+str(encoding_id(item.id))+'/')
-                else: 
-                    raise ValidationError('Form tidak lengkap ');
-        except ValidationError as e:
-            messages.add_message(request,messages.ERROR,'Error adding item to the gallery.')
-            galleryForm = GalleryForm(request.POST,request.FILES)
-
-            context = {
-                'title':title,
-                'galleryForm':galleryForm
-            }
-    
-            return render(request,'backend/gallery/gallery_form.html',context)
-        except Exception as e:
-            messages.add_message(request,messages.ERROR,'Error adding item to the gallery.')
-            galleryForm = GalleryForm(request.POST,request.FILES)
-
-            context = {
-                'title':title,
-                'galleryForm':galleryForm
-            }
-    
-            return render(request,'backend/gallery/gallery_form.html',context)
-    else:
-        galleryForm = GalleryForm()
-
-        context = {
-            'title':title,
-            'galleryForm':galleryForm
-        }
-
-        return render(request,'backend/gallery/gallery_form.html',context)
-
-@login_required(login_url='/admin/who-login/')
-@admin_only
 def gallery_update(request, status, id):
     assert isinstance(request, HttpRequest)
     menu = ['Home','Edit Galeri']
@@ -325,6 +263,8 @@ def presengo_gallery(request):
     title = "Presengo Gallery"
     client = Client.objects.first()
     gallery = Gallery.objects.filter(id_client=client)
+    events = Event.objects.all().annotate()
+    participants = Participant.objects.all().annotate()
 
     context = {
         'title':title,
@@ -355,3 +295,65 @@ def gallery_list(request):
         'backend/gallery/gallery_list.html',
         context,
     )
+
+@login_required(login_url='/admin/who-login/')
+@admin_only
+def gallery_add(request):
+    assert isinstance(request, HttpRequest)
+    menu = ['Home','Tambah Galeri']
+    title = 'Tambah Galeri'
+
+    if request.method == 'POST':
+        try:
+            galleryForm = GalleryForm(request.POST,request.FILES)
+            video = request.FILES.get('video',None)
+            photo = request.FILES.get('foto',None)
+            link = request.POST.get('link',None)
+
+            if (video and photo) or (video and link) or (photo and link):
+                messages.add_message(request,messages.ERROR,'Can not upload videos / photos / links at the same time.')
+                galleryForm = GalleryForm(request.POST,request.FILES)
+
+                context = {
+                    'title':title,
+                    'galleryForm':galleryForm
+                }
+    
+                return render(request,'backend/gallery/gallery_form.html',context)
+            else:
+                if galleryForm.is_valid():
+                    item = galleryForm.save()
+                    messages.add_message(request,messages.SUCCESS,'Item successfully added to gallery.')
+
+                    return redirect('/gallery/update/edit:'+str(encoding_id(item.id))+'/')
+                else: 
+                    raise ValidationError('Form tidak lengkap ');
+        except ValidationError as e:
+            messages.add_message(request,messages.ERROR,'Error adding item to the gallery.')
+            galleryForm = GalleryForm(request.POST,request.FILES)
+
+            context = {
+                'title':title,
+                'galleryForm':galleryForm
+            }
+    
+            return render(request,'backend/gallery/gallery_form.html',context)
+        except Exception as e:
+            messages.add_message(request,messages.ERROR,'Error adding item to the gallery.')
+            galleryForm = GalleryForm(request.POST,request.FILES)
+
+            context = {
+                'title':title,
+                'galleryForm':galleryForm
+            }
+    
+            return render(request,'backend/gallery/gallery_form.html',context)
+    else:
+        galleryForm = GalleryForm()
+
+        context = {
+            'title':title,
+            'galleryForm':galleryForm
+        }
+
+        return render(request,'backend/gallery/gallery_form.html',context)

@@ -57,29 +57,6 @@ body {
 }
 
 /* =========================================================
-   SEARCH BAR
-========================================================= */
-.search-bar {
-    background-color: #f3f4f6;
-    border-radius: .5rem;
-    width: 340px;
-    display: flex;
-    align-items: center;
-    padding: .5rem 1rem;
-}
-
-.search-bar input {
-    background: transparent;
-    border: none;
-    outline: none;
-    width: 100%;
-    font-size: .875rem;
-    margin-left: .5rem;
-}
-
-.search-bar input::placeholder { color: #9ca3af; }
-
-/* =========================================================
    TOP ICON BUTTON
 ========================================================= */
 .top-icon-btn {
@@ -163,9 +140,13 @@ main { overflow-x: auto; }
 /* =========================================================
    TABLE
 ========================================================= */
-.table-responsive { overflow-x: auto; white-space: nowrap; }
+.table-responsive { overflow-x: auto; }
 
-.gallery-table { width: 100%; border-collapse: collapse; }
+.gallery-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
 
 .gallery-table thead th {
     background-color: #f8f9fa;
@@ -175,13 +156,17 @@ main { overflow-x: auto; }
     letter-spacing: .05em;
     color: #6c757d;
     padding: 1rem 1.5rem;
+    border: 1px solid #e9ecef;
+    overflow: hidden;
 }
 
 .gallery-table tbody td {
-    padding: 1.25rem 1.5rem;
-    border-top: 1px solid #f3f4f6;
+    padding: 1.25rem 1rem;
+    border: 1px solid #e9ecef;
     vertical-align: middle;
     white-space: normal;
+    word-break: break-word;
+    overflow: hidden;
 }
 
 .gallery-table tbody tr {
@@ -204,17 +189,29 @@ main { overflow-x: auto; }
     font-weight: 800;
     font-size: 15px;
     flex-shrink: 0;
+	margin-right: 1cm;
 }
 
 /* =========================================================
-   MEDIA THUMBNAIL
+   MEDIA THUMBNAIL — ukuran tetap agar tiap row sama
 ========================================================= */
-.gallery-thumb {
-    width: 300px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 10px;
+.gallery-logo {
+    width: 80px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 6px;
     border: 1px solid #e9ecef;
+    background: #f8f9fa;
+    display: block;
+}
+
+.gallery-foto {
+    width: 140px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    display: block;
 }
 
 /* =========================================================
@@ -273,47 +270,6 @@ main { overflow-x: auto; }
     .gallery-table  { min-width: 720px; }
 }
 </style>
-
-<!-- =========================================================
-   TOP APP BAR
-========================================================= -->
-<header class="top-app-bar">
-
-    <div class="search-bar">
-        <span class="material-symbols-outlined text-muted">search</span>
-        <input type="text" placeholder="Search Gallery...">
-    </div>
-
-    <div class="d-flex align-items-center gap-3">
-
-        <!-- Notification -->
-        <button class="top-icon-btn position-relative">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
-                  style="margin-top:8px;margin-left:-10px;"></span>
-        </button>
-
-        <!-- Settings -->
-        <button class="top-icon-btn">
-            <span class="material-symbols-outlined">settings</span>
-        </button>
-
-        <div class="vr mx-1" style="height:28px;"></div>
-
-        <!-- Profile -->
-        <div class="d-flex align-items-center gap-2">
-            <div class="text-end d-none d-md-block">
-                <p class="mb-0 fw-bold small">Silatama Admin</p>
-                <p class="mb-0 text-muted" style="font-size:12px;">Gallery Manager</p>
-            </div>
-            <img class="rounded-circle border" width="40" height="40"
-                 src="https://ui-avatars.com/api/?name=AD&background=E31E24&color=fff"
-                 alt="Admin">
-        </div>
-
-    </div>
-</header>
-
 <!-- =========================================================
    MAIN CONTENT
 ========================================================= -->
@@ -347,33 +303,43 @@ main { overflow-x: auto; }
             <table class="gallery-table">
                 <thead>
                     <tr>
-                        <th style="width:80px;">No</th>
-                        <th style="width:35%;">Foto / Video</th>
-                        <th>Informasi</th>
+                        <th style="width:70px;">No</th>
+                        <th style="width:130px;">Client</th>
+                        <th style="width:120px;">Logo</th>
+                        <th style="width:190px;">Foto</th>
+                        <th>Informasi Foto</th>
                         <th style="width:160px;">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                    {% for gallery in gallery %}
+                    {% for item in gallery %}
                     <tr>
                         <td>
                             <div class="gallery-number">{{ forloop.counter }}</div>
                         </td>
 
                         <td>
-                            <img class="w-25" src="{{ gallery.foto.url }}" alt="">
+                            <p class="gallery-info mb-0">{{ item.id_client.name }}</p>
                         </td>
 
                         <td>
-                            <p class="gallery-info mb-0">{{ gallery.informasi }}</p>
+                            <img class="gallery-logo" src="{{ item.id_client.photo.url }}" alt="{{ item.id_client.name }}">
+                        </td>
+
+                        <td>
+                            <img class="gallery-foto" src="{{ item.foto.url }}" alt="{{ item.informasi }}">
+                        </td>
+
+                        <td>
+                            <p class="gallery-info mb-0">{{ item.informasi }}</p>
                         </td>
 
                         <td>
                             <div class="gallery-actions">
 
-                                <a href="/gallery/update/edit:{{ gallery.encrypt_id }}"
+                                <a href="/gallery/update/edit:{{ item.encrypt_id }}"
                                    class="gallery-btn gallery-edit">
                                     <span class="material-symbols-outlined" style="font-size:18px;">edit</span>
                                     Update
@@ -381,8 +347,8 @@ main { overflow-x: auto; }
 
                                 <a href="#"
                                    class="gallery-btn gallery-delete"
-                                   data-href="/gallery/update/delete:{{ gallery.encrypt_id }}"
-                                   data-name="{{ gallery.informasi }}">
+                                   data-href="/gallery/update/delete:{{ item.encrypt_id }}"
+                                   data-name="{{ item.informasi }}">
                                     <span class="material-symbols-outlined" style="font-size:18px;">delete</span>
                                     Delete
                                 </a>
@@ -461,6 +427,10 @@ document.querySelectorAll('.gallery-delete').forEach(btn => {
 
 {% block header %}
 {% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block page_header %}
+{% include "backend/header/header-page.html" %}
 {% endblock %}
 
 {% block theme %}
