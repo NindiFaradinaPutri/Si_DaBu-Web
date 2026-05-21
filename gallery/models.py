@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator, MinLengthValidator
+from portfolio.models import Client
 from utils.functions import *
 from utils.utils import *
 
@@ -14,6 +15,7 @@ class Gallery(models.Model):
     video = models.FileField(upload_to=path_video, null=True, blank=True)
     link = models.CharField(max_length=300, null=True, blank=True)
     informasi = models.CharField(max_length=300, null=False, blank=False)
+    id_client = models.ForeignKey(Client,on_delete=models.CASCADE, null=False, blank=False)
     
     class Meta:
         db_table = 'gallery'

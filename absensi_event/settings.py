@@ -42,7 +42,11 @@ SECRET_KEY = os.environ.get('ABSENSI_EVENT_SECRET_KEY'),
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.92']
+ALLOWED_HOSTS = ['localhost',
+                 '127.0.0.1',
+                 '192.168.1.92',
+                 'presengo.test',
+                 '192.168.1.134']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -136,10 +140,10 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('ABSENSI_EVENT_PGSQL_DB_ENGINEE'),
-        'NAME': os.environ.get('ABSENSI_EVENT_PGSQL_DB'),
-        'USER': os.environ.get('ABSENSI_EVENT_PGSQL_DB_USER'),
-        'PASSWORD': os.environ.get('ABSENSI_EVENT_PGSQL_DB_PASS'),
+        'ENGINE': os.environ.get('PGSQL_DB_ENGINEE'),
+        'NAME': 'absensi_event_db',
+        'USER': os.environ.get('PGSQL_DB_USER'),
+        'PASSWORD': os.environ.get('PGSQL_DB_PASS'),
         'HOST': '127.0.0.1',
         'PORT':'5432',
     }
@@ -230,8 +234,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('ABSENSI_EVENT_EMAIL_ID') 
-EMAIL_HOST_PASSWORD = os.environ.get('ABSENSI_EVENT_EMAIL_PASS') 
+EMAIL_HOST_USER = 'bebek.logic@gmail.com' 
+EMAIL_HOST_PASSWORD = 'lygclrvemsxorqpx'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
