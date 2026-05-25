@@ -3,7 +3,15 @@
 <section class="hero-section page-section px-4" id="home">
     <div class="hero-bg">
         <div class="hero-overlay"></div>
-        <img alt="Grand Ballroom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5mo_5cA7YLSjg5zRwMniIYqeONiSVbRfxOhrbCOyeamFBlRu_gfw-2-qAKsHvX7HZOS5ep-w9cWT-hUIphOL3zewrDuEbiVTq3hv9v1EWLZadXkpwGzk_UVx8_sx7WyCNGALaHfrMvE-64UZSYyttVNDctiiq0Ff5F77bRUTeSqs3jAChXiP4YFMxcJqIsJWVKBibOlX1XfuIutc3_WgMpNNV7XdmgPEVQmOQ_GFvYmE7GCP0h_D3G2Ha3Fa34FxPRaGmO7kJaxg" />
+        {% if technology and technology.photo %}
+    <img
+        alt="Grand Ballroom"
+        src="{{ technology.photo.url }}" />
+{% else %}
+    <img
+        alt="Grand Ballroom"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5mo_5cA7YLSjg5zRwMniIYqeONiSVbRfxOhrbCOyeamFBlRu_gfw-2-qAKsHvX7HZOS5ep-w9cWT-hUIphOL3zewrDuEbiVTq3hv9v1EWLZadXkpwGzk_UVx8_sx7WyCNGALaHfrMvE-64UZSYyttVNDctiiq0Ff5F77bRUTeSqs3jAChXiP4YFMxcJqIsJWVKBibOlX1XfuIutc3_WgMpNNV7XdmgPEVQmOQ_GFvYmE7GCP0h_D3G2Ha3Fa34FxPRaGmO7kJaxg" />
+{% endif %}
     </div>
     <div class="position-relative z-1 mt-4">
         <span class="font-label text-primary-container d-block mb-3" style="letter-spacing: 0.3em;">EXCLUSIVE INVITATION</span>

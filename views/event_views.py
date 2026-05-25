@@ -58,6 +58,7 @@ from django.core.files.base import ContentFile
 #Set Logg
 import logging
 
+from profile.models import Technology
 from team.models import Team
 logger = logging.getLogger(__file__)
 
@@ -559,6 +560,10 @@ def invitation_view(request, event_id):
         id=event_id
     ).first()
 
+    technology = Technology.objects.filter(
+        event_id_id=event_id
+    ).first()
+
     form = Form.objects.filter(
         id_event=event_id,
         status=True
@@ -851,6 +856,7 @@ def invitation_view(request, event_id):
         'remaining_seat': total_guest,
         'total_guest': total_guest,
         'event_benefits': event_benefits,
+        'technology': technology,
     }
 
     return render(

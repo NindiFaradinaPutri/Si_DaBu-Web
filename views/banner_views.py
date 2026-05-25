@@ -1,16 +1,19 @@
+import base64
+
 from django.contrib.auth import password_validation, authenticate, login as user_login, logout as auth_logout
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
 from django.contrib import messages
+import qrcode
 from form.models import Form as EventFormModel
 
 from django.core import validators,serializers as serial
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.files import File
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, default_storage
 
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseServerError
@@ -58,6 +61,7 @@ import logging
 
 from event.forms import EventForm, EventPhotoForm
 from participant.models import Participant
+from profile.models import Technology
 logger = logging.getLogger(__file__)
 
 from app.decorators import *
@@ -69,6 +73,8 @@ from banner.forms import *
 #Set Masking
 from hashids import Hashids
 hashid = Hashids(salt='silatama systems.', min_length=16)
+
+
 
 @login_required(login_url='/admin/who-login/')
 @admin_only
@@ -259,6 +265,146 @@ def event_list(request, id):
         request,
         "backend/event/event_list.html",
         context
+    )
+
+@login_required(login_url='/admin/who-login/')
+@admin_only
+def invitation_list(request, id):
+    assert isinstance(request, HttpRequest)
+
+    menu = ['Beranda', 'Detail Event']
+
+    # =========================
+    # DECODE EVENT ID
+    # =========================
+    id = decoding_id(id)
+
+    # =========================
+    # GET EVENT
+    # =========================
+    event = Event.objects.filter(
+        id=id
+    ).first()
+
+    # =========================
+    # GET TECHNOLOGY
+    # =========================
+    tech = Technology.objects.filter(
+        event_id_id=id
+    ).first()
+
+    # =========================
+    # GET EVENT PHOTO
+    # =========================
+    event_photo = EventPhoto.objects.filter(
+        id_event=event
+    ).first()
+
+    # =========================
+    # EVENT BENEFITS
+    # =========================
+    event_benefits = EventBenefit.objects.filter(
+        id_event=event,
+        status=True
+    ).order_by('id')
+
+    # =========================
+    # PARTICIPANT COUNT
+    # =========================
+    participant_count = Participant.objects.filter(
+        id_event=event
+    ).count()
+
+    # =========================
+    # SAVE TECHNOLOGY
+    # =========================
+    if request.method == "POST":
+
+        technology_color = request.POST.get(
+            'technology_color'
+        )
+
+        technology_photo = request.FILES.get(
+            'technology_photo'
+        )
+
+        remove_photo = request.POST.get(
+            'remove_photo'
+        )
+
+        # =========================
+        # UPDATE EXISTING
+        # =========================
+        if tech:
+
+            if technology_color:
+                tech.name = technology_color
+
+            # REMOVE PHOTO
+            if remove_photo == "1":
+
+                if tech.photo:
+                    tech.photo.delete(save=False)
+
+                tech.photo = None
+
+            # UPLOAD NEW PHOTO
+            if technology_photo:
+                tech.photo = technology_photo
+
+            tech.save()
+
+            messages.success(
+                request,
+                "Technology berhasil diperbarui."
+            )
+
+        # =========================
+        # CREATE NEW
+        # =========================
+        else:
+
+            Technology.objects.create(
+                name=technology_color if technology_color else '',
+                photo=technology_photo,
+                event_id_id=id
+            )
+
+            messages.success(
+                request,
+                "Technology berhasil disimpan."
+            )
+
+        return redirect(request.path)
+
+
+    # =========================
+    # CONTEXT
+    # =========================
+    context = {
+
+        'title': event.name,
+
+        'menu': menu,
+
+        'tech': tech,
+
+        # EVENT
+        'event': event,
+
+        'event_photo': event_photo,
+
+        'event_benefits': event_benefits,
+
+        # PARTICIPANT
+        'participant_count': participant_count,
+
+    }
+
+    return render(
+        request,
+        'backend/event/invitation_form.html',
+        context,
     )
 
 

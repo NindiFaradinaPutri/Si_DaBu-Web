@@ -57,7 +57,8 @@ class Contact(models.Model):
 
 class Technology(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
-    photo = models.ImageField(upload_to=path_photo, null=False, blank=False)
+    photo = models.ImageField(upload_to=path_photo, null=True, blank=True)
+    event_id = models.ForeignKey(Event,on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         db_table = 'technology'

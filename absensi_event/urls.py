@@ -94,6 +94,11 @@ urlpatterns = [
     r'^event/list/(?P<id>[0-9a-zA-Z-_]+)/$',
     banner_views.event_list, name='event_list'
     ),
+
+    re_path(
+    r'^invitation/list/(?P<id>[0-9a-zA-Z-_]+)/$',
+    banner_views.invitation_list, name='invitation_list'
+    ),
     # path('event/list/<int:id>/', banner_views.event_list, name='event_list'),
     re_path(
     r'^event/edit/(?P<id>[0-9a-zA-Z-_]+)/$',

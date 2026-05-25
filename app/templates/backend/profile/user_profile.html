@@ -346,6 +346,14 @@ main { overflow-x: auto; }
                         </a>
                     </div>
 
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a class="text-danger fw-bold text-decoration-none small"
+                           href="{% url 'invitation_list' event.encrypt_id %}">
+                            Manage Invitation
+                            <span class="material-symbols-outlined small">arrow_forward</span>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>

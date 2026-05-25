@@ -1269,7 +1269,8 @@ def admin_list(request):
     return render(request,'backend-admin/user/user_list.html',context)
 
 
-@login_required
+@login_required(login_url='/admin/who-login/')
+@admin_only
 def get_notifications(request):
     # Ambil semua notif (read & unread), max 20 terbaru
     notifs = Notifications.objects.select_related(
@@ -1292,7 +1293,7 @@ def get_notifications(request):
 
     return JsonResponse({'notifications': data, 'unread_count': unread_count})
 
-@login_required
+@csrf_exempt
 @require_POST
 def mark_notification_read(request, notif_id):
     """Mark notifikasi sebagai sudah dibaca"""
