@@ -444,6 +444,24 @@ def update_doorprize(request):
         participant_id = request.POST.get('participant_id')
 
         # =========================================
+        # NORMALIZE PARTICIPANT ID
+        # =========================================
+
+        if participant_id:
+
+            participant_id = str(participant_id).replace('.', '')
+
+            try:
+                participant_id = int(participant_id)
+
+            except (ValueError, TypeError):
+
+                return JsonResponse({
+                    'status': False,
+                    'message': 'Invalid participant ID'
+                })
+
+        # =========================================
         # VALIDATION
         # =========================================
 
@@ -540,9 +558,13 @@ def update_doorprize(request):
             id_participant=participant
 
         )
-        
+
         participant.is_winner = True
-        participant.save(update_fields=['is_winner'])
+
+        participant.save(
+            update_fields=['is_winner']
+        )
+
         # =========================================
         # UPDATE PRIZE
         # =========================================
