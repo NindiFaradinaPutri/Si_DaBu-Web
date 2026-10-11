@@ -1,0 +1,108 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper" id="id_postreg_wizard">
+    <div class="services-area pt-70 light-bg-s pb-50">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-12 col-md-12 col-12">
+                    <div class="card active radius-15" id="sigup_public">
+						<div class="card-title-sign mt-3 text-center">
+							<h4 class="title text-uppercase font-weight-bold m-0">
+								<i class="bx bx-user-circle mr-1 text-6 position-relative top-5"></i>{{title}}
+							</h4>
+						</div>
+
+						<div class="card-body">
+							{% if messages %}
+								{% for message in messages %}
+									{% if message %}
+										<div class="alert alert-{{message.tags}}" role="alert">
+											{{ message }}
+										</div>
+									{% endif%}
+								{% endfor %}
+							{% endif %}
+							<form class="form-horizontal" enctype="multipart/form-data" method="POST" id="id_post_reg_form" novalidate="novalidate">
+							{% csrf_token %}
+							<div class="card-body">
+								<div class="wizard-progress wizard-progress-lg">
+									<div class="steps-progress">
+										<div class="progress-indicator"></div>
+									</div>
+									<ul class="nav wizard-steps">
+										<li class="nav-item {%if not error or error == 1%}active{%endif%}">
+											<a class="nav-link" href="#form-account" data-toggle="tab"><span>1</span>Kredensial Pengguna</a>
+										</li>
+										<li class="nav-item {%if error == 2%}active{%endif%}">
+											<a class="nav-link" href="#form-profile" data-toggle="tab"><span>2</span>Profile Pengguna</a>
+										</li>
+										<li class="nav-item {%if error == 4%}active{%endif%}">
+											<a class="nav-link" href="#form-address" data-toggle="tab"><span>3</span>Alamat Pengguna</a>
+										</li>
+										<li class="nav-item {%if error == 5%}active{%endif%}">
+											<a class="nav-link" href="#form-photo" data-toggle="tab"><span>4</span>Foto Pengguna</a>
+										</li>
+									</ul>
+								</div>
+								<div class="tab-content">
+									<div id="form-account" class="tab-pane {%if not error or error == 1%}active{%endif%}">
+										{% include 'template/forms/tmp_form.html' with form=userForm %}
+									</div>
+									<div id="form-profile" class="tab-pane {%if error == 2%}active{%endif%}">
+										{% include 'template/forms/tmp_form.html' with form=userProfileForm %}
+									</div>
+									<div id="form-address" class="tab-pane {%if error == 3%}active{%endif%}">
+										{% include 'template/forms/tmp_form.html' with form=userAddressForm %}
+									</div>
+									<div id="form-photo" class="tab-pane {%if error == 4%}active{%endif%}">
+										{% include 'template/forms/tmp_form.html' with form=userPhotoForm %}
+									</div>
+								</div>
+
+							</div>
+							<div class="card-footer">
+								<ul class="pager">
+									<li class="previous disabled">
+										<button class="btn btn-secondary btn-sm float-left" type="button">Sebelumnya</button>
+									</li>
+									<li class="finish d-none float-right">
+										<button class="btn btn-success btn-sm" type="submit" name="UserUpdate" style="width:150px;">Update</button>
+									</li>
+									<li class="next">
+										<button class="btn btn-secondary btn-sm float-right" type="button">Selanjutnya</button>
+									</li>
+								</ul>
+							</div>
+						</form>
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'backend/css/wizard.css' %}">
+{% endblock %}
+
+{% block preloader %}
+{% include "backend-user/parts/preloader.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'jquery.validation/jquery.validate.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-wizard/jquery.bootstrap.wizard.js'%}"></script>
+<script type="text/javascript" src="{%static 'backend/js/post_registration.js'%}"></script>
+{% endblock %}
+
+
+

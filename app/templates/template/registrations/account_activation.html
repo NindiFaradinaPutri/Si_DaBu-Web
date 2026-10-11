@@ -1,0 +1,145 @@
+{% load static %}
+{% autoescape off %}
+
+<div style="
+    font-family: Arial, sans-serif;
+    line-height: 1.8;
+    color: #333333;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+">
+
+    <!-- Header -->
+    <div style="
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eeeeee;
+    ">
+
+        <!-- Logo -->
+        <!--
+        <img
+            src="http://{{ domain }}{% static 'media/logo/Logo_AdDeen_Hub.png' %}"
+            width="180"
+            alt="AdDeen Logo"
+            style="margin-bottom:15px;">
+        -->
+
+        <h2 style="
+            margin: 0;
+            color: #1f2937;
+            font-size: 24px;
+        ">
+            Laporan Baru Masuk
+        </h2>
+
+        <p style="
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        ">
+            Sistem Laporan Presen Go
+        </p>
+    </div>
+
+    <!-- Informasi Pengirim -->
+    <div style="
+        background: #f9fafb;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 25px;
+    ">
+
+        <h3 style="
+            margin-top: 0;
+            color: #111827;
+            font-size: 18px;
+        ">
+            Informasi Pengirim
+        </h3>
+
+        <p style="margin:8px 0;">
+            <strong>Subject :</strong> {{ subject }}
+        </p>
+
+        <p style="margin:8px 0;">
+            <strong>Nama :</strong> {{ nama }}
+        </p>
+
+        <p style="margin:8px 0;">
+            <strong>Email :</strong> {{ email }}
+        </p>
+
+        <p style="margin:8px 0;">
+            <strong>No Telphone :</strong> {{ phone }}
+        </p>
+
+        <p style="margin:8px 0;">
+            <strong>Kategori :</strong> {{ category }}
+        </p>
+
+    </div>
+
+    <!-- Pesan -->
+    <div style="margin-bottom:25px;">
+
+        <h3 style="
+            color: #111827;
+            font-size: 18px;
+            margin-bottom: 10px;
+        ">
+            Pesan
+        </h3>
+
+        <div style="
+            background: #ffffff;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        ">
+            {{ message_user }}
+        </div>
+
+    </div>
+
+    <!-- Attachment -->
+    {% if image %}
+    <img
+        src="{{ image }}"   {# akan berisi "cid:complaint_image" #}
+        alt="Attachment"
+        style="max-width:100%; width:350px; border-radius:12px;">
+    {% endif %}
+
+    <!-- Footer -->
+    <div style="
+        margin-top: 35px;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+        color: #6b7280;
+        font-size: 14px;
+    ">
+
+        <p style="margin:0;">
+            <strong>Waktu Laporan:</strong><br>
+            {{ date|date:"d F Y, H:i" }} WITA
+        </p>
+
+        <p style="
+            margin-top:20px;
+            margin-bottom:0;
+        ">
+            <strong>Tim Presen Go</strong><br>
+            Sistem Laporan Presen Go
+        </p>
+
+    </div>
+
+</div>
+
+{% endautoescape %}
+

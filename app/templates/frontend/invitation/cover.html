@@ -1,0 +1,45 @@
+{% load static %}
+<!-- COVER -->
+<section id="cover"
+         class="hero-section page-section position-relative overflow-hidden">
+    <div class="cover-blur-bg"></div>
+    <!-- Poster Background -->
+    <div class="cover-poster-wrapper">
+
+        {% if event_photo and event_photo.photo %}
+                <img src="{{ event_photo.photo.url }}"
+                     class="cover-poster-img"
+                     alt="{{ event.name }}">
+                {% else %}
+                <img src="{% static 'images/default-event.jpg' %}"
+                     class="cover-poster-img"
+                     alt="Default Event">
+                {% endif %}
+
+    </div>
+
+    <!-- Overlay -->
+    <div class="cover-overlay"></div>
+
+    <!-- Content -->
+    <div class="cover-content">
+
+
+
+        <!-- Read More Button -->
+        <a href="#home"
+           class="btn-cover-readmore">
+
+            <span class="material-symbols-outlined">
+                keyboard_arrow_down
+            </span>
+
+            <span>
+                Baca Selengkapnya
+            </span>
+
+        </a>
+
+    </div>
+
+</section>

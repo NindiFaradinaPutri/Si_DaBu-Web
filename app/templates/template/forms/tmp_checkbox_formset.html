@@ -1,0 +1,44 @@
+{{formset.management_form}}
+<h3 class="text-center">{{form_title}}</h3>
+{% for form in formset %}
+    {% for hidden_fields in form.hidden_fields %}
+        {{ hidden_fields }}
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% for field in form.visible_fields %}
+
+        <div class="form-group row d-flex px-2 py-0 align-items-center {{field.field.widget.attrs.class|default_if_none:""}}">
+                <label for="{{field.name}}" class="col-md-3 col-form-label d-flex justify-content-end align-items-center {{field.field.widget.attrs.class|default_if_none:""}}">{{ field.label }}</label>
+                <div class="col-md-9 d-flex align-items-center">
+                    {% if form.is_bound %}
+                        {% if field.errors %}
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    {% else %}
+                            {{ field }}
+                    {% endif %}
+                    &nbsp;
+                    {% if field.help_text %}
+                        <small class="form-text text-muted"><strong>({{ field.help_text }})</strong></small>
+                    {% endif %}
+                </div>
+            </div>
+  
+    {% endfor %}
+{% endfor %}
+

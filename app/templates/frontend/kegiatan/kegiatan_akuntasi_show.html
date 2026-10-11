@@ -1,0 +1,287 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% include "template/modals/pass_code_modals.html" %}
+{% include "template/modals/pass_code_keuangan_modals.html" %}
+<div class="container-fluid py-0 my-0 d-flex justify-content-center align-items-center" style="background-image:url(/media/background/wallpaper_general_ledger.png);background-size:cover;background-repeat:no-repeat;background-position:center top;height:600px !important;">
+
+	<div class="row">
+		<div class="col-lg-7">
+			<div class="overflow-hidden mb-2">
+				<img class="img-fluid border-radius-0" src="/media/banner/photo/banner_infaq.png" alt="">
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="testimonial testimonial-primary appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
+				{%if rekening and rekening_attachment%}
+				<div class="card card-background-image-hover border-0 p-3" style="opacity:0.95;">
+					<i class="flaticon flaticon-verified-account text-10"></i>
+					<h4 class="card-title mt-2 mb-2 text-5 font-weight-bold">
+						Rekening Masjid Ar-Raudah
+					</h4>
+					<div class="container rekening">
+						<div class="row d-flex align-items-center p-3">
+							<div class="col-md-3 col-4 text-nowrap">Nama</div>
+							<div class="col-md-1 col-8">:</div>
+							<div class="col-md-8 col-12">{{rekening.name}}</div>
+						</div>
+						<div class="row d-flex align-items-center p-3">
+							<div class="col-md-3 col-4 text-nowrap">Bank</div>
+							<div class="col-md-1 col-8">:</div>
+							<div class="col-md-8 col-12">{{rekening.bank}}</div>
+						</div>
+						<div class="row d-flex align-items-center p-3">
+							<div class="col-md-3 col-4 text-nowrap">No Rekening</div>
+							<div class="col-md-1 col-8">:</div>
+							<div class="col-md-8 col-12 d-flex align-items-center">
+								{{rekening.no_rek}}
+								<i class="flaticon flaticon-copy text-red text-7" " id="copas" data-rek="{{rekening.no_rek}}" onclick="copy_rekening();"></i>
+							</div>
+						</div>
+						<div class="row d-flex align-items-center p-3">
+							<div class="col-md-3 col-4 text-nowrap">Alamat</div>
+							<div class="col-md-1 col-8">:</div>
+							<div class="col-md-8 col-12">{{rekening.address}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{%endif%}
+		</div>
+	</div>
+</div>
+<div class="accordion p-3" id="accordion-search">
+	<div class="card card-default">
+		<div class="card-header" id="collapseHeadingOne">
+			<h4 class="card-title m-0">
+				<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					Pencarian Berdasarkan Tanggal
+				</a>
+			</h4>
+		</div>
+		<div id="collapseOne" class="collapse show" aria-labelledby="collapseHeadingOne" data-parent="#accordion-search">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6 col-12">
+						<input type="text" id="id_start_date" name="start_date" class="form-control datepicker" placeholder="Sejak Tanggal" data-plugin-datepicker="" data-plugin-options="{ format: yyyy-mm-dd }">
+					</div>
+					<div class="col-md-6 col-12">
+						<input type="text" id="id_end_date" name="end_date" class="form-control datepicker" placeholder="Sampai Tanggal">
+					</div>
+				</div>
+				<hr class="separator" />
+				<div class="row">
+					<button id="select_date" class="btn btn-info btn-block" type="button">Cari</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card card-default">
+		<div class="card-header" id="collapseHeadingTwo">
+			<h4 class="card-title m-0">
+				<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					Pencarian Berdasarkan Bulan
+				</a>
+			</h4>
+		</div>
+		<div id="collapseTwo" class="collapse" aria-labelledby="collapseHeadingTwo" data-parent="#accordion-search">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6 col-12">
+						<input type="text" id="id_select_month" name="select_month" class="form-control monthpicker" placeholder="Pilih Bulan">
+					</div>
+				</div>
+				<hr class="separator" />
+				<div class="row">
+					<button id="select_month" class="btn btn-info btn-block" type="button">Cari</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="section bg-color-quaternary border-0 m-0 p-0">
+	<div class="container py-4">
+		<div class="row p-3">
+			<div class="col">
+				<p>
+					Menampilkan data tanggal
+					<input id="start_date" name="start_date" class="form-control" value="{{first_date|date:"d M Y"}}" data-date="{{first_date|date:"d-m-Y"}}" />
+					sampai dengan
+					<input id="end_date" name="end_date" class="form-control" value="{{last_date|date:"d M Y"}}" data-date="{{last_date|date:"d-m-Y"}}" />
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="section bg-transparent border-0 m-0 p-0">
+	<div class="container py-4">
+		<div class="row pb-4">
+			<div class="col">
+				<section class="card">
+					<div class="card-header">
+						<h4 class="card-title">{{title}}</h4>
+						<a href="javascript:void(0)" class="btn btn-md btn-success btn-block" data-toggle="modal" data-target="#formConfirmationModals">Print Untuk Ringkasan Zakat</a>
+						<a href="javascript:void(0)" class="btn btn-md btn-warning btn-block" data-toggle="modal" data-target="#formKeuanganModals">Print Data Keuangan Zakat</a>
+					</div>
+					
+					<div class="card-body" id="table_area">
+						<!-- <a href="javascript:void(0)" class="btn btn-md btn-warning btn-block" data-toggle="modal" data-target="#formKeuanganModals">Cetak Data Keuangan</a> -->
+						<div class="table-responsive-md text-nowrap">
+							<div class="section d-flex justify-content-end">
+							</div>
+							<table class="table table-bordered table-striped mb-0" id="datatable-rekening">
+								<thead>
+									<tr class="text-center">
+										<th>No</th>
+										<th>Tanggal</th>
+										<th>Nama</th>
+										<th>Informasi</th>
+										<th>Beras</th>
+										<th>Debet</th>
+										<th>Kredit</th>
+										<th>Saldo</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for list_item in gl %}
+									<tr>
+										<td>{{forloop.counter}}</td>
+										<td>{{list_item.date|date:"d M Y"|default_if_none:'-'}}</td>
+										<td>{{list_item.name}}</td>
+										<td>{{list_item.transaction}}</td>
+										<td class="text-right">
+											{%if list_item.beras%}
+												 {{list_item.beras}} kg
+											{%else%}
+												-
+											{%endif%}
+										</td>
+										<td class="text-right">
+											{%if list_item.debet%}
+											Rp {{list_item.debet}}
+											{%else%}
+											-
+											{%endif%}
+										</td>
+										<td class="text-right">
+											{%if list_item.credit%}
+											Rp {{list_item.credit}}
+											{%else%}
+											-
+											{%endif%}
+										</td>
+										<td class="text-right">
+											{%if list_item.balance%}
+											Rp {{list_item.balance|default_if_none:'0'}}
+											{%else%}
+											-
+											{%endif%}
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<div class="row my-3">
+			<div class="col">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">Ringkasan Keuangan</h4>
+					</div>
+					<div class="card-body">
+						<div class="container rekening">
+							<!-- <div class="row d-flex align-items-center p-3">
+								<div class="col-md-3 col-4 text-nowrap">Saldo Sebelumnya</div>
+								<div class="col-md-1 col-8 text-right">:</div>
+								<div class="col-md-1 col-3 text-left">Rp</div>
+								<div class="col-md-7 col-9 text-right">{{saldo_sebelumnya}}</div> -->
+							<!-- </div> -->
+							<div class="row d-flex align-items-center p-3">
+								<div class="col-md-3 col-4 text-nowrap">
+									Pemasukan Zakat Shadaqah Infaq
+									<small class="d-block">{{first_date|date:"d M Y"}} s/d {{last_date|date:"d M Y"}}</small>
+								</div>
+								<div class="col-md-1 col-8 text-right">:</div>
+								<div class="col-md-1 col-3 text-left">Rp</div>
+								<div class="col-md-7 col-9 text-right">{{pemasukan}}</div>
+							</div>
+							<div class="row d-flex align-items-center p-3">
+								<div class="col-md-3 col-4 text-nowrap">
+									Pengeluaran Zakat Shadaqah Infaq
+									<small class="d-block">{{first_date|date:"d M Y"}} s/d {{last_date|date:"d M Y"}}</small>
+								</div>
+								<div class="col-md-1 col-8 text-right">:</div>
+								<div class="col-md-1 col-3 text-left">Rp</div>
+								<div class="col-md-7 col-9 text-right">{{pengeluaran}}</div>
+							</div>
+							<div class="row d-flex align-items-center p-3">
+								<div class="col-md-3 col-4 text-nowrap">
+									Saldo Akhir Zakat Shadaqah Infaq
+									<small class="d-block">{{first_date|date:"d M Y"}} s/d {{last_date|date:"d M Y"}}</small>
+								</div>
+								<div class="col-md-1 col-8 text-right">:</div>
+								<div class="col-md-1 col-3 text-left">Rp</div>
+								<div class="col-md-7 col-9 text-right">{{saldo}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.fixedHeader.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.responsive.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-datepicker/css/bootstrap-datepicker3.css'%}" />
+<style>
+	.img-photo {
+		height: 150px;
+		width: 300px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+
+<script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'frontend/js/kegiatan_akuntasi_show_v5.js' %}"></script>
+
+<!--<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>-->
+{% endblock %}

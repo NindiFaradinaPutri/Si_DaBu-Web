@@ -1,0 +1,191 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+<!-- start: page -->
+<div class="row">
+	<div class="col-lg-4 col-xl-4 mb-4 mb-xl-0">
+
+		<section class="sticky card">
+			<div class="card-body">
+				<div class="widget-toggle-expand mb-3">
+					<div class="widget-header p-0">
+						<h4 class="m-0" style="color: #c42531 !important"><b>{{message.subject}}</b></h4>
+					</div>
+					<div class="widget-content-expanded">
+						<table class="simple-todo-list mt-3">
+							<tr>
+								<td><b>Pengirim </b></td>
+								<td><b>:</b></td>
+								<td>{{message.sender}}</td>
+							</tr>
+							<tr>
+								<td><b>Email</i></b></td>
+								<td><b>:</b></td>
+								<td><a style="color: #777F84" href="mailto:{{message.email}}">{{message.email}}</a></td>
+							</tr>
+							<tr>
+								<td class="align-top"><b>Telephone</i></b></td>
+								<td class="align-top"><b>:</b></td>
+								<td>
+									<a style="color: #777F84" href="https://wa.me/{{message.telphone}}">{{message.telphone}}</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<hr class="dotted short">
+				{{message.information}}
+				{% if is_image is not None %}
+				<hr class="dotted short">
+				{% if is_image is True %}
+				<a href="/media/{{message.attachment}}" target="_blank">
+					<img style="width: 100%" src="/media/{{message.attachment}}" alt="Alternate Text" />
+				</a>
+				{% else %}
+				<a style="color: black" href="/media/{{message.attachment}}" download><i class="fa fa-file"></i> File Lampiran</a>
+				{% endif %}
+				{% endif %}
+				<hr class="dotted short">
+
+				{{message.creation_date}}
+
+			</div>
+		</section>
+
+	</div>
+	<div class="col">
+
+		<div class="tabs">
+			<ul class="nav nav-tabs tabs-primary">
+				<!--<li class="nav-item active">
+					<a class="nav-link" href="#overview" data-toggle="tab">Overview</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#edit" data-toggle="tab">Edit</a>
+				</li>-->
+			</ul>
+			<div class="tab-content">
+				<div id="overview" class="tab-pane active">
+
+					<div class="p-0">
+                        <h4 class="m-0"><b>Riwayat: </b></h4>
+						<section class="row py-3 d-flex justify-content-center" id="response_area">
+							{% include 'views/view_complaint_response.html' with response_list=response_list %}
+						</section>
+
+						<form method="post" id="response_form">
+							{% csrf_token %}
+							<input type="hidden" name="complaint_id" id="complaint_id" value="{{complaint_id}}" />
+							<section class="card card-featured card-featured-danger mb-4">
+								<header class="card-header">
+									<h2 class="card-title">Ganti Keluhan Status</h2>
+								</header>
+								<div class="card-body">
+									<div class="row shadow-sm bg-white my-1 py-1">
+										<div class="col-lg-12 col-12">
+											{% include 'template/forms/tmp_formrow.html' with form=responseForm %}
+										</div>
+									</div>
+								</div>
+								<div class="card-footer">
+									<div class="form-group text-center row">
+										<div class="col-md-12 col-sm-12">
+											<a class="btn btn-secondary" href="{%url 'complaint_list'%}">Cancel</a>
+											<button class="btn btn-warning" type="reset">Reset</button>
+											<button type="submit" class="btn btn-success" id="change_response">Ganti Status</button>
+										</div>
+									</div>
+								</div>
+							</section>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.theme.css' %}">
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'dropzone/basic.css' %}">
+<link rel="stylesheet" href="{% static 'dropzone/dropzone.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-markdown/css/bootstrap-markdown.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'bootstrap-multiselect/css/bootstrap-multiselect.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-tagsinput/bootstrap-tagsinput.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-colorpicker/css/bootstrap-colorpicker.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-timepicker/css/bootstrap-timepicker.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-markdown/css/bootstrap-markdown.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'summernote/summernote-bs4.css' %}">
+
+<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror/theme/monokai.css' %}">
+<style>
+	.cke_reset {
+		width: 100% !important;
+	}
+    .sticky {
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+    }
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'jquery.ui/js/jquery-ui.js' %}"></script>
+<script type="text/javascript" src="{%static 'jquery.ui/js/jquery.ui.touch-punch.js' %}"></script>
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'bootstrap-multiselect/js/bootstrap-multiselect.js' %}"></script>
+<script type="text/javascript" src="{%static 'jquery-maskedinput/jquery.maskedinput.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'bootstrap-tagsinput/bootstrap-tagsinput.js' %}"></script>
+<script type="text/javascript" src="{%static 'jquery-maskedinput/jquery.maskedinput.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'bootstrap-colorpicker/js/bootstrap-colorpicker.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-timepicker/js/bootstrap-timepicker.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'dropzone/js/dropzone.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'bootstrap-markdown/js/markdown.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-markdown/js/to-markdown.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-markdown/js/bootstrap-markdown.js' %}"></script>
+<script type="text/javascript" src="{%static 'dropzone/js/dropzone.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'codemirror/lib/codemirror.js' %}"></script>
+<script type="text/javascript" src="{%static 'codemirror/addon/selection/active-line.js' %}"></script>
+<script type="text/javascript" src="{%static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
+<script type="text/javascript" src="{%static 'codemirror/mode/javascript/javascript.js' %}"></script>
+<script type="text/javascript" src="{%static 'codemirror/mode/xml/xml.js' %}"></script>
+<script type="text/javascript" src="{%static 'codemirror/mode/htmlmixed/htmlmixed.js' %}"></script>
+<script type="text/javascript" src="{%static 'codemirror/mode/css/css.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'summernote/summernote-bs4.js' %}"></script>
+<script type="text/javascript" src="{%static 'bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+<script type="text/javascript" src="{%static 'ios7-switch/ios7-switch.js' %}"></script>
+<script type="text/javascript" src="{%static 'fuelux/js/spinner.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/formset.js' %}"></script>
+<script src="//cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		CKEDITOR.replace('id_answer');
+	});
+</script>
+<script type="text/javascript" src="{% static 'backend/js/complaint_respone.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+{% include "template/modals/delete_confirmation.html" with info_data="service" %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">{{title}}</h2>
+			</header>
+			<div class="card-body">
+				<div class="text-right" style="margin-bottom:20px;">
+					<a href="/services/add/" class="btn btn-info" type="button"><i class="bx bx-plus"></i> Add New Service</a>
+				</div>
+				<table class="table table-bordered table-striped mb-0" id="datatable-default">
+					<thead>
+						<tr class="text-center">
+							<th>No</th>
+							<th>Photo</th>
+							<th>Name</th>
+							<th>Brief</th>
+							<th>Description</th>
+							<th>Active?</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for services in services %}
+						<tr>
+							<td>{{forloop.counter}}</td>
+							{% if services.servicephoto_set.first %}
+							{% if services.servicephoto_set.first.info == 'Image' %}
+							<td><img class="img-photo" src="{%static services.servicephoto_set.first.path.url%}" alt="{{services.name}}"></td>
+							{% elif services.servicephoto_set.last.info == 'Image' %}
+							<td><img class="img-photo" src="{%static services.servicephoto_set.last.path.url%}" alt="{{services.name}}"></td>
+							{% else %}
+							<td></td>
+							{% endif %}
+							{% else %}
+							<td></td>
+							{% endif %}
+							<td>{{services.name}}</td>
+							<td>{{services.brief}}</td>
+							<td>{{services.description}}</td>
+							<td>{{services.is_active}}</td>
+							<td>
+								<a href="/services/update/edit:{{services.encrypt_id}}" class="btn btn-success btn-block" type="button"><i class="bx bx-edit"></i> Update</a>
+								<a data-href="/services/update/delete:{{services.encrypt_id}}" data-name={{services.name}} data-toggle="modal" data-target="#deleteConfirmationModals" href="#" type="button" class="btn btn-danger btn-block"><i class="bx bx-trash"></i> Delete</a>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.bootstrap4.css' %}">
+<style>
+	.img-photo {
+		height: 100px;
+		width: 200px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>
+<script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% load static %}
+{% load custom_tags %}
+{% if ajax == 'false' %}
+{% for portfolio in portfolio %}
+<div class="col-md-7 col-lg-4 isotope-item brands mb-4">
+	<a href="#" role="button" id="view-portfolio" data-toggle="modal" data-target=".bd-example-modal-lg" data-id="{{portfolio.encrypt_id}}">
+		<div id="portfolio-{{forloop.counter}}" class="thumb-info border-all thumb-info-show-button-hover">
+			<div class="thumb-info-wrapper">
+				
+				<img style="height: 261px; object-fit: cover; filter: brightness(70%);" src="/media/{{portfolio|porto_photo}}" class="img-fluid border-radius-0" alt="">
+				
+				<div class="thumb-info-title bg-transparent w-100">
+					<div class="row">
+						<span class="thumb-info-type text-light mb-2 ml-3">{{portfolio.service.name}}</span>
+					</div>
+					<span id="title-hide-{{forloop.counter}}" style="display:block;" class="thumb-info-inner pb-3"> {{portfolio.title|truncatewords:2}} {% if portfolio.title|porto_word %}<br /><span style="opacity:0">,</span>{% endif %}</span>
+					<span id="title-full-{{forloop.counter}}" style="display:none;" class="thumb-info-inner pb-3">{{portfolio.title}} </span>
+					<em id="client-hide-{{forloop.counter}}" style="display:block; font-size:13px;" class="opacity-7">Client: {{portfolio.owner|truncatewords:1}}</em>
+					<em id="client-full-{{forloop.counter}}" style="display:none; font-size:13px;" class="opacity-7">Client: {{portfolio.owner}}</em>
+				</div>
+			</div>
+		</div>
+	</a>
+</div>
+{% endfor %}
+<script>
+    {% for portfolio in portfolio %}
+    document.getElementById("portfolio-{{forloop.counter}}").onmouseover = function () {
+        document.getElementById("title-hide-{{forloop.counter}}").style.display = "none";
+        document.getElementById("title-full-{{forloop.counter}}").style.display = "block";
+        document.getElementById("client-hide-{{forloop.counter}}").style.display = "none";
+        document.getElementById("client-full-{{forloop.counter}}").style.display = "block";
+	}
+
+    document.getElementById("portfolio-{{forloop.counter}}").onmouseout = function () {
+        document.getElementById("title-hide-{{forloop.counter}}").style.display = "block";
+        document.getElementById("title-full-{{forloop.counter}}").style.display = "none";
+        document.getElementById("client-hide-{{forloop.counter}}").style.display = "block";
+        document.getElementById("client-full-{{forloop.counter}}").style.display = "none";
+    }
+    {% endfor %}
+</script>
+{% elif ajax == 'true' %}
+{% for tags in tags %}
+<div class="col-md-7 col-lg-4 isotope-item brands mb-4">
+	<a href="#" role="button" id="view-portfolio" data-toggle="modal" data-target=".bd-example-modal-lg" data-id="{{tags.portfolio.encrypt_id}}">
+		<div id="portfolio-{{forloop.counter}}" class="thumb-info border-all thumb-info-show-button-hover">
+			<div class="thumb-info-wrapper">
+
+				<img style="height: 261px; object-fit: cover; filter: brightness(70%);" src="/media/{{tags.portfolio|porto_photo}}" class="img-fluid border-radius-0" alt="">
+				
+				<div class="thumb-info-title bg-transparent w-100">
+					<div class="row">
+						<span class="thumb-info-type text-light mb-2 ml-3">{{tags.portfolio.service.name}}</span>
+					</div>
+					<span id="title-hide-{{forloop.counter}}" style="display:block;" class="thumb-info-inner pb-3">{{tags.portfolio.title|truncatewords:2}} </span>
+					<span id="title-full-{{forloop.counter}}" style="display:none;" class="thumb-info-inner pb-3">{{tags.portfolio.title}} </span>
+					<em id="client-hide-{{forloop.counter}}" style="display:block; font-size:13px;" class="opacity-7">Client: {{tags.portfolio.owner|truncatewords:1}}</em>
+					<em id="client-full-{{forloop.counter}}" style="display:none; font-size:13px;" class="opacity-7">Client: {{tags.portfolio.owner}}</em>
+					
+				</div>
+			</div>
+		</div>		
+	</a>
+</div>
+{% endfor %}
+<script>
+    {% for tags in tags %}
+    document.getElementById("portfolio-{{forloop.counter}}").onmouseover = function () {
+        document.getElementById("title-hide-{{forloop.counter}}").style.display = "none";
+        document.getElementById("title-full-{{forloop.counter}}").style.display = "block";
+        document.getElementById("client-hide-{{forloop.counter}}").style.display = "none";
+        document.getElementById("client-full-{{forloop.counter}}").style.display = "block";
+	}
+
+    document.getElementById("portfolio-{{forloop.counter}}").onmouseout = function () {
+        document.getElementById("title-hide-{{forloop.counter}}").style.display = "block";
+        document.getElementById("title-full-{{forloop.counter}}").style.display = "none";
+        document.getElementById("client-hide-{{forloop.counter}}").style.display = "block";
+        document.getElementById("client-full-{{forloop.counter}}").style.display = "none";
+    }
+    {% endfor %}
+</script>
+{% endif %}
+
+<div class="w-100 pagination_area" id="pagination_area">
+	{% include 'template/paginations/tmp_pagination.html' with page_obj=portfolio space="my-3" %}
+</div>

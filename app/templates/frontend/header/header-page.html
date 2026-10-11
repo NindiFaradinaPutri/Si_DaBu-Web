@@ -1,0 +1,22 @@
+{% load static %}
+
+<section class="page-header page-header-modern bg-color-quaternary p-relative">
+	<div class="container">
+		<div class="row py-3">
+			<div class="col-md-8 order-2 order-md-1 align-self-center p-static">
+				<h1 class="font-weight-bold text-9 text-color-dark appear-animation" data-appear-animation="fadeInRightShorter" data-appear-animation-delay="100">{{title}}</h1>
+			</div>
+			<div class="col-md-4 order-1 order-md-2 align-self-center">
+				<ul class="breadcrumb  d-flex justify-content-md-end text-3-5" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="300">
+					{%for submenu in menu%}
+					{% if forloop.first %}
+					<li><a href="/">{{submenu}}</a></li>
+					{% else %}
+					<li><a href="#">{{submenu}}</a></li>
+					{% endif %}
+					{%endfor%}
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>

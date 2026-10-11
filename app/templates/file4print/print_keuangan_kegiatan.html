@@ -1,0 +1,150 @@
+{% extends "layout/layout_print.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block doc_header %}
+{% include 'file4print/parts/header.html'%}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h3 class="font-italic text-center">{{title}}</h3>
+    <h4 class="font-italic text-center">{{sub_title}}</h4>
+    <h5 class="font-italic">Assalamu'alaikum Warahmatullah Wabarakatuh.</h5>
+    <p>
+        Laporan keuangan Zakat Shadaqah Infaq Masjid Ar-Raudah:
+        {{content_html|safe}}
+    </p>
+    <p>
+        Pada kesempatan ini pula kami ucapkan terima kasih kepada kaum muslimin dan muslimat yang telah memberikan Zakat,Infaq, Sumbangan, serta turut Memakmurkan Masjid Ar-Raudah. Mudah-mudahan mendapat ganjaran yang lebih baik dan utama dari Allah SWT.
+    </p>
+    <p>
+        Informasi lebih detail dapat dilihat pada website resmi <span class="text-success text-5">masjidnuprapatan.org</span>.
+    </p>
+
+    <!--<div class="row">
+        <div class="testimonial testimonial-primary appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
+            {%if rekening and rekening_attachment%}
+            <div class="card card-background-image-hover border-0 p-3" style="opacity:0.95;">
+                <i class="flaticon flaticon-verified-account text-10"></i>
+                <h4 class="card-title mt-2 mb-2 text-5 font-weight-bold">
+                    Rekening Masjid NU Prapatan
+                </h4>
+                <div class="container rekening">
+                    <div class="row d-flex align-items-center p-3">
+                        <div class="col-md-3 col-4 text-nowrap">Nama</div>
+                        <div class="col-md-1 col-8">:</div>
+                        <div class="col-md-8 col-12">{{rekening.name}}</div>
+                    </div>
+                    <div class="row d-flex align-items-center p-3">
+                        <div class="col-md-3 col-4 text-nowrap">Bank</div>
+                        <div class="col-md-1 col-8">:</div>
+                        <div class="col-md-8 col-12">{{rekening.bank}}</div>
+                    </div>
+                    <div class="row d-flex align-items-center p-3">
+                        <div class="col-md-3 col-4 text-nowrap">No Rekening</div>
+                        <div class="col-md-1 col-8">:</div>
+                        <div class="col-md-8 col-12 d-flex align-items-center">
+                            {{rekening.no_rek}}
+                            <i class="flaticon flaticon-copy text-red text-7" " id="copas" data-rek="{{rekening.no_rek}}" onclick="copy_rekening();"></i>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center p-3">
+                        <div class="col-md-3 col-4 text-nowrap">Alamat</div>
+                        <div class="col-md-1 col-8">:</div>
+                        <div class="col-md-8 col-12">{{rekening.address}}</div>
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+        </div>
+    </div>-->
+
+    <h5 class="font-italic">Wassalamu'alaikum Warahmatullahi Wabarakatuh.</h5>
+</div>
+{% endblock %}
+
+{% block signature %}
+{% include 'file4print/parts/signature.html'%}
+{% endblock %}
+
+{% block theme %}
+<style>
+    @media print {
+
+        body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .bg-saldo-akhir {
+            background-color: #77DD77 !important;
+            color: black;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .bg-debet {
+            background-color: #8BD3E6 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .bg-credit {
+            background-color: #FF5733 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+    }
+
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        font-size: 1.2em;
+    }
+
+    .bg-saldo-akhir {
+        background-color: #77DD77 !important;
+        color: black;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .bg-debet {
+        background-color: #8BD3E6 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .bg-credit {
+        background-color: #FF5733 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .header_doc_nu {
+        color: #2C5F2D;
+        font-weight: 600;
+    }
+
+    .sub_header_doc_nu {
+        color: #3C8046;
+        font-weight: 300;
+    }
+
+    .header_logo_nu {
+        width: 200px;
+        position: absolute;
+        top: 0px;
+    }
+</style>
+{% endblock %}
+
+{%block query %}
+<script>
+    setTimeout(function () {
+        window.print();
+    }, 5000);
+</script>
+{% endblock %}

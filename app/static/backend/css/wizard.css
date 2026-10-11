@@ -1,0 +1,532 @@
+/*STEP - PROGRESS WIZARD*/
+
+.wizard-steps.wizard-steps-style-2.nav-tabs li .nav-link .badge {
+    border-radius: 100%;
+    padding: 6.4px 8.8px;
+    padding: 0.4rem 0.55rem;
+    margin-right: 5px;
+}
+
+.card-body .wizard-tabs {
+    margin: -15px -15px 15px;
+}
+
+.card-body-nopadding .wizard-tabs {
+    margin: 0;
+}
+
+.wizard-tabs ul {
+    display: table;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+    .wizard-tabs ul > li {
+        display: table-cell;
+        border-bottom: 1px solid #EEE;
+    }
+
+        .wizard-tabs ul > li.active {
+            border-bottom-color: transparent;
+        }
+
+            .wizard-tabs ul > li.active > a, .wizard-tabs ul > li.active > a:hover, .wizard-tabs ul > li.active > a:focus {
+                background: #FFF;
+                color: #555;
+            }
+
+                .wizard-tabs ul > li.active > a:after {
+                    border-left-color: #FFF;
+                }
+
+            .wizard-tabs ul > li.active .badge {
+                background-color: #CCC;
+            }
+
+        .wizard-tabs ul > li.disabled > a, .wizard-tabs ul > li.disabled > a:hover, .wizard-tabs ul > li.disabled > a:focus {
+            color: #CCC;
+        }
+
+        .wizard-tabs ul > li.disabled .badge {
+            background-color: #CCC;
+        }
+
+        .wizard-tabs ul > li > a {
+            position: relative;
+            display: block;
+            padding: 5px;
+            font-size: 13.6px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: #555;
+        }
+
+            .wizard-tabs ul > li > a .badge {
+                border-radius: 100%;
+                color: #FFF;
+                background: #CCC;
+                padding: 6.4px 8.8px;
+                padding: 0.4rem 0.55rem;
+                margin-right: 5px;
+                position: relative;
+                top: -1px;
+            }
+
+            .wizard-tabs ul > li > a, .wizard-tabs ul > li > a:hover {
+                background: #F4F4F4;
+                color: #555;
+            }
+
+                .wizard-tabs ul > li > a:hover {
+                    box-shadow: none;
+                }
+
+                .wizard-tabs ul > li > a:active, .wizard-tabs ul > li > a:focus {
+                    border-bottom: 0;
+                }
+
+                .wizard-tabs ul > li > a:before, .wizard-tabs ul > li > a:after {
+                    display: block;
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: -10px;
+                    z-index: 1;
+                    border: 17px solid transparent;
+                    border-right: 0;
+                    border-left: 10px solid transparent;
+                    width: 0;
+                    height: 0;
+                }
+
+                .wizard-tabs ul > li > a:before {
+                    z-index: 1;
+                    right: -11px;
+                    border-left-color: #E0E0E0;
+                }
+
+                .wizard-tabs ul > li > a:after {
+                    z-index: 2;
+                    border-left-color: #F4F4F4;
+                }
+
+        .wizard-tabs ul > li:last-child > a:before, .wizard-tabs ul > li:last-child > a:after {
+            display: none;
+        }
+
+html.dark .wizard-tabs ul > li {
+    border-color: #282d36;
+}
+
+    html.dark .wizard-tabs ul > li.active {
+        border-color: #2e353e;
+    }
+
+        html.dark .wizard-tabs ul > li.active a, html.dark .wizard-tabs ul > li.active a:hover, html.dark .wizard-tabs ul > li.active a:active {
+            background: #2e353e;
+            color: #EEE;
+        }
+
+            html.dark .wizard-tabs ul > li.active a:before {
+                border-left-color: #FFE67C;
+            }
+
+            html.dark .wizard-tabs ul > li.active a:after {
+                border-left-color: #2e353e;
+            }
+
+    html.dark .wizard-tabs ul > li a, html.dark .wizard-tabs ul > li a:hover {
+        background: #282d36;
+        color: #EEE;
+    }
+
+        html.dark .wizard-tabs ul > li a:before {
+            border-left-color: #FFE67C;
+        }
+
+        html.dark .wizard-tabs ul > li a:after {
+            border-left-color: #282d36;
+        }
+
+html .wizard-progress,
+html.dark .wizard-progress {
+    margin: 0 15px;
+}
+
+    html .wizard-progress .steps-progress,
+    html.dark .wizard-progress .steps-progress {
+        height: 2px;
+        margin: 0 38px;
+        position: relative;
+        top: 15px;
+        background: #CCC;
+    }
+
+        html .wizard-progress .steps-progress .progress-indicator,
+        html.dark .wizard-progress .steps-progress .progress-indicator {
+            height: 100%;
+            width: 0;
+            background: #CCC;
+            transition: width .2s ease-in;
+        }
+
+    html .wizard-progress .wizard-steps,
+    html.dark .wizard-progress .wizard-steps {
+        list-style: none;
+        margin: 0;
+        padding: 15px 0 0;
+        display: inline-block;
+        width: 100%;
+        font-size: 0;
+        text-align: justify;
+    }
+
+        html .wizard-progress .wizard-steps:after,
+        html.dark .wizard-progress .wizard-steps:after {
+            display: inline-block;
+            width: 100%;
+            content: '.';
+            font-size: 0;
+            height: 0;
+            line-height: 0;
+            visibility: hidden;
+        }
+
+        html .wizard-progress .wizard-steps li,
+        html.dark .wizard-progress .wizard-steps li {
+            display: inline-block;
+            vertical-align: top;
+            min-width: 50px;
+            max-width: 100px;
+        }
+
+            html .wizard-progress .wizard-steps li a,
+            html.dark .wizard-progress .wizard-steps li a {
+                position: relative;
+                display: block;
+                padding: 25px 8px 0;
+                font-size: 11px;
+                color: #33333F;
+                font-weight: bold;
+                line-height: 1;
+                text-align: center;
+                text-decoration: none;
+                background-color: transparent;
+            }
+
+                html .wizard-progress .wizard-steps li a span,
+                html.dark .wizard-progress .wizard-steps li a span {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    display: block;
+                    background: #CCC;
+                    color: #FFF;
+                    line-height: 26px;
+                    text-align: center;
+                    margin-top: -15px;
+                    margin-left: -15px;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 35px;
+                    font-size: 13px;
+                    text-indent: -1px;
+                    border: 2px solid #CCC;
+                    transition: all .2s ease-in;
+                }
+
+            html .wizard-progress .wizard-steps li.completed a span,
+            html.dark .wizard-progress .wizard-steps li.completed a span {
+                background: #CCC;
+                color: #FFF;
+            }
+
+            html .wizard-progress .wizard-steps li.active a span,
+            html.dark .wizard-progress .wizard-steps li.active a span {
+                background: #FFF;
+                color: #CCC;
+                border-color: #CCC;
+            }
+
+            html .wizard-progress .wizard-steps li.completed.active a span,
+            html.dark .wizard-progress .wizard-steps li.completed.active a span {
+                color: #FFF;
+            }
+
+    html .wizard-progress.wizard-progress-lg,
+    html.dark .wizard-progress.wizard-progress-lg {
+        margin: 0 auto 30px;
+        width: 80%;
+    }
+
+        html .wizard-progress.wizard-progress-lg .steps-progress,
+        html.dark .wizard-progress.wizard-progress-lg .steps-progress {
+            margin: 0 52px;
+            height: 4px;
+            top: 34px;
+        }
+
+        html .wizard-progress.wizard-progress-lg .wizard-steps,
+        html.dark .wizard-progress.wizard-progress-lg .wizard-steps {
+            padding-top: 30px;
+        }
+
+        html .wizard-progress.wizard-progress-lg ul li,
+        html.dark .wizard-progress.wizard-progress-lg ul li {
+            max-width: 135px;
+        }
+
+            html .wizard-progress.wizard-progress-lg ul li a,
+            html.dark .wizard-progress.wizard-progress-lg ul li a {
+                padding-top: 40px;
+                font-size: 14px;
+            }
+
+                html .wizard-progress.wizard-progress-lg ul li a span,
+                html.dark .wizard-progress.wizard-progress-lg ul li a span {
+                    width: 60px;
+                    height: 60px;
+                    margin-top: -30px;
+                    margin-left: -30px;
+                    border-radius: 60px;
+                    line-height: 52px;
+                    font-size: 22px;
+                    border-width: 4px;
+                }
+
+    html.dark .wizard-progress .wizard-steps li a {
+        color: #808697;
+    }
+
+    html.dark .wizard-progress.wizard-progress ul li a span {
+        background: #242830;
+        border-color: #242830;
+    }
+
+    html.dark .wizard-progress .wizard-steps li.active a span {
+        background: #242830;
+    }
+
+    html.dark .wizard-progress .steps-progress {
+        background: #242830;
+    }
+
+@media only screen and (max-width: 991px) {
+    html .wizard-progress, html .wizard-progress.wizard-progress-lg, html.dark .wizard-progress, html.dark .wizard-progress.wizard-progress-lg {
+        width: auto;
+        margin-bottom: 0;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+        html .wizard-progress .steps-progress, html.dark .wizard-progress .steps-progress {
+            display: none;
+        }
+
+        html .wizard-progress .wizard-steps, html.dark .wizard-progress .wizard-steps {
+            display: block;
+            font-size: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-align: left;
+            width: 100%;
+        }
+
+            html .wizard-progress .wizard-steps li, html.dark .wizard-progress .wizard-steps li {
+                transition: margin .5s linear;
+                display: inline-block;
+                float: none;
+                position: relative;
+                width: 100%;
+                min-width: 0;
+                max-width: none;
+            }
+
+                html .wizard-progress .wizard-steps li a, html.dark .wizard-progress .wizard-steps li a {
+                    position: relative;
+                    z-index: 2;
+                }
+
+                html .wizard-progress .wizard-steps li:before, html .wizard-progress .wizard-steps li:after, html.dark .wizard-progress .wizard-steps li:before, html.dark .wizard-progress .wizard-steps li:after {
+                    content: '';
+                    display: block;
+                    height: 2px;
+                    position: absolute;
+                    top: 0;
+                    width: 50%;
+                }
+
+                html .wizard-progress .wizard-steps li:before, html.dark .wizard-progress .wizard-steps li:before {
+                    background: #CCC;
+                    left: 0;
+                }
+
+                html .wizard-progress .wizard-steps li:after, html.dark .wizard-progress .wizard-steps li:after {
+                    background: #CCC;
+                    right: 0;
+                }
+
+                html .wizard-progress .wizard-steps li.active, html.dark .wizard-progress .wizard-steps li.active {
+                    margin-left: 0;
+                }
+
+                html .wizard-progress .wizard-steps li.completed, html.dark .wizard-progress .wizard-steps li.completed {
+                    margin-left: -100%;
+                }
+
+                    html .wizard-progress .wizard-steps li.completed:after, html.dark .wizard-progress .wizard-steps li.completed:after {
+                        background: #CCC;
+                    }
+
+                    html .wizard-progress .wizard-steps li.completed.active, html.dark .wizard-progress .wizard-steps li.completed.active {
+                        margin-left: 0;
+                    }
+
+                html .wizard-progress .wizard-steps li:first-child:before, html.dark .wizard-progress .wizard-steps li:first-child:before {
+                    display: none;
+                }
+
+                html .wizard-progress .wizard-steps li:last-child:after, html.dark .wizard-progress .wizard-steps li:last-child:after {
+                    display: none;
+                }
+
+        html .wizard-progress.wizard-progress-lg .wizard-steps li, html.dark .wizard-progress.wizard-progress-lg .wizard-steps li {
+            min-width: 0;
+            max-width: none;
+        }
+
+            html .wizard-progress.wizard-progress-lg .wizard-steps li:before, html .wizard-progress.wizard-progress-lg .wizard-steps li:after, html.dark .wizard-progress.wizard-progress-lg .wizard-steps li:before, html.dark .wizard-progress.wizard-progress-lg .wizard-steps li:after {
+                height: 4px;
+            }
+}
+
+.form-wizard {
+    margin-bottom: 20px;
+}
+
+    .form-wizard .tabs {
+        margin-bottom: 0;
+    }
+
+    .form-wizard .tab-content {
+        background: #fdfdfd;
+        border: 0 none;
+        box-shadow: none;
+    }
+
+    .form-wizard ul.pager .next a,
+    .form-wizard ul.pager .previous a,
+    .form-wizard ul.pager .first a,
+    .form-wizard ul.pager .last a,
+    .form-wizard ul.pager .finish a {
+        cursor: pointer;
+    }
+
+    .form-wizard ul.pager .disabled a {
+        cursor: not-allowed;
+    }
+
+    .form-wizard ul.pager .next.disabled {
+        display: none;
+    }
+
+html.dark .form-wizard .pager li > a,
+html.dark .form-wizard .pager li > a:hover,
+html.dark .form-wizard .pager li > a:focus,
+html.dark .form-wizard .pager li > span {
+    background: #2e353e;
+    border-color: #282d36;
+    color: #EEE;
+}
+
+html.dark .form-wizard .pager .disabled > a, html.dark .form-wizard .pager .disabled > a:hover, html.dark .form-wizard .pager .disabled > a:focus, html.dark .form-wizard .pager .disabled > span {
+    background: #282d36;
+    border-color: #282d36;
+    color: #EEE;
+}
+
+.card-footer {
+    border-radius: 0 0 5px 5px;
+    margin-top: -5px;
+    background: #FFF;
+}
+
+/* Pager */
+.pager {
+    padding-left: 0;
+    margin: 20px 0;
+    list-style: none;
+    text-align: center;
+}
+
+    .pager li {
+        display: inline;
+    }
+
+        .pager li > a, .pager li > span {
+            display: inline-block;
+            padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+        }
+
+            .pager li > a:hover, .pager li > a:focus {
+                text-decoration: none;
+                background-color: #eeeeee;
+            }
+
+    .pager .next > a, .pager .next > span {
+        float: right;
+    }
+
+    .pager .previous > a, .pager .previous > span {
+        float: left;
+    }
+
+    .pager .disabled > a {
+        color: #777777;
+        background-color: #fff;
+        cursor: not-allowed;
+    }
+
+        .pager .disabled > a:hover, .pager .disabled > a:focus {
+            color: #777777;
+            background-color: #fff;
+            cursor: not-allowed;
+        }
+
+    .pager .disabled > span {
+        color: #777777;
+        background-color: #fff;
+        cursor: not-allowed;
+    }
+
+.card-footer .pager {
+    margin: 0;
+    padding: 5px 0;
+}
+
+    .card-footer .pager::after {
+        clear: both;
+        content: "";
+        display: block;
+    }
+
+.float-left{
+    float:left!important;
+}
+
+.float-right {
+    float:right!important;
+}
+
+.hidden{
+    display:none !important;
+}
+
+.error{
+    color:red;
+}

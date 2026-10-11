@@ -1,0 +1,1118 @@
+{% extends "layout/consulting_2.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+
+<style>
+    body {
+        background: #f8f9fb;
+        font-family: 'Inter', sans-serif;
+    }
+
+    :root {
+        --primary: #ba0013;
+        --primary-dark: #93000d;
+        --secondary: #6c757d;
+        --border: #e9ecef;
+    }
+
+    .section-space {
+        padding: 80px 0;
+    }
+
+    .event-badge {
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        font-size: 42px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .form-control,
+    .form-select {
+        border: 2px solid #000 !important;
+        border-radius: 8px;
+        box-shadow: none !important;
+    }
+
+    /* Saat focus */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #000 !important;
+        box-shadow: 0 0 0 0.12rem rgba(0,0,0,0.2) !important;
+    }
+
+    /* Radio & checkbox */
+    .form-check-input {
+        border: 2px solid #000 !important;
+    }
+
+    /* File upload button */
+    input[type="file"]::file-selector-button {
+       
+        background: #fff;
+        color: #000;
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin-right: 10px;
+    }
+
+    /* Label lebih jelas */
+    .form-label {
+        color: #000;
+    }
+
+    .event-meta-box {
+        background: #f1f3f5;
+        border-radius: 16px;
+        padding: 25px;
+    }
+
+    .meta-icon {
+        color: var(--primary);
+        font-size: 28px;
+    }
+
+    .category-label {
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .event-image {
+        width: 100%;
+        height: 100%;
+        min-height: 380px;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    .ticket-badge {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+    }
+
+    .custom-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    }
+
+    .progress {
+        height: 10px;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: var(--primary);
+    }
+
+    .feature-icon {
+        color: var(--primary);
+        font-size: 22px;
+        margin-top: 2px;
+    }
+
+    .btn-primary-custom {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+    .category-box {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: .3s;
+        font-weight: 500;
+    }
+
+        .category-box:hover {
+            background: #fff5f5;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+    .venue-map {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        filter: grayscale(100%);
+        opacity: .85;
+    }
+
+    .location-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 16px;
+        padding: 15px 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .location-icon {
+        background: var(--primary);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    }
+
+    .participant-box {
+        background: white;
+        border: 1px solid #ffffff;
+        border-radius: 16px;
+        padding: 18px 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .participant-icon {
+        width: 55px;
+        height: 55px;
+        background: linear-gradient(135deg,#ba0013,#93000d);
+        color: white;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+.participant-total{
+    font-size:28px;
+    font-weight:700;
+    color:#212529;
+}
+
+.external-form-box{
+    background: linear-gradient(135deg, #ba0013, #93000d);
+    border-radius: 24px;
+    padding: 40px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(186,0,19,0.25);
+}
+
+.external-form-box h2{
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.external-form-box p{
+    color: rgba(255,255,255,0.85);
+}
+
+.qr-box{
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 25px 0;
+}
+
+.qr-box img{
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+}
+
+.btn-google-form{
+    background: white;
+    color: #ba0013;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 14px 28px;
+    text-decoration: none;
+    display: inline-block;
+    transition: .3s;
+}
+
+.btn-google-form:hover{
+    background: #f8f9fa;
+    color: #93000d;
+}
+
+.scan-text{
+    font-size:14px;
+    color: rgba(255,255,255,0.8);
+}
+
+    @media(max-width:768px) {
+        .hero-title {
+            font-size: 30px;
+        }
+
+        .section-space {
+            padding: 50px 0;
+        }
+    }
+</style>
+
+<main class="container section-space">
+
+    <!-- HERO SECTION -->
+    <div class="row g-4 align-items-center mb-5">
+
+        <!-- LEFT CONTENT -->
+        <div class="col-lg-7">
+
+            <!-- Event Status -->
+            <div class="event-badge mb-2">
+                <span class="badge px-3 py-2 rounded-pill {{ event_badge_class }}">
+                    {{ event_status }}
+                </span>
+            </div>
+
+            <!-- Category -->
+            <div class="category-label mb-2">
+                <span class="material-symbols-outlined align-middle">
+                    sell
+                </span>
+                Seminar
+            </div>
+
+         <div class="d-flex align-items-start gap-3 mb-3">
+
+    <h1 class="hero-title mb-0 flex-grow-1">
+        {{ event.name }}
+    </h1>
+
+    <button
+        type="button"
+        class="btn d-flex align-items-center justify-content-center rounded-circle border-0 flex-shrink-0"
+        style="
+            width:52px;
+            height:52px;
+            background:#dc3545;
+            color:white;
+            margin-top:50px;
+            box-shadow:0 6px 18px rgba(220,53,69,.25);
+        "
+        data-bs-toggle="modal"
+        data-bs-target="#shareInvitationModal">
+
+        <span class="material-symbols-outlined">
+            share
+        </span>
+
+    </button>
+
+</div>
+
+<!-- Description -->
+<p class="text-muted mb-4">
+    {{ event.information }}
+</p>
+
+
+            <!-- META BOX -->
+            <div class="event-meta-box">
+
+                <!-- Row Date Time Location -->
+                <div class="row g-4">
+
+                    <!-- Date -->
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <span class="material-symbols-outlined meta-icon">
+                                calendar_today
+                            </span>
+                            <div>
+                                <small class="text-muted d-block">Date</small>
+                                <strong>
+                                    {{ event.date|date:"j F Y" }}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <span class="material-symbols-outlined meta-icon">
+                                schedule
+                            </span>
+                            <div>
+                                <small class="text-muted d-block">Time</small>
+                                <strong>
+                                    {% if event.time %}
+                                    {{ event.time|time:"H:i" }} WITA
+                                    {% else %}
+                                    Flexible Time
+                                    {% endif %}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <span class="material-symbols-outlined meta-icon">
+                                location_on
+                            </span>
+                            <div>
+                                <small class="text-muted d-block">Location</small>
+                                <strong>
+                                    {{ event.location }}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Participant Box -->
+                <div class="participant-box mt-4">
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="participant-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div>
+                            <small class="text-muted d-block">
+                                Current Participants
+                            </small>
+
+                            <strong class="participant-total">
+                                {{ participant_count }}
+                            </strong>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- RIGHT IMAGE -->
+        <div class="col-lg-5">
+            <div class="position-relative h-100">
+
+                {% if event_photo and event_photo.photo %}
+                <img src="{{ event_photo.photo.url }}"
+                     class="event-image"
+                     alt="{{ event.name }}">
+                {% else %}
+                <img src="{% static 'images/default-event.jpg' %}"
+                     class="event-image"
+                     alt="Default Event">
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- REGISTRATION SECTION -->
+    <div class="row g-4">
+
+        <!-- LEFT SIDEBAR -->
+        <div class="col-lg-4">
+
+            <!-- Attendance -->
+            <div class="custom-card mb-4">
+                <h4 class="mb-3">Attendance Progress</h4>
+
+                <div class="progress mb-2">
+                    <div class="progress-bar"
+                         style="width:{{ progress_percentage }}%">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between text-muted small">
+                    <span>
+                        {{ progress_percentage }}% Capacity Reached
+                    </span>
+
+                    <span>
+                        {{ participant_count }} / {{ event.capacity}}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Event Info -->
+            <div class="custom-card">
+                <h4 class="mb-4">Benefits Event</h4>
+
+                <ul class="list-unstyled">
+
+        {% for benefit in event_benefits %}
+
+            <li class="d-flex gap-2 mb-3 align-items-start">
+
+                <span
+                    class="material-symbols-outlined feature-icon text-danger">
+
+                    redeem
+
+                </span>
+
+                <span>
+                    {{ benefit.benefit }}
+                </span>
+
+            </li>
+
+        {% empty %}
+
+            <li class="text-muted">
+                No event benefits available
+            </li>
+
+        {% endfor %}
+
+    </ul>
+            </div>
+        </div>
+
+        <!-- REGISTRATION FORM -->
+       <div class="col-lg-8">
+
+    {% if event.is_form %}
+    <!-- INTERNAL FORM -->
+
+
+    <div class="external-form-box">
+
+        <h2>Register via Google Form</h2>
+
+        <p>
+            Scan the QR code below or click the button 
+            to complete your registration.
+        </p>
+
+        {% if qr_code_base64 %}
+        <div class="qr-box">
+            <img 
+                src="data:image/png;base64,{{ qr_code_base64 }}"
+                alt="QR Code Registration"
+            >
+        </div>
+        {% endif %}
+
+        <p class="scan-text">
+            Fast registration for external attendees
+        </p>
+
+        <a 
+            href="{{ event.url_form }}"
+            target="_blank"
+            class="btn-google-form mt-3"
+        >
+            Register via Google Form
+        </a>
+
+    </div>
+
+    {% else %}
+    <!-- GOOGLE FORM QR -->
+     <div class="custom-card">
+
+    <h2 class="mb-2">
+        Guest Registration
+    </h2>
+
+    <p class="text-muted mb-4">
+        Please fill in your details to secure your spot.
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for question in form_questions %}
+
+        <div class="mb-4">
+
+            <!-- LABEL -->
+            <label class="form-label fw-semibold">
+
+                {{ question.label }}
+
+                {% if question.form_required %}
+                <span class="text-danger">*</span>
+                {% endif %}
+
+            </label>
+
+            <!-- HELP TEXT -->
+            {% if question.help_text %}
+            <div class="small text-muted mb-2">
+                {{ question.help_text }}
+            </div>
+            {% endif %}
+
+            <!-- SHORT TEXT -->
+            {% if question.type == 'short_text' %}
+
+            <input
+                type="text"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- LONG TEXT -->
+            {% elif question.type == 'long_text' %}
+
+            <textarea
+                name="question_{{ question.id }}"
+                rows="4"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            ></textarea>
+
+            <!-- EMAIL -->
+            {% elif question.type == 'email' %}
+
+            <input
+                type="email"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- NUMBER -->
+            {% elif question.type == 'number' %}
+
+            <input
+                type="number"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- PHONE -->
+            {% elif question.type == 'phone' %}
+
+            <input
+                type="text"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- DATE -->
+            {% elif question.type == 'date' %}
+
+            <input
+                type="date"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- TIME -->
+            {% elif question.type == 'time' %}
+
+            <input
+                type="time"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- DATETIME -->
+            {% elif question.type == 'datetime' %}
+
+            <input
+                type="datetime-local"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- FILE -->
+            {% elif question.type == 'file_upload' %}
+
+            <input
+                type="file"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- IMAGE -->
+            {% elif question.type == 'image_upload' %}
+
+            <input
+                type="file"
+                accept="image/*"
+                name="question_{{ question.id }}"
+                class="form-control"
+                {% if question.form_required %}required{% endif %}
+            >
+
+            <!-- YES NO -->
+            {% elif question.type == 'yes_no' %}
+
+            <div class="d-flex gap-4">
+
+                <div class="form-check">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="question_{{ question.id }}"
+                        value="Yes"
+                        {% if question.form_required %}required{% endif %}
+                    >
+
+                    <label class="form-check-label">
+                        Yes
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="question_{{ question.id }}"
+                        value="No"
+                    >
+
+                    <label class="form-check-label">
+                        No
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- SINGLE CHOICE -->
+            {% elif question.type == 'single_choice' %}
+
+                {% for option in question.formquestionoption_set.all %}
+
+                <div class="form-check mb-2">
+
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="question_{{ question.id }}"
+                        value="{{ option.value }}"
+                        {% if question.form_required %}required{% endif %}
+                    >
+
+                    <label class="form-check-label">
+                        {{ option.label }}
+                    </label>
+
+                </div>
+
+                {% endfor %}
+
+            <!-- MULTIPLE CHOICE -->
+            {% elif question.type == 'multiple_choice' %}
+
+                {% for option in question.formquestionoption_set.all %}
+
+                <div class="form-check mb-2">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="question_{{ question.id }}"
+                        value="{{ option.value }}"
+                    >
+
+                    <label class="form-check-label">
+                        {{ option.label }}
+                    </label>
+
+                </div>
+
+                {% endfor %}
+
+            <!-- DROPDOWN -->
+            {% elif question.type == 'dropdown' %}
+
+            <select
+                name="question_{{ question.id }}"
+                class="form-select"
+                {% if question.form_required %}required{% endif %}
+            >
+
+                <option value="">
+                    Select Option
+                </option>
+
+                {% for option in question.formquestionoption_set.all %}
+
+                <option value="{{ option.value }}">
+                    {{ option.label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <!-- RATING -->
+            {% elif question.type == 'rating' %}
+
+            <select
+                name="question_{{ question.id }}"
+                class="form-select"
+                {% if question.form_required %}required{% endif %}
+            >
+
+                <option value="">
+                    Select Rating
+                </option>
+
+                {% for i in "12345" %}
+
+                <option value="{{ i }}">
+                    {{ i }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+        {% if event_status == "EVENT FINISHED" %}
+
+<button
+    class="btn btn-secondary w-100 py-3"
+    disabled>
+
+    Registration Closed
+
+</button>
+
+{% else %}
+
+<button class="btn btn-primary-custom w-100 py-3">
+
+    Register Now
+
+</button>
+
+{% endif %}
+
+    </form>
+
+</div>
+    {% endif %}
+
+</div>
+
+
+    <!-- VENUE -->
+    <div class="custom-card mt-5 p-0 overflow-hidden">
+
+        <div class="p-4 border-bottom">
+            <h4 class="mb-1">Venue & Directions</h4>
+
+
+        </div>
+
+        <div class="position-relative">
+
+            {% if event.location_map %}
+            <iframe src="{{ event.location_map }}"
+                    width="100%"
+                    height="350"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy">
+            </iframe>
+            {% endif %}
+
+
+
+
+        </div>
+    </div>
+
+</main>
+
+
+<div class="modal fade"
+     id="shareInvitationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg"
+             style="border-radius:20px;">
+
+            <div class="modal-header border-0 pb-0">
+
+                <h5 class="modal-title fw-bold">
+                    Share Invitation
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="text-secondary small mb-3">
+                    Bagikan link invitation event ke peserta.
+                </p>
+
+                <!-- URL -->
+                <div class="input-group mb-4">
+
+                    <input type="text"
+                           id="invitationLink"
+                           class="form-control"
+                           value="{{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                           readonly>
+
+                    <button class="btn btn-danger"
+                            type="button"
+                            id="copyInvitationBtn">
+
+                        Salin
+                    </button>
+
+                </div>
+
+                <!-- SHARE APPS -->
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+
+                    <!-- WhatsApp -->
+                   <a href="https://wa.me/?text={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#25D366;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(37,211,102,.25);
+                        ">
+
+                            <i class="fab fa-whatsapp"
+                            style="font-size:20px;"></i>
+
+                            WhatsApp
+                        </a>
+
+                        <!-- Instagram -->
+                        <button type="button"
+                                onclick="shareToInstagram()"
+                                class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                                style="
+                                    background:linear-gradient(
+                                        45deg,
+                                        #f09433,
+                                        #e6683c,
+                                        #dc2743,
+                                        #cc2366,
+                                        #bc1888
+                                    );
+                                    font-weight:600;
+                                    box-shadow:0 6px 18px rgba(220,39,67,.25);
+                                ">
+
+                            <i class="fab fa-instagram"
+                            style="font-size:20px;"></i>
+
+                            Instagram
+                        </button>
+
+                                            <!-- Telegram -->
+                                            <a href="https://t.me/share/url?url={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#229ED9;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(34,158,217,.25);
+                        ">
+
+                            <i class="fab fa-telegram-plane"
+                            style="font-size:20px;"></i>
+
+                            Telegram
+                        </a>
+
+                    <!-- Email -->
+                    <a href="mailto:?subject={{ event.name }}&body={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                       class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
+
+                        <span class="material-symbols-outlined">
+                            mail
+                        </span>
+
+                        Email
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block theme %}
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'app/js/absensi_form.js'%}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+document
+    .getElementById('copyInvitationBtn')
+    .addEventListener('click', function () {
+
+        const input =
+            document.getElementById('invitationLink');
+
+        input.select();
+        input.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(input.value);
+
+        this.innerText = 'Tersalin!';
+
+        setTimeout(() => {
+
+            this.innerText = 'Salin';
+
+        }, 2000);
+
+    });
+
+</script>
+
+
+
+<script>
+
+function shareToInstagram() {
+
+    const input =
+        document.getElementById(
+            'invitationLink'
+        );
+
+    input.removeAttribute('readonly');
+
+    input.select();
+
+    input.setSelectionRange(
+        0,
+        99999
+    );
+
+    const copied =
+        document.execCommand('copy');
+
+    input.setAttribute(
+        'readonly',
+        true
+    );
+
+    if (copied) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Link berhasil disalin',
+            text: 'Paste di Instagram Story / DM',
+            confirmButtonText: 'Buka Instagram'
+        }).then(() => {
+
+            window.location.href =
+                'instagram://app';
+
+            setTimeout(function () {
+
+                window.open(
+                    'https://instagram.com/',
+                    '_blank'
+                );
+
+            }, 1500);
+
+        });
+
+    } else {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal menyalin link'
+        });
+    }
+}
+
+</script>
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% load static %}
+<header class="page-header">
+	<h2>{{title}}</h2>
+					
+	<div class="right-wrapper text-right">
+		<ol class="breadcrumbs">
+			{%for submenu in menu%}
+			<li><span>{{submenu}}</span></li>
+			{%endfor%}
+		</ol>
+					
+		<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fas fa-chevron-left"></i></a>
+	</div>
+</header>

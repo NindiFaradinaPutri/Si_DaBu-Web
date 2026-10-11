@@ -1,0 +1,30 @@
+<div class="modal fade" id="rejectConfirmationModals" tabindex="-1" role="dialog" 
+	 aria-labelledby="rejectConfirmationTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-red">
+                <h5 class="modal-title" id="modal-title">Konfirmasi Penolakan Permohonan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p>
+                    Anda menolak {{info_data}} <strong id="reject_item"></strong>?
+                    </p>
+                    <input type="hidden" name="status" id="id_reject_status" />
+                    <input type="hidden" name="request_id" id="id_reject_request" />
+                    <section class="simple-compose-box mb-3">
+				        <textarea name="information" data-plugin-textarea-autosize placeholder="Pesan yang ingin disampaikan?" rows="2"></textarea>
+                    </section>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button class="btn btn-danger btn-sm modal-confirm" type="submit">Tolak</button>
+                    <a class="btn btn-default btn-sm" role="button" data-dismiss="modal">Tutup</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

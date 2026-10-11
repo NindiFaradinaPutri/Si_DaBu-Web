@@ -1,0 +1,101 @@
+@font-face {
+    font-family: "flaticon_masjid_nu";
+    src: url("./flaticon_masjid_nu.ttf?951265f7af84c998cdccf340a0303672") format("truetype"),
+url("./flaticon_masjid_nu.woff?951265f7af84c998cdccf340a0303672") format("woff"),
+url("./flaticon_masjid_nu.woff2?951265f7af84c998cdccf340a0303672") format("woff2"),
+url("./flaticon_masjid_nu.eot?951265f7af84c998cdccf340a0303672#iefix") format("embedded-opentype"),
+url("./flaticon_masjid_nu.svg?951265f7af84c998cdccf340a0303672#flaticon_masjid_nu") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon_masjid_nu !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-praying:before {
+    content: "\f101";
+}
+.flaticon-islamic-friday-prayer:before {
+    content: "\f102";
+}
+.flaticon-shalat:before {
+    content: "\f103";
+}
+.flaticon-dua:before {
+    content: "\f104";
+}
+.flaticon-salat:before {
+    content: "\f105";
+}
+.flaticon-mosque:before {
+    content: "\f106";
+}
+.flaticon-mosque-1:before {
+    content: "\f107";
+}
+.flaticon-decoration:before {
+    content: "\f108";
+}
+.flaticon-mosque-2:before {
+    content: "\f109";
+}
+.flaticon-mosque-3:before {
+    content: "\f10a";
+}
+.flaticon-prayer-rug:before {
+    content: "\f10b";
+}
+.flaticon-man:before {
+    content: "\f10c";
+}
+.flaticon-muslim:before {
+    content: "\f10d";
+}
+.flaticon-plus:before {
+    content: "\f10e";
+}
+.flaticon-remove:before {
+    content: "\f10f";
+}
+.flaticon-edit:before {
+    content: "\f110";
+}
+.flaticon-down-arrow:before {
+    content: "\f111";
+}
+.flaticon-verified-account:before {
+    content: "\f112";
+}
+.flaticon-copy:before {
+    content: "\f113";
+}
+.flaticon-contact-mail:before {
+    content: "\f114";
+}
+.flaticon-donation:before {
+    content: "\f115";
+}
+.flaticon-sunrise:before {
+    content: "\f116";
+}
+.flaticon-sun:before {
+    content: "\f117";
+}
+.flaticon-sunrise-1:before {
+    content: "\f118";
+}
+.flaticon-sunset:before {
+    content: "\f119";
+}
+.flaticon-sunset-1:before {
+    content: "\f11a";
+}
+.flaticon-moon:before {
+    content: "\f11b";
+}

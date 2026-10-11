@@ -1,0 +1,82 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+<section class="custom-bg-color-lighter-grey">
+    <div class="cards custom-cards h-auto pt-5 pb-4 container appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="100" style="animation-delay: 100ms;">
+        <div class="row bg-color-light cards-container d-flex justify-content-center justify-content-xl-between w-100 mb-5 mx-0 box-shadow-1 p-relative top-0">
+            <div class="col-sm-12 col-md-6 col-xl-6 bg-light p-0 shadow-none">
+                <div class="card border-radius-0 border-0 shadow-none">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4 font-weight-semibold text-color-primary text-center">Submit a report</h4>
+                        <form class="" method="POST" id="form" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% include 'template/forms/tmp_form.html' with form=form %}
+                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <button type="button" id="reset" class="btn btn-link">Clear</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xl-6 bg-light p-0 shadow-none d-flex align-items-center justify-content-between z-index-1 border-end-0">
+                <div class="card border-radius-0 border-0 shadow-none">
+                    <div class="card-body">
+                        <img style="width: 100%;" src="/media/complaint/aset/main_image.jpg" alt="Alternate Text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" integrity="sha512-giQeaPns4lQTBMRpOOHsYnGw1tGVzbAIHUyHRgn7+6FmiEgGGjaG0T2LZJmAPMzRCl+Cug0ItQ2xDZpTmEc+CQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    html, body {
+        height: 450px;
+        width: 100%;
+        margin: 0;
+    }
+
+    .h_iframe iframe {
+        width: 100%;
+        height: 450px;
+    }
+
+    .h_iframe {
+        height: 450px;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript">
+    $("#reset").click(function () {
+        $(this).closest('form').find("input[type=text], textarea").val("");
+        $('#id_telphone').val('+62');
+    });
+</script>
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/formset.js' %}"></script>
+{% endblock %}

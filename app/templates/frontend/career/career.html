@@ -1,0 +1,140 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5 mt-3">
+
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="overflow-hidden mb-2">
+				<h2 class="font-weight-normal text-7 mb-2 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="200"><strong class="font-weight-extra-bold">{{naration.first.title}}</strong></h2>
+			</div>
+			<p class="text-color-light-3 mb-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">{{naration.first.naration|safe}}</p>
+		</div>
+		<div class="col-lg-4">
+			<div class="testimonial testimonial-primary appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
+				<blockquote>
+					{{naration.first.quote|safe}}
+				</blockquote>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<section class="section section-default border-0 m-0">
+	<div class="container py-4">
+
+		<div class="row pb-4">
+			{% if career %}
+			<div class="col-md-8">
+
+				<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="200">
+					<h4 class="mt-2 mb-2"><strong>Join with Us</strong></h4>
+
+					<div class="accordion accordion-modern accordion-modern-grey-scale-1 without-bg mt-4" id="accordion11">
+						{% for career in career %}
+						{% if forloop.counter == 1 %}
+						<div class="card bg-light mb-2">
+							<div class="card-header">
+								<h4 class="card-title m-0">
+									<a class="accordion-toggle text-3" data-bs-toggle="collapse" data-bs-parent="#accordion11" href="#collapse11One">
+										{{career.position}}
+									</a>
+								</h4>
+							</div>
+							<div id="collapse11One" class="collapse show">
+								<div class="card-body mt-3">
+									{{career.description|safe}}
+
+									<a href="mailto:karir@silatama.co.id?subject={{career.position}} - (isi nama) - (kode)" target="_blank" class="btn btn-modern btn-danger">Apply</a>
+								</div>
+							</div>
+						</div>
+						{% else %}
+						<div class="card bg-light mb-2">
+							<div class="card-header">
+								<h4 class="card-title m-0">
+									<a class="accordion-toggle text-3" data-bs-toggle="collapse" data-bs-parent="#accordion11" href="#collapse11Two">
+										{{career.position}}
+									</a>
+								</h4>
+							</div>
+							<div id="collapse11Two" class="collapse">
+								<div class="card-body mt-3">
+									{{career.description|safe}}
+
+									<a href="mailto:karir@silatama.co.id?subject={{career.position}} - (isi nama) - {{career.code}}" target="_blank" class="btn btn-modern btn-danger">Apply</a>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-4">
+				<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="400">
+					{% if career_photo %}
+					<div class="owl-carousel owl-theme dots-inside" style="margin-bottom:-40px" data-plugin-options="{'items': 1, 'autoplay': true, 'autoplayTimeout': 4000, 'margin': 10, 'animateOut': 'fadeOut', 'dots': false}">
+						{% for career_photo in career_photo %}
+						<div class="pb-5">
+							<img alt="" class="img-fluid rounded img-career" src="{%static career_photo.photo.url%}">
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+
+					<div class="toggle toggle-primary toggle-simple" data-plugin-toggle>
+						{% for detail in career_detail %}
+						{% if forloop.counter == 1 %}
+						<section class="toggle active">
+							<a class="toggle-title">{{detail.title}}</a>
+							<div class="toggle-content">
+								{{detail.description|safe}}
+							</div>
+						</section>
+						{% else %}
+						<section class="toggle">
+							<a class="toggle-title">{{detail.title}}</a>
+							<div class="toggle-content">
+								{{detail.description|safe}}
+							</div>
+						</section>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+
+	</div>
+</section>
+
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
+
+{% block theme %}
+<style>
+	.img-career {
+		height: 200px;
+		width: 356px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}

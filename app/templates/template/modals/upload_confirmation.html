@@ -1,0 +1,25 @@
+<div class="modal fade" id="uploadConfirmationModals" tabindex="-1" role="dialog" 
+	 aria-labelledby="uploadConfirmationTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered model-lg" role="form">
+        <div class="modal-content">
+            <div class="modal-header bg-green">
+                <h5 class="modal-title" id="modal-title">Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" enctype="multipart/form-data" class="dropzone" id="id_dropzone">
+                {% csrf_token %}
+                <div>
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-success btn-sm modal-confirm" type="submit" name="submit" id="submit">Setujui</button>
+                <a class="btn btn-default btn-sm" role="button" data-dismiss="modal">Tutup</a>
+            </div>
+        </div>
+    </div>
+</div>

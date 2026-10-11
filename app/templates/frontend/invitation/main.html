@@ -1,0 +1,620 @@
+{% load static %}
+<!-- Hero Section -->
+<section class="hero-section page-section px-4" id="home">
+    <div class="hero-bg">
+        <div class="hero-overlay"></div>
+        {% if technology and technology.photo %}
+    <img
+        alt="Grand Ballroom"
+        src="{{ technology.photo.url }}" />
+{% else %}
+    <img
+        alt="Grand Ballroom"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5mo_5cA7YLSjg5zRwMniIYqeONiSVbRfxOhrbCOyeamFBlRu_gfw-2-qAKsHvX7HZOS5ep-w9cWT-hUIphOL3zewrDuEbiVTq3hv9v1EWLZadXkpwGzk_UVx8_sx7WyCNGALaHfrMvE-64UZSYyttVNDctiiq0Ff5F77bRUTeSqs3jAChXiP4YFMxcJqIsJWVKBibOlX1XfuIutc3_WgMpNNV7XdmgPEVQmOQ_GFvYmE7GCP0h_D3G2Ha3Fa34FxPRaGmO7kJaxg" />
+{% endif %}
+    </div>
+    <div class="position-relative z-1 mt-4">
+        <span class="font-label text-primary-container d-block mb-3" style="letter-spacing: 0.3em;">EXCLUSIVE INVITATION</span>
+        <h1 class="font-headline display-5 text-white fw-bold mb-4"> {{ event.name }} </h1>
+        <div class="mx-auto" style="width: 64px; height: 1px; background: rgba(201, 198, 197, 0.3);"></div>
+        <!-- Countdown -->
+        <!-- COUNTDOWN -->
+       <div class="countdown-container"
+     id="countdown"
+     data-event-date="{{ event.date|date:'Y-m-d' }}"
+     data-event-time="{{ event.time|time:'H:i:s' }}">
+
+    <div class="countdown-item">
+
+        <span class="countdown-number"
+              id="countdown-days">
+            00
+        </span>
+
+        <span class="countdown-label">
+            DAYS
+        </span>
+
+    </div>
+
+    <div class="countdown-item">
+
+        <span class="countdown-number"
+              id="countdown-hours">
+            00
+        </span>
+
+        <span class="countdown-label">
+            HRS
+        </span>
+
+    </div>
+
+    <div class="countdown-item">
+
+        <span class="countdown-number"
+              id="countdown-minutes">
+            00
+        </span>
+
+        <span class="countdown-label">
+            MINS
+        </span>
+
+    </div>
+
+    <div class="countdown-item">
+
+        <span class="countdown-number"
+              id="countdown-seconds">
+            00
+        </span>
+
+        <span class="countdown-label">
+            SECS
+        </span>
+
+    </div>
+
+</div>
+        <div class="attendance-info glass-card">
+
+            <div class="attendance-icon">
+                <span class="material-symbols-outlined">
+                    groups
+                </span>
+            </div>
+
+            <div class="attendance-content">
+
+                <div class="attendance-row">
+
+                    <div class="attendance-item">
+                        <span class="attendance-number">{{ remaining_seat }}</span>
+                        <span class="attendance-label">
+                            Current Participation
+                        </span>
+                    </div>
+
+                    <div class="attendance-divider"></div>
+
+                    <div class="attendance-item">
+                        <span class="attendance-number">{{ event.capacity}}</span>
+                        <span class="attendance-label">
+                            Participation Capacity
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- <div class="attendance-note">
+                    Limited availability for selected guests
+                </div> -->
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Divider -->
+<div class="px-4 d-flex align-items-center gap-3 opacity-50">
+    <div class="flex-grow-1" style="height: 1px; background: linear-gradient(to right, transparent, #c9c6c5);"></div>
+    <span class="material-symbols-outlined small">diamond</span>
+    <div class="flex-grow-1" style="height: 1px; background: linear-gradient(to left, transparent, #c9c6c5);"></div>
+</div>
+<!-- Event Details -->
+<section class="page-section px-4" id="details">
+    <div class="glass-card p-5 text-center position-relative overflow-hidden">
+        <div class="card-light-glow"></div>
+        <div class="mb-4">
+            <span class="material-symbols-outlined text-primary-container display-4">calendar_month</span>
+            <h2 class="font-headline h2 theme-text mt-3">Save the Date</h2>
+        </div>
+        <div class="d-flex flex-column gap-4">
+            <div>
+                <span class="font-label text-primary-container d-block mb-1">WHEN</span>
+                <p class="h5 theme-text mb-1">
+                    {{ event.date|date:"l, d F Y" }}
+                    </p>
+                <p class="text-on-surface-variant small">
+                     {{ event.time|time:"H:i" }} WITA
+                    </p>
+            </div>
+            <hr class="border-secondary opacity-25" />
+            <div>
+                <span class="font-label text-primary-container d-block mb-1">WHERE</span>
+                <p class="h5 theme-text mb-1">
+                        {{ event.location }}
+                    </p>
+
+                    <!-- <p class="text-on-surface-variant small">
+                        {{ event.location }}
+                    </p> -->
+            </div>
+        </div>
+        <a id="add-to-calendar"
+   href="#"
+   class="btn btn-primary-custom w-100 mt-4"
+   target="_blank">
+
+    Add to Calendar
+
+</a>
+    </div>
+</section>
+<!-- Experience -->
+<section class="page-section px-4">
+
+    <div class="text-center mb-5">
+
+        <span
+            class="badge rounded-pill px-4 py-2 mb-3"
+            style="
+                background: var(--theme-primary);
+                color: black;
+                font-weight:600;
+                letter-spacing:.5px;
+            ">
+            EVENT BENEFITS
+        </span>
+
+        <h2 class="font-headline display-6 fw-bold mb-3">
+            What You’ll Get
+        </h2>
+
+        <p
+            class="text-on-surface-variant mx-auto"
+            style="
+                max-width:700px;
+                opacity:.8;
+            ">
+            Nikmati berbagai keuntungan eksklusif yang telah disiapkan
+            untuk seluruh peserta event.
+        </p>
+
+    </div>
+
+    <div class="row g-3">
+
+        {% for item in event_benefits %}
+
+        <div class="col-12 col-md-6">
+
+            <div class="glass-card p-4 h-100">
+
+                <div class="d-flex align-items-start gap-3">
+
+                    <div
+                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        style="
+                            width:52px;
+                            height:52px;
+                            background:rgba(220,53,69,.12);
+                            flex-shrink:0;
+                        ">
+
+                        <span
+                            class="material-symbols-outlined feature-icon text-danger">
+                            redeem
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-2 theme-text">
+                           {{ item.benefit }}
+                        </h5>
+
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="glass-card p-4 text-center">
+
+                <span
+                    class="material-symbols-outlined feature-icon text-danger"
+                    style="
+                        font-size:48px;
+                    ">
+                    redeem
+                </span>
+
+                <p class="mb-0 text-on-surface-variant">
+                    Benefit event belum tersedia.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+<!-- Location -->
+<section class="page-section map-section px-4" id="map">
+
+    <div class="mb-4">
+
+        <span class="font-label text-primary-container d-block mb-1">
+            GETTING THERE
+        </span>
+
+        <h2 class="font-headline h2 theme-text">
+            Location
+        </h2>
+
+    </div>
+
+    <!-- GOOGLE MAPS EMBED -->
+    <div class="rounded-4 overflow-hidden position-relative mb-4"
+         style="height: 300px; border: 1px solid var(--outline-variant);">
+
+        <iframe
+            src="{{ event.location_map }}"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+    </div>
+
+    <!-- LOCATION INFO -->
+    <div class="d-flex align-items-start gap-3 mt-4 mb-4">
+
+        <span class="material-symbols-outlined text-primary-container">
+            navigation
+        </span>
+
+        <div>
+
+            <!-- NAMA LOKASI -->
+            <p class="theme-text fw-medium mb-0">
+                {{ event.location }}
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- OPEN GOOGLE MAPS -->
+   <a id="google-maps-button"
+   href="#"
+   target="_blank"
+   class="btn btn-outline-custom w-100 d-flex align-items-center justify-content-center gap-2">
+
+    <span class="material-symbols-outlined"
+          style="font-size: 20px;">
+        directions
+    </span>
+
+    Open in Google Maps
+
+</a>
+
+</section>
+<!-- RSVP Section -->
+<section class="page-section px-4" id="rsvp">
+    <div class="glass-card p-5">
+        <div class="text-center mb-5">
+            <h2 class="font-headline h3 theme-text mb-2">Will you attend?</h2>
+            <p class="text-on-surface-variant small">Please complete your registration by {{ event.date|date:"d F " }}</p>
+        </div>
+
+      
+        <form method="POST"
+      enctype="multipart/form-data"
+      class="d-flex flex-column gap-4">
+
+    {% csrf_token %}
+
+    {% for question in questions %}
+
+        <div>
+
+            <label class="font-label text-on-surface-variant mb-2">
+
+                {{ question.label }}
+
+                {% if question.form_required %}
+                    <span class="text-danger">*</span>
+                {% endif %}
+
+            </label>
+
+            {% if question.help_text %}
+                <div class="small text-muted mb-2">
+                    {{ question.help_text }}
+                </div>
+            {% endif %}
+
+            <!-- SHORT TEXT -->
+            {% if question.type == 'short_text' %}
+
+                <input type="text"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- LONG TEXT -->
+            {% elif question.type == 'long_text' %}
+
+                <textarea name="question_{{ question.id }}"
+                          class="form-control border-0 bg-opacity-10 py-3"
+                          rows="4"
+                          {% if question.form_required %}required{% endif %}></textarea>
+
+            <!-- EMAIL -->
+            {% elif question.type == 'email' %}
+
+                <input type="email"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- PHONE -->
+            {% elif question.type == 'phone' %}
+
+                <input type="text"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- NUMBER -->
+            {% elif question.type == 'number' %}
+
+                <input type="number"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- DATE -->
+            {% elif question.type == 'date' %}
+
+                <input type="date"
+                       name="question_{{ question.id }}"
+                       class="form-control form-control-lg border-0 bg-opacity-10 py-3"
+                       {% if question.form_required %}required{% endif %}>
+
+            <!-- DROPDOWN -->
+            {% elif question.type == 'dropdown' %}
+
+                <select name="question_{{ question.id }}"
+                        class="form-select form-select-lg border-0 bg-opacity-10 py-3"
+                        {% if question.form_required %}required{% endif %}>
+
+                    <option value="">
+                        Pilih
+                    </option>
+
+                    {% for option in question.formquestionoption_set.all %}
+
+                        <option value="{{ option.value }}">
+                            {{ option.label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            <!-- SINGLE CHOICE -->
+            {% elif question.type == 'single_choice' %}
+
+                <div class="d-flex flex-column gap-2">
+
+                    {% for option in question.formquestionoption_set.all %}
+
+                        <label class="glass-card p-3 d-flex align-items-center gap-2">
+
+                            <input type="radio"
+                                   name="question_{{ question.id }}"
+                                   value="{{ option.value }}"
+                                   {% if question.form_required %}required{% endif %}>
+
+                            <span>
+                                {{ option.label }}
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+            <!-- MULTIPLE CHOICE -->
+            {% elif question.type == 'multiple_choice' %}
+
+                <div class="d-flex flex-column gap-2">
+
+                    {% for option in question.formquestionoption_set.all %}
+
+                        <label class="glass-card p-3 d-flex align-items-center gap-2">
+
+                            <input type="checkbox"
+                                   name="question_{{ question.id }}"
+                                   value="{{ option.value }}">
+
+                            <span>
+                                {{ option.label }}
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+            <!-- FILE -->
+            {% elif question.type == 'file_upload' or question.type == 'image_upload' %}
+
+    <div class="glass-card p-4 text-center">
+
+        <span class="material-symbols-outlined d-block mb-2"
+              style="font-size: 42px; color: var(--theme-primary);">
+            upload
+        </span>
+
+        <div class="fw-semibold mb-2 theme-text">
+            Upload File
+        </div>
+
+        <div class="small text-muted mb-3">
+            Pilih gambar atau dokumen
+        </div>
+
+        <input type="file"
+               name="question_{{ question.id }}"
+               class="form-control"
+               style="
+                    background: #fff;
+                    border: 2px dashed rgba(183,155,108,0.4);
+                    border-radius: 16px;
+                    padding: 14px;
+                    cursor: pointer;
+               "
+               {% if question.form_required %}required{% endif %}>
+
+    </div>
+
+{% endif %}
+
+        </div>
+
+    {% endfor %}
+
+    <button class="btn btn-primary-custom btn-lg w-100 py-3 text-uppercase fw-bold mt-3"
+            style="letter-spacing: 0.1em;"
+            type="submit">
+
+        Submit
+
+    </button>
+
+</form>
+    </div>
+</section>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const embedUrl = `{{ event.location_map|escapejs }}`;
+
+    const mapsButton = document.getElementById('google-maps-button');
+
+    // Ambil nama lokasi dari event.location
+    const locationName = `{{ event.location|escapejs }}`;
+
+    // Buat URL Google Maps normal
+    const googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=' +
+        encodeURIComponent(locationName);
+
+    mapsButton.href = googleMapsUrl;
+
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const calendarButton =
+        document.getElementById('add-to-calendar');
+
+    const eventName =
+        `{{ event.name|escapejs }}`;
+
+    const eventLocation =
+        `{{ event.location|escapejs }}`;
+
+    const eventDescription =
+        `{{ event.information|striptags|escapejs }}`;
+
+    const eventDate =
+        `{{ event.date|date:'Y-m-d' }}`;
+
+    const eventTime =
+        `{{ event.time|time:'H:i:s' }}`;
+
+    // Format datetime local
+    const startDate =
+        new Date(eventDate + 'T' + eventTime);
+
+    // Default durasi 2 jam
+    const endDate =
+        new Date(startDate.getTime() + (2 * 60 * 60 * 1000));
+
+    // Format ICS UTC
+    function formatICSDate(date) {
+
+        return date
+            .toISOString()
+            .replace(/[-:]/g, '')
+            .split('.')[0] + 'Z';
+    }
+
+    const startICS = formatICSDate(startDate);
+    const endICS = formatICSDate(endDate);
+
+    const icsContent =
+`BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:${startICS}
+DTEND:${endICS}
+SUMMARY:${eventName}
+DESCRIPTION:${eventDescription}
+LOCATION:${eventLocation}
+END:VEVENT
+END:VCALENDAR`;
+
+    const blob = new Blob(
+        [icsContent],
+        { type: 'text/calendar;charset=utf-8' }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    calendarButton.href = url;
+
+    calendarButton.setAttribute(
+        'download',
+        `${eventName}.ics`
+    );
+
+});
+
+</script>

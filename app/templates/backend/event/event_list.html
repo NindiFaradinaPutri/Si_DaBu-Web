@@ -1,0 +1,1716 @@
+{% extends "layout/consulting_admin.html" %}
+{% load custom_tags %}
+{% load static %}
+
+{% block content %}
+{% include "template/modals/delete_confirmation.html" with info_data="" %}
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root {
+        --bs-primary: #ba0013;
+        --bs-primary-rgb: 186, 0, 19;
+        --silatama-red: #E31E24;
+        --surface-bg: #f8f9fb;
+    }
+
+    html {
+        overflow-x: auto;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--surface-bg);
+        color: #191c1e;
+
+        /* tambahan scroll horizontal */
+        overflow-x: auto;
+    }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+        vertical-align: middle;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 256px;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: white;
+        border-right: 1px solid #dee2e6;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 0;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1.5rem;
+        color: #5e5e5e;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-right: 4px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .nav-link.active {
+        color: var(--silatama-red);
+        background-color: #fff5f5;
+        border-right-color: var(--silatama-red);
+    }
+
+    /* Main Content Adjustments */
+    .main-content {
+        margin-left: 256px;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+
+        /* tambahan agar bisa scroll horizontal */
+        overflow-x: auto;
+        width: calc(100% - 256px);
+    }
+
+    /* tambahan agar seluruh section bisa scroll */
+    main {
+        overflow-x: auto;
+    }
+
+    /* Stats Card */
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Label */
+.stat-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6c757d;
+    letter-spacing: 1px;
+}
+
+
+.stats-wrapper {
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #edf0f2;
+    border-radius: 20px;
+    padding: 24px;
+    height: 100%;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* header */
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+/* label */
+.stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* icon wrapper */
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon span {
+    font-size: 22px;
+}
+
+/* number */
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+/* description */
+.stat-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 0;
+}
+
+/* progress */
+.custom-progress {
+    width: 100%;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.custom-progress-bar {
+    width: 77%;
+    height: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    border-radius: 999px;
+}
+
+/* subtle icon colors */
+.icon-total {
+    background: #f8fafc;
+}
+
+.icon-checkin {
+    background: #ecfdf3;
+}
+
+.icon-remaining {
+    background: #fef2f2;
+}
+/* Icon */
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon span {
+    font-size: 24px;
+}
+
+/* Number */
+.stat-value {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #191c1e;
+}
+
+/* Description */
+.stat-desc {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Custom Progress */
+.custom-progress {
+    width: 100%;
+    height: 8px;
+    background: #edf2f7;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.custom-progress-bar {
+    width: 77%;
+    height: 100%;
+    background: linear-gradient(90deg, #198754, #28c76f);
+    border-radius: 50px;
+}
+
+    .top-app-bar {
+        height: 64px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 256px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        justify-content: space-between;
+    }
+
+
+
+    .btn-primary {
+        background-color: var(--silatama-red);
+        border-color: var(--silatama-red);
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #ba0013;
+        border-color: #ba0013;
+    }
+
+    .stats-wrapper {
+    width: 100%;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 110px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 0;
+    color: #191c1e;
+}
+
+.icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-box span {
+    font-size: 28px;
+}
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .event-card {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .event-card img {
+        height: 192px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .event-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .badge-floating {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 9999px;
+    }
+
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar-group img,
+    .avatar-group .avatar-more {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-left: -8px;
+    }
+
+    .avatar-group img:first-child {
+        margin-left: 0;
+    }
+
+    .avatar-more {
+        background: #f3f4f6;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fab-qr {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--silatama-red);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(227, 30, 36, 0.3);
+        border: none;
+        z-index: 1050;
+        transition: transform 0.2s;
+    }
+
+    .fab-qr:hover {
+        transform: scale(1.1);
+    }
+
+    .custom-table th {
+        background-color: #f8f9fa;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6c757d;
+        padding: 1rem 1.5rem;
+    }
+
+    .custom-table td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+    }
+
+    /* table scroll horizontal */
+    .table-responsive {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .create-event-placeholder {
+        border: 2px dashed #dee2e6;
+        border-radius: 0.75rem;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .create-event-placeholder:hover {
+        border-color: var(--silatama-red);
+        background-color: #fff5f5;
+    }
+
+    .create-event-placeholder .icon-circle {
+        width: 64px;
+        height: 64px;
+        background: #f3f4f6;
+        color: #9ca3af;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .create-event-placeholder:hover .icon-circle {
+        background: #ffebeb;
+        color: var(--silatama-red);
+    }
+
+    :root {
+            --bs-primary: #e31e24;
+            --bs-primary-rgb: 227, 30, 36;
+            --bs-body-font-family: 'Inter', sans-serif;
+            --silatama-red: #e31e24;
+            --silatama-gray-light: #f8f9fb;
+            --silatama-border: #e2e2e2;
+        }
+
+        body {
+            background-color: var(--silatama-gray-light);
+            font-size: 0.9375rem;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        /* Sidebar Styling */
+        
+
+        .nav-link {
+            color: #64748b;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            border-right: 4px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #f1f5f9;
+            color: var(--silatama-red);
+        }
+
+        .nav-link.active {
+            color: var(--silatama-red);
+            background-color: #fef2f2;
+            border-right-color: var(--silatama-red);
+            font-weight: 700;
+        }
+
+        /* Content Area */
+        #main-content {
+            margin-left: 256px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Topbar Styling */
+        .top-navbar {
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid var(--silatama-border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1040;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-container .material-symbols-outlined {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-input {
+            padding-left: 40px;
+            background-color: var(--silatama-gray-light);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        /* Cards and Stats */
+        .stat-card {
+            background: white;
+            border: 1px solid var(--silatama-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Table Styling */
+        .guest-table-card {
+            background: white;
+            border: 1px solid var(--silatama-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background-color: white;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .table tbody td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Badges */
+        .badge-vip { background-color: #f3e8ff; color: #7e22ce; }
+        .badge-speaker { background-color: #dbeafe; color: #1d4ed8; }
+        .badge-attendee { background-color: #f1f5f9; color: #475569; }
+        .badge-present { background-color: #dcfce7; color: #15803d; }
+        .badge-absent { background-color: #f1f5f9; color: #64748b; }
+
+        .btn-primary {
+            background-color: var(--silatama-red);
+            border-color: var(--silatama-red);
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background-color: #c41217;
+            border-color: #c41217;
+        }
+
+        .btn-outline-secondary {
+            border-color: #cbd5e1;
+            color: #475569;
+        }
+
+        .pagination .page-link {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-color: #e2e8f0;
+        }
+
+        .pagination .active .page-link {
+            background-color: var(--silatama-red);
+            border-color: var(--silatama-red);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        footer {
+            margin-left: 256px;
+            padding: 1.5rem 2rem;
+            background: white;
+            border-top: 1px solid var(--silatama-border);
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Modal */
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .preview-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .participant-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .participant-name {
+            text-align: start;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 0;
+            color: var(--text-dark);
+        }
+
+        .current-status-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .current-status-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #198754;
+        }
+        
+        .current-status-value-alt {
+            font-size: 13px;
+            font-weight: 700;
+            color: #871919; 
+        }
+
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            background-color: #FCE8E9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 16px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            text-align: start;
+        }
+
+        .status-option {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+            text-align: start;
+        }
+
+        .status-option:hover {
+            background-color: #fcfcfc;
+        }
+
+        .status-option.selected {
+            border: 2px solid var(--primary-color);
+            background-color: #fff;
+        }
+
+        .status-option .info {
+            flex-grow: 1;
+        }
+
+        .status-option .title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .status-option.selected .title {
+            color: var(--primary-color);
+        }
+
+        .status-option .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-option .radio-icon {
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .status-option.selected .radio-icon {
+            color: var(--primary-color);
+        }
+
+</style>
+<!-- start: page -->
+<div id="main-content">
+
+
+<!-- Main Content Body -->
+<main class="container-fluid p-4" style="max-width: 1280px; margin: 0 auto;">
+<!-- Header Section -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
+    
+    <div class="d-flex align-items-center gap-3">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                {{ event.name }}
+            </h2>
+
+            <p class="text-secondary mb-0">
+                {{ event.information }}
+            </p>
+        </div>
+
+        <!-- SHARE BUTTON -->
+        <button
+    type="button"
+    class="btn d-flex align-items-center justify-content-center rounded-circle border-0"
+    style="
+        width:48px;
+        height:48px;
+        background:#dc3545;
+        color:white;
+        box-shadow:0 6px 18px rgba(220,53,69,.25);
+    "
+    data-bs-toggle="modal"
+    data-bs-target="#shareInvitationModal">
+
+    <span class="material-symbols-outlined">
+        share
+    </span>
+
+</button>
+
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <button 
+            id="btnDownload"
+            data-event-id="{{ event.id }}"
+            class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3">
+
+            <span class="material-symbols-outlined fs-5">download</span>
+            Download Excel/CSV
+        </button>
+
+        <a href="{% url 'participant_upload' event.encrypt_id %}"
+           class="btn btn-primary d-flex align-items-center gap-2 px-3">
+
+            <span class="material-symbols-outlined fs-5">cloud_upload</span>
+            Upload Google Form
+        </a>
+
+    </div>
+
+</div>
+<!-- Stats Grid -->
+<!-- Stats Section -->
+<div class="row g-3 mb-5 stats-wrapper">
+    {{ q_status|json_script:"status-data" }}
+    <!-- Total Guests -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-primary-subtle text-primary">
+                <span class="material-symbols-outlined">groups</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Total participants</p>
+                <h3 class="stat-value">{{ total_participants }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checked In -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-success-subtle text-success">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Checked In</p>
+                <h3 class="stat-value">{{ checked_in }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-warning-subtle text-warning">
+                <span class="material-symbols-outlined">pending</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Remaining</p>
+                <h3 class="stat-value">{{ remaining }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Rate -->
+    <div class="col-12 col-md-6 col-xl-3">
+        <div class="stat-card h-100">
+            <div class="icon-box bg-danger-subtle text-danger">
+                <span class="material-symbols-outlined">person_off</span>
+            </div>
+
+            <div class="stat-content">
+                <p class="stat-label">Absent</p>
+                <h3 class="stat-value">{{ attendance_rate }}%</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Table Section -->
+<div class="guest-table-card">
+
+    <!-- TABLE HEADER -->
+    <div class="p-3 border-bottom bg-light">
+
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+
+            <!-- LEFT -->
+            <div>
+                <strong class="fs-6">Participants List</strong>
+
+                <div class="small text-secondary">
+                    Total: {{ total_participants }}
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <form method="GET"
+                  class="d-flex flex-column flex-md-row align-items-md-center gap-2">
+
+                <!-- SEARCH -->
+                <div class="position-relative">
+
+                    <span class="material-symbols-outlined position-absolute"
+                          style="
+                            left:12px;
+                            top:50%;
+                            transform:translateY(-50%);
+                            color:#6c757d;
+                            font-size:20px;
+                          ">
+                        search
+                    </span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request.GET.search }}"
+                        placeholder="Search name, email, phone"
+                        class="form-control"
+                        style="
+                            min-width:260px;
+                            padding-left:42px;
+                            height:42px;
+                            border-radius:12px;
+                        ">
+                </div>
+
+                <!-- PER PAGE -->
+                <select
+                    name="per_page"
+                    class="form-select"
+                    style="
+                        width:130px;
+                        height:42px;
+                        border-radius:12px;
+                    "
+                    onchange="this.form.submit()">
+
+                    <option value="5"
+                        {% if request.GET.per_page == "5" %}
+                            selected
+                        {% endif %}
+                    >
+                        5 rows
+                    </option>
+
+                    <option value="10"
+                        {% if request.GET.per_page == "10" %}
+                            selected
+                        {% endif %}
+                    >
+                        10 rows
+                    </option>
+
+                    <option value="25"
+                        {% if request.GET.per_page == "25" %}
+                            selected
+                        {% endif %}
+                    >
+                        25 rows
+                    </option>
+
+                    <option value="50"
+                        {% if request.GET.per_page == "50" %}
+                            selected
+                        {% endif %}
+                    >
+                        50 rows
+                    </option>
+
+                    <option value="100"
+                        {% if request.GET.per_page == "100" %}
+                            selected
+                        {% endif %}
+                    >
+                        100 rows
+                    </option>
+
+                </select>
+
+                <!-- BUTTON -->
+                <button class="btn btn-danger px-4"
+                        style="
+                            height:42px;
+                            border-radius:12px;
+                        ">
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+        <table class="table mb-0">
+
+            <thead>
+                <tr>
+                    {% for header in final_headers %}
+                        <th>
+                            {% if header == "no" %}
+                                No
+                            {% elif header == "name" %}
+                                Name
+                            {% elif header == "email" %}
+                                Email
+                            {% elif header == "phone" %}
+                                Phone
+                            {% elif header == "status" %}
+                                Status
+                            {% elif header == "qr_code" %}
+                                Badge
+                            {% elif header == "location" %}
+                                Location
+                            {% elif header|lower == "timestamp" %}
+                                Tanggal & Waktu Pendaftaran
+                            {% else %}
+                                {{ header }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for participant in participants %}
+                <tr>
+
+                    {% with participant.formresponse_set.first as fr %}
+
+                    {% for header in final_headers %}
+
+                    {% if header == "no" %}
+
+                    <td class="fw-semibold text-secondary">
+                        {{ participants.start_index|add:forloop.parentloop.counter0 }}
+                    </td>
+                        {% elif header == "name" %}
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar bg-danger-subtle text-danger">
+                                    {{ participant.name|slice:":2"|upper }}
+                                </div>
+
+                                <strong>{{ participant.name }}</strong>
+                            </div>
+                        </td>
+
+                        {% elif header == "email" %}
+
+                        <td>{{ participant.email|default:"-" }}</td>
+
+                        {% elif header == "phone" %}
+
+                        <td>
+                            {% if participant.phone %}
+                                {% with phone=participant.phone|stringformat:"s"|cut:" "|cut:"-" %}
+                                    
+                                    {% if phone|slice:":3" == "+62" %}
+                                        0{{ phone|slice:"3:" }}
+
+                                    {% elif phone|slice:":1" == "0" %}
+                                        {{ phone }}
+
+                                    {% else %}
+                                        {{ phone }}
+
+                                    {% endif %}
+
+                                {% endwith %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        {% elif header == "status" %}
+
+                        <td>
+                            {% with status=participant.status_user_id.status_name %}
+                                
+                                {% if status == "Present" %}
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Present')"><span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#28a745; color:white;">
+                                        Present
+                                    </span></a>
+
+                                {% elif status == "Register" %}
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Register')"><span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#ffc107; color:black;">
+                                        Register
+                                    </span></a>
+
+                                {% elif status == "Absent" %}
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Absent')"><span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#dc3545; color:white;">
+                                        Absent
+                                    </span></a>
+
+                                {% elif status == "Cancel" %}
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','Cancel')"><span class="badge px-3 py-2 rounded-pill"
+                                          style="background:#dc3545; color:white;">
+                                        Cancel
+                                    </span></a>
+
+                                {% else %}
+                                    <a href="javascript:void(0)" onclick="openUpdateStatusForm('{{ participant.encrypt_id }}','{{ participant.name }}','{{ status }}')"><span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                        {{ status }}
+                                    </span></a>
+
+                                {% endif %}
+
+                            {% endwith %}
+                        </td>
+
+                        {% elif header == "qr_code" %}
+
+                        <td>
+                            <a href="/event/print-badge/{{participant.encrypt_id}}"
+                               class="badge {% if participant.badge_is_printed %}bg-success{% else %}bg-danger{% endif %} d-inline-flex align-items-center gap-1 px-3 py-2 text-decoration-none">
+
+                                <span class="material-symbols-outlined"
+                                      style="font-size:18px;">
+                                    badge
+                                </span>
+                            </a>
+                        </td>
+
+                        {% elif header == "location" %}
+
+                        <td>{{ participant.location|default:"-" }}</td>
+
+                        {% else %}
+
+                       <td>
+
+    {% if fr %}
+        {% with value=fr.data_response.excel_data|get_item:header %}
+
+            {% if value %}
+
+                 {% if "http://" in value or "https://" in value or "/static/media/" in value or "/media/" in value %}
+
+        <a href="{{ value }}"
+           target="_blank"
+           class="text-primary fw-semibold">
+
+            {{ value }}
+
+        </a>
+
+                {% else %}
+
+                    {% with lower_value=value|lower %}
+
+                        {# ===== USIA ===== #}
+                        {% if "usia" in header|lower %}
+
+                            {{ value|cut:" Tahun"|cut:" tahun"|cut:" THN"|cut:" thn"|cut:" Thn" }}
+
+                        {# ===== INSTANSI ===== #}
+                        {% elif "instansi" in header|lower %}
+
+                            {% if lower_value == "tidak ada" %}
+                                -
+                            {% else %}
+                                {{ value }}
+                            {% endif %}
+
+                        {% else %}
+
+                            {{ value }}
+
+                        {% endif %}
+
+                    {% endwith %}
+
+                {% endif %}
+
+            {% else %}
+                -
+            {% endif %}
+
+        {% endwith %}
+    {% else %}
+        -
+    {% endif %}
+
+</td>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                    {% endwith %}
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- Pagination -->
+   <div class="px-4 py-3 bg-light d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+    <span class="small text-secondary fw-medium">
+        Showing {{ participants.start_index }} - {{ participants.end_index }}
+        of {{ total_participants }} participants
+    </span>
+
+    {% if participants.has_other_pages %}
+    <nav>
+        <ul class="pagination pagination-sm mb-0">
+
+            <!-- PREV -->
+            {% if participants.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ participants.previous_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    Prev
+                </a>
+            </li>
+            {% endif %}
+
+            <!-- FIRST PAGE -->
+            {% if participants.number > 3 %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page=1&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    1
+                </a>
+            </li>
+
+            {% if participants.number > 4 %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+            {% endif %}
+            {% endif %}
+
+            <!-- PAGE RANGE -->
+            {% for i in participants.paginator.page_range %}
+
+                {% if i >= participants.number|add:'-2' and i <= participants.number|add:'2' %}
+
+                    {% if participants.number == i %}
+                    <li class="page-item active">
+                        <span class="page-link">
+                            {{ i }}
+                        </span>
+                    </li>
+
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ i }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                            {{ i }}
+                        </a>
+                    </li>
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+
+            <!-- LAST PAGE -->
+            {% if participants.number < participants.paginator.num_pages|add:'-2' %}
+
+                {% if participants.number < participants.paginator.num_pages|add:'-3' %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+                {% endif %}
+
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ participants.paginator.num_pages }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                        {{ participants.paginator.num_pages }}
+                    </a>
+                </li>
+
+            {% endif %}
+
+            <!-- NEXT -->
+            {% if participants.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ participants.next_page_number }}&search={{ request.GET.search }}&per_page={{ request.GET.per_page }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+
+</div>
+</main>
+
+
+<!-- SHARE MODAL -->
+<div class="modal fade"
+     id="shareInvitationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg"
+             style="border-radius:20px;">
+
+            <div class="modal-header border-0 pb-0">
+
+                <h5 class="modal-title fw-bold">
+                    Share Invitation
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="text-secondary small mb-3">
+                    Bagikan link invitation event ke peserta.
+                </p>
+
+                <!-- URL -->
+                <div class="input-group mb-4">
+
+                    <input type="text"
+                           id="invitationLink"
+                           class="form-control"
+                           value="{{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                           readonly>
+
+                    <button class="btn btn-danger"
+                            type="button"
+                            id="copyInvitationBtn">
+
+                        Salin
+                    </button>
+
+                </div>
+
+                <!-- SHARE APPS -->
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+
+                    <!-- WhatsApp -->
+                   <a href="https://wa.me/?text={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#25D366;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(37,211,102,.25);
+                        ">
+
+                            <i class="fab fa-whatsapp"
+                            style="font-size:20px;"></i>
+
+                            WhatsApp
+                        </a>
+
+                        <!-- Instagram -->
+                        <button type="button"
+                                onclick="shareToInstagram()"
+                                class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                                style="
+                                    background:linear-gradient(
+                                        45deg,
+                                        #f09433,
+                                        #e6683c,
+                                        #dc2743,
+                                        #cc2366,
+                                        #bc1888
+                                    );
+                                    font-weight:600;
+                                    box-shadow:0 6px 18px rgba(220,39,67,.25);
+                                ">
+
+                            <i class="fab fa-instagram"
+                            style="font-size:20px;"></i>
+
+                            Instagram
+                        </button>
+
+                                            <!-- Telegram -->
+                                            <a href="https://t.me/share/url?url={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                        target="_blank"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2 rounded-pill text-white border-0"
+                        style="
+                                background:#229ED9;
+                                font-weight:600;
+                                box-shadow:0 6px 18px rgba(34,158,217,.25);
+                        ">
+
+                            <i class="fab fa-telegram-plane"
+                            style="font-size:20px;"></i>
+
+                            Telegram
+                        </a>
+
+                    <!-- Email -->
+                    <a href="mailto:?subject={{ event.name }}&body={{ request.scheme }}://{{ request.get_host }}/invitation/{{ event.encrypt_id }}/"
+                       class="btn btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
+
+                        <span class="material-symbols-outlined">
+                            mail
+                        </span>
+
+                        Email
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% include "backend/header/header-page.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.bootstrap4.css' %}">
+<style>
+	.img-photo {
+		height: 150px;
+		width: 300px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+
+<script>
+    async function openUpdateStatusForm(id ,name, current_status) {
+        const statuses = JSON.parse(
+        document.getElementById('status-data').textContent
+        );
+
+        console.log(statuses);
+        var initial = name.slice(0, 2).toUpperCase()
+
+        const statusHtml = statuses.map((status, index) => `
+        <option value="${status}" ${status == current_status ? 'selected' : ''}>${status}</option>
+        `).join('');
+
+        const result = await Swal.fire({
+            title: 'Update Attendance Status',
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            showLoaderOnConfirm: true,
+            html: `
+            <div class="preview-container">
+                    <div class="modal-body">
+                        <div class="participant-info">
+                            <div class="avatar avatar-circle bg-danger-subtle text-danger">
+                                ${initial}
+                            </div>
+                            <div>
+                                <p class="participant-name">${name}</p>
+                                <span class="current-status-label">Current status: </span>
+                                <span class="${current_status ==  'Present'? 'current-status-value' : 'current-status-value-alt'}">${current_status}</span>
+                            </div>
+                        </div>
+            
+                        <p class="section-label">Select new status:</p>
+            
+                        <div class="form-group">
+                            <select class="form-control" id="new-status">
+                                ${statusHtml}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `,
+        
+            preConfirm: () => {
+                var new_status = document.getElementById('new-status').value;
+                return {
+                    new_status: new_status
+                }
+            }
+        });
+        
+        var new_status = result.value.new_status
+        if(new_status != current_status){
+            Swal.fire({
+                title: 'Updating...',
+                text: 'Please wait',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            $.ajax({
+                url: "/ajax/update_participant_status/",
+                type: 'POST',
+                data: { id: id, new_status: new_status},
+                dataType: "json",
+                success: function(data) {
+                    if(data.status === "Ok"){
+                        Swal.fire({
+                            title: "Success",
+                            text: "Status updated. Reloading the page now",
+                            icon: "success"
+                        });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }else{
+                        Swal.fire({
+                            title: "Failed",
+                            text: "An error occurred. please try again.",
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Failed",
+                        text: "An error occurred. please try again.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+document.getElementById("btnDownload").addEventListener("click", function() {
+
+    const eventId = this.getAttribute("data-event-id");
+
+    if (!eventId) {
+        alert("Event ID tidak ditemukan");
+        return;
+    }
+
+    // 🔥 redirect ke endpoint Django
+    window.location.href = `/ajax/download_participant_bulk/?event_id=${eventId}`;
+});
+</script>
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>
+<script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+document
+    .getElementById('copyInvitationBtn')
+    .addEventListener('click', function () {
+
+        const input =
+            document.getElementById('invitationLink');
+
+        input.select();
+        input.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(input.value);
+
+        this.innerText = 'Tersalin!';
+
+        setTimeout(() => {
+
+            this.innerText = 'Salin';
+
+        }, 2000);
+
+    });
+
+</script>
+
+
+
+<script>
+
+function shareToInstagram() {
+
+    const input =
+        document.getElementById(
+            'invitationLink'
+        );
+
+    input.removeAttribute('readonly');
+
+    input.select();
+
+    input.setSelectionRange(
+        0,
+        99999
+    );
+
+    const copied =
+        document.execCommand('copy');
+
+    input.setAttribute(
+        'readonly',
+        true
+    );
+
+    if (copied) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Link berhasil disalin',
+            text: 'Paste di Instagram Story / DM',
+            confirmButtonText: 'Buka Instagram'
+        }).then(() => {
+
+            window.location.href =
+                'instagram://app';
+
+            setTimeout(function () {
+
+                window.open(
+                    'https://instagram.com/',
+                    '_blank'
+                );
+
+            }, 1500);
+
+        });
+
+    } else {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal menyalin link'
+        });
+    }
+}
+
+</script>
+{% endblock %}

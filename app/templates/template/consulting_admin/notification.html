@@ -1,0 +1,286 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col-lg-6">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Default Notifications</h2>
+			</header>
+			<div class="card-body">
+				<button id="default-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="default-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="default-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="default-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="default-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="default-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications with Shadow</h2>
+			</header>
+			<div class="card-body">
+				<button id="shadow-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="shadow-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="shadow-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="shadow-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="shadow-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="shadow-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications without icons</h2>
+			</header>
+			<div class="card-body">
+				<button id="no-icon-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="no-icon-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="no-icon-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="no-icon-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="no-icon-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="no-icon-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications without border radius</h2>
+			</header>
+			<div class="card-body">
+				<button id="no-radious-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="no-radious-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="no-radious-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="no-radious-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="no-radious-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="no-radious-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications with custom icons</h2>
+			</header>
+			<div class="card-body">
+				<button id="custom-icon-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="custom-icon-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="custom-icon-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="custom-icon-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="custom-icon-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="custom-icon-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications icon without border</h2>
+			</header>
+			<div class="card-body">
+				<button id="icon-without-border-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="icon-without-border-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="icon-without-border-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="icon-without-border-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="icon-without-border-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="icon-without-border-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications Non-Blocking</h2>
+			</header>
+			<div class="card-body">
+				<button id="non-blocking-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="non-blocking-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="non-blocking-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="non-blocking-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="non-blocking-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="non-blocking-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications Sticky</h2>
+			</header>
+			<div class="card-body">
+				<button id="sticky-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="sticky-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="sticky-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="sticky-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="sticky-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="sticky-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Notifications Click to close</h2>
+			</header>
+			<div class="card-body">
+				<button id="click-to-close-primary" class="mt-3 mb-3 btn btn-primary">Primary</button>
+				<button id="click-to-close-notice" class="mt-3 mb-3 btn btn-warning">Warning</button>
+				<button id="click-to-close-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="click-to-close-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="click-to-close-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="click-to-close-dark" class="mt-3 mb-3 btn btn-dark">Dark</button>
+			</div>
+		</section>
+
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Desktop Notifications</h2>
+			</header>
+			<div class="card-body">
+				<button id="desktop-notice" class="mt-3 mb-3 btn btn-default">Notice</button>
+				<button id="desktop-info" class="mt-3 mb-3 btn btn-info">Info</button>
+				<button id="desktop-success" class="mt-3 mb-3 btn btn-success">Success</button>
+				<button id="desktop-error" class="mt-3 mb-3 btn btn-danger">Error</button>
+				<button id="desktop-sticky" class="mt-3 mb-3 btn btn-default">Sticky</button>
+				<button id="desktop-custom" class="mt-3 mb-3 btn btn-default">Custom</button>
+			</div>
+		</section>
+	</div>
+	<div class="col-lg-6">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">Positions</h2>
+			</header>
+			<div class="card-body">
+				<button id="position-1-primary" class="mt-3 mb-3 ws-normal btn btn-primary">Top Left. Moves down, then right. Pushes to stack top.</button>
+				<button id="position-1-notice" class="mt-3 mb-3 ws-normal btn btn-warning">Top Left. Moves down, then right. Pushes to stack top.</button>
+				<button id="position-1-success" class="mt-3 mb-3 ws-normal btn btn-success">Top Left. Moves down, then right. Pushes to stack top.</button>
+				<button id="position-1-info" class="mt-3 mb-3 ws-normal btn btn-info">Top Left. Moves down, then right. Pushes to stack top.</button>
+				<button id="position-1-error" class="mt-3 mb-3 ws-normal btn btn-danger">Top Left. Moves down, then right. Pushes to stack top.</button>
+
+				<br />
+				<br />
+				<br />
+
+				<button id="position-2-primary" class="mt-3 mb-3 ws-normal btn btn-primary">Bottom Left. Moves right, then up. Pushes to stack top.</button>
+				<button id="position-2-notice" class="mt-3 mb-3 ws-normal btn btn-warning">Bottom Left. Moves right, then up. Pushes to stack top.</button>
+				<button id="position-2-success" class="mt-3 mb-3 ws-normal btn btn-success">Bottom Left. Moves right, then up. Pushes to stack top.</button>
+				<button id="position-2-info" class="mt-3 mb-3 ws-normal btn btn-info">Bottom Left. Moves right, then up. Pushes to stack top.</button>
+				<button id="position-2-error" class="mt-3 mb-3 ws-normal btn btn-danger">Bottom Left. Moves right, then up. Pushes to stack top.</button>
+				<button id="position-2-dark" class="mt-3 mb-3 ws-normal btn btn-dark">Bottom Left. Moves right, then up. Pushes to stack top.</button>
+
+				<br />
+				<br />
+				<br />
+
+				<button id="position-3-primary" class="mt-3 mb-3 ws-normal btn btn-primary">Bottom Right. Moves up, then left. Pushes to stack bottom.</button>
+				<button id="position-3-notice" class="mt-3 mb-3 ws-normal btn btn-warning">Bottom Right. Moves up, then left. Pushes to stack bottom.</button>
+				<button id="position-3-success" class="mt-3 mb-3 ws-normal btn btn-success">Bottom Right. Moves up, then left. Pushes to stack bottom.</button>
+				<button id="position-3-info" class="mt-3 mb-3 ws-normal btn btn-info">Bottom Right. Moves up, then left. Pushes to stack bottom.</button>
+				<button id="position-3-error" class="mt-3 mb-3 ws-normal btn btn-danger">Bottom Right. Moves up, then left. Pushes to stack bottom.</button>
+				<button id="position-3-dark" class="mt-3 mb-3 ws-normal btn btn-dark">Bottom Right. Moves up, then left. Pushes to stack bottom.</button>
+
+				<br />
+				<br />
+				<br />
+
+				<button id="position-4-primary" class="mt-3 mb-3 ws-normal btn btn-primary">Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.</button>
+				<button id="position-4-notice" class="mt-3 mb-3 ws-normal btn btn-warning">Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.</button>
+				<button id="position-4-success" class="mt-3 mb-3 ws-normal btn btn-success">Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.</button>
+				<button id="position-4-info" class="mt-3 mb-3 ws-normal btn btn-info">Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.</button>
+				<button id="position-4-error" class="mt-3 mb-3 ws-normal btn btn-danger">Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.</button>
+				<button id="position-4-dark" class="mt-3 mb-3 ws-normal btn btn-dark">Top bar style. (Like Old Microsoft Notification Bars.) Moves down, then right. Pushes to stack top.</button>
+
+				<br />
+				<br />
+				<br />
+
+				<button id="position-5-primary" class="mt-3 mb-3 ws-normal btn btn-primary">Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.</button>
+				<button id="position-5-notice" class="mt-3 mb-3 ws-normal btn btn-warning">Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.</button>
+				<button id="position-5-success" class="mt-3 mb-3 ws-normal btn btn-success">Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.</button>
+				<button id="position-5-info" class="mt-3 mb-3 ws-normal btn btn-info">Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.</button>
+				<button id="position-5-error" class="mt-3 mb-3 ws-normal btn btn-danger">Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.</button>
+				<button id="position-5-dark" class="mt-3 mb-3 ws-normal btn btn-dark">Bottom bar style. (Like New Microsoft Notification Bars.) Moves up, then right. Pushes to stack bottom.</button>
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+
+{% endblock %}
+
+{% block page_header %}
+{% include "template/consulting_admin/parts/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "template/consulting_admin/parts/header.html" %}
+{% endblock %}
+
+{% block sidebar_right %}
+{% include "template/consulting_admin/parts/sidebar-right.html" %}
+{% endblock %}
+
+{% block theme %}
+
+{% endblock %}
+
+{% block query %}
+
+{% endblock %}

@@ -1,0 +1,34 @@
+<div class="modal fade" id="formConfirmationModals" tabindex="-1" role="dialog" 
+	 aria-labelledby="formConfirmationTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered model-lg" role="form">
+        <form method="POST" enctype="multipart/form-data" id="id_form" action="{{form_url}}">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header bg-green">
+                <h5 class="modal-title" id="modal-title">{{form_title}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <section class="row p-2 m-2">
+                <div class="col-lg-12 col-md-12 col-12">
+                    <input type="hidden" name="selected_id" id="selected_id" />
+                    <div class="m-0 p-0" id="form_area">
+                        {% include 'template/forms/tmp_formrow.html' with form=selected_form %}
+                    </div>
+                    <input type="hidden" name="skill_data" id="skill_data" />
+                    
+                </div>
+            </section>
+            
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-success btn-sm modal-confirm" type="submit" name="submit" id="id_submit">Simpan</button>
+                <span id="delete_button">
+
+                </span>
+                <a class="btn btn-default btn-sm" role="button" id="btn_close" data-dismiss="modal">Tutup</a>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

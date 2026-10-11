@@ -1,0 +1,22 @@
+{% load static %}
+<div class="modal-header border-0">
+    <h4 class="modal-title" id="portfolio-title">{{kegiatan.title}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="w-75 p-3" style="margin: auto;">
+        {% if kegiatan.kegiatanmasjidattachment_set.first.name == 'Image' %}
+        <img style="height: auto; object-fit: cover;" src="{{kegiatan.kegiatanmasjidattachment_set.first.photo.url}}" class="img-fluid border-radius-0" alt="">
+        {% elif kegiatan.kegiatanmasjidattachment_set.last.name == 'Image' %}
+        <img class="img-fluid" src="{{kegiatan.kegiatanmasjidattachment_set.last.photo.url}}" />
+        {% endif %}
+        
+        {{kegiatan.brief|safe}}
+        
+        {{kegiatan.naration|safe}}
+        
+        {{kegiatan.quotes|safe}}
+    </div>
+</div>

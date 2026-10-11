@@ -1,0 +1,273 @@
+from django.contrib.auth import password_validation, authenticate, login as user_login, logout as auth_logout
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Group, Permission
+from django.contrib import messages
+from django.contrib.auth.tokens import default_token_generator
+
+from django.core import validators,serializers as serial
+from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.files import File
+from django.core.files.storage import FileSystemStorage
+
+from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseServerError
+from django.forms import modelformset_factory, formset_factory
+
+from django.db.models import Q, CharField, Value, Sum, F, Case, When, Exists, Prefetch
+from django.db.models.functions import Coalesce, Concat
+from django.db import IntegrityError as connection
+from django.db import transaction as trans_connect
+
+from pathlib import Path
+import json
+import random
+from django.conf import settings
+import os
+import re
+import hashlib
+import string  
+import secrets 
+from itertools import chain 
+
+from datetime import datetime, timedelta
+from PIL import Image
+
+from django.contrib.postgres.search import SearchVector
+from decimal import Decimal
+from django.template.loader import render_to_string
+from django.template import RequestContext
+
+#EMAIL VERIFICATION AND TOKEN
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import EmailMessage
+from django.utils import timezone
+from django.utils.safestring import SafeString
+
+#Test Exception
+from django.http import Http404
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.base import ContentFile
+from rest_framework.authtoken.models import Token
+from django.db.models.functions import Replace
+from django.db.models import Value
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from app.decorators import *
+from gallery.models import *
+from authentication.models import *
+from event.models import *
+from event.serializers import *
+from participant.models import *
+from participant.serializers import *
+from portfolio.models import *
+from portfolio.serializers import *
+from utils.utils import *
+from authentication.forms import *
+
+import base64
+
+#Set Logg
+import logging
+logger = logging.getLogger(__file__)
+
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
+
+@api_view(['GET'])
+def list_events(request):
+    if request.method == 'GET':
+        try:
+            now = datetime.now()
+            end_time = now - timedelta(hours=5)
+            start_date = now - timedelta(days=2)    
+
+            on_going = Event.objects.filter(date__lte=now.date(), time__lte=now.time()
+                                    ).filter(date__gte=end_time.date(), time__gte=end_time.time()).order_by("-time")
+
+            on_comming = Event.objects.filter(
+                            Q(date__gt=now.date()) |
+                            Q(date=now.date(), time__gt=now.time())
+                        ).order_by("date", "time")
+            
+            if on_going:
+                on_comming = on_comming.exclude(id__in = on_going.values_list("id",flat=True))
+
+            on_going_serializer = ListofEventSerializer(on_going, many=True)
+            on_comming_serializer = ListofEventSerializer(on_comming, many=True)
+            status_code = status.HTTP_200_OK
+            message = "Ok"
+            context = { "on_going": on_going_serializer.data,
+                        "on_comming": on_comming_serializer.data,
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+            
+        except Exception as err:
+            message = "Server Error, please contact the administration."
+            logger.info("Error Login "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = { "event": "",
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+
+    else:
+        error_method()
+
+@api_view(['GET'])
+def event_detail(request):
+    if request.method == 'GET':
+        uuid = request.headers.get("x-eventuuid", "cde2f177-275d-4c40-a0b3-8b9839551046")
+        search_participant = str(request.headers.get("x-search", ""))
+        try:
+            page = int(request.GET.get("page", 1))
+            limit = int(request.GET.get("limit", 15))
+
+            event = Event.objects.filter(unique_name = uuid).first()
+            
+            if search_participant != "":
+                participants_query = Participant.objects.filter(id_event=event, name__icontains=search_participant).order_by("status_user_id", "name")
+            else:
+                participants_query = Participant.objects.filter(id_event=event).order_by("status_user_id", "name")
+            paginator = Paginator(participants_query, limit)
+            participants_page = paginator.get_page(page)
+            event = ListofEventSerializer(event, many=False)
+            participants_serializer = ListofParticipantsSerializer(participants_page.object_list, many=True)
+
+            status_code = status.HTTP_200_OK
+            message = "Ok"
+
+            context = {
+                "event": event.data,
+                "participants": participants_serializer.data,
+                "present": participants_query.filter(status_user_id__status_name = "Present").count(),
+                "pending": participants_query.exclude(status_user_id__status_name = "Present").count(),
+                "pagination": {
+                    "current_page": page,
+                    "total_pages": paginator.num_pages,
+                    "total_data": paginator.count,
+                    "has_next": participants_page.has_next(),
+                    "has_previous": participants_page.has_previous(),
+                },
+
+                "metadata": metadata_api(status_code, message)
+            }
+
+            return Response(context, status=status_code)
+        except Exception as err:
+            message = "Server Error, please contact the administration."
+            logger.info("Error Login "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = { "event": "",
+                        "participants": "",
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+    else:
+        error_method()
+
+@api_view(['POST'])
+def check_participant(request):
+    if request.method == 'POST':
+        try:
+            data = request.data
+            eventUuid = data['eventUuid']
+            participantUuid = data['participantUuid']
+            
+            now = datetime.now()
+            event = Event.objects.filter(unique_name = eventUuid, date__gte = now).first()
+            if event:
+                participant = Participant.objects.filter(unique_user = participantUuid).exclude(status_user_id = 4).first()
+                if participant:
+                    if participant.id_event.id == event.id:
+                        if participant.status_user_id.id != 1:
+                            status_participant = StatusParticipant.objects.filter(status_name = "Present").first()
+                            participant.status_user_id = status_participant
+                            participant.save()
+                        participants_serializer = ListofParticipantsSerializer(participant, many=False)
+                        message = "Ok"
+                        status_code = status.HTTP_200_OK
+                        context = {
+                            "participants": participants_serializer.data,
+                            "message":message}
+                    else:
+                        message = "The participant is not found in this event."
+                        status_code = status.HTTP_201_CREATED
+                        context = {"message":message}
+                else:
+                    message = "Participant not found"
+                    status_code = status.HTTP_201_CREATED
+                    context = {"message":message}
+            else:
+                message = "Event not found or has completed."
+                status_code = status.HTTP_201_CREATED
+                context = {"message":message}
+                
+            return Response(context,status=status_code)
+
+        except Exception as err:
+            message = "Server Error, please contact the administration."
+            logger.info("Error "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = {metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+
+@api_view(['GET'])
+def list_status(request):
+    if request.method == 'GET':
+        try:
+            q_status = StatusParticipant.objects.all().order_by("status_name")
+
+            d_status = StatusListSerializer(q_status, many=True)
+            status_code = status.HTTP_200_OK
+            message = "Ok"
+            context = { "status": d_status.data,
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+        except Exception as err:
+            message = "Server Error, please contact the administration."
+            logger.info("Error Login "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = { "status": "",
+                        "metadata": metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+
+    else:
+        error_method()
+
+@api_view(['POST'])
+def update_participant_status(request):
+    if request.method == 'POST':
+        try:
+            data = request.data
+            participant_uuid = data['participantUuid']
+            new_status = data['newStatus']
+
+            participant = Participant.objects.filter(unique_user = participant_uuid).first()
+            if participant:
+                q_status = StatusParticipant.objects.filter(status_name = new_status).first()
+                participant.status_user_id = q_status
+                participant.save()
+
+                message = "Ok"
+                status_code = status.HTTP_200_OK
+            else:
+                message = "Participant not found"
+                status_code = status.HTTP_201_CREATED
+                
+            context = {
+                "message":message}
+                
+            return Response(context,status=status_code)
+
+        except Exception as err:
+            message = "Server Error, please contact the administration."
+            logger.info("Error Login "+str(err))
+            status_code = status.HTTP_201_CREATED
+            context = {metadata_api(status_code,message)}
+            return Response(context,status=status_code)
+    else:
+        error_method()

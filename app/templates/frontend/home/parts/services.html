@@ -1,0 +1,165 @@
+<section class="stats-section py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- Large Left Card -->
+            <div class="col-12 col-lg-6">
+                <div class="stats-main-card h-100 d-flex flex-column justify-content-between">
+
+                    <div>
+                        <h4 class="fw-bold mb-3">
+                            Operational Integrity
+                        </h4>
+
+                        <p class="stats-description mb-4">
+                            Our system ensures 99.9% uptime for check-in services,
+                            even in high-density areas with limited connectivity.
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-end justify-content-between">
+                        <div>
+                            <h1 class="stats-big-number mb-2">
+                                99.9%
+                            </h1>
+
+                            <div class="stats-label">
+                                SYSTEM RELIABILITY
+                            </div>
+                        </div>
+
+                        <span class="material-symbols-outlined stats-icon-large">
+                            security
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Card 2 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="stats-small-card h-100">
+
+                    <span class="material-symbols-outlined stats-icon-small mb-4">
+                        monitoring
+                    </span>
+
+                    <div>
+                        <h2 class="fw-bold mb-2">
+                            12.4k
+                        </h2>
+
+                        <div class="stats-small-label">
+                            TOTAL ATTENDEES MANAGED
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Card 3 -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="stats-small-card h-100">
+
+                    <span class="material-symbols-outlined stats-icon-small mb-4">
+                        group
+                    </span>
+
+                    <div>
+                        <h2 class="fw-bold mb-2">
+                            156
+                        </h2>
+
+                        <div class="stats-small-label">
+                            ACTIVE STAFF MEMBERS
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .stats-section {
+        background: #f8f9fb;
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+
+    /* Large dark card */
+    .stats-main-card {
+        background: #2e3132;
+        color: white;
+        padding: 40px;
+        border-radius: 20px;
+        min-height: 320px;
+    }
+
+    .stats-description {
+        color: rgba(255,255,255,0.8);
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .stats-big-number {
+        font-size: 56px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .stats-label {
+        font-size: 12px;
+        letter-spacing: 2px;
+        color: rgba(255,255,255,0.6);
+        text-transform: uppercase;
+    }
+
+    .stats-icon-large {
+        font-size: 70px;
+        color: #ba0013;
+    }
+
+    /* Small cards */
+    .stats-small-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        padding: 35px;
+        border-radius: 20px;
+        height: 100%;
+        transition: 0.3s ease;
+    }
+
+    .stats-small-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    }
+
+    .stats-icon-small {
+        font-size: 38px;
+        color: #ba0013;
+    }
+
+    .stats-small-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+        .stats-main-card {
+            min-height: auto;
+        }
+
+        .stats-big-number {
+            font-size: 42px;
+        }
+    }
+</style>

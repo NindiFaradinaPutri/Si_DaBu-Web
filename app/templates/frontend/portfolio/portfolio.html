@@ -1,0 +1,155 @@
+{% extends "layout/consulting_2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container pt-4 pb-5 mb-5">
+
+	<div class="row">
+		<div class="col-lg-3">
+			<aside id="accordion" class="accordion sidebar">
+				<h4 class="font-weight-semi-bold pt-4">Categories</h4>
+				<ul class="nav nav-list flex-column mb-5">
+					<li class="nav-item">
+						<a data-toggle="collapse" data-parent="#accordion" href="#service" class="accordion-toggle nav-link"><i class="fa fa-chevron-right"></i> Services ({{services.count}})</a>
+						<ul id="service" class="collapse show" data-parent="#accordion">
+							{% for services in services %}
+							<li class="nav-item"> <a class="nav-link" id="filter-service" data-id="{{services.encrypt_id}}" href="javascript:void(0)">{{services.name}}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="nav-item">
+						<a data-toggle="collapse" data-parent="#accordion" href="#tags" class="accordion-toggle nav-link"><i class="fa fa-chevron-right"></i> Tags ({{tags.count}})</a>
+						<ul id="tags" class="collapse" data-parent="#accordion">
+							{% for tags in tags %}
+							<li class="nav-item"><a class="nav-link" id="filter-tags" data-id="{{tags.tags}}" href="javascript:void(0)">{{tags.tags}}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+				</ul>
+			</aside>
+		</div>
+		<div class="col">
+			<input type="hidden" name="url_filter_review" id="id_url_filter_review" value="{%url 'filter_portfolio'%}" />
+			<input type="hidden" name="url_filter" id="id_url_filter" value="{%url 'filter_portfolio'%}" />
+			<div class="row portfolio-list sort-destination popup-gallery-ajax" data-sort-id="portfolio" data-filter="*" style="position: relative;" id="list_area">
+				{% include "views/portfolio_list.html" with portfolio=portfolio%}
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	{% include "template/modals/portfolio_viewer.html" %}
+
+</div>
+<section class="parallax section section-text-light section-parallax section-center mt-0 mb-0" data-plugin-parallax data-plugin-options="{'speed': 1.5}" data-image-src="/media/testimony/bg/testimony-bg.jpg">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-10">
+				<div class="owl-carousel owl-theme nav-bottom rounded-nav" data-plugin-options="{'items': 1, 'loop': false}">
+					{% for testimony in testimony %}
+					<div>
+						<div class="testimonial testimonial-style-2 testimonial-with-quotes mb-0">
+							<div class="testimonial-author">
+								<img style="max-height: 80px; max-width: 80px;" src="/media/{{testimony.photo}}" class="img-fluid rounded-circle" alt="">
+							</div>
+							<blockquote>
+								<p class="mb-0">{{testimony.information|safe}}</p>
+							</blockquote>
+							<div class="testimonial-author">
+								<p><strong class="font-weight-extra-bold">{{testimony.name}}</strong><span>{{testimony.position}}{% if testimony.companny == None %} {% else %} - {{testimony.companny}} {% endif %}</span></p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}
+
+{% block page_header %}
+{% include "frontend/header/header-page.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "frontend/header/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "frontend/footer/footer.html" %}
+{% endblock %}
+
+{% block theme %}
+<style>
+	.owl-dot {
+		background: none;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript">
+	$(document).on("click", "#view-portfolio", function () {
+		var data_id = $(this).data("id");
+
+        $("#ajax-content").empty();
+        $("#pre-loadder").show();
+
+        $.post({
+			type: "POST",
+            url: '/ajax/view_portfolio/',
+            datatype: 'json',
+            data: { 'data_id': data_id },
+			success: function (data) {
+                $("#pre-loadder").hide();
+				$("#ajax-content").append(data);
+            }
+        });
+	});
+
+    $(document).on("click", "#filter-tags", function () {
+        let csrftoken = '{{ csrf_token }}'
+		var data_id = $(this).data("id");
+
+		type = 'tags';
+
+        $.post({
+            type: "POST",
+            url: '/ajax/ctrg_portfolio/',
+            datatype: 'json',
+            data: { 'data_id': data_id, 'type': type },
+            success: function (data) {
+                $("#list_area").empty();
+                $("#list_area").append(data);
+            }
+        });
+	});
+
+    $(document).on("click", "#filter-service", function () {
+        let csrftoken = '{{ csrf_token }}'
+        var data_id = $(this).data("id");
+
+        type = 'service';
+
+        $.post({
+            type: "POST",
+            url: '/ajax/ctrg_portfolio/',
+            datatype: 'json',
+            data: { 'data_id': data_id, 'type' :  type },
+            success: function (data) {
+                $("#list_area").empty();
+                $("#list_area").append(data);
+            }
+        });
+    });
+</script>
+<script type="text/javascript" src="{% static 'app/js/pagination.js'%}"></script>
+{% endblock %}

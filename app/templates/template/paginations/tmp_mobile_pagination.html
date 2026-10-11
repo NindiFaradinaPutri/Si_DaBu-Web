@@ -1,0 +1,67 @@
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+{% load l10n %}
+
+{% language 'id' %}
+
+{% if page_obj.has_other_pages %}
+<div class="row d-flex justify-content-center  {{space}}">
+    <div class="col-md-12 col-12 area">
+        <nav aria-label="pagination navigation" id="data_page_obj">
+            <ul class="pagination pagination_style1">
+
+            {% if page_obj.has_previous %}
+                {% block pagination.previous %}
+                <li class="previous page-item">
+                    <a class="page-link" id="btn_previous" data-page="{{page_obj.previous_page_number|unlocalize}}" >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endblock pagination.previous %}
+            {%else%}
+                <li class="page-item disabled">
+                    <a class="page-link">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if page_obj.has_previous or page_obj.has_next %}
+            {% block pagination.range %}
+            <select name="page" class="col-md-6 col-8 py-1" id="id_select_page">
+            {% for p in page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <option value="{{p|unlocalize}}" data-page="{{p|unlocalize}}" selected>Halaman {{p}} / {{page_obj.paginator.num_pages}}</option>
+                {%else%}
+                    <option value="{{p|unlocalize}}" data-page="{{p|unlocalize}}">Halaman {{p}} / {{page_obj.paginator.num_pages}}</option>
+                {%endif%}
+            {% endfor %}
+            </select>
+            {% endblock pagination.range %}
+            {% endif %}
+
+            {% if page_obj.has_next %}
+                {% block pagination.next %}
+                <li class="next page-item">
+                    <a class="page-link" id="btn_next" data-page="{{page_obj.next_page_number|unlocalize}}" >
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endblock pagination.next %}
+            {%else%}
+                <li class="page-item disabled">
+                    <a class="page-link">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+
+{% endlanguage %}

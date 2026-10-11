@@ -1,0 +1,29 @@
+{% extends "layout/consulting_1.html" %}
+
+{% load static %}
+
+{% block content %}
+
+        {% include "template/consulting_1/parts/banner.html" %}
+
+        {% include "template/consulting_1/parts/kanban.html" %}
+
+        {% include "template/consulting_1/parts/services.html" %}
+
+        {% include "template/consulting_1/parts/about.html" %}
+
+        {% include "template/consulting_1/parts/testimony.html" %}
+
+        {% include "template/consulting_1/parts/contact.html" %}
+        
+        {% include "template/consulting_1/parts/blog.html" %}
+
+{% endblock %}
+
+{% block header %}
+{% include "template/consulting_1/parts/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "template/consulting_1/parts/footer.html" %}
+{% endblock %}

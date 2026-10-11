@@ -1,0 +1,430 @@
+{% extends "layout/backend.html" %}
+
+{% load static %}
+{% load render_table from django_tables2%}
+
+{% block content %}
+{% include "template/modals/form_confirmation.html" %}
+
+<div class="content-wrapper">
+	<div class="row" id="id_container">
+        <div class="col-lg-12 col-md-12 col-12">
+            <section class="card">
+                <header class="card-header">
+				    <h3 class="card-title">{{title}}</h3>
+			    </header>
+                <div class="card-body card-body-nopadding">
+                    {% if messages %}
+                        {% for message in messages %}
+							<div class="card">
+								<div class="card-body">
+									<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+										<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="bx bx-x"></i></button>
+										{{ message }}
+									</div>
+								</div>
+							</div>
+                        {% endfor %}
+                    {% endif %}
+                        
+                    <div class="row">
+                        <div class="col-md-4 col-12">
+                            <div class="card" id="card_profile">
+                                <div class="text-center p-3 overlay-box" style="height:150px;">
+                                    {%if user_photo.photo.url%}
+								        <img src="{%static user_photo.photo.url%}" width="100" class="img-fluid rounded-circle mt-2" alt="">
+                                    {%else%}
+                                        <img src="{%static 'media/init/avatar.png'%}" width="100" class="img-fluid rounded-circle mt-2" alt="">
+                                    {%endif%}
+								    <h3 class="mt-3 mb-0 text-dark">{{user_profile.fullname}}</h3>
+								    
+							    </div>
+                                <div class="card-body">
+									<div class="row">
+										<div class="col-10 d-flex justify-content-start align-items-center">
+											<p>
+												{%if user_description%}
+													{%autoescape off%}
+													{{user_description.brief}}
+													{%endautoescape%}
+												{%else%}
+													Belum ada deskripsi diri
+												{%endif%}
+											</p>
+										</div>
+										<div class="col-2 d-flex justify-content-center align-items-center">
+											<button type="button" class="btn btn-light" id="update_deskripsi" data-form="description" data-toggle="modal" data-target="#formConfirmationModals">
+												<span data-toggle="tooltip" data-placement="top" title="Ubah Deskripsi">
+													<i class="flaticon-edit"></i>
+												</span>
+											</button>
+										</div>
+									</div>
+									<div class="row align-items-center mt-3">
+										<div class="col-10">
+											<span class="d-block my-2"><strong>Email:</strong>&nbsp;{{request.user.email}}</span>
+											<span href="javascript:void(0);" class="d-block my-2"><strong>Phone:</strong>&nbsp;{{user_profile.phone_no}}</span>
+											<span class="d-block">
+												<strong>Alamat:</strong>
+												{%autoescape off%}
+												{{user_address.address|default:""}}, Kelurahan {{user_address.kelurahan}}, Kecamatan {{user_address.kecamatan}}, {{user_address.dati2}}, {{user_address.provinsi}}
+												{%endautoescape%}
+											</span>
+										</div>
+										<div class="col-2 d-flex justify-content-center">
+											<button type="button" class="btn btn-light" id="update_kontak" data-form="contact" data-toggle="modal" data-target="#formConfirmationModals">
+												<span data-toggle="tooltip" data-placement="top" title="Update Kontak">
+													<i class="flaticon-edit"></i>
+												</span>
+											</button>
+										</div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-12">
+							<div class="row">
+								<div class="col-md-4 col-12">
+									<div class="row">
+										<div class="col-md-12 col-12">
+										<div class="info-tiles">
+											<div class="info-icon">
+												<i class="flaticon-user-4"></i>
+											</div>
+											<div class="stats-detail">
+												<h5>Terverifikasi</h5>
+											</div>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-12">
+									<div class="row ">
+										<div class="col-md-12 col-12">
+										<div class="info-tiles">
+											<div class="info-icon">
+												<i class="flaticon-shield"></i>
+											</div>
+											<div class="stats-detail">
+												<h5>Terpercaya</h5>
+											</div>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-12">
+									<div class="row">
+										<div class="col-md-12 col-12">
+										<div class="info-tiles">
+											<div class="info-icon">
+												<i class="flaticon-premium-badge"></i>
+											</div>
+											<div class="stats-detail">
+												<h5>Top Score</h5>
+											</div>
+										</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 col-12">
+									<div class="card h-250">
+										<div class="card-header">
+											<div class="card-title">Review Akun</div>
+										</div>
+										<div class="card-body">
+											<div class="user-ratings">
+												<div class="total-ratings">
+													{% if rating_client %}
+														<h2>{{rating_client.rating}}/5</h2>
+														{% if rating_client.rating == 1.0 %}
+														<div class="rating1" style="margin: auto;"></div>
+														{% elif rating_client.rating > 1.0 and rating_client.rating < 2.0 %}
+														<div class="rating1half" style="margin: auto;"></div>
+														{% elif rating_client.rating == 2.0 %}
+														<div class="rating2" style="margin: auto;"></div>
+														{% elif rating_client.rating > 2.0 and rating_client.rating < 3.0 %}
+														<div class="rating2half" style="margin: auto;"></div>
+														{% elif rating_client.rating == 3.0 %}
+														<div class="rating3" style="margin: auto;"></div>
+														{% elif rating_client.rating > 3.0 and rating_client.rating < 4.0 %}
+														<div class="rating3half" style="margin: auto;"></div>
+														{% elif rating_client.rating == 4.0 %}
+														<div class="rating4" style="margin: auto;"></div>
+														{% elif rating_client.rating > 4.0 and rating_client.rating < 5.0 %}
+														<div class="rating4half" style="margin: auto;"></div>
+														{% elif rating_client.rating == 5.0 %}
+														<div class="rating5" style="margin: auto;"></div>
+														{% else %}
+														<div class="rating0"></div>
+														{% endif %}
+														<strong>({{rating_client.review}} ulasan)</strong>
+													{% else %}
+													<h2>4,0/5</h2>
+													<div class="rating4" style="margin: auto;"></div>
+													{% endif %}
+												</div>
+												<div class="col-12">
+													<table class="d-block">
+														<tbody class="ratings-list-container d-block">
+															<tr class="ratings-list">
+																<th class="rating-level" width="30%">Perilaku</th>
+																{% if rating_client.attitude_rating %}
+																<td class="total"> <span class='badge badge-info'>{{rating_client.attitude_rating}}/5</span> </td>
+																{% else %}
+																<td class="total"> <span class='badge badge-info'>4,0/5</span> </td>
+																{% endif %}
+															</tr>
+															<tr class="ratings-list">
+																<th class="rating-level" width="30%">Komunikasi</th>
+																{% if rating_client.communication_rating %}
+																<td class="total"> <span class='badge badge-info'>{{rating_client.communication_rating}}/5</span> </td>
+																{% else %}
+																<td class="total"> <span class='badge badge-info'>4,0/5</span> </td>
+																{% endif %}
+															</tr>
+															<tr class="ratings-list">
+																<th class="rating-level" width="30%">Kinerja</th>
+																{% if rating_client.performance_rating %}
+																<td class="total"> <span class='badge badge-info'>{{rating_client.performance_rating}}/5</span> </td>
+																{% else %}
+																<td class="total"> <span class='badge badge-info'>4,0/5</span> </td>
+																{% endif %}
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="card h-250">
+										<div class="card-header">
+											<div class="card-title">Status Profil</div>
+										</div>
+										<div class="card-body">
+											<div class="row gutters">
+												<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+													<div class="overall-earnings">
+														<div class="earnings-icon">
+															<i class="flaticon-user-1"></i>
+														</div>
+														<div class="earnings-stats">
+															<p>Profil</p>
+															<a href="{%url 'user_profile_update'%}" class="btn btn-sm btn-primary">Update</a>
+														</div>
+													</div>
+												</div>
+												<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+													<div class="overall-earnings">
+														<div class="earnings-icon">
+															<i class="flaticon-key"></i>
+														</div>
+														<div class="earnings-stats">
+															<p>Password</p>
+															<a href="{%url 'user_password_change'%}" class="btn btn-sm btn-primary">Update</a>
+														</div>
+													</div>
+												</div>
+												{%if request.user.freelanceprofile_set.first and request.user.freelancestatus_set.first.is_locked == 0 %}
+												<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+													<div class="overall-earnings">
+														<div class="earnings-icon">
+															<i class="flaticon-customer-service"></i>
+														</div>
+														<div class="earnings-stats">
+															<p>Talen</p>
+															<input id="freelance_activation" type="checkbox" data-toggle="switchbutton" data-onlabel="Aktif" 
+														    data-offlabel="Tidak Aktif" data-onstyle="success" data-offstyle="danger" data-size="mini"
+														   {%if freelance and freelance.is_active%} checked {%endif%}>
+														</div>
+													</div>
+												</div>
+												{% else %}
+												<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+													<div class="overall-earnings">
+														<div class="earnings-icon" style="background:#cc2626">
+															<i class="flaticon-customer-service"></i>
+														</div>
+														<div class="earnings-stats">
+															<p>Talen</p>
+															<a class="btn btn-sm btn-secondary">Diblokir</a>
+														</div>
+													</div>
+												</div>
+												{% endif %}
+											</div>
+											{%if request.user.freelanceprofile_set.first and request.user.freelancestatus_set.first.is_locked == 1 %}
+											<p style="color:red;margin-top:5px">Akun Talen anda telah <strong>diblokir</strong>. Untuk mengaktifkan kembali harap <a href="/contact" style="color:blue">hubungi Admin.</a></p>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+					
+					{%if active_trans %}
+					<div class="card tasksContainerScroll">
+						<div class="card-header">
+							<div class="card-title">
+								<h5>Transaksi Aktif</h5>
+							</div>
+						</div>
+						<div class="card-body">
+							<section class="task-list">
+								<!-- Task -->
+								{% for transaction in active_trans %}
+								<div class="row">
+									<div class="col">
+										<p style="float: left; margin-left: 35px; margin-top: 10px; margin-bottom: -25px; "><i class="fa fa-user"></i> <b>{{transaction.contract.talent.user.username}}</b></p>
+									</div>
+									<div class="col">
+										{% if transaction.status.id == 1 %}
+										<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-warning'>{{transaction.status.status}}</span></p>
+										{% elif transaction.status.id == 2 %}
+										<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-primary'>{{transaction.status.status}}</span></p>
+										{% elif transaction.status.id == 3 %}
+										<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-info'>{{transaction.status.status}}</span></p>
+										{% elif transaction.status.id == 4 %}
+										<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-success'>{{transaction.status.status}}</span></p>
+										{% elif transaction.status.id == 6 %}
+										<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-secondary'>{{transaction.status.status}}</span></p>
+										{% endif %}
+									</div>
+								</div>
+								<div class="task-block">
+									<div class="task-checkbox">
+										<div class="ripple-container">
+											<div class="text-center p-3 overlay-box">
+												{% if transaction.contract.service.userservicephoto_set.first %}
+												<img src="{%static transaction.contract.service.userservicephoto_set.first.photo_path.url %}" width="80" height="80" alt="">
+												{% else %}
+												<img src="{%static 'media/init/avatar.png'%}" width="80" alt="">
+												{% endif %}
+											</div>
+										</div>
+									</div>
+									<div class="task-details">
+										<div class="task-desc" style="margin-bottom:-10px;font-size:10px">{{transaction.contract.start_date|date:'d F Y'}} - {{transaction.contract.end_date|date:'d F Y'}}</div>
+										<hr style="width:98%;margin-left:0;">
+										<div class="task-name" style="margin-top:-10px">{{transaction.contract.service.user_service_name}}</div>
+									</div>
+									<a href="/transaction/detail/{{transaction.encrypt_id}}" type="button" class="btn btn-info">Lihat Detail</a>
+								</div>
+								{% endfor %}
+							</section>
+						</div>
+					</div>
+					{% endif %}
+
+					{%if delayed_trans%}
+					<div class="card tasksContainerScroll">
+						<div class="card-header">
+							<div class="card-title">
+								<h5>Transaksi Tertunda</h5>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="row no-gutters justify-content-center">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<section class="task-list">
+										<!-- Task -->
+										{% for transaction in delayed_trans %}
+										<div class="row">
+											<div class="col">
+												<p style="float: left; margin-left: 35px; margin-top: 10px; margin-bottom: -25px; "><i class="fa fa-user"></i> <b>{{transaction.contract.talent.user.username}}</b></p>
+											</div>
+											<div class="col">
+												{% if transaction.status.id == 1 %}
+												<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-warning'>{{transaction.status.status}}</span></p>
+												{% elif transaction.status.id == 2 %}
+												<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-primary'>{{transaction.status.status}}</span></p>
+												{% elif transaction.status.id == 3 %}
+												<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-info'>{{transaction.status.status}}</span></p>
+												{% elif transaction.status.id == 4 %}
+												<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-success'>{{transaction.status.status}}</span></p>
+												{% elif transaction.status.id == 6 %}
+												<p style="float: right; margin-right: 30px; margin-top: 10px; margin-bottom: -25px; "><span class='badge badge-pill badge-secondary'>{{transaction.status.status}}</span></p>
+												{% endif %}
+											</div>
+										</div>
+										<div class="task-block">
+											<div class="task-checkbox">
+												<div class="ripple-container">
+													<div class="text-center p-3 overlay-box">
+														{% if transaction.contract.service.userservicephoto_set.first %}
+														<img src="{%static transaction.contract.service.userservicephoto_set.first.photo_path.url %}" width="80" height="80" alt="">
+														{% else %}
+														<img src="{%static 'media/init/avatar.png'%}" width="80" alt="">
+														{% endif %}
+													</div>
+												</div>
+											</div>
+											<div class="task-details">
+												<div class="task-desc" style="margin-bottom:-10px;font-size:10px">{{transaction.contract.start_date|date:'d F Y'}} - {{transaction.contract.end_date|date:'d F Y'}}</div>
+												<hr style="width:98%;margin-left:0;">
+												<div class="task-name" style="margin-top:-10px">{{transaction.contract.service.user_service_name}}</div>
+											</div>
+											<a href="/transaction/detail/{{transaction.encrypt_id}}" type="button" class="btn btn-info">Lihat Detail</a>
+										</div>
+										{% endfor %}
+
+									</section>
+								</div>
+							</div>
+						</div>
+
+						<!-- Row end -->
+					</div>
+					{% endif %}
+                </div>
+            </section>
+        </div>
+    </div>	
+</div>
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'circliful/css/circliful.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-toggle/css/bootstrap4-toggle.min.css' %}" />
+{% endblock %}
+
+{% block preloader %}
+{% include "backend-user/parts/preloader.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "backend-user/parts/header.html" %}
+{% endblock %}
+
+{% block header_setting %}
+{% include "backend-user/parts/header-setting.html" %}
+{% endblock %}
+
+{% block header_menu %}
+{% include "backend-user/parts/header-menu.html" %}
+{% endblock %}
+
+{% block page_header %}
+{% include "backend-user/parts/page-header.html" %}
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'bootstrap-toggle/js/bootstrap4-toggle.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend/js/pagination.js' %}"></script>
+<script type="text/javascript" src="{%static 'circliful/js/circliful.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend-user/js/user_profile.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend-user/js/rating.js' %}"></script>
+{% endblock %}
+
+{% block footer %}
+{% include "backend-user/parts/footer.html" %}
+{% endblock %}
+
+{% block back_to_top %}
+{% include "backend-user/parts/back-to-top.html" %}
+{% endblock %}

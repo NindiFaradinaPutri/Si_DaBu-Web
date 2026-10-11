@@ -1,0 +1,536 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'jquery.ui/css/jquery-ui.css' %}">
+		<link rel="stylesheet" href="{% static 'animate/css/animate.css' %}">
+		<link rel="stylesheet" href="{% static 'carousel/css/owl-carousel.css' %}">
+		<link rel="stylesheet" href="{% static 'carousel/css/owl.theme.default.min.css' %}">
+		<link rel="stylesheet" href="{% static 'magnific-popup/css/magnific-popup.css' %}">
+		<link rel="stylesheet" href="{% static 'font/flaticon/flaticon_masjid_nu.css' %}">
+		<link rel="stylesheet" href="{% static 'font/fontawesome/font-awesome-pro.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'pnotify/css/pnotify.custom.css'%}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'simple-line-icons/css/simple-line-icons.min.css'%}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.select2/css/select2.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.select2/css/select2-bootstrap.min.css' %}" />
+
+		<title>Waktu Shalat</title>
+
+		<script type="text/javascript" src="{%static 'jquery/js/jquery-3.5.1.js' %}"></script>
+		<script type="text/javascript" src="{%static 'jquery.ui/js/jquery-ui.js' %}"></script>
+
+		{%csrf_token %}
+		<script>
+			const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+		</script>
+		<script type="text/javascript" src="{% static 'app/js/credentials.js' %}"></script>
+	</head>
+
+	<body class="m-0 d-flex flex-column">
+		<div class="left-part">
+			<div class="header">
+				<img class="navbar-logo" alt="Silatama" src="/media/logo/logo-full.png">
+				<div class="header-text ml-2">
+					<div id="title"><span style="color: #F7B03F;">MASJID </span>Ar-Raudah</div>
+					<div id="subtitle">Jl. masjid Arraudah Stal Kuda No.01 Kelurahan Damai Bahagia, Kecamatan Balikpapan Selatan,
+						Kota Balikpapan.</div>
+				</div>
+			</div>
+			{% for naration in naration %}
+			<div class="announcement">
+				<marquee direction="left" style="padding-top: 10px;" >
+					{{ naration.naration|safe }}
+				</marquee>
+			</div>
+			{% endfor %}
+			<div class="slider">
+				<div class="owl-carousel owl-theme">
+					{% for banner in banner %}
+					<div class="item">
+						<img class="img-fluid border-radius-0" src="/media/{{banner.photo}}" alt="">
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="right-part">
+			<div class="row w-100 h-100 flex-column m-0">
+				<div class="col">
+					<div class="shalat-text">
+						<div class="shalat">Imsak</div>
+						<div class="shalat-time" id="digitalclock_imsak">00 : 00</div>
+					</div>
+					<i class="flaticon flaticon-sunrise shalat-icon"></i>
+				</div>
+				<div class="col">
+					<div class="shalat-text">
+						<div class="shalat">Subuh</div>
+						<div class="shalat-time" id="digitalclock_shubuh">00 : 00</div>
+					</div>
+					<i class="flaticon flaticon-sunrise-1 shalat-icon"></i>
+				</div>
+				<div class="col">
+					<div class="shalat-text">
+						<div class="shalat">Dzuhur</div>
+						<div class="shalat-time" id="digitalclock_dzuhur">00 : 00</div>
+					</div>
+					<i class="flaticon flaticon-sun shalat-icon"></i>
+				</div>
+				<div class="col">
+					<div class="shalat-text">
+						<div class="shalat">Ashar</div>
+						<div class="shalat-time" id="digitalclock_ashar">00 : 00</div>
+					</div>
+					<i class="flaticon flaticon-sunset shalat-icon"></i>
+				</div>
+				<div class="col">
+					<div class="shalat-text">
+						<div class="shalat">Maghrib</div>
+						<div class="shalat-time" id="digitalclock_maghrib">00 : 00</div>
+					</div>
+					<i class="flaticon flaticon-sunset-1 shalat-icon"></i>
+				</div>
+				<div class="col" style="border: none;">
+					<div class="shalat-text">
+						<div class="shalat">Isya</div>
+						<div class="shalat-time" id="digitalclock_isya">00 : 00</div>
+					</div>
+					<i class="flaticon flaticon-moon shalat-icon"></i>
+				</div>
+			</div>
+		</div>
+		<div class="jamanalog-frame">
+			<div id="analogclock">
+				<div>
+					<img src="/media/logo/logo-full.png" class="img-fluid logo" />
+				</div>
+				<div id="minmarkers" class="minmarks"></div>
+				<div id="clocknumbers"></div>
+				<div id="brand">masjidnuprapatan.org</div>
+				<div id="hourscircle">
+					<div id="hourshand"></div>
+				</div>
+				<div id="minutescircle">
+					<div id="minuteshand"></div>
+				</div>
+				<div id="secondscircle">
+					<div id="secondshand"></div>
+				</div>
+				<div id="nut"></div>
+			</div>
+			<div id="digitalclock" class="d-none"></div>
+		</div>
+		<div class="countdown-frame">
+			<i class="fa fa-clock"></i>
+			<div class="countdown-text">
+				<span id="countdown-shalat"></span>
+				<span id="countdown-time"></span>
+			</div>
+		</div>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'frontend/css/wallpaper_6.css'%}" />
+		
+		<style>
+			/* ================= SAFE RESPONSIVE TANPA MEDIA ================= */
+
+/* Hindari geser ke samping */
+html, body {
+    overflow-x: hidden;
+	/* overflow-y: hidden; */
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+/* ================= COUNTDOWN ================= */
+
+#countdown-time {
+    font-size: clamp(1rem, 100vw, 1.2rem);
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+.countdown-text {
+    font-weight: 600;
+    color: red;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(0.5rem, 1vw, 1.2rem);
+    font-size: clamp(1rem, 1.3vw, 1.5rem);
+}
+
+.countdown-frame i {
+    /* font-size: clamp(1.2rem, 2vw, 2.3rem); */
+    color: white;
+    background: red;
+    padding: clamp(6px, 1vw, 12px);
+}
+
+.countdown-frame {
+    position: absolute;
+    /* bottom: 1.6cm; */
+	top: 18vh;
+    right: 20px;
+    z-index: 99;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+}
+
+/* ================= JAM ANALOG ================= */
+
+/* FIX UTAMA: ganti 32vh → responsive */
+.jamanalog-frame {
+    position: absolute;
+    top: 77vh;
+    transform: translateY(-50%);
+    left: 1%; /* 🔥 INI KUNCI */
+    z-index: 99;
+}
+
+.jamanalog-frame #analogclock {
+    --size: clamp(280px, 20vw, 800px);
+
+    width: var(--size);
+    height: var(--size);
+
+    font-size: calc(var(--size) / 40);
+}
+
+
+/* ================= TEXT ================= */
+
+#subtitle {
+    line-height: 1.2;
+    font-size: clamp(0.5rem, 1vw, 2.8rem);
+}
+
+#title {
+    color: #007356;
+    font-size: clamp(1.2rem, 1.6vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* ================= HEADER ================= */
+
+.navbar-logo {
+    height: clamp(30px, 5vh, 100%);
+    width: auto;
+}
+
+.header {
+    padding: 0 1rem;
+    height: clamp(60px, 12vh, 120px);
+    background-color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* ================= SHALAT ================= */
+
+.shalat {
+    font-weight: 500;
+    font-size: clamp(0.9rem, 1.2vw, 1.4rem);
+    line-height: 1;
+}
+
+.shalat-time {
+    font-weight: 700;
+    font-size: clamp(1.2rem, 1.8vw, 2rem);
+    line-height: 1.2;
+}
+
+.shalat-icon {
+	margin-left: 8px;
+    font-size: clamp(1.5rem, 2vw, 2.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shalat-text {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: 5px;
+}
+
+/* ================= ROW ================= */
+
+.row .col {
+    border-right: 1px solid white;
+    display: flex;
+    align-items: center;
+    /* justify-content: end; */
+    color: white;
+    /* text-align: end; */
+    padding: clamp(6px, 1vw, 10px);
+}
+
+/* ================= SLIDER ================= */
+
+.slider {
+    height: clamp(40vh, 82vh, 90vh);
+    width: 100%;
+}
+
+.slider .owl-carousel,
+.slider .owl-stage-outer,
+.slider .owl-stage,
+.slider .owl-item,
+.slider .item {
+    height: 100%;
+}
+
+.slider .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ================= ANNOUNCEMENT ================= */
+
+.announcement {
+    font-size: clamp(0.8rem, 1vw, 1.1rem);
+    height: clamp(40px, 6vh, 80px);
+    color: white;
+    background: linear-gradient(90deg, rgba(28, 94, 61, 1) 0%, rgba(43, 174, 102, 1) 100%);
+}
+
+/* ================= LAYOUT ================= */
+
+/* TETAP DESKTOP STYLE (TIDAK DIUBAH STRUKTUR) */
+.left-part {
+    /* --c: 150px; */
+    width: 100%;
+    /* min-height: 0; */
+    /* mask: radial-gradient(var(--c) 60% at bottom, #0000 calc(100% - 1px), #000); */
+    background: #1c3d3d;
+    position: fixed;
+    z-index: 9;
+    /* overflow: hidden; */
+	flex: 1;
+}
+
+/* FIX overflow tanpa ubah layout */
+.right-part {
+    width: 82%;
+	/* height: 160px; */
+	position: absolute;
+    /* right: 0; */
+    /* top: 0; */
+    background: #1C5E3D;
+    background: linear-gradient(0deg, rgba(28, 94, 61, 1) 0%, rgba(43, 174, 102, 1) 80%);
+	z-index: 10;
+	/* margin-top: -40px; */
+	bottom: 1px;
+	right: 1px;
+	border-top-left-radius: 80px;
+    border-top-right-radius: 80px;
+
+    /* padding: 10px 20px; */
+}
+
+.right-part .row {
+    display: flex;
+    flex-direction: row !important;
+	flex-wrap: wrap;
+	/* height: auto; */
+}
+
+.right-part .col {
+	/* flex: 0 0 16.666%; */
+    /* max-width: 16.666%; */
+
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+	flex-direction: row;
+
+    /* border: none !important; */
+    /* padding: 10px; */
+}
+
+	</style>
+
+
+<!-- 
+<style>
+			#countdown-time {
+				font-size: 1.8rem;
+				font-weight: 700;
+				margin-left: 5px;
+			}
+
+			.countdown-text {
+				font-weight: 600;
+				color: red;
+				background-color: white;
+				display: flex;
+				align-items: center;
+				padding: 0 1.2rem;
+				font-size: 1.5rem;
+			}
+
+			.countdown-frame i {
+				font-size: 2.3rem;
+				color: white;
+				background: red;
+				padding: 12px;
+			}
+
+			.countdown-frame {
+				position: absolute;
+				bottom: 20px;
+				z-index: 99;
+				border-radius: 20px;
+				overflow: hidden;
+				left: 20px;
+				display: flex;
+			}
+
+			.jamanalog-frame {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				right: 32vh;
+				z-index: 99;
+			}
+
+			#subtitle {
+				line-height: 1.2;
+			}
+
+			#title {
+				color: #007356;
+				font-size: 1.8rem;
+				font-weight: 700;
+				line-height: 1.2;
+			}
+
+			.navbar-logo {
+				height: 100%;
+				width: auto;
+			}
+
+			.header {
+				padding: 0 1rem;
+				height: 12vh;
+				background-color: white;
+				width: 100%;
+				display: flex;
+				align-items: center;
+			}
+
+			.shalat {
+				font-weight: 500;
+				font-size: 1.7rem;
+				line-height: 1;
+			}
+
+			.shalat-time {
+				font-weight: 700;
+				font-size: 2.5rem;
+				line-height: 1.2;
+			}
+
+			.shalat-icon {
+				font-size: 2.5rem;
+				margin-left: 12px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.row .col {
+				border-bottom: 1px solid white;
+				display: flex;
+				align-items: center;
+				justify-content: end;
+				color: white;
+				text-align: end;
+			}
+
+			.slider {
+				height: 82vh;
+				width: 100%;
+			}
+
+			.slider .owl-carousel,
+			.slider .owl-stage-outer,
+			.slider .owl-stage,
+			.slider .owl-item,
+			.slider .item {
+				height: 100%;
+			}
+
+			.slider .item img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			.announcement {
+				font-size: 1.1rem;
+				height: 6vh;
+				color: white;
+				
+				background: linear-gradient(90deg, rgba(28, 94, 61, 1) 0%, rgba(43, 174, 102, 1) 100%);
+			}
+
+			.left-part {
+				--c: 150px;
+				width: 80vw;
+				height: 100vh;
+				mask: radial-gradient(var(--c) 60% at right, #0000 calc(100% - 1px), #000);
+				background: #1c3d3d;
+				position: relative;
+				z-index: 9;
+				overflow: hidden;
+			}
+
+			.right-part {
+				width: 40vw;
+				height: 100vh;
+				position: absolute;
+				right: 0;
+				top: 0;
+				background: #1C5E3D;
+				background: linear-gradient(90deg, rgba(28, 94, 61, 1) 0%, rgba(43, 174, 102, 1) 80%);
+			}
+		</style> -->
+
+		<script type="text/javascript" src="{%static 'popper/popper.js'%}"></script>
+		<script type="text/javascript" src="{%static 'bootstrap/js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{%static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+		<script type="text/javascript" src="{%static 'carousel/js/owl-carousel.js' %}"></script>
+		<script type="text/javascript" src="{%static 'magnific-popup/js/magnific-popup.js' %}"></script>
+		<script type="text/javascript" src="{%static 'parallax/js/parallax.js' %}"></script>
+		<script type="text/javascript" src="{%static 'isotope/js/isotope-pkgd.js' %}"></script>
+		<script type="text/javascript" src="{%static 'bootstrap.select2/js/select2.js'%}"></script>
+		<script type="text/javascript" src="{%static 'frontend/js/wallpaper_v4.js' %}"></script>
+
+		<script>
+			$(document).ready(function () {
+				$('.owl-carousel').owlCarousel({
+					items: 1,
+					margin: 10,
+					loop: true,
+					nav: false,
+					autoplay: true,
+					autoplayTimeout: 4000,
+					dots: false
+				});
+			});
+		</script>
+	</body>
+
+</html>

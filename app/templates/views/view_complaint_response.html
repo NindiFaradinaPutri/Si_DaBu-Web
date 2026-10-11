@@ -1,0 +1,50 @@
+{%load static%}
+<div class="col-md-11 col-12 p-0">
+    {%for response in response_list%}
+    <section class="card card-featured {%if response.status.status == 'Open' %} card-featured-success {%elif response.status.status == 'On Progress' %} card-featured-info {%elif response.status.status == 'Pending' %} card-featured-warning {%elif response.status.status == 'Pending' %} card-featured-dark {% endif %} mb-4">
+        <header class="card-header bg-white pt-0">
+            <h4><strong>Response {{forloop.counter}} </strong></h4>
+            <div class="row">
+                <div class="col-lg-8 col-12">
+                    <span class="d-block w-100"><strong>User</strong></span>
+                    {%if response.user %}
+                    <span>{{response.user.fullname}}</span>
+                    {%else%}
+                    <span>-</span>
+                    {%endif%}
+                </div>
+                <div class="col-lg-4 col-12">
+                    <span class="d-block w-100"><strong>Status Keluhan</strong></span>
+                    {%if response.status.status == 'Open' %}
+                    <span class='badge badge-pill badge-success' style="font-size:13px;">{{response.status.status}}</span>
+                    {%elif response.status.status == 'On Progress' %}
+                    <span class='badge badge-pill badge-info' style="font-size:13px;">{{response.status.status}}</span>
+                    {%elif response.status.status == 'Pending' %}
+                    <span class='badge badge-pill badge-warning' style="font-size:13px;">{{response.status.status}}</span>
+                    {%elif response.status.status == 'Closed' %}
+                    <span class='badge badge-pill badge-dark' style="font-size:13px;">{{response.status.status}}</span>
+                    {%else%}
+                    <span>{{response.status.status}}</span>
+                    {%endif%}
+                </div>
+            </div>
+        </header>
+        <div class="card-body pt-0">
+            <div class="row bg-white">
+                <div class="col-lg-12 col-12">
+                    <span class="d-block w-100"><strong>Comment</strong></span>
+                    <span>
+                        {%autoescape off%}
+                        {%if response.comment %}
+                        <span>{{response.comment}}</span>
+                        {%else%}
+                        <span>-</span>
+                        {%endif%}
+                        {%endautoescape%}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    {%endfor%}
+</div>

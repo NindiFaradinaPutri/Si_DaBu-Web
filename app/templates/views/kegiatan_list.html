@@ -1,0 +1,98 @@
+{% load static %}
+
+{% for kegiatan in kegiatans %}
+<div class="col-md-7 col-lg-4 isotope-item brands mb-4">
+	<a href="#" role="button" id="view-kegiatan" data-toggle="modal" data-target=".bd-example-modal-lg" data-id="{{kegiatan.encrypt_id}}">
+		<div id="kegiatan-{{forloop.counter}}" class="thumb-info border-all thumb-info-show-button-hover" style="box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); border-radius: 30px;">
+			<div class="thumb-info-wrapper" >
+
+
+				{% if kegiatan.kegiatanmasjidattachment_set.first.name == 'Image' %}
+				<img style="height: auto; object-fit: cover;" src="{{kegiatan.kegiatanmasjidattachment_set.first.photo.url}}" class="img-fluid border-radius-0" alt="">
+				{% elif kegiatan.kegiatanmasjidattachment_set.last.name == 'Image' %}
+				<img class="img-fluid" src="{{kegiatan.kegiatanmasjidattachment_set.last.photo.url}}" />
+				{% endif %}
+
+				<div class="thumb-info-title bg-transparent w-100">
+					<div class="row">
+						<span class="thumb-info-type text-light mb-2 ml-3" style="border-radius: 30px;">{{kegiatan.title}}</span>
+					</div>
+					<span id="title-full-{{forloop.counter}}" style="display:block;" class="thumb-info-inner pb-3">{{kegiatan.title}} </span>
+					<em id="client-hide-{{forloop.counter}}" style="display:block; font-size:13px;color:#fff !important;" class="opacity-7"> {{kegiatan.quotes|safe}}</em>
+				</div>
+			</div>
+		</div>
+	</a>
+</div>
+{% endfor %}
+
+<div class="w-100 pagination_area" id="pagination_area">
+	{% include 'template/paginations/tmp_pagination.html' with page_obj=services space="my-3" %}
+</div>
+
+{% block query %}
+<script type="text/javascript">
+
+
+    $(document).on("click", "#view-kegiatan", function () {
+        let csrftoken = '{{ csrf_token }}'
+		var data_id = $(this).data("id");
+
+        $("#ajax-content").empty();
+        $("#pre-loadder").show();
+
+        $.post({
+			type: "POST",
+            headers: { 'X-CSRFToken': csrftoken },
+            url: '/ajax/view_kegiatan/',
+            datatype: 'json',
+            data: { 'data_id': data_id },
+			success: function (data) {
+                $("#pre-loadder").hide();
+				$("#ajax-content").append(data);
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block theme %}
+<style>
+	.img-fluid {
+		width: 300px;
+		height: auto;
+		object-fit: cover;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
+<style>
+	.product__height {
+		height: 390px;
+	}
+
+	.box-shadow-7 {
+		box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
+	}
+
+		.box-shadow-7:not(.box-shadow-hover) {
+			box-shadow: 0 12px 35px rgba(196,37,49, 0.52);
+		}
+
+		.box-shadow-7.box-shadow-hover:hover {
+			box-shadow: 0 12px 35px rgba(196,37,49, 0.52);
+		}
+
+    .thumb-info.thumb-info-show-button-hover .thumb-info-title {
+        bottom: -120px;
+    }
+    .thumb-info.thumb-info-show-button-hover:hover .thumb-info-title {
+        transform: translate3d(0, -120px, 0);
+		color:#fff !important;
+    }
+    .thumb-info.thumb-info-show-button-hover .thumb-info-title p {
+        color: #fff !important;
+    }
+</style>
+{% endblock %}

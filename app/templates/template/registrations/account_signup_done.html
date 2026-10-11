@@ -1,0 +1,101 @@
+{% extends "layout/frontend.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="services-area pt-70 light-bg-s pb-50 bg-white">
+    <div class="container height-450">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-12 col-md-12 col-12 mt-5 mb-5">
+                <div class="card height-450 bg-blue-light text-navy active radius-15">
+                    <div class="card-title-sign mt-3 text-center">
+                        <h2 class="font-weight-normal text-6 text-center">
+                            <i class="flaticon-online-registration mr-1 text-6 position-relative top-5"></i>
+                            Pembuatan Akun <strong class="font-weight-extra-bold">Sukses!</strong>
+                        </h2>
+					</div>
+                    <div class="card-body">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-xl-8 col-md-8 col-12">
+                                <div class="divider divider-small divider-small-center">
+								    <hr>
+							    </div>
+							    <table>
+                                    <tr>
+                                        <td width="30%">Nama Lengkap</td>
+                                        <td width="10%">:</td>
+                                        <td width="60%">{{profile.fullname}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">Username</td>
+                                        <td width="10%">:</td>
+                                        <td width="60%">{{user.username}}</td>
+                                    </tr>
+                                </table>
+                                <hr class="separator" />
+                                <p class="text-weight-bold text-dark">Link aktivasi telah dikirim ke email yang terdaftar. Silahkan lakukan aktivasi terlebih dahulu!</p>
+                                <div class="text-center">
+                                    <a href="{%url 'login'%}" class="btn btn-modern btn-dark mr-1">Login</a>
+                                </div>
+							    
+                            </div>
+                            <div class="col-xl-4 col-md-4 col-12">
+                                <img src="{% static 'media/registration/success-registration.png' %}" class="portfolio_img" width="300" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block preloader %}
+{%if request.session.theme == 'product' %}
+	{% include "frontend/parts_product/preloader.html" %}
+{%elif request.session.theme == 'talent' %}
+	{% include "frontend/parts_talent/preloader.html" %}
+{%endif%}
+{% endblock %}
+
+{% block back_to_top %}
+{%if request.session.theme == 'product' %}
+	{% include "frontend/parts_product/back-to-top.html" %}
+{%elif request.session.theme == 'talent' %}
+	{% include "frontend/parts_talent/back-to-top.html" %}
+{%endif%}
+{% endblock %}
+
+{% block header %}
+{%if request.session.theme == 'product' %}
+	{% include "frontend/parts_product/header.html" %}
+{%elif request.session.theme == 'talent' %}
+	{% include "frontend/parts_talent/header.html" %}
+{%endif%}
+{% endblock %}
+
+{% block sidebar %}
+{%if request.session.theme == 'product' %}
+	{% include "frontend/parts_product/sidebar.html" %}
+{%elif request.session.theme == 'talent' %}
+	{% include "frontend/parts_talent/sidebar.html" %}
+{%endif%}
+{% endblock %}
+
+{% block canvas %}
+{%if request.session.theme == 'product' %}
+	{% include "frontend/parts_product/canvas.html" %}
+{%elif request.session.theme == 'talent' %}
+	{% include "frontend/parts_talent/canvas.html" %}
+{%endif%}
+{% endblock %}
+
+{% block footer %}
+{%if request.session.theme == 'product' %}
+	{% include "frontend/parts_product/footer.html" %}
+{%elif request.session.theme == 'talent' %}
+	{% include "frontend/parts_talent/footer.html" %}
+{%endif%}
+{% endblock %}

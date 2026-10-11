@@ -1,0 +1,32 @@
+{%load widget_tweaks%}
+
+<form method="POST" id="filter_form">
+    {% csrf_token %}
+
+    <input type="hidden" name="page" value="" id="p_page" />
+    <input type="hidden" name="sort_by" value="" id="p_sort_by" />
+
+    {% for hidden in filter.form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+
+    {% for field in filter.form.visible_fields %}
+      <div class="form-group row">
+        <label for="{{ field.id_for_label }}" class="col-md-3 col-form-label text-right">{{ field.label }}</label>
+        <div class="col-md-9 d-flex justify-content-center align-items-center">
+            {{ field|add_class:'form-control' }}
+        </div>
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    <hr class="separator" />
+    <div class="form-group text-center row">
+        <div class="col-md-12 col-sm-12">
+            <button class="btn btn-warning" type="reset" id="id_reset"><i class="fa fa-refresh"></i>&nbsp;Reset</button>
+            <button class="btn btn-success" type="button" id="id_search"><i class="fa fa-search"></i>&nbsp;Cari Data</button>
+        </div>
+    </div>
+</form>

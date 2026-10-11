@@ -1,0 +1,133 @@
+$flaticon_masjid_nu-font: "flaticon_masjid_nu";
+
+@font-face {
+    font-family: $flaticon_masjid_nu-font;
+    src: url("./flaticon_masjid_nu.ttf?951265f7af84c998cdccf340a0303672") format("truetype"),
+url("./flaticon_masjid_nu.woff?951265f7af84c998cdccf340a0303672") format("woff"),
+url("./flaticon_masjid_nu.woff2?951265f7af84c998cdccf340a0303672") format("woff2"),
+url("./flaticon_masjid_nu.eot?951265f7af84c998cdccf340a0303672#iefix") format("embedded-opentype"),
+url("./flaticon_masjid_nu.svg?951265f7af84c998cdccf340a0303672#flaticon_masjid_nu") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon_masjid_nu !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon_masjid_nu-map: (
+    "praying": "\f101",
+    "islamic-friday-prayer": "\f102",
+    "shalat": "\f103",
+    "dua": "\f104",
+    "salat": "\f105",
+    "mosque": "\f106",
+    "mosque-1": "\f107",
+    "decoration": "\f108",
+    "mosque-2": "\f109",
+    "mosque-3": "\f10a",
+    "prayer-rug": "\f10b",
+    "man": "\f10c",
+    "muslim": "\f10d",
+    "plus": "\f10e",
+    "remove": "\f10f",
+    "edit": "\f110",
+    "down-arrow": "\f111",
+    "verified-account": "\f112",
+    "copy": "\f113",
+    "contact-mail": "\f114",
+    "donation": "\f115",
+    "sunrise": "\f116",
+    "sun": "\f117",
+    "sunrise-1": "\f118",
+    "sunset": "\f119",
+    "sunset-1": "\f11a",
+    "moon": "\f11b",
+);
+
+.flaticon-praying:before {
+    content: map-get($flaticon_masjid_nu-map, "praying");
+}
+.flaticon-islamic-friday-prayer:before {
+    content: map-get($flaticon_masjid_nu-map, "islamic-friday-prayer");
+}
+.flaticon-shalat:before {
+    content: map-get($flaticon_masjid_nu-map, "shalat");
+}
+.flaticon-dua:before {
+    content: map-get($flaticon_masjid_nu-map, "dua");
+}
+.flaticon-salat:before {
+    content: map-get($flaticon_masjid_nu-map, "salat");
+}
+.flaticon-mosque:before {
+    content: map-get($flaticon_masjid_nu-map, "mosque");
+}
+.flaticon-mosque-1:before {
+    content: map-get($flaticon_masjid_nu-map, "mosque-1");
+}
+.flaticon-decoration:before {
+    content: map-get($flaticon_masjid_nu-map, "decoration");
+}
+.flaticon-mosque-2:before {
+    content: map-get($flaticon_masjid_nu-map, "mosque-2");
+}
+.flaticon-mosque-3:before {
+    content: map-get($flaticon_masjid_nu-map, "mosque-3");
+}
+.flaticon-prayer-rug:before {
+    content: map-get($flaticon_masjid_nu-map, "prayer-rug");
+}
+.flaticon-man:before {
+    content: map-get($flaticon_masjid_nu-map, "man");
+}
+.flaticon-muslim:before {
+    content: map-get($flaticon_masjid_nu-map, "muslim");
+}
+.flaticon-plus:before {
+    content: map-get($flaticon_masjid_nu-map, "plus");
+}
+.flaticon-remove:before {
+    content: map-get($flaticon_masjid_nu-map, "remove");
+}
+.flaticon-edit:before {
+    content: map-get($flaticon_masjid_nu-map, "edit");
+}
+.flaticon-down-arrow:before {
+    content: map-get($flaticon_masjid_nu-map, "down-arrow");
+}
+.flaticon-verified-account:before {
+    content: map-get($flaticon_masjid_nu-map, "verified-account");
+}
+.flaticon-copy:before {
+    content: map-get($flaticon_masjid_nu-map, "copy");
+}
+.flaticon-contact-mail:before {
+    content: map-get($flaticon_masjid_nu-map, "contact-mail");
+}
+.flaticon-donation:before {
+    content: map-get($flaticon_masjid_nu-map, "donation");
+}
+.flaticon-sunrise:before {
+    content: map-get($flaticon_masjid_nu-map, "sunrise");
+}
+.flaticon-sun:before {
+    content: map-get($flaticon_masjid_nu-map, "sun");
+}
+.flaticon-sunrise-1:before {
+    content: map-get($flaticon_masjid_nu-map, "sunrise-1");
+}
+.flaticon-sunset:before {
+    content: map-get($flaticon_masjid_nu-map, "sunset");
+}
+.flaticon-sunset-1:before {
+    content: map-get($flaticon_masjid_nu-map, "sunset-1");
+}
+.flaticon-moon:before {
+    content: map-get($flaticon_masjid_nu-map, "moon");
+}

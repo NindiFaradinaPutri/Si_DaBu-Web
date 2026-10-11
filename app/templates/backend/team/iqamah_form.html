@@ -1,0 +1,102 @@
+{% extends "layout/consulting_admin.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <section class="card">
+
+            <header class="card-header">
+                <div class="card-actions">
+                    <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                </div>
+
+                <h2 class="card-title">Iqamah</h2>
+            </header>
+
+            <form class="form-horizontal form-bordered"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  novalidate>
+
+                <div class="card-body">
+
+                    {% csrf_token %}
+
+                    {% include 'template/forms/tmp_formrow.html' with form=form %}
+
+                </div>
+
+                <div class="card-footer">
+                    <span id="nav-button" class="float-right">
+                        <button type="button"
+                                id="edit-naration"
+                                class="mb-1 mt-1 mr-1 btn btn-info">
+                            Edit
+                        </button>
+                    </span>
+                </div>
+
+            </form>
+
+        </section>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block query %}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // 🔥 INITIAL STATE: READONLY MODE
+        $('form input, form textarea, form select').prop('disabled', true);
+
+    });
+
+
+    // =========================
+    // EDIT BUTTON
+    // =========================
+    $(document).on("click", "#edit-naration", function () {
+
+        // enable semua field
+        $('form input, form textarea, form select').prop('disabled', false);
+
+        $("#nav-button").empty();
+
+        var div = document.createElement('span');
+        div.innerHTML =
+            "<button type='button' id='cancel-edit' class='mb-1 mt-1 mr-1 btn btn-default'>Cancel Edit</button>" +
+            "<button type='submit' class='mb-1 mt-1 mr-1 btn btn-success'>Submit</button>";
+
+        document.getElementById("nav-button").appendChild(div);
+
+        window.scrollTo({ top: 100, behavior: 'smooth' });
+    });
+
+
+    // =========================
+    // CANCEL BUTTON
+    // =========================
+    $(document).on("click", "#cancel-edit", function () {
+
+        // disable semua field lagi
+        $('form input, form textarea, form select').prop('disabled', true);
+
+        $("#nav-button").empty();
+
+        var div = document.createElement('span');
+        div.innerHTML =
+            "<button type='button' id='edit-naration' class='mb-1 mt-1 mr-1 btn btn-info'>Edit</button>";
+
+        document.getElementById("nav-button").appendChild(div);
+    });
+
+</script>
+
+{% endblock %}

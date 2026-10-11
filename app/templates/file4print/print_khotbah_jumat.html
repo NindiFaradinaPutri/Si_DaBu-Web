@@ -1,0 +1,144 @@
+{% extends "layout/layout_print.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block doc_header %}
+{% include 'file4print/parts/header.html'%}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h3 class="font-italic text-center">{{title}}</h3>
+    <h4 class="font-italic text-center">{{sub_title}}</h4>
+    <h5 class="font-italic">Assalamu'alaikum Warahmatullah Wabarakatuh.</h5>
+
+    <p>
+        Bismillahirrahmanirrahim, Alhamdulillahirobbil 'alamin, washolatu wassalamu 'ala asrofil anbiya wal mursalin, wa 'ala alihi wa sohbihi ajma'in, amma ba'du.
+    </p>
+    
+    
+    <p>
+        Mohon maaf dengan berdirinya saya di sini apabila mengganggu amalan sunah para Jemaah sekalian. Alhamdulillah puji dan syukur tak henti-hentinya kita haturkan kehadirat Allah SWT. Atas curahan rahmat-Nya sampai detik ini kita masih diberikan nikmat yang tak terhingga, diantaranya nikmat yang paling besar yakni nikmat Iman, Islam, Umur, Kesehatan, dan Kesempatan, sehingga kita dapat Bersama-sama melangkahkan kaki ke tempat yang mulia ini dalam rangka melaksanakan sholat Jum'at Berjamaah.
+    </p>
+    <p>
+        Tidak lupa Sholawat dan salam senantiasa tercurah kepada baginda Nabi Muhammad SAW, demikian juga kepada segenap keluarga dan sahabatnya. Semoga kita yang hadir di Masjid yang mulia ini diperkenankan oleh Allah SWT untuk mendapatkan syafa'at dari beliau di akhirat nanti. Aamiinn yaa robbal'aalamiin.
+    </p>
+    <p>
+        Hadirin jama'ah sholat Jum'at yang kami hormati, izinkanlah kami menyampaikan beberapa informasi laporan kegiatan sholat Jum'at.
+    </p>
+    <p>
+        1. Laporan keuangan Masjid Ar-Raudah:
+        {{content_html|safe}}
+    </p>
+    <p>
+        Pada kesempatan ini pula kami ucapkan terima kasih kepada kaum muslimin dan muslimat yang telah memberikan Sedekah Jum'at, baik berupa kue, makanan, dan minuman. Mudah-mudahan mendapat ganjaran yang lebih baik dan utama dari Allah SWT.
+    </p>
+
+    <p>
+        2. Dimohon kepada seluruh Jama'ah Sholat Jum'at untuk dapat mematikan handphone atau menggunakan mode hening selama proses ibadah Sholat Jum'at.
+    </p>
+    <p>
+        3. Yang bertugas sebagai Khotib dan sekaligus Imam pada saat ini:
+        <table class="mx-3">
+            <tbody>
+                <tr>
+                    <td width="5%">a</td>
+                    <td width="20%">Khotib Bapak</td>
+                    <td width="75%">{{imam}}</td>
+                </tr>
+                <tr>
+                    <td width="5%">b</td>
+                    <td width="20%">Bilal Bapak</td>
+                    <td width="75%">{{bilal}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+
+    <p>
+        4. Waktu masuknya Sholat Jum'at pada pukul: ........... WITA.
+        <!-- 4. Waktu masuknya Sholat Jum'at pada pukul: {{jadwal_sholat.dzuhur}} WITA. -->
+    </p>
+
+    
+    <p>
+        5. Kepada Jemaah yang masih di bawah mohon segera mengisi shaf di atas karena masih banyak shaf shaf yang belum terisi.
+    </p>
+
+    <p>
+        Demikian laporan kegiatan Masjid Ar-Raudah Ibadah Sholat Jum'at yang dapat kami sampaikan dan apabila terdapat kurang dan lebihnya dalam penyampaian laporan ini, kami mohon maaf sebesar-besarnya.
+    </p>
+    <h5 class="font-italic">Wassalamu'alaikum Warahmatullahi Wabarakatuh.</h5>
+</div>
+{% endblock %}
+
+{% block signature %}
+{% include 'file4print/parts/signature.html'%}
+{% endblock %}
+
+{% block theme %}
+<style>
+    /*@media print {
+        body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .bg-saldo-akhir {
+            background-color: #01735C !important;
+            color: white;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .bg-debet, .bg-credit {
+            background-color: #17a2b8 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+    }*/
+
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        font-size: 1.3em;
+        font-weight:600;
+        color:black;
+    }
+
+    .bg-saldo-akhir {
+        background-color: #01735C !important;
+        color: black;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .bg-debet, .bg-credit {
+        background-color: #17a2b8 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .header_doc_nu {
+        color: #2C5F2D;
+        font-weight: 600;
+    }
+
+    .sub_header_doc_nu {
+        color: #3C8046;
+        font-weight: 300;
+    }
+
+    .header_logo_nu {
+        width: 200px;
+        position: absolute;
+        top: 0px;
+    }
+</style>
+{% endblock %}
+
+{%block query %}
+<script>
+    setTimeout(function () {
+        window.print();
+    }, 5000);
+</script>
+{% endblock %}

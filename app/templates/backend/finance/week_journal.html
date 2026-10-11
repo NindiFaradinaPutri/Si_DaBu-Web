@@ -1,0 +1,134 @@
+{% extends "layout/consulting_admin.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% include "template/modals/delete_confirmation.html" with info_data="Week Journal" %}
+
+<!-- start: page -->
+<div class="row">
+	<div class="col">
+		<section class="card">
+			<header class="card-header">
+				<div class="card-actions">
+					<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+					<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+				</div>
+
+				<h2 class="card-title">{{title}}</h2>
+			</header>
+			<div class="card-body">
+				<div class="text-right" style="margin-bottom:20px;">
+					<a href="/journal/week/update/" class="btn btn-warning" type="button"><i class="bx bx-plus"></i> Validasi Jurnal Mingguan</a>
+				</div>
+				<table class="table table-bordered table-striped mb-0" id="datatable-transaction">
+					<thead>
+						<tr class="text-center">
+							<th width="5%" data-priority="3">Aktif?</th>
+							<th width="5%">No</th>
+							<th width="10%" data-priority="1">Tanggal</th>
+							<th width="10%">Akun</th>
+							<th width="25%" data-priority="2">Transaksi</th>
+							<th width="10%" data-priority="3">Status</th>
+							<th width="10%" data-priority="4">Debet</th>
+							<th width="10%" data-priority="5">Kredit</th>
+							<th width="10%" data-priority="3">Saldo</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for list_item in week_journal %}
+						<tr>
+							<td class="d-flex justify-content-center">
+								<input class="text-center" type="checkbox" value="" id="is_active" {%if list_item.is_active%} checked {%endif%} readonly>
+							</td>
+							<td class="text-center">{{forloop.counter}}</td>
+							<td>{{list_item.date|date:"d M Y"|default_if_none:'-'}}</td>
+							<td>{{list_item.coa}}</td>
+							<td>{{list_item.transaction}}</td>
+							<td>{{list_item.status}}</td>
+							<td class="text-right">
+								{%if list_item.debet%}
+								Rp {{list_item.debet}}
+								{%else%}
+								-
+								{%endif%}
+							</td>
+							<td class="text-right">
+								{%if list_item.credit%}
+								Rp {{list_item.credit}}
+								{%else%}
+								-
+								{%endif%}
+							</td>
+							<td class="text-right">
+								{%if list_item.balance%}
+								Rp {{list_item.balance|default_if_none:'0'}}
+								{%else%}
+								-
+								{%endif%}
+							</td>
+
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
+</div>
+<!-- end: page -->
+{% endblock %}
+
+{% block header %}
+{% include "backend/header/header.html" %}
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.fixedHeader.min.css' %}">
+<link rel="stylesheet" href="{% static 'datatables/css/dataTables.responsive.min.css' %}">
+<style>
+	.img-photo {
+		height: 150px;
+		width: 300px;
+		object-fit: cover;
+	}
+</style>
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{%static 'select2/js/select2.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.fixedHeader.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/js/dataTables.responsive.min.js' %}"></script>
+
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+
+<!--<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.default.js' %}"></script>
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.row.with.details.js' %}"></script>-->
+<script type="text/javascript" src="{%static 'datatables/examples/examples.datatables.tabletools.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#datatable-default').DataTable({
+            rowReorder: {
+                selector: 'td:nth-child(1)'
+            },
+            responsive: true
+        });
+    });
+</script>
+
+<script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+
+{% endblock %}

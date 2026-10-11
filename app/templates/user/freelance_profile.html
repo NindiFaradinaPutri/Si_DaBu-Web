@@ -1,0 +1,541 @@
+{% extends "layout/backend.html" %}
+
+{% load static %}
+{% load render_table from django_tables2%}
+
+{% block content %}
+{% include "template/modals/contract_modal.html" %}
+{% include "template/modals/delete_confirmation.html" %}
+{% include "template/modals/form_confirmation.html" %}
+{% include "template/modals/contract_modal.html" %}
+
+<div class="content-wrapper">
+	<div class="row" id="id_container">
+		<div class="col-lg-12 col-md-12 col-12">
+			<section class="card">
+				<header class="card-header">
+					<h3 class="card-title">{{title}}</h3>
+				</header>
+				<div class="card-body card-body-nopadding">
+					{% if messages %}
+					{% for message in messages %}
+					<div class="card">
+						<div class="card-body">
+							<div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="bx bx-x"></i></button>
+								{{ message }}
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					{% endif %}
+
+					{%if freelance%}
+					<div class="row">
+						<div class="col-md-4 col-12">
+							{%if freelance%}
+							<div class="card" id="card_freelance">
+								<div class="card-header">
+									<h3 class="card-title">Akun Talenta</h3>
+								</div>
+								<div class="text-center p-3 overlay-box" style="height:200px;">
+									{%if user_photo.photo.url%}
+									<img src="{%static user_photo.photo.url%}" width="100" class="img-fluid rounded-circle mt-2" alt="">
+									{%else%}
+									<img src="{%static 'media/init/avatar.png'%}" width="100" class="img-fluid rounded-circle mt-2" alt="">
+									{%endif%}
+									<h3 class="mt-3 mb-0 text-dark">{{user_profile.fullname}}</h3>
+
+								</div>
+								<div class="card-body h-350">
+									<div class="row">
+										<div class="col-12">
+											<table class="mb-5" style="width:100% !important;">
+												<tr class="lh-30">
+													<th width="30%">Akun Freelance</th>
+													<td width="10%">:</td>
+													<td class="text-right p-2" width="60%">
+														<input id="freelance_activation" type="checkbox" data-toggle="switchbutton" data-onlabel="Aktif" 
+														   data-offlabel="Tidak Aktif" data-onstyle="success" data-offstyle="danger" checked>
+													</td>
+												</tr>
+												<tr class="lh-30">
+													<th width="30%">Status Freelance</th>
+													<td width="10%">:</td>
+													<td class="text-right p-2" width="60%">
+														<input id="freelance_availability" type="checkbox" data-toggle="switchbutton" data-onlabel="Tersedia" 
+														   data-offlabel="Tidak Tersedia" data-onstyle="success" data-offstyle="danger" checked>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<table class="my-3" style="width:100% !important;">
+										<tr class="lh-30">
+											<th>Email</th>
+											<td>:</td>
+											<td>
+												{{freelance.publish_email}}
+											</td>
+										</tr>
+										<tr class="lh-30">
+											<th>Telepon</th>
+											<td>:</td>
+											<td>
+												{{freelance.publish_phone}}
+											</td>
+										</tr>
+										<tr class="lh-30">
+											<th>Lokasi</th>
+											<td>:</td>
+											<td>
+												{{freelance.location}}
+											</td>
+										</tr>
+									</table>
+									<div class="row">
+										<div class="col-6 lh-30">
+											<a href="{%url 'freelance_activation'%}" class="btn btn-info btn-block btn-sm p-2">Update Akun Freelance</a>
+										</div>
+										<div class="col-6 lh-30">
+											<button class="btn btn-primary btn-block btn-sm p-2">Lihat Akun Freelance</button>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+							{%else%}
+							<div class="card" id="card_freelance">
+								<div class="card-header bg-info text-white">
+									<h3 class="card-title">
+										Akun Freelancer
+									</h3>
+									<span class="head_right_icon text-25" data-toggle="tooltip" data-placement="top" title="Aktifkan akun freelance">
+										<a href="{%url 'freelance_activation'%}" class="text-white">
+											<i class="flaticon-key nav-icon"></i>
+										</a>
+									</span>
+								</div>
+								<div class="card-body bg-light">
+									Tidak Aktif
+								</div>
+							</div>
+							{%endif%}
+						</div>
+						<div class="col-md-8 col-12">
+							<div class="row">
+								{% if talent.freelancestatus_set.first.is_verified %}
+								<div class="col-md-4 col-12">
+									<div class="row">
+										<div class="col-md-12 col-12">
+											<div class="info-tiles">
+												<div class="info-icon">
+													<i class="flaticon-user-4"></i>
+												</div>
+												<div class="stats-detail">
+													<h5>Terverifikasi</h5>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endif %}
+								{% if ratings_overal and ratings_overal.rating > 4 %}
+								<div class="col-md-4 col-12">
+									<div class="row ">
+										<div class="col-md-12 col-12">
+											<div class="info-tiles">
+												<div class="info-icon">
+													<i class="flaticon-shield"></i>
+												</div>
+												<div class="stats-detail">
+													<h5>Terpercaya</h5>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endif %}
+								{% if ratings_overal and ratings_overal.rating > 4.5 %}
+								<div class="col-md-4 col-12">
+									<div class="row">
+										<div class="col-md-12 col-12">
+											<div class="info-tiles">
+												<div class="info-icon">
+													<i class="flaticon-premium-badge"></i>
+												</div>
+												<div class="stats-detail">
+													<h5>Top Score</h5>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+							<div class="row">
+								<div class="col-md-6 col-12">
+									<div class="card h-250">
+										<div class="card-header">
+											<div class="card-title">Review Kinerja</div>
+										</div>
+										<div class="card-body">
+											<div class="user-ratings">
+												<div class="total-ratings d-flex align-items-center">
+													{% if ratings_overal.rating %}
+													<h2>{{ratings_overal.rating}}/5</h2>
+													{% if ratings_overal.rating == 1 %}
+													<div class="rating1" style="margin-left: 7px;"></div>
+													{% elif ratings_overal.rating > 1 and ratings_overal.rating < 2 %}
+													<div class="rating1half" style="margin-left: 4px;"></div>
+													{% elif ratings_overal.rating == 2 %}
+													<div class="rating2" style="margin-left: 7px;"></div>
+													{% elif ratings_overal.rating > 2 and ratings_overal.rating < 3 %}
+													<div class="rating2half" style="margin-left: 4px;"></div>
+													{% elif ratings_overal.rating == 3 %}
+													<div class="rating3" style="margin-left: 7px;"></div>
+													{% elif ratings_overal.rating > 3 and ratings_overal.rating < 4 %}
+													<div class="rating3half" style="margin-left: 4px;"></div>
+													{% elif ratings_overal.rating == 4 %}
+													<div class="rating4" style="margin-left: 7px;"></div>
+													{% elif ratings_overal.rating > 4 and ratings_overal.rating < 5 %}
+													<div class="rating4half" style="margin-left: 4px;"></div>
+													{% elif ratings_overal.rating == 5 %}
+													<div class="rating5" style="margin-left: 7px;"></div>
+													{% else %}
+													<div class="rating0"></div>
+													{% endif %}
+													{% else %}
+													<h2>4,0/5</h2>
+													<div class="rating4" style="margin-left: 7px;"></div>
+													{% endif %}
+												</div>
+												<div class="col-12">
+													<table class="d-block">
+														<tbody class="ratings-list-container d-block">
+															<tr class="ratings-list">
+																<th class="col">Perilaku</th>
+																{% if ratings_overal.attitude_rating %}
+																<td class="col-4 text-right"> {{ratings_overal.attitude_rating}}/5</td>
+																{% else %}
+																<td class="col-4 text-right"> 4,0/5</td>
+																{% endif %}
+															</tr>
+															<tr class="ratings-list">
+																<th class="col" width="30%">Komunikasi</th>
+																{% if ratings_overal.communication_rating %}
+																<td class="col-4 text-right"> {{ratings_overal.communication_rating}}/5</td>
+																{% else %}
+																<td class="col-4 text-right"> 4,0/5</td>
+																{% endif %}
+															</tr>
+															<tr class="ratings-list">
+																<th class="col" width="30%">Kinerja</th>
+																{% if ratings_overal.performance_rating %}
+																<td class="col-4 text-right"> {{ratings_overal.performance_rating}}/5</td>
+																{% else %}
+																<td class="col-4 text-right"> 4,0/5</td>
+																{% endif %}
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+									<div class="card">
+										<div class="card-header">
+											<div class="card-title">Ringkasan Pekerjaan</div>
+										</div>
+										<div class="card-body">
+											<ul class="list-group">
+												<li class="list-group-item d-flex justify-content-between align-items-center">
+													Jumlah Pekerjaan On Progress:
+													<span class="badge badge-primary badge-pill">{{running_trans_count}}</span>
+												</li>
+												<li class="list-group-item d-flex justify-content-between align-items-center">
+													Jumlah Pekerjaan Selesai:
+													<span class="badge badge-primary badge-pill">{{done_trans_count}}</span>
+												</li>
+												<li class="list-group-item d-flex justify-content-between align-items-center">
+													Jumlah Pekerjaan Batal:
+													<span class="badge badge-danger badge-pill">{{cancel_trans_count}}</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-12">
+									<div class="card">
+										<div class="card-header">
+											<a href="javascript:void(0)" class="btn btn-info btn-sm float-right" id="id_add_skill"
+											   data-toggle="modal" data-target="#formConfirmationModals">
+												<i class="flaticon-plus"></i>&nbsp;Tambah
+											</a>
+											<div class="card-title">Keahlian</div>
+										</div>
+										<div class="card-body">
+
+											<div class="tasks-header">
+												<div class="scrollmenu bg-light mt-1 mb-3 d-flex justify-content-around">
+													{%for service in services %}
+													<a href="javascript:void(0)" id="id_service"
+													   class="btn btn-sm btn-info mx-1 my-1 px-1 py-1 service" data-service="{{service.encrypt_id}}">
+														{{service.user_service_name}}
+													</a>
+													{%empty%}
+													Belum ditambahkan keahlian
+													{%endfor%}
+												</div>
+											</div>
+
+											<div class="categories" id="skill_area">
+												{%for skill in skills%}
+												<a href="javascript:void(0)" onclick="update_skill('{{skill.encrypt_id}}')" id="id_update_skill"
+												   data-toggle="modal" data-target="#formConfirmationModals">
+													<span class="badge badge-info badge-sm">{{skill.skill}}</span>
+												</a>
+												{%endfor%}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-header">											
+									<div class="card-title">Pendidikan</div>
+								</div>
+								<div class="card-body user-ratings">
+									<div class="tasks-header">
+										<table class="d-block">
+											<tbody class="ratings-list-container d-block">
+												{% for educations in education %}
+												{% if educations.institution is not None %}
+												<tr class="ratings-list">
+													<th class="col">{{educations.name.name}}</th>					
+													<td class="col-4 text-right"> {{educations.institution}}</td>
+												</tr>
+												{% endif %}
+												{% endfor %}														
+											</tbody>
+										</table>
+									</div>											
+								</div>
+							</div>
+						</div>
+					</div>			
+					
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <ul class="nav nav-tabs mb-3 nav-justified" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-service-tab" data-toggle="pill" href="#pills-service" role="tab" aria-controls="pills-service" aria-selected="true">
+                                        <img src="/media/init/skill.png" alt="" class="icon_img" />&nbsp;Layanan
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-portofolio-tab" data-toggle="pill" href="#pills-portofolio" role="tab" aria-controls="pills-portofolio" aria-selected="false">
+                                        <img src="/media/init/portfolio.png" alt="" class="icon_img" />&nbsp;Portofolio
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-gallery-tab" data-toggle="pill" href="#pills-gallery" role="tab" aria-controls="pills-gallery" aria-selected="false">
+                                        <img src="/media/init/gallery.png" alt="" class="icon_img" />&nbsp;Galeri
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-ulasan-tab" data-toggle="pill" href="#pills-ulasan" role="tab" aria-controls="pills-ulasan" aria-selected="false">
+                                        <img src="/media/init/history.png" alt="" class="icon_img" />&nbsp;Ulasan
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="productGridTabContent">
+                                
+                                <div class="tab-pane fade  show active" id="pills-service" role="tabpanel" aria-labelledby="FourCol-tab">
+                                    
+                                    <div class="card">
+
+	                                    <div class="card-header">
+		                                    <div class="card-title">Pencarian Jasa</div>
+	                                    </div>
+	                                    <div class="card-body">
+		                                    {% include "template/filters/tmp_filter.html" with filter=service_filter %}
+	                                    </div>
+                                    </div>
+                                    <div class="row g-0">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <input type="hidden" name="url_filter" id="id_url_filter" value="{%url 'filter_view_user_service'%}" />
+                                            <input type="hidden" name="talent_id" id="talent_id" value="{{freelance.user.id}}" />
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-around">
+                                            <label for="id_per_page" class=""><strong>Jumlah baris per halaman:</strong></label>
+                                            <select name="per_page" class="form-control w-75" id="id_per_page">
+                                                <option value=20 selected>20</option>
+                                                <option value=40>40</option>
+                                                <option value=80>80</option>
+                                                <option value=100>100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+									{% if services %}
+                                    <div class="row g-0" id="list_area">                                        
+                                        {% include "views/view_user_service.html" with services=services%}
+                                    </div>
+                                    {% else %}
+                                    <div class="card lobipanel-basic">
+                                        <div class="card-body" style="display: flex;justify-content: center;">
+                                            <p><strong>Belum ada layanan</strong></p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="tab-pane fade" id="pills-portofolio" role="tabpanel" aria-labelledby="pills-portofolio-tab">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <input type="hidden" name="url_filter" id="id_url_portfolio_filter" value="{%url 'filter_view_user_portfolio'%}" />
+                                        </div>                                        
+                                    </div>
+                                    <div id="list-portfolio">
+                                        {% include "views/view_portofolio.html" with portfolios=portfolios%}
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="pills-gallery" role="tabpanel" aria-labelledby="pills-gallery-tab">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <input type="hidden" name="url_filter" id="id_url_gallery_filter" value="{%url 'filter_view_user_gallery'%}" />
+                                        </div>
+                                    </div>
+                                    <div id="list-gallery">
+                                        {% include "views/view_gallery.html" with gallery=gallery%}
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-ulasan" role="tabpanel" aria-labelledby="pills-ulasan-tab">
+                                    <input type="hidden" name="url_filter_review" id="id_url_filter_review" value="{%url 'filter_view_review_rating'%}" />
+                                    <div id="review_area">
+                                        {% include "views/view_review_rating.html" with transactions=transactions%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="portfolioModals" tabindex="-1" role="dialog"
+     aria-labelledby="portfolioTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 600px;" role="document">
+        <div class="modal-content">
+            <div style="background: #263c97 ;" class="modal-header">
+                <h5 class="modal-title text-white" id="modal-title">Portfolio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="modal-div">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="galleryModals" tabindex="-1" role="dialog"
+     aria-labelledby="galleryTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 600px;" role="document">
+        <div class="modal-content">
+            <div style="background: #263c97 ;" class="modal-header">
+                <h5 class="modal-title text-white" id="modal-title">Gallery</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="modal-gallery">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block theme %}
+<link rel="stylesheet" href="{% static 'circliful/css/circliful.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-toggle/css/bootstrap4-toggle.min.css' %}" />
+<link rel="stylesheet" href="{% static 'layout/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'gallery/gallery.css' %}">
+<style>
+    .tp-wrap {
+        border-top: 1px solid #e5e5e5;
+    }
+    .carousel-control-next,
+    .carousel-control-prev /*, .carousel-indicators */ {
+        filter: invert(100%);
+    }
+    .gallery a{
+        border:0px;
+    }
+    .icon-star {
+        color: #ffc107;
+    }
+    .fa-star {
+        color: #ffc107;
+        /*font-size: 1em;*/
+    }
+    .modal-header-blue {
+        background: #007aff;
+    }
+</style>
+{% endblock %}
+
+{% block preloader %}
+{% include "backend-user/parts/preloader.html" %}
+{% endblock %}
+
+{% block header %}
+{% include "backend-user/parts/header.html" %}
+{% endblock %}
+
+{% block header_setting %}
+{% include "backend-user/parts/header-setting.html" %}
+{% endblock %}
+
+{% block header_menu %}
+{% include "backend-user/parts/header-menu.html" %}
+{% endblock %}
+
+{% block page_header %}
+{% include "backend-user/parts/page-header.html" %}
+{% endblock %}
+
+{% block query %}
+<script type="text/javascript" src="{% static 'carousel/js/owl-carousel-config.js'%}"></script>
+
+<script type="text/javascript" src="{%static 'bootstrap-toggle/js/bootstrap4-toggle.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend/js/pagination_user_service.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend/js/pagination_review_rating.js' %}"></script>
+<script type="text/javascript" src="{%static 'circliful/js/circliful.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend-user/js/freelance_profile_v01.js' %}"></script>
+<script type="text/javascript" src="{%static 'modals/delete_confirmation.js' %}"></script>
+
+<!--<script type="text/javascript" src="{ % static 'gallery/custom-gallery.js' % }"></script> -->
+<script type="text/javascript" src="{%static 'gallery/plugins.js' %}"></script>
+<script type="text/javascript" src="{%static 'backend-user/js/rating.js' %}"></script>
+{% endblock %}
+
+{% block footer %}
+{% include "backend-user/parts/footer.html" %}
+{% endblock %}
+
+{% block back_to_top %}
+{% include "backend-user/parts/back-to-top.html" %}
+{% endblock %}

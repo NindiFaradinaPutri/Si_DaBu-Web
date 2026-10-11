@@ -1,0 +1,426 @@
+.img-fluid {
+    max-width: 100%;
+    width: 11em;
+}
+
+.img-fluid.logo {
+    position: absolute;
+    top: 5.5em;
+    right: 12.5em;
+}
+
+.jamanalog-frame #analogclock {
+    font-size: 10px;
+    --size: 40em;
+    /*margin: 0 auto;*/
+    padding: 0;
+    width: var(--size);
+    height: var(--size);
+    border: 2em solid #01735C;
+    border-radius: 50%;
+    display: block;
+    position: relative;
+    text-align: center;
+    background: #fff;
+    box-shadow: inset 0 0 0.8em 0.8em #ffe, 0 0 0 0.5em #def, 0 0 0 0.7em #456;
+    z-index: 100;
+}
+
+.jamanalog-frame .minmarks {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border: 0.2em solid #000;
+    border-radius: 50%;
+    box-shadow: 0 0 0.5em 0.5em #89a;
+}
+
+.jamanalog-frame #brand {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 65%;
+    left: 0;
+    text-align: center;
+    /*font-family: "Great Vibes", cursive;*/
+    font-size: 200%;
+    color: #01735C;
+}
+
+.jamanalog-frame #clocknumbers,
+.jamanalog-frame #clocknumbers24 {
+    display: inline-block;
+    position: absolute;
+    border: 0 none;
+    border-radius: 50%;
+}
+
+.jamanalog-frame #clocknumbers {
+    width: 84%;
+    height: 84%;
+    top: 8%;
+    left: 8%;
+}
+
+.jamanalog-frame #clocknumbers24 {
+    width: 72%;
+    height: 72%;
+    top: 14%;
+    left: 14%;
+    border: 0 none;
+}
+
+.jamanalog-frame .clockdigits,
+.jamanalog-frame .clockdigits24 {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    width: 4em;
+    height: 1em;
+    text-align: center;
+    font-family: "Times New Roman", serif;
+    font-weight: bold;
+}
+
+.jamanalog-frame .clockdigits {
+    font-size: 400%;
+    color: #345;
+}
+
+.jamanalog-frame .clockdigits24 {
+    color: #666;
+    font-size: 100%;
+}
+
+.jamanalog-frame #nut {
+    display: inline-block;
+    position: absolute;
+    width: 2.4em;
+    height: 2.4em;
+    top: calc(50% - 1.2em);
+    left: calc(50% - 1.2em);
+    border: 0.2em solid #333;
+    background: radial-gradient(#ccc, #000, #ccc);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 0.1em #333, 0 0 0 0.1em #000;
+}
+
+.jamanalog-frame .guide {
+    position: absolute;
+    background: transparent;
+    height: 100%;
+    width: 1px;
+    left: 50%;
+    top: 0;
+    transform: rotate(var(--angle));
+    font-family: "Times New Roman", serif;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.jamanalog-frame .guide::before {
+    content: '';
+    width: 0.5em;
+    height: 1em;
+    background: #000;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.jamanalog-frame .guide::after {
+    content: '';
+    width: 0.5em;
+    height: 1em;
+    background: #000;
+    position: absolute;
+    left: 0;
+    top: calc(100% - 1em);
+}
+
+.jamanalog-frame .guidedot {
+    position: absolute;
+    background: transparent;
+    height: 100%;
+    width: 1px;
+    left: 50%;
+    top: 0;
+    transform: rotate(var(--angle));
+}
+
+.jamanalog-frame .guidedot::before {
+    content: '';
+    width: 0.25em;
+    height: 0.5em;
+    background: #000;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.jamanalog-frame .guidedot::after {
+    content: '';
+    width: 0.25em;
+    height: 0.5em;
+    background: #000;
+    position: absolute;
+    left: 0;
+    top: calc(100% - 0.5em);
+}
+
+.jamanalog-frame #secondscircle {
+    position: absolute;
+    width: 94%;
+    height: 94%;
+    left: 3%;
+    top: 3%;
+    border-radius: 50%;
+}
+
+.jamanalog-frame #secondshand {
+    position: absolute;
+    background: #c00;
+    width: 0.2em;
+    height: 50%;
+    left: 50%;
+    top: 0;
+    transform-origin: bottom center;
+    box-shadow: 0 0 0.3em 0.1em #ccc, 0 4em 0 0 #c00;
+}
+
+.jamanalog-frame #secondshand:after {
+    position: absolute;
+    content: '';
+    width: 1em;
+    height: 3em;
+    background: linear-gradient(to right, #fcc, #c00, #fcc);
+    left: -0.4em;
+    top: calc(100% + 2em);
+    border-radius: 0.5em;
+    box-shadow: 0 0 1em 0.1em #ccc;
+}
+
+.jamanalog-frame #minutescircle {
+    position: absolute;
+    width: 74%;
+    height: 74%;
+    /*   border:1px solid green; */
+    left: 13%;
+    top: 13%;
+    border-radius: 50%;
+}
+
+.jamanalog-frame #minuteshand {
+    position: absolute;
+    width: 0.8em;
+    left: calc(50% - 0.4em);
+    background: linear-gradient(#345 0%, #234 100%);
+    box-shadow: 0 0 0.8em 0.1em #999;
+}
+
+.jamanalog-frame #hourscircle {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    border: 0 none;
+    left: 25%;
+    top: 25%;
+    border-radius: 50%;
+}
+
+.jamanalog-frame #hourscircle,
+.jamanalog-frame #minutescircle,
+.jamanalog-frame #secondscircle {
+    pointer-events: none;
+}
+
+.jamanalog-frame #hourshand {
+    position: absolute;
+    width: 1.2em;
+    left: calc(50% - 0.6em);
+    top: 0;
+    background: linear-gradient(#234 0%, #123 100%);
+    box-shadow: 0 0 1.2em 0.1em #999;
+}
+
+.jamanalog-frame #minuteshand,
+.jamanalog-frame #hourshand {
+    top: 0;
+    height: 50%;
+    border-radius: 50% 50% 0 0;
+    transform-origin: bottom center;
+    pointer-events: none;
+}
+
+
+.jamanalog-frame #digitalclock {
+    text-align: center;
+    margin: 40px auto 20px 100px;
+    font-family: 'Roboto Mono', monaco, monospace;
+    font-size: 2rem;
+    color: #0f0;
+    padding: 0.75em;
+    background: #000;
+    width: 10em;
+    border: 4px solid silver;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 0.5em #234;
+    z-index: 99;
+}
+
+.color_area {
+    text-align: center;
+    margin: auto;
+    font-family: 'Roboto Mono', monaco, monospace;
+    font-size: 2rem;
+    color: lightslategrey;
+    padding: 0.75em;
+    background: #f2f2f2;
+    width: 10em;
+    border: 4px solid silver;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 0.5em #234;
+}
+
+.jamanalog-frame .comment {
+    margin: 2rem auto 2rem auto;
+    width: 80%;
+    text-align: center;
+}
+
+
+.jamanalog-frame #soundtoggle {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0 none;
+    border-radius: 0;
+    background-color: transparent;
+    position: absolute;
+    left: 47%;
+    top: 75%;
+    cursor: pointer;
+}
+
+.jamanalog-frame .speaker {
+    --color: #000;
+    --size: 3rem;
+    width: var(--size);
+    height: var(--size);
+    position: relative;
+    background: transparent;
+    display: inline-block;
+    opacity: 0.9;
+}
+
+.jamanalog-frame .speaker:hover {
+    opacity: 1;
+}
+
+.jamanalog-frame .speakertriangle {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: calc(var(--size) * 0.4) solid transparent;
+    border-bottom: calc(var(--size) * 0.4) solid transparent;
+    border-right: calc(var(--size) * 0.5) solid var(--color);
+    position: absolute;
+    left: calc(var(--size) * 0.05);
+    top: calc(var(--size) * 0.1);
+}
+
+.jamanalog-frame .speakerbar {
+    display: inline-block;
+    width: calc(var(--size) * 0.333);
+    height: calc(var(--size) * 0.333);
+    background: var(--color);
+    position: absolute;
+    left: 0;
+    top: calc(var(--size) * 0.333);
+}
+
+.jamanalog-frame .speaker--off {
+    opacity: 0.6;
+}
+
+.jamanalog-frame .speaker--off .speakertriangle {
+    left: calc(var(--size) * 0.25);
+}
+
+.jamanalog-frame .speaker--off .speakerbar {
+    left: calc(var(--size) * 0.2)
+}
+
+.jamanalog-frame .speakerwave {
+    display: inline-block;
+    border: 2px solid var(--color);
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.jamanalog-frame .speaker--off .speakerwave {
+    display: none;
+}
+
+.jamanalog-frame .speakerwave--1 {
+    width: calc(var(--size) * 0.35);
+    height: calc(var(--size) * 0.5);
+    right: calc(var(--size) * 0.3);
+    top: calc(var(--size) * 0.25);
+    opacity: 0.4;
+}
+
+.jamanalog-frame .speakerwave--2 {
+    width: calc(var(--size) * 0.5);
+    height: calc(var(--size) * 0.8);
+    right: calc(var(--size) * 0.15);
+    top: calc(var(--size) * 0.1);
+    opacity: 0.6;
+}
+
+.jamanalog-frame .speakerwave--3 {
+    width: calc(var(--size) * 0.5);
+    height: calc(var(--size) * 1);
+    right: calc(var(--size) * 0);
+    top: calc(var(--size) * 0);
+    opacity: 0.8;
+}
+
+.modal-content {
+    background-image: url(/media/background/wallpaper_page.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.timer {
+    font-size: 8em;
+    color: #0f0;
+    /*background-color: #000;*/
+    line-height: 2em;
+    text-align: center;
+    margin: auto 30px auto 30px;
+}
+
+.banner_area {
+    max-width: 1200px;
+    width: 1200px;
+    height: auto;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    z-index: 1;
+}
+
+.sholat {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    font-size: 6em;
+}
