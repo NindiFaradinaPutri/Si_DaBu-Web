@@ -59,11 +59,19 @@ logger = logging.getLogger(__file__)
 
 from app.decorators import *
 from utils.utils import *
+<<<<<<< HEAD
 # from news.models import *
 # from news.forms import *
 
 #Set Masking
 # from hashids import Hashids
+=======
+from news.models import *
+from news.forms import *
+
+#Set Masking
+from hashids import Hashids
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 hashid = Hashids(salt='silatama systems.', min_length=16)
 
 def news(request):
@@ -290,6 +298,7 @@ def news_update(request, status, id):
             news.delete()
             return redirect('/article/list/')
 
+<<<<<<< HEAD
 # class ArticleYearArchiveView(YearArchiveView):
 #     template_name = "frontend/news/news_archive.html"
 #     queryset = News.objects.all()
@@ -318,3 +327,33 @@ def news_update(request, status, id):
 #         context['menu'] = ['Home','Articles']
 #         context['news'] = news
 #         return context
+=======
+class ArticleYearArchiveView(YearArchiveView):
+    template_name = "frontend/news/news_archive.html"
+    queryset = News.objects.all()
+    date_field = "post_date"
+    make_object_list = True
+    allow_future = True
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleYearArchiveView, self).get_context_data(**kwargs)
+        news = News.objects.all()
+        context['title'] = 'Articles'
+        context['menu'] = ['Home','Articles']
+        context['news'] = news
+        return context
+
+class ArticleMonthArchiveView(MonthArchiveView):
+    template_name = "frontend/news/news_archive.html"
+    queryset = News.objects.all()
+    date_field = "post_date"
+    allow_future = True
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleMonthArchiveView, self).get_context_data(**kwargs)
+        news = News.objects.all()
+        context['title'] = 'Articles'
+        context['menu'] = ['Home','Articles']
+        context['news'] = news
+        return context
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609

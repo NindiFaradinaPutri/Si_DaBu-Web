@@ -56,8 +56,13 @@ from django.db.models.functions import Replace
 from django.db.models import Value
 
 from app.decorators import *
+<<<<<<< HEAD
 # from team.models import *
 # from team.forms import *
+=======
+from team.models import *
+from team.forms import *
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 from utils.utils import *
 
 #Set Logg

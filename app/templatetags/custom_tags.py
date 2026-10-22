@@ -8,7 +8,11 @@ from django.conf import settings
 from gallery.models import *
 from profile.models import *
 from portfolio.models import *
+<<<<<<< HEAD
 # from information.models import *
+=======
+from information.models import *
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 register = template.Library()
 

@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+<<<<<<< HEAD
         # migrations.AddField(
         #     model_name='event',
         #     name='is_form',
@@ -28,4 +29,23 @@ class Migration(migrations.Migration):
         #     field=models.CharField(default=1, max_length=1000),
         #     preserve_default=False,
         # ),
+=======
+        migrations.AddField(
+            model_name='event',
+            name='is_form',
+            field=models.BooleanField(default=False),
+        ),
+        migrations.AddField(
+            model_name='event',
+            name='url_form',
+            field=models.CharField(default=django.utils.timezone.now, max_length=1000),
+            preserve_default=False,
+        ),
+        migrations.AlterField(
+            model_name='event',
+            name='location_map',
+            field=models.CharField(default=1, max_length=1000),
+            preserve_default=False,
+        ),
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     ]

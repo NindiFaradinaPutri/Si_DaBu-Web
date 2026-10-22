@@ -12,7 +12,11 @@ import sys
 if __name__ == '__main__':
     os.environ.setdefault(
         'DJANGO_SETTINGS_MODULE',
+<<<<<<< HEAD
         'si_dabu.settings')
+=======
+        'absensi_event.settings')
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

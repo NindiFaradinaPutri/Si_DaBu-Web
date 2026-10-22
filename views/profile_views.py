@@ -60,8 +60,13 @@ from app.decorators import *
 from utils.utils import *
 from profile.models import *
 from profile.forms import *
+<<<<<<< HEAD
 # from complaint.forms import *
 # from complaint.models import *
+=======
+from complaint.forms import *
+from complaint.models import *
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 from django.core.mail import EmailMultiAlternatives
 from email.mime.image import MIMEImage

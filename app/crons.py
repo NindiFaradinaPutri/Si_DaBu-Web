@@ -25,7 +25,11 @@ import hashlib
 from datetime import datetime, timedelta
 from django.utils import timezone
 
+<<<<<<< HEAD
 # from finance.models import *
+=======
+from finance.models import *
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 current_tzinfo = timezone.get_current_timezone()
 

@@ -7,15 +7,28 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
+<<<<<<< HEAD
         # ('event', '0002_auto_20260429_1140'),
+=======
+        ('event', '0002_auto_20260429_1140'),
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
         ('participant', '0001_initial'),
     ]
 
     operations = [
+<<<<<<< HEAD
         # migrations.AddField(
         #     model_name='participant',
         #     name='id_event',
         #     field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='event.event'),
         #     preserve_default=False,
         # ),
+=======
+        migrations.AddField(
+            model_name='participant',
+            name='id_event',
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='event.event'),
+            preserve_default=False,
+        ),
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     ]

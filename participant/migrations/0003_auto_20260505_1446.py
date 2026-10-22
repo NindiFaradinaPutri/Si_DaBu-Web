@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+<<<<<<< HEAD
         # migrations.AddField(
         #     model_name='participant',
         #     name='creation_date',
@@ -28,4 +29,22 @@ class Migration(migrations.Migration):
         #     name='update_date',
         #     field=models.DateTimeField(auto_now=True),
         # ),
+=======
+        migrations.AddField(
+            model_name='participant',
+            name='creation_date',
+            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            preserve_default=False,
+        ),
+        migrations.AddField(
+            model_name='participant',
+            name='qr_code',
+            field=models.ImageField(blank=True, null=True, upload_to=utils.functions.path_qr_code),
+        ),
+        migrations.AddField(
+            model_name='participant',
+            name='update_date',
+            field=models.DateTimeField(auto_now=True),
+        ),
+>>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     ]
