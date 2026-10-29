@@ -363,8 +363,3 @@ MigrationBackup/
 FodyWeavers.xsd
 /finance/migrations
 /kegiatan/migrations
-<<<<<<< HEAD
-
-venv/
-=======
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
