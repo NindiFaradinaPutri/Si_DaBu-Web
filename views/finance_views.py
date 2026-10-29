@@ -16,19 +16,11 @@ logger = logging.getLogger(__file__)
 
 from app.decorators import *
 from utils.utils import *
-<<<<<<< HEAD
 # from finance.models import *
 # from finance.forms import *
 # from team.models import *
 # from information.models import *
 # from information.forms import *
-=======
-from finance.models import *
-from finance.forms import *
-from team.models import *
-from information.models import *
-from information.forms import *
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 from app.crons import *
 
 #Set Masking

@@ -12,7 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-<<<<<<< HEAD
         # migrations.AddField(
         #     model_name='formresponse',
         #     name='participant',
@@ -24,17 +23,4 @@ class Migration(migrations.Migration):
         #     name='form',
         #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='form.form'),
         # ),
-=======
-        migrations.AddField(
-            model_name='formresponse',
-            name='participant',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='participant.participant'),
-            preserve_default=False,
-        ),
-        migrations.AlterField(
-            model_name='formresponse',
-            name='form',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='form.form'),
-        ),
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     ]

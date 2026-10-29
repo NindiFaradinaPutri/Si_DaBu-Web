@@ -4,7 +4,6 @@
 {% block content %}
 {% include "template/modals/unique_code_verification.html" with info_data="Login" %}
 
-<<<<<<< HEAD
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -210,272 +209,10 @@
                                     </label>
                                 </div>
                                 <a class="text-decoration-none text-success small fw-semibold" href="{% url 'password_reset' %}">
-=======
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet"/>
-
-<style>
-    :root {
-        --bs-primary: #E31E24;
-        --bs-primary-rgb: 227, 30, 36;
-        --surface-background: #f8f9fb;
-        --on-surface: #191c1e;
-        --secondary-text: #5e5e5e;
-        --outline-color: #e7bdb8;
-    }
-
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--surface-background);
-        color: var(--on-surface);
-        min-height: 100vh;
-    }
-
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        vertical-align: middle;
-    }
-
-    .navbar {
-        background-color: #ffffff;
-        border-bottom: 1px solid #dee2e6;
-        height: 64px;
-    }
-
-    .navbar-brand {
-        font-weight: 700;
-        color: var(--bs-primary) !important;
-        font-size: 1.25rem;
-    }
-
-    .btn-icon {
-        color: var(--secondary-text);
-        border-radius: 50%;
-        padding: 8px;
-        border: none;
-        background: none;
-    }
-
-    .btn-icon:hover {
-        background-color: #f3f4f6;
-    }
-
-    main {
-        min-height: calc(100vh - 64px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1rem;
-        margin-top: 64px;
-    }
-
-    .login-card {
-        background-color: #ffffff;
-        border: 1px solid var(--outline-color);
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        width: 100%;
-        max-width: 450px;
-        padding: 2.5rem;
-    }
-
-    .brand-icon-wrapper {
-        width: 64px;
-        height: 64px;
-        background-color: var(--bs-primary);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        color: white;
-    }
-
-    .brand-icon-wrapper .material-symbols-outlined {
-        font-size: 36px;
-    }
-
-    .form-label {
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    .input-group-text {
-        background-color: transparent;
-        border-right: none;
-    }
-
-    .form-control {
-        border-left: none;
-    }
-
-    .form-control:focus {
-        box-shadow: none;
-    }
-
-    .btn-primary-custom {
-        background-color: var(--bs-primary);
-        border: none;
-        color: white;
-        font-weight: 600;
-        padding: 14px;
-        width: 100%;
-        border-radius: 8px;
-    }
-
-    .btn-primary-custom:hover {
-        background-color: #c4181d;
-    }
-
-    .brand-icon-wrapper {
-    background: #ffffff;
-    padding: 16px 20px;
-    border-radius: 20px; /* bikin rounded halus */
-    box-shadow: 0 10px 25px rgba(243, 0, 0, 0.39);
-    border: 1px solid #f1f1f1;
-}
-
-.brand-logo {
-    height: 60px;
-    width: auto;
-}
-
-    .security-note {
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #edeef0;
-        font-size: 12px;
-        text-align: center;
-        color: var(--secondary-text);
-    }
-</style>
-
-
-<!-- Navbar -->
-<nav class="navbar navbar-light fixed-top bg-white shadow-sm">
-    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
-
-        <!-- LOGO + BRAND -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img 
-                src="/media/logo/logo-full.png"
-                class="logo-img me-2"
-                style="height:45px;"
-            >
-            <span class="logo-text fw-bold" style="font-size:20px;">
-                <span class="text-dark">Presen</span>
-                <span style="color:#e31e24;">GO</span>
-            </span>
-        </a>
-
-        <!-- RIGHT MENU -->
-        <div class="d-flex align-items-center gap-2">
-
-            <!-- HELP -->
-            <button class="btn btn-light rounded-circle p-2">
-                <span class="material-symbols-outlined">help</span>
-            </button>
-
-            <!-- LANGUAGE -->
-            <button class="btn btn-light rounded-circle p-2">
-                <span class="material-symbols-outlined">language</span>
-            </button>
-
-        </div>
-
-    </div>
-</nav>
-
-
-<!-- Main Content -->
-<main>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 d-flex justify-content-center">
-
-                <div class="login-card">
-
-                    <!-- Django Messages -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if message %}
-                                <div class="alert alert-{{ message.tags }}" role="alert">
-                                    {{ message }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-
-                    <!-- Header -->
-                <div class="text-center mb-4">
-    <div class="d-inline-flex brand-icon-wrapper align-items-center justify-content-center">
-        <img 
-            src="/media/logo/logo-full.png"
-            alt="Logo"
-            class="brand-logo"
-        >
-    </div>
-
-
-                        <h1 class="h3 fw-bold mb-1">Welcome Back</h1>
-                        <p class="text-muted mb-0">Admin Login</p>
-                    </div>
-
-                    <!-- FORM -->
-                    <form id="frmLogin" method="post" class="needs-validation">
-                        {% csrf_token %}
-
-                        <!-- hidden unique code -->
-                        <input 
-                            type="hidden" 
-                            id="id_unique_code" 
-                            name="unique_code" 
-                            value=""
-                        />
-
-                        <!-- Username -->
-                        <div class="mb-4">
-                            <label class="form-label">
-                                Username atau Email
-                            </label>
-
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <span class="material-symbols-outlined">
-                                        person
-                                    </span>
-                                </span>
-
-                                {{ loginForm.username }}
-                            </div>
-
-                            {% if loginForm.username.errors %}
-                                <div class="text-danger mt-2">
-                                    {{ loginForm.username.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Password -->
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <label class="form-label">
-                                    Password
-                                </label>
-
-                                <a 
-                                    href="{% url 'password_reset' %}"
-                                    class="text-danger text-decoration-none"
-                                    style="font-size:12px;"
-                                >
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
                                     Forgot Password?
                                 </a>
                             </div>
 
-<<<<<<< HEAD
                             <!-- Submit -->
                             <button
                                 id="id_submit"
@@ -517,98 +254,12 @@
     </footer>
 
 </div>
-=======
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <span class="material-symbols-outlined">
-                                        lock
-                                    </span>
-                                </span>
-
-                                {{ loginForm.password }}
-
-                                <button 
-                                    type="button"
-                                    class="btn btn-outline-secondary"
-                                    onclick="togglePassword()"
-                                >
-                                    <span class="material-symbols-outlined">
-                                        visibility
-                                    </span>
-                                </button>
-                            </div>
-
-                            {% if loginForm.password.errors %}
-                                <div class="text-danger mt-2">
-                                    {{ loginForm.password.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Remember Me -->
-                        <div class="mb-4 form-check">
-                            <input 
-                                type="checkbox"
-                                class="form-check-input"
-                                id="rememberme"
-                            >
-
-                            <label 
-                                class="form-check-label"
-                                for="rememberme"
-                            >
-                                Ingat Saya
-                            </label>
-                        </div>
-
-                        <!-- Submit -->
-                        <button
-                            id="id_submit"
-                            type="submit"
-                            class="btn btn-primary-custom d-flex align-items-center justify-content-center gap-2"
-                        >
-                            <span>Masuk</span>
-                            <span class="material-symbols-outlined">
-                                arrow_forward
-                            </span>
-                        </button>
-
-                        <!-- Register -->
-                        <div class="text-center mt-4">
-                            <p class="text-muted">
-                                Anda belum memiliki akun?
-                                <a 
-                                    href="/admin/signup/"
-                                    class="text-danger fw-bold text-decoration-none"
-                                >
-                                    Daftar sekarang
-                                </a>
-                            </p>
-                        </div>
-                    </form>
-
-                    <!-- Security Note -->
-                    <div class="security-note">
-                        <span class="material-symbols-outlined" style="font-size:16px;">
-                            verified_user
-                        </span>
-                        Secure 256-bit SSL Encrypted Connection
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 <script>
 function togglePassword() {
     const passwordInput = document.querySelector(
         'input[type="password"], input[type="text"][name*="password"]'
     );
-<<<<<<< HEAD
     const icon = document.getElementById('passwordToggleIcon');
     if (!passwordInput) return;
 
@@ -618,13 +269,6 @@ function togglePassword() {
     if (icon) {
         icon.classList.toggle('bi-eye', !show);
         icon.classList.toggle('bi-eye-slash', show);
-=======
-
-    if (passwordInput) {
-        passwordInput.type = passwordInput.type === "password"
-            ? "text"
-            : "password";
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     }
 }
 </script>
@@ -634,27 +278,12 @@ function togglePassword() {
 
 
 
-<<<<<<< HEAD
 
 
-=======
-{% block header %}
-{% include "frontend/header/header.html" %}
-{% endblock %}
-
-
-{% block footer %}
-{% include "frontend/footer/footer.html" %}
-{% endblock %}
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 
 {% block query %}
 <script type="text/javascript" src="{% static 'app/js/login.js' %}"></script>
 <script type="text/javascript" src="{% static 'app/js/custom.js' %}"></script>
-<<<<<<< HEAD
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-=======
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 {% endblock %}

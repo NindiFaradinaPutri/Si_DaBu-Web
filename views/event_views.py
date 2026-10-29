@@ -59,11 +59,7 @@ from django.core.files.base import ContentFile
 import logging
 
 from profile.models import Technology
-<<<<<<< HEAD
 # from team.models import Team
-=======
-from team.models import Team
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 logger = logging.getLogger(__file__)
 
 from app.decorators import *

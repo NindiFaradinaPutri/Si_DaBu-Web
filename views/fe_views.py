@@ -69,22 +69,13 @@ from django.db.models import Value
 from banner.models import Banner
 from event.models import *
 from participant.models import Participant
-<<<<<<< HEAD
 # from team.models import *
 # from team.forms import *
-=======
-from team.models import *
-from team.forms import *
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 from profile.models import *
 from portfolio.models import *
 
-<<<<<<< HEAD
 # from information.models import *
-=======
-from information.models import *
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
 #Set Logg
 import logging
@@ -273,242 +264,13 @@ def csrf_failure(request, reason=""):
 
 def home(request):
 
-<<<<<<< HEAD
    
-=======
-    kegiatans = KegiatanMasjid.objects.all().order_by('id')
-    client = Client.objects.all()
-    profile = Profile.objects.filter(id=1).first()
-
-    now = timezone.localtime()
-
-    today = now.date()
-    current_time = now.time()
-
-    # ======================================
-    # HERO EVENT PRIORITY
-    # ======================================
-    all_events = Event.objects.all().annotate(
-
-        event_priority=Case(
-
-            # upcoming event
-            When(
-                date__gt=today,
-                then=Value(0)
-            ),
-
-            # today but not finished
-            When(
-                date=today,
-                time__gte=current_time,
-                then=Value(0)
-            ),
-
-            # finished event
-            default=Value(1),
-
-            output_field=IntegerField()
-        )
-
-    ).order_by(
-        'event_priority',
-        'date',
-        'time'
-    )
-
-    # ======================================
-    # HERO EVENT
-    # ======================================
-    hero_event = all_events.first()
-
-    hero_event_photo = None
-    hero_event_status = None
-    hero_maps_url = ""
-    hero_badge_class = "hero-badge"
-
-    hero_participant_count = 0
-
-    if hero_event:
-
-        hero_maps_url = extract_maps_url(
-            hero_event.location_map
-        )
-
-        hero_participant_count = Participant.objects.filter(
-            id_event=hero_event
-        ).count()
-
-        hero_event_photo = EventPhoto.objects.filter(
-            id_event=hero_event
-        ).first()
-
-        event_date = hero_event.date
-        event_time = hero_event.time
-
-        if event_date > today:
-
-            hero_event_status = "INCOMING"
-            hero_badge_class = "hero-badge bg-warning text-dark"
-
-        elif event_date == today:
-
-            if event_time:
-
-                if event_time.hour == current_time.hour:
-
-                    hero_event_status = "LIVE"
-                    hero_badge_class = "hero-badge bg-danger text-white"
-
-                elif event_time.hour > current_time.hour:
-
-                    hero_event_status = "INCOMING"
-                    hero_badge_class = "hero-badge bg-warning text-dark"
-
-                else:
-
-                    hero_event_status = "EVENT FINISHED"
-                    hero_badge_class = "hero-badge bg-secondary text-white"
-
-            else:
-
-                hero_event_status = "LIVE"
-                hero_badge_class = "hero-badge bg-danger text-white"
-
-        else:
-
-            hero_event_status = "EVENT FINISHED"
-            hero_badge_class = "hero-badge bg-secondary text-white"
-
-    # ======================================
-    # UPCOMING EVENTS
-    # ======================================
-    upcoming_events = Event.objects.filter(
-
-        Q(date__gt=today) |
-
-        Q(
-            date=today,
-            time__gte=current_time
-        )
-
-    ).order_by(
-        'date',
-        'time'
-    )[:6]
-
-    # ======================================
-    # FINISHED EVENTS
-    # ======================================
-    finished_events = Event.objects.filter(
-
-        Q(date__lt=today) |
-
-        Q(
-            date=today,
-            time__lt=current_time
-        )
-
-    ).order_by(
-        '-date',
-        '-time'
-    )[:6]
-
-    # ======================================
-    # BUILD EVENT DATA
-    # ======================================
-    def build_event_data(events_queryset):
-
-        data = []
-
-        for event in events_queryset:
-
-            photo = EventPhoto.objects.filter(
-                id_event=event
-            ).first()
-
-            # default
-            status = "EVENT FINISHED"
-            badge_class = "bg-secondary text-white"
-
-            if event.date > today:
-
-                status = "INCOMING"
-                badge_class = "bg-warning text-dark"
-
-            elif event.date == today:
-
-                if event.time:
-
-                    if event.time.hour == current_time.hour:
-
-                        status = "LIVE"
-                        badge_class = "bg-danger text-white"
-
-                    elif event.time.hour > current_time.hour:
-
-                        status = "INCOMING"
-                        badge_class = "bg-warning text-dark"
-
-                    else:
-
-                        status = "EVENT FINISHED"
-                        badge_class = "bg-secondary text-white"
-
-                else:
-
-                    status = "LIVE"
-                    badge_class = "bg-danger text-white"
-
-            data.append({
-
-                "event": event,
-                "photo": photo,
-                "status": status,
-                "badge_class": badge_class,
-                "maps_url": extract_maps_url(
-                    event.location_map
-                )
-
-            })
-
-        return data
-
-    # ======================================
-    # FINAL DATA
-    # ======================================
-    upcoming_event_data = build_event_data(
-        upcoming_events
-    )
-
-    finished_event_data = build_event_data(
-        finished_events
-    )
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
 
     context = {
 
         'title': 'Halaman Beranda',
 
-<<<<<<< HEAD
        
-=======
-        'kegiatans': kegiatans,
-        'client': client,
-        'profile': profile,
-
-        # hero
-        'event': hero_event,
-        'event_photo': hero_event_photo,
-        'event_status': hero_event_status,
-        'badge_class': hero_badge_class,
-        'hero_participant_count': hero_participant_count,
-        'hero_maps_url': hero_maps_url,
-
-        # sections
-        'upcoming_event_data': upcoming_event_data,
-        'finished_event_data': finished_event_data,
->>>>>>> e4194ca216db50688a23ff8065f35fe3865ef609
     }
 
     return render(
